@@ -1,6 +1,6 @@
-## Go Ethereum
+## SilaChain
 
-Golang execution layer implementation of the Ethereum protocol.
+Golang execution layer implementation of the SilaChain protocol (derived from Ethereum architecture).
 
 [![API Reference](
 https://pkg.go.dev/badge/github.com/ethereum/go-ethereum
@@ -11,11 +11,11 @@ https://pkg.go.dev/badge/github.com/ethereum/go-ethereum
 [![Twitter](https://img.shields.io/twitter/follow/go_ethereum)](https://x.com/go_ethereum)
 
 Automated builds are available for stable releases and the unstable master branch. Binary
-archives are published at https://geth.ethereum.org/downloads/.
+archives are published at https://sila-blockchain.org/downloads/.
 
 ## Building the source
 
-For prerequisites and detailed build instructions please read the [Installation Instructions](https://geth.ethereum.org/docs/getting-started/installing-geth).
+For prerequisites and detailed build instructions please read the [Installation Instructions](https://sila-blockchain.org/docs/getting-started/installing-sila).
 
 Building `geth` requires both a Go (version 1.23 or later) and a C compiler. You can install
 them using your favourite package manager. Once the dependencies are installed, run
@@ -32,7 +32,7 @@ make all
 
 ## Executables
 
-The go-ethereum project comes with several wrappers/executables found in the `cmd`
+The SilaChain project comes with several wrappers/executables found in the `cmd`
 directory.
 
 |  Command   | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
