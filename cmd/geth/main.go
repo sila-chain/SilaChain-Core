@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with go-ethereum. If not, see <http://www.gnu.org/licenses/>.
 
-// Sila is a command-line client for Ethereum.
+// SilaChain is a command-line execution client derived from Ethereum architecture.
 package main
 
 import (
@@ -228,7 +228,7 @@ var (
 var app = flags.NewApp("the SilaChain command line interface")
 
 func init() {
-	// Initialize the CLI app and start Geth
+	// Initialize the CLI app and start SilaChain
 	app.Action = geth
 	app.Commands = []*cli.Command{
 		// See chaincmd.go:
