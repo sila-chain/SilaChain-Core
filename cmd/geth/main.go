@@ -44,7 +44,7 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
-const (
+var (
 	clientIdentifier = "sila" // Client identifier to advertise over the network
 )
 
