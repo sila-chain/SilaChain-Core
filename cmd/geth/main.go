@@ -236,6 +236,10 @@ func newSilaApp() *cli.App {
 }
 
 func init() {
+	initSilaApp(app)
+}
+
+func initSilaApp(app *cli.App) {
 	// Initialize the CLI app and start SilaChain
 	app.Action = geth
 	app.Commands = []*cli.Command{
