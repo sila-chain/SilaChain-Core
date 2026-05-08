@@ -17,18 +17,6 @@ import (
 	"go.uber.org/automaxprocs/maxprocs"
 )
 
-type silaAppConfig struct {
-	Usage            string
-	EnvPrefix        string
-	ClientIdentifier string
-}
-
-var defaultSilaAppConfig = silaAppConfig{
-	Usage:            "the SilaChain command line interface",
-	EnvPrefix:        "GETH",
-	ClientIdentifier: "sila",
-}
-
 var app = newConfiguredSilaApp(defaultSilaAppConfig)
 
 func newSilaApp(cfg silaAppConfig) *cli.App {
