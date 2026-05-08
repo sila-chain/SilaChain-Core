@@ -350,6 +350,10 @@ func prepare(ctx *cli.Context) {
 // It creates a default node based on the command line arguments and runs it in
 // blocking mode, waiting for it to be shut down.
 func geth(ctx *cli.Context) error {
+	return runSilaNode(ctx, false)
+}
+
+func runSilaNode(ctx *cli.Context, isConsole bool) error {
 	if args := ctx.Args().Slice(); len(args) > 0 {
 		return fmt.Errorf("invalid command: %q", args[0])
 	}
@@ -358,7 +362,7 @@ func geth(ctx *cli.Context) error {
 	stack := makeFullNode(ctx)
 	defer stack.Close()
 
-	startNode(ctx, stack, false)
+	startNode(ctx, stack, isConsole)
 	stack.Wait()
 	return nil
 }
