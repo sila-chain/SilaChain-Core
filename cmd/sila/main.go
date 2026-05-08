@@ -8,8 +8,11 @@ package main
 import (
 	"fmt"
 	"os"
+
+	"github.com/sila-org/sila/cmd/silacli"
 )
 
 func main() {
-	fmt.Fprintln(os.Stdout, "SilaChain command bootstrap is ready")
+	cfg := silacli.SilaAppConfig
+	fmt.Fprintf(os.Stdout, "%s [%s]\n", cfg.Usage, cfg.EnvPrefix)
 }
