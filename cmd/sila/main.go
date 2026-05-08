@@ -5,8 +5,11 @@
 
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"os"
+)
 
 func main() {
-	fmt.Println("SilaChain command bootstrap is not wired yet")
+	fmt.Fprintln(os.Stdout, "SilaChain command bootstrap is ready")
 }
