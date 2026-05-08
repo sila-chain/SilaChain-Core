@@ -353,20 +353,6 @@ func geth(ctx *cli.Context) error {
 	return runSilaNode(ctx, false)
 }
 
-func runSilaNode(ctx *cli.Context, isConsole bool) error {
-	if args := ctx.Args().Slice(); len(args) > 0 {
-		return fmt.Errorf("invalid command: %q", args[0])
-	}
-
-	prepare(ctx)
-	stack := makeFullNode(ctx)
-	defer stack.Close()
-
-	startNode(ctx, stack, isConsole)
-	stack.Wait()
-	return nil
-}
-
 // startNode boots up the system node and all registered protocols, after which
 // it starts the RPC/IPC interfaces and the miner.
 func startNode(ctx *cli.Context, stack *node.Node, isConsole bool) {
