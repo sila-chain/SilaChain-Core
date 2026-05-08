@@ -230,13 +230,15 @@ var (
 )
 
 type silaAppConfig struct {
-	Usage     string
-	EnvPrefix string
+	Usage            string
+	EnvPrefix        string
+	ClientIdentifier string
 }
 
 var defaultSilaAppConfig = silaAppConfig{
-	Usage:     "the SilaChain command line interface",
-	EnvPrefix: "GETH",
+	Usage:            "the SilaChain command line interface",
+	EnvPrefix:        "GETH",
+	ClientIdentifier: "sila",
 }
 
 var app = newSilaApp(defaultSilaAppConfig)
@@ -250,6 +252,8 @@ func init() {
 }
 
 func initSilaApp(app *cli.App, cfg silaAppConfig) {
+	setClientIdentifier(cfg.ClientIdentifier)
+
 	// Initialize the CLI app and start SilaChain
 	app.Action = geth
 	app.Commands = []*cli.Command{
