@@ -9,6 +9,7 @@ import (
 	"slices"
 	"sort"
 
+	"github.com/sila-org/sila/cmd/silacli"
 	"github.com/sila-org/sila/cmd/utils"
 	"github.com/sila-org/sila/console/prompt"
 	"github.com/sila-org/sila/internal/debug"
@@ -20,7 +21,7 @@ import (
 var app = newConfiguredSilaApp(defaultSilaAppConfig)
 
 func newSilaApp(cfg silaAppConfig) *cli.App {
-	return flags.NewApp(cfg.Usage)
+	return silacli.NewApp(cfg)
 }
 
 func newConfiguredSilaApp(cfg silaAppConfig) *cli.App {
