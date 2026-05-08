@@ -16,3 +16,9 @@ var defaultSilaAppConfig = silaAppConfig{
 	EnvPrefix:        "GETH",
 	ClientIdentifier: "sila",
 }
+
+var defaultSilaCommandConfig = silaAppConfig{
+	Usage:            "the SilaChain command line interface",
+	EnvPrefix:        "SILA",
+	ClientIdentifier: "sila",
+}
