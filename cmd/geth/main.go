@@ -236,10 +236,10 @@ func newSilaApp(usage string) *cli.App {
 }
 
 func init() {
-	initSilaApp(app)
+	initSilaApp(app, "GETH")
 }
 
-func initSilaApp(app *cli.App) {
+func initSilaApp(app *cli.App, envPrefix string) {
 	// Initialize the CLI app and start SilaChain
 	app.Action = geth
 	app.Commands = []*cli.Command{
@@ -288,7 +288,7 @@ func initSilaApp(app *cli.App) {
 		debug.Flags,
 		metricsFlags,
 	)
-	flags.AutoEnvVars(app.Flags, "GETH")
+	flags.AutoEnvVars(app.Flags, envPrefix)
 
 	app.Before = func(ctx *cli.Context) error {
 		maxprocs.Set() // Automatically set GOMAXPROCS to match Linux container CPU quota.
@@ -296,7 +296,7 @@ func initSilaApp(app *cli.App) {
 		if err := debug.Setup(ctx); err != nil {
 			return err
 		}
-		flags.CheckEnvVars(ctx, app.Flags, "GETH")
+		flags.CheckEnvVars(ctx, app.Flags, envPrefix)
 		return nil
 	}
 	app.After = func(ctx *cli.Context) error {
