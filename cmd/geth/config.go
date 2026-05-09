@@ -42,7 +42,6 @@ import (
 	"github.com/sila-org/sila/eth/ethconfig"
 	"github.com/sila-org/sila/internal/flags"
 	"github.com/sila-org/sila/internal/telemetry/tracesetup"
-	"github.com/sila-org/sila/internal/version"
 	"github.com/sila-org/sila/log"
 	"github.com/sila-org/sila/metrics"
 	"github.com/sila-org/sila/node"
@@ -129,14 +128,7 @@ func loadConfig(file string, cfg *gethConfig) error {
 }
 
 func defaultNodeConfig() node.Config {
-	git, _ := version.VCS()
-	cfg := node.DefaultConfig
-	cfg.Name = silacli.ClientIdentifier()
-	cfg.Version = version.WithCommit(git.Commit, git.Date)
-	cfg.HTTPModules = append(cfg.HTTPModules, "eth")
-	cfg.WSModules = append(cfg.WSModules, "eth")
-	cfg.IPCPath = silacli.ClientIdentifier() + ".ipc"
-	return cfg
+	return silacli.DefaultNodeConfig()
 }
 
 // loadBaseConfig loads the SilaChain configuration based on the given command line
