@@ -35,7 +35,6 @@ import (
 	"github.com/sila-org/sila/eth/catalyst"
 	"github.com/sila-org/sila/internal/flags"
 	"github.com/sila-org/sila/internal/silaexec"
-	"github.com/sila-org/sila/internal/telemetry/tracesetup"
 	"github.com/sila-org/sila/log"
 	"github.com/sila-org/sila/metrics"
 	"github.com/sila-org/sila/node"
@@ -155,7 +154,7 @@ func makeFullNode(ctx *cli.Context) *node.Node {
 	silaexec.SetupMetrics(&cfg.Metrics)
 
 	// Setup OpenTelemetry reporting if enabled.
-	if err := tracesetup.SetupTelemetry(cfg.Node.OpenTelemetry, stack); err != nil {
+	if err := silaexec.SetupTelemetry(cfg.Node.OpenTelemetry, stack); err != nil {
 		utils.Fatalf("failed to setup OpenTelemetry: %v", err)
 	}
 
