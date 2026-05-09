@@ -129,18 +129,6 @@ func constructDevModeBanner(ctx *cli.Context, cfg gethConfig) string {
 func makeFullNode(ctx *cli.Context) *node.Node {
 	stack, cfg := makeConfigNode(ctx)
 	silaexec.ApplyProtocolOverrides(ctx, &cfg.Eth)
-	if ctx.IsSet(utils.OverrideBPO1.Name) {
-		v := ctx.Uint64(utils.OverrideBPO1.Name)
-		cfg.Eth.OverrideBPO1 = &v
-	}
-	if ctx.IsSet(utils.OverrideBPO2.Name) {
-		v := ctx.Uint64(utils.OverrideBPO2.Name)
-		cfg.Eth.OverrideBPO2 = &v
-	}
-	if ctx.IsSet(utils.OverrideUBT.Name) {
-		v := ctx.Uint64(utils.OverrideUBT.Name)
-		cfg.Eth.OverrideUBT = &v
-	}
 
 	// Start metrics export if enabled.
 	silaexec.SetupMetrics(&cfg.Metrics)
