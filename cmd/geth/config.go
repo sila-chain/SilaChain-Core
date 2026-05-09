@@ -28,17 +28,14 @@ import (
 	"github.com/sila-org/sila/accounts/keystore"
 	"github.com/sila-org/sila/accounts/scwallet"
 	"github.com/sila-org/sila/accounts/usbwallet"
-	"github.com/sila-org/sila/beacon/blsync"
 	"github.com/sila-org/sila/cmd/utils"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/crypto"
-	"github.com/sila-org/sila/eth/catalyst"
 	"github.com/sila-org/sila/internal/flags"
 	"github.com/sila-org/sila/internal/silaexec"
 	"github.com/sila-org/sila/log"
 	"github.com/sila-org/sila/metrics"
 	"github.com/sila-org/sila/node"
-	"github.com/sila-org/sila/rpc"
 	"github.com/urfave/cli/v2"
 )
 
@@ -212,10 +209,10 @@ func makeFullNode(ctx *cli.Context) *node.Node {
 		}
 	} else if ctx.IsSet(utils.BeaconApiFlag.Name) {
 		// Start blsync mode.
-		srv := rpc.NewServer()
-		srv.RegisterName("engine", catalyst.NewConsensusAPI(eth))
-		blsyncer := blsync.NewClient(utils.MakeBeaconLightConfig(ctx))
-		blsyncer.SetEngineRPC(rpc.DialInProc(srv))
+		srv := silaexec.NewRPCServer()
+		srv.RegisterName("engine", silaexec.NewConsensusAPI(eth))
+		blsyncer := silaexec.NewBeaconLightClient(utils.MakeBeaconLightConfig(ctx))
+		blsyncer.SetEngineRPC(silaexec.DialInProc(srv))
 		stack.RegisterLifecycle(blsyncer)
 	} else {
 		// Launch the engine API for interacting with external consensus client.
