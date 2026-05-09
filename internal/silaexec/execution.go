@@ -12,29 +12,12 @@ import (
 	"github.com/sila-org/sila/eth"
 	"github.com/sila-org/sila/eth/catalyst"
 	ethconfig "github.com/sila-org/sila/eth/ethconfig"
-	"github.com/sila-org/sila/eth/filters"
-	ethapi "github.com/sila-org/sila/internal/ethapi"
 	"github.com/sila-org/sila/node"
 )
 
 // RegisterExecutionService registers the Sila execution service.
 func RegisterExecutionService(stack *node.Node, cfg *ethconfig.Config) (*eth.EthAPIBackend, *eth.Ethereum) {
 	return utils.RegisterEthService(stack, cfg)
-}
-
-// RegisterFilterAPI configures the log filter RPC API.
-func RegisterFilterAPI(stack *node.Node, backend ethapi.Backend, cfg *ethconfig.Config) *filters.FilterSystem {
-	return utils.RegisterFilterAPI(stack, backend, cfg)
-}
-
-// RegisterGraphQLService configures GraphQL if requested.
-func RegisterGraphQLService(stack *node.Node, backend ethapi.Backend, filterSystem *filters.FilterSystem, cfg *node.Config) {
-	utils.RegisterGraphQLService(stack, backend, filterSystem, cfg)
-}
-
-// RegisterEthStatsService adds the Sila stats daemon if requested.
-func RegisterEthStatsService(stack *node.Node, backend *eth.EthAPIBackend, url string) {
-	utils.RegisterEthStatsService(stack, backend, url)
 }
 
 // RegisterSyncOverrideService configures synchronization override service.
