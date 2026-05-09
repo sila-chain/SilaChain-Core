@@ -9,6 +9,7 @@ import (
 	"github.com/sila-org/sila/cmd/utils"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/eth"
+	"github.com/sila-org/sila/eth/catalyst"
 	ethconfig "github.com/sila-org/sila/eth/ethconfig"
 	"github.com/sila-org/sila/eth/filters"
 	ethapi "github.com/sila-org/sila/internal/ethapi"
@@ -38,4 +39,9 @@ func RegisterEthStatsService(stack *node.Node, backend *eth.EthAPIBackend, url s
 // RegisterSyncOverrideService configures synchronization override service.
 func RegisterSyncOverrideService(stack *node.Node, ethBackend *eth.Ethereum, target common.Hash, exitWhenSynced bool) {
 	utils.RegisterSyncOverrideService(stack, ethBackend, target, exitWhenSynced)
+}
+
+// RegisterEngineAPI launches the engine API for interacting with an external consensus client.
+func RegisterEngineAPI(stack *node.Node, ethBackend *eth.Ethereum) error {
+	return catalyst.Register(stack, ethBackend)
 }

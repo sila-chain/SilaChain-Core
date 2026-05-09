@@ -219,7 +219,7 @@ func makeFullNode(ctx *cli.Context) *node.Node {
 		stack.RegisterLifecycle(blsyncer)
 	} else {
 		// Launch the engine API for interacting with external consensus client.
-		err := catalyst.Register(stack, eth)
+		err := silaexec.RegisterEngineAPI(stack, eth)
 		if err != nil {
 			utils.Fatalf("failed to register catalyst service: %v", err)
 		}
