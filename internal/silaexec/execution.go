@@ -7,6 +7,7 @@ package silaexec
 
 import (
 	"github.com/sila-org/sila/beacon/blsync"
+	bparams "github.com/sila-org/sila/beacon/params"
 	"github.com/sila-org/sila/cmd/utils"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/eth"
@@ -65,3 +66,37 @@ var DialInProc = rpc.DialInProc
 
 // NewRPCServer creates a new RPC server.
 var NewRPCServer = rpc.NewServer
+
+// ConfigureConsensusRuntime configures the execution consensus runtime.
+func ConfigureConsensusRuntime(
+	stack *node.Node,
+	ethBackend *eth.Ethereum,
+	devMode bool,
+	devPeriod uint64,
+	pendingFeeRecipient common.Address,
+	beaconMode bool,
+	beaconConfig bparams.ClientConfig,
+) error {
+	if devMode {
+		simBeacon, err := NewSimulatedBeacon(devPeriod, pendingFeeRecipient, ethBackend)
+		if err != nil {
+			return err
+		}
+		RegisterSimulatedBeaconAPIs(stack, simBeacon)
+		stack.RegisterLifecycle(simBeacon)
+		return nil
+	}
+
+	if beaconMode {
+		srv := NewRPCServer()
+		srv.RegisterName("engine", NewConsensusAPI(ethBackend))
+
+		blsyncer := NewBeaconLightClient(beaconConfig)
+		blsyncer.SetEngineRPC(DialInProc(srv))
+
+		stack.RegisterLifecycle(blsyncer)
+		return nil
+	}
+
+	return RegisterEngineAPI(stack, ethBackend)
+}
