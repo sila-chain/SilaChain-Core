@@ -176,15 +176,15 @@ func makeFullNode(ctx *cli.Context) *node.Node {
 	}
 
 	// Configure log filter RPC API.
-	filterSystem := utils.RegisterFilterAPI(stack, backend, &cfg.Eth)
+	filterSystem := silaexec.RegisterFilterAPI(stack, backend, &cfg.Eth)
 
 	// Configure GraphQL if requested.
 	if ctx.IsSet(utils.GraphQLEnabledFlag.Name) {
-		utils.RegisterGraphQLService(stack, backend, filterSystem, &cfg.Node)
+		silaexec.RegisterGraphQLService(stack, backend, filterSystem, &cfg.Node)
 	}
 	// Add the Sila stats daemon if requested.
 	if cfg.Ethstats.URL != "" {
-		utils.RegisterEthStatsService(stack, backend, cfg.Ethstats.URL)
+		silaexec.RegisterEthStatsService(stack, backend, cfg.Ethstats.URL)
 	}
 	// Configure synchronization override service
 	var synctarget common.Hash
@@ -195,7 +195,7 @@ func makeFullNode(ctx *cli.Context) *node.Node {
 		}
 		synctarget = common.HexToHash(target)
 	}
-	utils.RegisterSyncOverrideService(stack, eth, synctarget, ctx.Bool(utils.ExitWhenSyncedFlag.Name))
+	silaexec.RegisterSyncOverrideService(stack, eth, synctarget, ctx.Bool(utils.ExitWhenSyncedFlag.Name))
 
 	if ctx.IsSet(utils.DeveloperFlag.Name) {
 		// Start dev mode.
