@@ -8,9 +8,21 @@ package main
 import (
 	"fmt"
 
+	"github.com/sila-org/sila/internal/silaexec"
 	"github.com/urfave/cli/v2"
 )
 
 func runSilaRuntime(ctx *cli.Context) error {
-	return fmt.Errorf("Sila runtime wiring is not connected yet")
+	return silaexec.RunRuntime(ctx, silaRuntimeHooks(), false)
+}
+
+func silaRuntimeHooks() silaexec.RuntimeHooks {
+	return silaexec.RuntimeHooks{
+		Prepare:      silaexec.Prepare,
+		MakeFullNode: makeSilaFullNode,
+	}
+}
+
+func makeSilaFullNode(ctx *cli.Context) silaexec.NodeLifecycle {
+	panic(fmt.Errorf("Sila runtime execution node wiring is not connected yet"))
 }
