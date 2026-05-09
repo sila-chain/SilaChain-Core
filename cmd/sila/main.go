@@ -16,6 +16,9 @@ import (
 func main() {
 	app := silacli.NewApp(silacli.SilaAppConfig)
 	silacli.ConfigureEnv(app, silacli.SilaAppConfig)
+	app.Before = func(ctx *cli.Context) error {
+		return silacli.Before(ctx, app, silacli.SilaAppConfig)
+	}
 	app.Action = func(ctx *cli.Context) error {
 		fmt.Fprintf(os.Stdout, "%s [%s]\n", silacli.SilaAppConfig.Usage, silacli.SilaAppConfig.EnvPrefix)
 		return nil
