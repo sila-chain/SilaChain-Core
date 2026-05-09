@@ -85,8 +85,6 @@ func initSilaApp(app *cli.App, cfg silaAppConfig) {
 		return silacli.Before(ctx, app, cfg)
 	}
 	app.After = func(ctx *cli.Context) error {
-		debug.Exit()
-		prompt.Stdin.Close() // Resets terminal mode.
-		return nil
+		return silacli.After(ctx, prompt.Stdin.Close)
 	}
 }
