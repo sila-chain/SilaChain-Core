@@ -15,11 +15,15 @@ func prepare(ctx *cli.Context) {
 }
 
 func runSilaNode(ctx *cli.Context, isConsole bool) error {
-	return silacli.RunRuntime(ctx, silacli.RuntimeHooks{
+	return silacli.RunRuntime(ctx, silaRuntimeHooks(), isConsole)
+}
+
+func silaRuntimeHooks() silacli.RuntimeHooks {
+	return silacli.RuntimeHooks{
 		Prepare:      prepare,
 		MakeFullNode: func(ctx *cli.Context) silacli.NodeLifecycle { return makeFullNode(ctx) },
 		StartNode: func(ctx *cli.Context, stack silacli.NodeLifecycle, isConsole bool) {
 			startNode(ctx, stack.(*node.Node), isConsole)
 		},
-	}, isConsole)
+	}
 }
