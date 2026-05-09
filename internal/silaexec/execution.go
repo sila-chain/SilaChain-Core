@@ -6,7 +6,6 @@
 package silaexec
 
 import (
-	"github.com/sila-org/sila/beacon/blsync"
 	bparams "github.com/sila-org/sila/beacon/params"
 	"github.com/sila-org/sila/cmd/utils"
 	"github.com/sila-org/sila/common"
@@ -16,7 +15,6 @@ import (
 	"github.com/sila-org/sila/eth/filters"
 	ethapi "github.com/sila-org/sila/internal/ethapi"
 	"github.com/sila-org/sila/node"
-	"github.com/sila-org/sila/rpc"
 )
 
 // RegisterExecutionService registers the Sila execution service.
@@ -48,24 +46,6 @@ func RegisterSyncOverrideService(stack *node.Node, ethBackend *eth.Ethereum, tar
 func RegisterEngineAPI(stack *node.Node, ethBackend *eth.Ethereum) error {
 	return catalyst.Register(stack, ethBackend)
 }
-
-// NewSimulatedBeacon creates the dev-mode simulated beacon.
-var NewSimulatedBeacon = catalyst.NewSimulatedBeacon
-
-// RegisterSimulatedBeaconAPIs registers dev-mode simulated beacon APIs.
-var RegisterSimulatedBeaconAPIs = catalyst.RegisterSimulatedBeaconAPIs
-
-// NewConsensusAPI creates the engine consensus API.
-var NewConsensusAPI = catalyst.NewConsensusAPI
-
-// NewBeaconLightClient creates the beacon light sync client.
-var NewBeaconLightClient = blsync.NewClient
-
-// DialInProc creates an in-process RPC client.
-var DialInProc = rpc.DialInProc
-
-// NewRPCServer creates a new RPC server.
-var NewRPCServer = rpc.NewServer
 
 // ConfigureConsensusRuntime configures the execution consensus runtime.
 func ConfigureConsensusRuntime(
