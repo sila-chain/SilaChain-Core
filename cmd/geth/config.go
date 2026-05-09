@@ -34,6 +34,7 @@ import (
 	"github.com/sila-org/sila/accounts/scwallet"
 	"github.com/sila-org/sila/accounts/usbwallet"
 	"github.com/sila-org/sila/beacon/blsync"
+	"github.com/sila-org/sila/cmd/silacli"
 	"github.com/sila-org/sila/cmd/utils"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/crypto"
@@ -130,11 +131,11 @@ func loadConfig(file string, cfg *gethConfig) error {
 func defaultNodeConfig() node.Config {
 	git, _ := version.VCS()
 	cfg := node.DefaultConfig
-	cfg.Name = clientIdentifier
+	cfg.Name = silacli.ClientIdentifier()
 	cfg.Version = version.WithCommit(git.Commit, git.Date)
 	cfg.HTTPModules = append(cfg.HTTPModules, "eth")
 	cfg.WSModules = append(cfg.WSModules, "eth")
-	cfg.IPCPath = clientIdentifier + ".ipc"
+	cfg.IPCPath = silacli.ClientIdentifier() + ".ipc"
 	return cfg
 }
 

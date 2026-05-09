@@ -29,7 +29,7 @@ func newConfiguredSilaApp(cfg silaAppConfig) *cli.App {
 }
 
 func initSilaApp(app *cli.App, cfg silaAppConfig) {
-	setClientIdentifier(cfg.ClientIdentifier)
+	silacli.SetClientIdentifier(cfg.ClientIdentifier)
 
 	// Initialize the CLI app and start SilaChain
 	app.Action = geth
