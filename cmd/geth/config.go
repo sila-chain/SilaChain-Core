@@ -28,7 +28,6 @@ import (
 	"github.com/sila-org/sila/accounts/scwallet"
 	"github.com/sila-org/sila/accounts/usbwallet"
 	"github.com/sila-org/sila/cmd/utils"
-	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/crypto"
 	"github.com/sila-org/sila/internal/flags"
 	"github.com/sila-org/sila/internal/silaexec"
@@ -156,13 +155,9 @@ func makeFullNode(ctx *cli.Context) *node.Node {
 		silaexec.RegisterEthStatsService(stack, backend, cfg.Ethstats.URL)
 	}
 	// Configure synchronization override service
-	var synctarget common.Hash
-	if ctx.IsSet(utils.SyncTargetFlag.Name) {
-		target := ctx.String(utils.SyncTargetFlag.Name)
-		if !common.IsHexHash(target) {
-			utils.Fatalf("sync target hash is not a valid hex hash: %s", target)
-		}
-		synctarget = common.HexToHash(target)
+	synctarget, err := silaexec.SyncTargetFromContext(ctx)
+	if err != nil {
+		utils.Fatalf("%v", err)
 	}
 	silaexec.RegisterSyncOverrideService(stack, eth, synctarget, ctx.Bool(utils.ExitWhenSyncedFlag.Name))
 
