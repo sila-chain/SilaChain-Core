@@ -5,8 +5,12 @@
 
 package main
 
-import "github.com/urfave/cli/v2"
+import (
+	"fmt"
 
-func runSilaCommand(ctx *cli.Context) error {
-	return runSilaRuntime(ctx)
+	"github.com/urfave/cli/v2"
+)
+
+func runSilaRuntime(ctx *cli.Context) error {
+	return fmt.Errorf("Sila runtime wiring is not connected yet")
 }
