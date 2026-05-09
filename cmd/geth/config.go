@@ -152,7 +152,7 @@ func makeFullNode(ctx *cli.Context) *node.Node {
 	}
 
 	// Start metrics export if enabled.
-	utils.SetupMetrics(&cfg.Metrics)
+	silaexec.SetupMetrics(&cfg.Metrics)
 
 	// Setup OpenTelemetry reporting if enabled.
 	if err := tracesetup.SetupTelemetry(cfg.Node.OpenTelemetry, stack); err != nil {
