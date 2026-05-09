@@ -65,10 +65,6 @@ var tomlSettings = silacli.ConfigTOMLSettings
 
 type gethConfig = silacli.ExecutionConfig
 
-func defaultNodeConfig() node.Config {
-	return silacli.DefaultNodeConfig()
-}
-
 // loadBaseConfig loads the SilaChain configuration based on the given command line
 // parameters and config file.
 func loadBaseConfig(ctx *cli.Context) gethConfig {

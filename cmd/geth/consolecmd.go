@@ -21,6 +21,7 @@ import (
 	"slices"
 	"strings"
 
+	"github.com/sila-org/sila/cmd/silacli"
 	"github.com/sila-org/sila/cmd/utils"
 	"github.com/sila-org/sila/console"
 	"github.com/urfave/cli/v2"
@@ -115,7 +116,7 @@ func remoteConsole(ctx *cli.Context) error {
 	}
 	endpoint := ctx.Args().First()
 	if endpoint == "" {
-		cfg := defaultNodeConfig()
+		cfg := silacli.DefaultNodeConfig()
 		utils.SetDataDir(ctx, &cfg)
 		endpoint = cfg.IPCEndpoint()
 	}
