@@ -121,68 +121,13 @@ func constructDevModeBanner(ctx *cli.Context, cfg gethConfig) string {
 // makeFullNode loads SilaChain configuration and creates the execution backend.
 func makeFullNode(ctx *cli.Context) *node.Node {
 	stack, cfg := makeConfigNode(ctx)
-	silaexec.ApplyProtocolOverrides(ctx, &cfg.Eth)
 
-	// Start metrics export if enabled.
-	silaexec.SetupMetrics(&cfg.Metrics)
-
-	// Setup OpenTelemetry reporting if enabled.
-	if err := silaexec.SetupTelemetry(cfg.Node.OpenTelemetry, stack); err != nil {
-		utils.Fatalf("failed to setup OpenTelemetry: %v", err)
-	}
-
-	// Add Sila execution service.
-	backend, eth := silaexec.RegisterExecutionService(stack, &cfg.Eth)
-
-	// Create gauge with SilaChain system and build information
-	silaexec.RegisterBuildInfoGauge(eth, cfg.Node.Version)
-
-	// Configure log filter RPC API.
-	filterSystem := silaexec.RegisterFilterAPI(stack, backend, &cfg.Eth)
-
-	// Configure GraphQL if requested.
-	if ctx.IsSet(utils.GraphQLEnabledFlag.Name) {
-		silaexec.RegisterGraphQLService(stack, backend, filterSystem, &cfg.Node)
-	}
-	// Add the Sila stats daemon if requested.
-	if cfg.Ethstats.URL != "" {
-		silaexec.RegisterEthStatsService(stack, backend, cfg.Ethstats.URL)
-	}
-	// Configure synchronization override service
-	synctarget, err := silaexec.SyncTargetFromContext(ctx)
-	if err != nil {
-		utils.Fatalf("%v", err)
-	}
-	silaexec.RegisterSyncOverrideService(stack, eth, synctarget, ctx.Bool(utils.ExitWhenSyncedFlag.Name))
-
-	if ctx.IsSet(utils.DeveloperFlag.Name) {
-		// Start dev mode.
-		simBeacon, err := silaexec.NewSimulatedBeacon(ctx.Uint64(utils.DeveloperPeriodFlag.Name), cfg.Eth.Miner.PendingFeeRecipient, eth)
-		if err != nil {
-			utils.Fatalf("failed to register dev mode catalyst service: %v", err)
-		}
-		silaexec.RegisterSimulatedBeaconAPIs(stack, simBeacon)
-		stack.RegisterLifecycle(simBeacon)
-
+	return silaexec.BuildExecutionNode(ctx, stack, &cfg, func() {
 		banner := constructDevModeBanner(ctx, cfg)
 		for _, line := range strings.Split(banner, "\n") {
 			log.Warn(line)
 		}
-	} else if ctx.IsSet(utils.BeaconApiFlag.Name) {
-		// Start blsync mode.
-		srv := silaexec.NewRPCServer()
-		srv.RegisterName("engine", silaexec.NewConsensusAPI(eth))
-		blsyncer := silaexec.NewBeaconLightClient(utils.MakeBeaconLightConfig(ctx))
-		blsyncer.SetEngineRPC(silaexec.DialInProc(srv))
-		stack.RegisterLifecycle(blsyncer)
-	} else {
-		// Launch the engine API for interacting with external consensus client.
-		err := silaexec.RegisterEngineAPI(stack, eth)
-		if err != nil {
-			utils.Fatalf("failed to register catalyst service: %v", err)
-		}
-	}
-	return stack
+	})
 }
 
 // dumpConfig is the dumpconfig command.
