@@ -29,7 +29,6 @@ import (
 	"github.com/sila-org/sila/accounts/scwallet"
 	"github.com/sila-org/sila/accounts/usbwallet"
 	"github.com/sila-org/sila/beacon/blsync"
-	"github.com/sila-org/sila/cmd/silacli"
 	"github.com/sila-org/sila/cmd/utils"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/crypto"
@@ -73,12 +72,12 @@ type gethConfig = silaexec.ExecutionConfig
 // execution assembly remain inside cmd/geth.
 
 func makeConfigNode(ctx *cli.Context) (*node.Node, gethConfig) {
-	cfg := silacli.LoadBaseConfig(
+	cfg := silaexec.LoadBaseConfig(
 		ctx,
 		ctx.String(configFileFlag.Name),
-		silacli.ApplyNodeConfig,
+		silaexec.ApplyNodeConfig,
 	)
-	stack := silacli.NewNodeOrFatal(&cfg.Node)
+	stack := silaexec.NewNodeOrFatal(&cfg.Node)
 	// Node doesn't by default populate account manager backends
 	if err := setAccountManagerBackends(stack.Config(), stack.AccountManager(), stack.KeyStoreDir()); err != nil {
 		utils.Fatalf("Failed to set account manager backends: %v", err)
