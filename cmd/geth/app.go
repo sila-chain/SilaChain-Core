@@ -81,7 +81,7 @@ func initSilaApp(app *cli.App, cfg silaAppConfig) {
 		debug.Flags,
 		metricsFlags,
 	)
-	flags.AutoEnvVars(app.Flags, cfg.EnvPrefix)
+	silacli.ConfigureEnv(app, cfg)
 
 	app.Before = func(ctx *cli.Context) error {
 		maxprocs.Set() // Automatically set GOMAXPROCS to match Linux container CPU quota.
