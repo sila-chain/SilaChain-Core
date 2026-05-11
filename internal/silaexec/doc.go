@@ -6,7 +6,7 @@
 // Package silaexec owns the shared Sila execution runtime wiring.
 //
 // This package provides the execution/runtime boundary used by cmd/sila.
-// The CLI/bootstrap layer remains in cmd/silacli, while protocol assembly,
+// The CLI/bootstrap layer remains in the Sila CLI package, while protocol assembly,
 // backend registration, engine API wiring, metrics, telemetry, dev mode
 // and node startup execution belong here.
 package silaexec
