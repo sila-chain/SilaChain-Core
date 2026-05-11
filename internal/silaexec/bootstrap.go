@@ -19,7 +19,7 @@ func BuildExecutionStack(
 	cfg := LoadBaseConfig(
 		ctx,
 		configFile,
-		ApplyNodeConfig,
+		utils.SetNodeConfig,
 	)
 
 	stack := NewNodeOrFatal(&cfg.Node)

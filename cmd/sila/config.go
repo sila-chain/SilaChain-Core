@@ -63,7 +63,7 @@ func makeConfigNode(ctx *cli.Context) (*node.Node, gethConfig) {
 	cfg := silacli.LoadBaseConfig(
 		ctx,
 		ctx.String(configFileFlag.Name),
-		silacli.ApplyNodeConfig,
+		utils.SetNodeConfig,
 	)
 	stack := silaexec.NewNodeOrFatal(&cfg.Node)
 	// Node doesn't by default populate account manager backends

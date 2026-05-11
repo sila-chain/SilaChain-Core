@@ -20,7 +20,7 @@ type ExecutionConfig = silacli.ExecutionConfig
 var LoadBaseConfig = silacli.LoadBaseConfig
 
 // ApplyNodeConfig applies node configuration defaults.
-var ApplyNodeConfig = silacli.ApplyNodeConfig
+var ApplyNodeConfig = utils.SetNodeConfig
 
 // NewNodeOrFatal creates a node or exits on failure.
 func NewNodeOrFatal(cfg *node.Config) *node.Node {

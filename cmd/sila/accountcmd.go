@@ -197,7 +197,7 @@ func makeAccountManager(ctx *cli.Context) *accounts.Manager {
 	cfg := silacli.LoadBaseConfig(
 		ctx,
 		ctx.String(configFileFlag.Name),
-		silacli.ApplyNodeConfig,
+		utils.SetNodeConfig,
 	)
 	am := accounts.NewManager(nil)
 	keydir, isEphemeral, err := cfg.Node.GetKeyStoreDir()
@@ -250,7 +250,7 @@ func accountCreate(ctx *cli.Context) error {
 	cfg := silacli.LoadBaseConfig(
 		ctx,
 		ctx.String(configFileFlag.Name),
-		silacli.ApplyNodeConfig,
+		utils.SetNodeConfig,
 	)
 	keydir, isEphemeral, err := cfg.Node.GetKeyStoreDir()
 	if err != nil {
