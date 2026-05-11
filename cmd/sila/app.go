@@ -44,6 +44,9 @@ func initSilaApp(app *cli.App, cfg silaAppConfig) {
 		licenseCommand,
 		dumpConfigCommand,
 		dbCommand,
+		consoleCommand,
+		attachCommand,
+		javascriptCommand,
 	}
 
 	silacli.ConfigureEnv(app, cfg)

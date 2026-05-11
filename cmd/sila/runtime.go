@@ -40,3 +40,10 @@ func makeSilaFullNode(ctx *cli.Context) *node.Node {
 		nil,
 	)
 }
+func prepare(ctx *cli.Context) {
+	silaexec.Prepare(ctx)
+}
+
+func startNode(ctx *cli.Context, stack *node.Node, isConsole bool) {
+	silaexec.StartExecutionNode(ctx, stack, isConsole)
+}
