@@ -15,9 +15,11 @@ import (
 	"github.com/sila-org/sila/cmd/utils"
 	"github.com/sila-org/sila/console/prompt"
 	"github.com/sila-org/sila/internal/debug"
+	"github.com/sila-org/sila/internal/flags"
 	"github.com/sila-org/sila/internal/silaexec"
 	"github.com/sila-org/sila/node"
 	"github.com/urfave/cli/v2"
+	"go.uber.org/automaxprocs/maxprocs"
 )
 
 var (
@@ -249,14 +251,21 @@ func initSilaApp(app *cli.App, cfg silaAppConfig) {
 		metricsFlags,
 	)
 
-	silacli.ConfigureEnv(app, cfg)
+	flags.AutoEnvVars(app.Flags, cfg.EnvPrefix)
 
 	app.Before = func(ctx *cli.Context) error {
-		return silacli.Before(ctx, app, cfg)
+		maxprocs.Set()
+		flags.MigrateGlobalFlags(ctx)
+		if err := debug.Setup(ctx); err != nil {
+			return err
+		}
+		flags.CheckEnvVars(ctx, app.Flags, cfg.EnvPrefix)
+		return nil
 	}
 
 	app.After = func(ctx *cli.Context) error {
-		return silacli.After(ctx, prompt.Stdin.Close)
+		debug.Exit()
+		return prompt.Stdin.Close()
 	}
 }
 
