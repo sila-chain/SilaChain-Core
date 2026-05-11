@@ -11,10 +11,12 @@ import (
 	"github.com/sila-org/sila/node"
 )
 
+// EthstatsConfig represents ethstats connectivity configuration.
 type EthstatsConfig struct {
 	URL string `toml:",omitempty"`
 }
 
+// ExecutionConfig represents the shared execution runtime configuration.
 type ExecutionConfig struct {
 	Eth      ethconfig.Config
 	Node     node.Config

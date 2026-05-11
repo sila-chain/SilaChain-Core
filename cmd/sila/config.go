@@ -51,7 +51,7 @@ var (
 // These settings ensure that TOML keys use the same names as Go struct fields.
 var tomlSettings = silacli.ConfigTOMLSettings
 
-type gethConfig = silacli.ExecutionConfig
+type gethConfig = silaexec.ExecutionConfig
 
 // makeConfigNode loads the real execution/node wiring layer.
 //
