@@ -6,7 +6,12 @@
 package main
 
 import (
+	"slices"
+	"sort"
+
 	"github.com/sila-org/sila/cmd/silacli"
+	"github.com/sila-org/sila/console/prompt"
+	"github.com/sila-org/sila/internal/debug"
 	"github.com/urfave/cli/v2"
 )
 
@@ -50,6 +55,15 @@ func initSilaApp(app *cli.App, cfg silaAppConfig) {
 		snapshotCommand,
 		bintrieCommand,
 	}
+	sort.Sort(cli.CommandsByName(app.Commands))
+
+	app.Flags = slices.Concat(
+		nodeFlags,
+		rpcFlags,
+		consoleFlags,
+		debug.Flags,
+		metricsFlags,
+	)
 
 	silacli.ConfigureEnv(app, cfg)
 
@@ -58,6 +72,6 @@ func initSilaApp(app *cli.App, cfg silaAppConfig) {
 	}
 
 	app.After = func(ctx *cli.Context) error {
-		return silacli.After(ctx, func() error { return nil })
+		return silacli.After(ctx, prompt.Stdin.Close)
 	}
 }
