@@ -14,6 +14,8 @@ import (
 	"unicode"
 
 	"github.com/naoina/toml"
+
+	"github.com/sila-org/sila/cmd/utils"
 	"github.com/sila-org/sila/log"
 )
 
@@ -63,4 +65,13 @@ func LoadConfig(file string, cfg any) error {
 		err = errors.New(file + ", " + err.Error())
 	}
 	return err
+}
+
+func LoadConfigOrFatal(file string, cfg any) {
+	if file == "" {
+		return
+	}
+	if err := LoadConfig(file, cfg); err != nil {
+		utils.Fatalf("%v", err)
+	}
 }
