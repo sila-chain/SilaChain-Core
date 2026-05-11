@@ -26,6 +26,10 @@ func initSilaApp(app *cli.App, cfg silaAppConfig) {
 	silacli.SetClientIdentifier(cfg.ClientIdentifier)
 
 	app.Action = runSilaCommand
+	app.Commands = []*cli.Command{
+		versionCommand,
+		licenseCommand,
+	}
 
 	silacli.ConfigureEnv(app, cfg)
 
