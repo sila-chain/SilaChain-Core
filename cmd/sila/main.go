@@ -17,6 +17,9 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
+type silaAppConfig = silacli.AppConfig
+
+var defaultSilaAppConfig = silacli.SilaAppConfig
 var app = newConfiguredSilaApp(defaultSilaAppConfig)
 
 func newSilaApp(cfg silaAppConfig) *cli.App {
