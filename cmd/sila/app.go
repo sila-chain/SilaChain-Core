@@ -27,11 +27,23 @@ func initSilaApp(app *cli.App, cfg silaAppConfig) {
 
 	app.Action = runSilaCommand
 	app.Commands = []*cli.Command{
+		initCommand,
+		importCommand,
+		exportCommand,
+		importHistoryCommand,
+		exportHistoryCommand,
+		importPreimagesCommand,
+		removedbCommand,
+		dumpCommand,
+		dumpGenesisCommand,
+		pruneHistoryCommand,
+		downloadEraCommand,
+		accountCommand,
+		walletCommand,
 		versionCommand,
 		licenseCommand,
 		dumpConfigCommand,
-		accountCommand,
-		walletCommand,
+		dbCommand,
 	}
 
 	silacli.ConfigureEnv(app, cfg)
