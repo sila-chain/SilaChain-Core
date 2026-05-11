@@ -16,7 +16,7 @@ import (
 func BuildExecutionNode(ctx *cli.Context, stack *node.Node, cfg *ExecutionConfig, onDevMode func()) *node.Node {
 	ApplyProtocolOverrides(ctx, &cfg.Eth)
 
-	SetupMetrics(&cfg.Metrics)
+	utils.SetupMetrics(&cfg.Metrics)
 
 	if err := SetupTelemetry(cfg.Node.OpenTelemetry, stack); err != nil {
 		utils.Fatalf("failed to setup OpenTelemetry: %v", err)
