@@ -21,14 +21,9 @@ import (
 	"fmt"
 	"os"
 	"slices"
-	"time"
 
-	"github.com/sila-org/sila/accounts"
 	"github.com/sila-org/sila/cmd/utils"
-	"github.com/sila-org/sila/common"
-	"github.com/sila-org/sila/eth/downloader"
-	"github.com/sila-org/sila/ethclient"
-	"github.com/sila-org/sila/log"
+	"github.com/sila-org/sila/internal/silaexec"
 	"github.com/sila-org/sila/node"
 	// Force-load the tracer engines to trigger registration
 	_ "github.com/sila-org/sila/eth/tracers/js"
@@ -240,75 +235,5 @@ func geth(ctx *cli.Context) error {
 // startNode boots up the system node and all registered protocols, after which
 // it starts the RPC/IPC interfaces and the miner.
 func startNode(ctx *cli.Context, stack *node.Node, isConsole bool) {
-	// Start up the node itself
-	utils.StartNode(ctx, stack, isConsole)
-
-	if ctx.IsSet(utils.UnlockedAccountFlag.Name) {
-		log.Warn(`The "unlock" flag has been deprecated and has no effect`)
-	}
-
-	// Register wallet event handlers to open and auto-derive wallets
-	events := make(chan accounts.WalletEvent, 16)
-	stack.AccountManager().Subscribe(events)
-
-	// Create a client to interact with local geth node.
-	rpcClient := stack.Attach()
-	ethClient := ethclient.NewClient(rpcClient)
-
-	go func() {
-		// Open any wallets already attached
-		for _, wallet := range stack.AccountManager().Wallets() {
-			if err := wallet.Open(""); err != nil {
-				log.Warn("Failed to open wallet", "url", wallet.URL(), "err", err)
-			}
-		}
-		// Listen for wallet event till termination
-		for event := range events {
-			switch event.Kind {
-			case accounts.WalletArrived:
-				if err := event.Wallet.Open(""); err != nil {
-					log.Warn("New wallet appeared, failed to open", "url", event.Wallet.URL(), "err", err)
-				}
-			case accounts.WalletOpened:
-				status, _ := event.Wallet.Status()
-				log.Info("New wallet appeared", "url", event.Wallet.URL(), "status", status)
-
-				var derivationPaths []accounts.DerivationPath
-				if event.Wallet.URL().Scheme == "ledger" {
-					derivationPaths = append(derivationPaths, accounts.LegacyLedgerBaseDerivationPath)
-				}
-				derivationPaths = append(derivationPaths, accounts.DefaultBaseDerivationPath)
-
-				event.Wallet.SelfDerive(derivationPaths, ethClient)
-
-			case accounts.WalletDropped:
-				log.Info("Old wallet dropped", "url", event.Wallet.URL())
-				event.Wallet.Close()
-			}
-		}
-	}()
-
-	// Spawn a standalone goroutine for status synchronization monitoring,
-	// close the node when synchronization is complete if user required.
-	if ctx.Bool(utils.ExitWhenSyncedFlag.Name) {
-		go func() {
-			sub := stack.EventMux().Subscribe(downloader.DoneEvent{})
-			defer sub.Unsubscribe()
-			for {
-				event := <-sub.Chan()
-				if event == nil {
-					continue
-				}
-				done, ok := event.Data.(downloader.DoneEvent)
-				if !ok {
-					continue
-				}
-				if timestamp := time.Unix(int64(done.Latest.Time), 0); time.Since(timestamp) < 10*time.Minute {
-					log.Info("Synchronisation completed", "latestnum", done.Latest.Number, "latesthash", done.Latest.Hash(),
-						"age", common.PrettyAge(timestamp))
-					stack.Close()
-				}
-			}
-		}()
-	}
+	silaexec.StartExecutionNode(ctx, stack, isConsole)
 }
