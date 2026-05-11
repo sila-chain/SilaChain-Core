@@ -47,6 +47,7 @@ func initSilaApp(app *cli.App, cfg silaAppConfig) {
 		consoleCommand,
 		attachCommand,
 		javascriptCommand,
+		snapshotCommand,
 	}
 
 	silacli.ConfigureEnv(app, cfg)
