@@ -56,7 +56,7 @@ type gethConfig = silaexec.ExecutionConfig
 //
 // Shared bootstrap/runtime/config helpers belong in cmd/silacli.
 // Real protocol wiring, account backends and Ethereum-compatible
-// execution assembly remain inside cmd/geth.
+// execution assembly remain inside the Sila execution runtime boundary.
 
 func makeConfigNode(ctx *cli.Context) (*node.Node, gethConfig) {
 	cfg := silaexec.LoadBaseConfig(
