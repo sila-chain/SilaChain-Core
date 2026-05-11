@@ -14,12 +14,15 @@ import (
 	"github.com/sila-org/sila/cmd/silacli"
 	"github.com/sila-org/sila/console/prompt"
 	"github.com/sila-org/sila/internal/debug"
+	"github.com/sila-org/sila/internal/silaexec"
+	"github.com/sila-org/sila/node"
 	"github.com/urfave/cli/v2"
 )
 
 type silaAppConfig = silacli.AppConfig
 
 var defaultSilaAppConfig = silacli.SilaAppConfig
+
 var app = newConfiguredSilaApp(defaultSilaAppConfig)
 
 func newSilaApp(cfg silaAppConfig) *cli.App {
@@ -82,7 +85,23 @@ func initSilaApp(app *cli.App, cfg silaAppConfig) {
 }
 
 func runSilaCommand(ctx *cli.Context) error {
-	return runSilaRuntime(ctx)
+	if args := ctx.Args().Slice(); len(args) > 0 {
+		return fmt.Errorf("invalid command: %q", args[0])
+	}
+
+	prepare(ctx)
+	stack := makeFullNode(ctx)
+	startNode(ctx, stack, false)
+	stack.Wait()
+	return nil
+}
+
+func prepare(ctx *cli.Context) {
+	silaexec.Prepare(ctx)
+}
+
+func startNode(ctx *cli.Context, stack *node.Node, isConsole bool) {
+	silaexec.StartExecutionNode(ctx, stack, isConsole)
 }
 
 func main() {
