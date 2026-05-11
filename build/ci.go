@@ -73,18 +73,18 @@ var (
 		"./cmd/keeper",
 	}
 
-	// Files that end up in the geth*.zip archive.
-	gethArchiveFiles = []string{
+	// Files that end up in the sila*.zip archive.
+	silaArchiveFiles = []string{
 		"COPYING",
-		executablePath("geth"),
+		executablePath("sila"),
 	}
 
-	// Files that end up in the geth-alltools*.zip archive.
+	// Files that end up in the sila-alltools*.zip archive.
 	allToolsArchiveFiles = []string{
 		"COPYING",
 		executablePath("abigen"),
 		executablePath("evm"),
-		executablePath("geth"),
+		executablePath("sila"),
 		executablePath("rlpdump"),
 		executablePath("clef"),
 	}
@@ -140,8 +140,8 @@ var (
 			Description: "Developer utility version of the EVM (Ethereum Virtual Machine) that is capable of running bytecode snippets within a configurable environment and execution mode.",
 		},
 		{
-			BinaryName:  "geth",
-			Description: "Ethereum CLI client.",
+			BinaryName:  "sila",
+			Description: "SilaChain CLI client.",
 		},
 		{
 			BinaryName:  "rlpdump",
@@ -686,7 +686,7 @@ func doArchive(cmdline []string) {
 		atype   = flag.String("type", "zip", "Type of archive to write (zip|tar)")
 		signer  = flag.String("signer", "", `Environment variable holding the signing key (e.g. LINUX_SIGNING_KEY)`)
 		signify = flag.String("signify", "", `Environment variable holding the signify key (e.g. LINUX_SIGNIFY_KEY)`)
-		upload  = flag.String("upload", "", `Destination to upload the archives (usually "gethstore/builds")`)
+		upload  = flag.String("upload", "", `Destination to upload the archives (usually "silastore/builds")`)
 		ext     string
 	)
 	flag.CommandLine.Parse(cmdline)
@@ -701,18 +701,18 @@ func doArchive(cmdline []string) {
 
 	var (
 		env      = build.Env()
-		basegeth = archiveBasename(*arch, version.Archive(env.Commit))
-		geth     = "geth-" + basegeth + ext
-		alltools = "geth-alltools-" + basegeth + ext
+		basesila = archiveBasename(*arch, version.Archive(env.Commit))
+		sila     = "sila-" + basesila + ext
+		alltools = "sila-alltools-" + basesila + ext
 	)
 	maybeSkipArchive(env)
-	if err := build.WriteArchive(geth, gethArchiveFiles); err != nil {
+	if err := build.WriteArchive(sila, silaArchiveFiles); err != nil {
 		log.Fatal(err)
 	}
 	if err := build.WriteArchive(alltools, allToolsArchiveFiles); err != nil {
 		log.Fatal(err)
 	}
-	for _, archive := range []string{geth, alltools} {
+	for _, archive := range []string{sila, alltools} {
 		if err := archiveUpload(archive, *upload, *signer, *signify); err != nil {
 			log.Fatal(err)
 		}
@@ -723,7 +723,7 @@ func doKeeperArchive(cmdline []string) {
 	var (
 		signer  = flag.String("signer", "", `Environment variable holding the signing key (e.g. LINUX_SIGNING_KEY)`)
 		signify = flag.String("signify", "", `Environment variable holding the signify key (e.g. LINUX_SIGNIFY_KEY)`)
-		upload  = flag.String("upload", "", `Destination to upload the archives (usually "gethstore/builds")`)
+		upload  = flag.String("upload", "", `Destination to upload the archives (usually "silastore/builds")`)
 	)
 	flag.CommandLine.Parse(cmdline)
 
@@ -769,7 +769,7 @@ func archiveUpload(archive string, blobstore string, signer string, signifyVar s
 	}
 	if signifyVar != "" {
 		key := os.Getenv(signifyVar)
-		untrustedComment := "verify with geth-release.pub"
+		untrustedComment := "verify with sila-release.pub"
 		trustedComment := fmt.Sprintf("%s (%s)", archive, time.Now().UTC().Format(time.RFC1123))
 		if err := signify.SignFile(archive, archive+".sig", key, untrustedComment, trustedComment); err != nil {
 			return err
@@ -815,7 +815,7 @@ func maybeSkipArchive(env build.Environment) {
 func doDockerBuildx(cmdline []string) {
 	var (
 		platform = flag.String("platform", "", `Push a multi-arch docker image for the specified architectures (usually "linux/amd64,linux/arm64")`)
-		hubImage = flag.String("hub", "ethereum/client-go", `Where to upload the docker image`)
+		hubImage = flag.String("hub", "sila-org/sila", `Where to upload the docker image`)
 		upload   = flag.Bool("upload", false, `Whether to trigger upload`)
 	)
 	flag.CommandLine.Parse(cmdline)
@@ -834,14 +834,14 @@ func doDockerBuildx(cmdline []string) {
 		build.MustRun(auther)
 	}
 	// Retrieve the version infos to build and push to the following paths:
-	//  - ethereum/client-go:latest                            - Pushes to the master branch, Geth only
-	//  - ethereum/client-go:stable                            - Version tag publish on GitHub, Geth only
-	//  - ethereum/client-go:alltools-latest                   - Pushes to the master branch, Geth & tools
-	//  - ethereum/client-go:alltools-stable                   - Version tag publish on GitHub, Geth & tools
-	//  - ethereum/client-go:release-<major>.<minor>           - Version tag publish on GitHub, Geth only
-	//  - ethereum/client-go:alltools-release-<major>.<minor>  - Version tag publish on GitHub, Geth & tools
-	//  - ethereum/client-go:v<major>.<minor>.<patch>          - Version tag publish on GitHub, Geth only
-	//  - ethereum/client-go:alltools-v<major>.<minor>.<patch> - Version tag publish on GitHub, Geth & tools
+	//  - sila-org/sila:latest                                 - Pushes to the master branch, Sila only
+	//  - sila-org/sila:stable                                 - Version tag publish on GitHub, Sila only
+	//  - sila-org/sila:alltools-latest                        - Pushes to the master branch, Sila & tools
+	//  - sila-org/sila:alltools-stable                        - Version tag publish on GitHub, Sila & tools
+	//  - sila-org/sila:release-<major>.<minor>                - Version tag publish on GitHub, Sila only
+	//  - sila-org/sila:alltools-release-<major>.<minor>       - Version tag publish on GitHub, Sila & tools
+	//  - sila-org/sila:v<major>.<minor>.<patch>               - Version tag publish on GitHub, Sila only
+	//  - sila-org/sila:alltools-v<major>.<minor>.<patch>      - Version tag publish on GitHub, Sila & tools
 	var tags []string
 
 	switch {
@@ -864,12 +864,12 @@ func doDockerBuildx(cmdline []string) {
 		{file: "Dockerfile.alltools", base: fmt.Sprintf("%s:alltools-", *hubImage)},
 	} {
 		for _, tag := range tags { // latest, stable etc
-			gethImage := fmt.Sprintf("%s%s", spec.base, tag)
+			silaImage := fmt.Sprintf("%s%s", spec.base, tag)
 			cmd := exec.Command("docker", "buildx", "build",
 				"--build-arg", "COMMIT="+env.Commit,
 				"--build-arg", "VERSION="+version.WithMeta,
 				"--build-arg", "BUILDNUM="+env.Buildnum,
-				"--tag", gethImage,
+				"--tag", silaImage,
 				"--platform", *platform,
 				"--file", spec.file,
 			)
@@ -888,7 +888,7 @@ func doDebianSource(cmdline []string) {
 		cachedir = flag.String("cachedir", "./build/cache", `Filesystem path to cache the downloaded Go bundles at`)
 		signer   = flag.String("signer", "", `Signing key name, also used as package author`)
 		upload   = flag.String("upload", "", `Where to upload the source package (usually "ethereum/ethereum")`)
-		sshUser  = flag.String("sftp-user", "", `Username for SFTP upload (usually "geth-ci")`)
+		sshUser  = flag.String("sftp-user", "", `Username for SFTP upload (usually "sila-ci")`)
 		workdir  = flag.String("workdir", "", `Output directory for packages (uses temp dir if unset)`)
 		now      = time.Now()
 	)
@@ -921,7 +921,7 @@ func doDebianSource(cmdline []string) {
 	// Create Debian packages and upload them.
 	for _, pkg := range debPackages {
 		for _, distro := range debDistros {
-			// Prepare the debian package with the go-ethereum sources.
+			// Prepare the debian package with the SilaChain sources.
 			meta := newDebMetadata(distro, *signer, env, now, pkg.Name, pkg.Version, pkg.Executables)
 			pkgdir := stageDebianSource(*workdir, meta)
 
@@ -1047,7 +1047,7 @@ func makeWorkdir(wdflag string) string {
 	if wdflag != "" {
 		err = os.MkdirAll(wdflag, 0744)
 	} else {
-		wdflag, err = os.MkdirTemp("", "geth-build-")
+		wdflag, err = os.MkdirTemp("", "sila-build-")
 	}
 	if err != nil {
 		log.Fatal(err)
@@ -1072,7 +1072,7 @@ type debMetadata struct {
 	Env         build.Environment
 	PackageName string
 
-	// go-ethereum version being built. Note that this
+	// SilaChain version being built. Note that this
 	// is not the debian package version. The package version
 	// is constructed by VersionString.
 	Version string
@@ -1201,7 +1201,7 @@ func doWindowsInstaller(cmdline []string) {
 		arch    = flag.String("arch", runtime.GOARCH, "Architecture for cross build packaging")
 		signer  = flag.String("signer", "", `Environment variable holding the signing key (e.g. WINDOWS_SIGNING_KEY)`)
 		signify = flag.String("signify", "", `Environment variable holding the signify signing key (e.g. WINDOWS_SIGNIFY_KEY)`)
-		upload  = flag.String("upload", "", `Destination to upload the archives (usually "gethstore/builds")`)
+		upload  = flag.String("upload", "", `Destination to upload the archives (usually "silastore/builds")`)
 		workdir = flag.String("workdir", "", `Output directory for packages (uses temp dir if unset)`)
 	)
 	flag.CommandLine.Parse(cmdline)
@@ -1213,28 +1213,28 @@ func doWindowsInstaller(cmdline []string) {
 	var (
 		devTools []string
 		allTools []string
-		gethTool string
+		silaTool string
 	)
 	for _, file := range allToolsArchiveFiles {
 		if file == "COPYING" { // license, copied later
 			continue
 		}
 		allTools = append(allTools, filepath.Base(file))
-		if filepath.Base(file) == "geth.exe" {
-			gethTool = file
+		if filepath.Base(file) == "sila.exe" {
+			silaTool = file
 		} else {
 			devTools = append(devTools, file)
 		}
 	}
 
 	// Render NSIS scripts: Installer NSIS contains two installer sections,
-	// first section contains the geth binary, second section holds the dev tools.
+	// first section contains the sila binary, second section holds the dev tools.
 	templateData := map[string]interface{}{
 		"License":  "COPYING",
-		"Geth":     gethTool,
+		"Sila":     silaTool,
 		"DevTools": devTools,
 	}
-	build.Render("build/nsis.geth.nsi", filepath.Join(*workdir, "geth.nsi"), 0644, nil)
+	build.Render("build/nsis.sila.nsi", filepath.Join(*workdir, "sila.nsi"), 0644, nil)
 	build.Render("build/nsis.install.nsh", filepath.Join(*workdir, "install.nsh"), 0644, templateData)
 	build.Render("build/nsis.uninstall.nsh", filepath.Join(*workdir, "uninstall.nsh"), 0644, allTools)
 	build.Render("build/nsis.pathupdate.nsh", filepath.Join(*workdir, "PathUpdate.nsh"), 0644, nil)
@@ -1252,7 +1252,7 @@ func doWindowsInstaller(cmdline []string) {
 	if env.Commit != "" {
 		ver[2] += "-" + env.Commit[:8]
 	}
-	installer, err := filepath.Abs("geth-" + archiveBasename(*arch, version.Archive(env.Commit)) + ".exe")
+	installer, err := filepath.Abs("sila-" + archiveBasename(*arch, version.Archive(env.Commit)) + ".exe")
 	if err != nil {
 		log.Fatalf("Failed to convert installer file path: %v", err)
 	}
@@ -1262,7 +1262,7 @@ func doWindowsInstaller(cmdline []string) {
 		"/DMINORVERSION="+ver[1],
 		"/DBUILDVERSION="+ver[2],
 		"/DARCH="+*arch,
-		filepath.Join(*workdir, "geth.nsi"),
+		filepath.Join(*workdir, "sila.nsi"),
 	)
 	// Sign and publish installer.
 	if err := archiveUpload(installer, *upload, *signer, *signify); err != nil {
@@ -1274,7 +1274,7 @@ func doWindowsInstaller(cmdline []string) {
 
 func doPurge(cmdline []string) {
 	var (
-		store = flag.String("store", "", `Destination from where to purge archives (usually "gethstore/builds")`)
+		store = flag.String("store", "", `Destination from where to purge archives (usually "silastore/builds")`)
 		limit = flag.Int("days", 30, `Age threshold above which to delete unstable archives`)
 	)
 	flag.CommandLine.Parse(cmdline)
