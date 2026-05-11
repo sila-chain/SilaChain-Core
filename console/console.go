@@ -292,12 +292,12 @@ func (c *Console) AutoCompleteInput(line string, pos int) (string, []string, str
 	return line[:start], c.jsre.CompleteKeywords(line[start:pos]), line[pos:]
 }
 
-// Welcome show summary of current Geth instance and some metadata about the
+// Welcome show summary of current Sila instance and some metadata about the
 // console's available modules.
 func (c *Console) Welcome() {
 	message := "Welcome to the Sila JavaScript console!\n\n"
 
-	// Print some generic Geth metadata
+	// Print some generic Sila metadata
 	if res, err := c.jsre.Run(`
 		var message = "instance: " + web3.version.node + "\n";
 		message += "at block: " + eth.blockNumber + " (" + new Date(1000 * eth.getBlock(eth.blockNumber).timestamp) + ")\n";
