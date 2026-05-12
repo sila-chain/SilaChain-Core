@@ -136,6 +136,6 @@ Repeat the above process (re-initialising the node) in order to run the Eth Prot
 
 
 [eth]: https://github.com/ethereum/devp2p/blob/master/caps/eth.md
-[dns-tutorial]: https://geth.ethereum.org/docs/developers/geth-developer/dns-discovery-setup
+[dns-tutorial]: https://sila-blockchain.org/docs/developers/geth-developer/dns-discovery-setup
 [discv4]: https://github.com/ethereum/devp2p/tree/master/discv4.md
 [discv5]: https://github.com/ethereum/devp2p/tree/master/discv5/discv5.md
