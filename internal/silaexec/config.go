@@ -8,16 +8,49 @@ package silaexec
 import (
 	"github.com/sila-org/sila/cmd/silacli"
 	"github.com/sila-org/sila/cmd/utils"
+	"github.com/sila-org/sila/eth/ethconfig"
 	"github.com/sila-org/sila/log"
+	"github.com/sila-org/sila/metrics"
 	"github.com/sila-org/sila/node"
 	"github.com/urfave/cli/v2"
 )
 
+// EthstatsConfig represents ethstats connectivity configuration.
+type EthstatsConfig struct {
+	URL string `toml:",omitempty"`
+}
+
 // ExecutionConfig represents the shared execution runtime configuration.
-type ExecutionConfig = silacli.ExecutionConfig
+type ExecutionConfig struct {
+	Eth      ethconfig.Config
+	Node     node.Config
+	Ethstats EthstatsConfig
+	Metrics  metrics.Config
+}
+
+// DefaultExecutionConfig returns the shared execution defaults.
+func DefaultExecutionConfig() ExecutionConfig {
+	return ExecutionConfig{
+		Eth:     ethconfig.Defaults,
+		Node:    silacli.DefaultNodeConfig(),
+		Metrics: metrics.DefaultConfig,
+	}
+}
 
 // LoadBaseConfig loads the shared execution configuration.
-var LoadBaseConfig = silacli.LoadBaseConfig
+func LoadBaseConfig(
+	ctx *cli.Context,
+	configFile string,
+	applyNode func(*cli.Context, *node.Config),
+) ExecutionConfig {
+	cfg := DefaultExecutionConfig()
+
+	silacli.LoadConfigOrFatal(configFile, &cfg)
+
+	applyNode(ctx, &cfg.Node)
+
+	return cfg
+}
 
 // ApplyNodeConfig applies node configuration defaults.
 var ApplyNodeConfig = utils.SetNodeConfig

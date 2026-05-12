@@ -60,7 +60,7 @@ type gethConfig = silaexec.ExecutionConfig
 // execution assembly remain inside the Sila execution runtime boundary.
 
 func makeConfigNode(ctx *cli.Context) (*node.Node, gethConfig) {
-	cfg := silacli.LoadBaseConfig(
+	cfg := silaexec.LoadBaseConfig(
 		ctx,
 		ctx.String(configFileFlag.Name),
 		utils.SetNodeConfig,

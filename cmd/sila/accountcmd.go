@@ -24,7 +24,6 @@ import (
 
 	"github.com/sila-org/sila/accounts"
 	"github.com/sila-org/sila/accounts/keystore"
-	"github.com/sila-org/sila/cmd/silacli"
 	"github.com/sila-org/sila/cmd/utils"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/crypto"
@@ -194,7 +193,7 @@ nodes.
 
 // makeAccountManager creates an account manager with backends
 func makeAccountManager(ctx *cli.Context) *accounts.Manager {
-	cfg := silacli.LoadBaseConfig(
+	cfg := silaexec.LoadBaseConfig(
 		ctx,
 		ctx.String(configFileFlag.Name),
 		utils.SetNodeConfig,
@@ -247,7 +246,7 @@ func readPasswordFromFile(path string) (string, bool) {
 
 // accountCreate creates a new account into the keystore defined by the CLI flags.
 func accountCreate(ctx *cli.Context) error {
-	cfg := silacli.LoadBaseConfig(
+	cfg := silaexec.LoadBaseConfig(
 		ctx,
 		ctx.String(configFileFlag.Name),
 		utils.SetNodeConfig,
