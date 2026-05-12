@@ -11,7 +11,6 @@ import (
 	"slices"
 	"sort"
 
-	"github.com/sila-org/sila/cmd/silacli"
 	"github.com/sila-org/sila/cmd/utils"
 	"github.com/sila-org/sila/console/prompt"
 	"github.com/sila-org/sila/internal/debug"
@@ -197,14 +196,22 @@ var metricsFlags = []cli.Flag{
 	utils.StateSizeTrackingFlag,
 }
 
-type silaAppConfig = silacli.AppConfig
+type silaAppConfig struct {
+	Usage            string
+	EnvPrefix        string
+	ClientIdentifier string
+}
 
-var defaultSilaAppConfig = silacli.SilaAppConfig
+var defaultSilaAppConfig = silaAppConfig{
+	Usage:            "the SilaChain command line interface",
+	EnvPrefix:        "SILA",
+	ClientIdentifier: "sila",
+}
 
 var app = newConfiguredSilaApp(defaultSilaAppConfig)
 
 func newSilaApp(cfg silaAppConfig) *cli.App {
-	return silacli.NewApp(cfg)
+	return flags.NewApp(cfg.Usage)
 }
 
 func newConfiguredSilaApp(cfg silaAppConfig) *cli.App {
