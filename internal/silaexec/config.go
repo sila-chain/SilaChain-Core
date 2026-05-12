@@ -45,7 +45,7 @@ func LoadBaseConfig(
 ) ExecutionConfig {
 	cfg := DefaultExecutionConfig()
 
-	silacli.LoadConfigOrFatal(configFile, &cfg)
+	LoadConfigOrFatal(configFile, &cfg)
 
 	applyNode(ctx, &cfg.Node)
 

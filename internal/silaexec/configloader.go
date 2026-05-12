@@ -3,7 +3,7 @@
 //
 // The SilaChain library is derived from the go-ethereum library.
 
-package silacli
+package silaexec
 
 import (
 	"bufio"
