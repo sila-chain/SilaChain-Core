@@ -182,7 +182,7 @@ into Era archives. Eras are typically packaged in steps of 8192 blocks.
 		Flags:     slices.Concat([]cli.Flag{utils.CacheFlag}, utils.DatabaseFlags),
 		Description: `
 The import-preimages command imports hash preimages from an RLP encoded stream.
-It's deprecated, please use "geth db import" instead.
+It's deprecated, please use "sila db import" instead.
 `,
 	}
 
@@ -718,7 +718,7 @@ func pruneHistory(ctx *cli.Context) error {
 		return err
 	}
 	if mode == history.KeepAll {
-		return errors.New("--history.chain=all is not valid for pruning. To restore history, use 'geth import-history'")
+		return errors.New("--history.chain=all is not valid for pruning. To restore history, use 'sila import-history'")
 	}
 
 	stack, _ := makeConfigNode(ctx)
@@ -752,7 +752,7 @@ func pruneHistory(ctx *cli.Context) error {
 		}
 		if freezerTail > targetBlock {
 			// Database is pruned beyond the target - can't unprune.
-			return fmt.Errorf("database is already pruned to block %d, which is beyond target %d. Cannot unprune. To restore history, use 'geth import-history'", freezerTail, targetBlock)
+			return fmt.Errorf("database is already pruned to block %d, which is beyond target %d. Cannot unprune. To restore history, use 'sila import-history'", freezerTail, targetBlock)
 		}
 		// freezerTail < targetBlock: we can prune further, continue below.
 	}

@@ -145,7 +145,7 @@ If --account is specified, only the storage trie of that account is traversed.
 			},
 			{
 				Name:      "dump",
-				Usage:     "Dump a specific block from storage (same as 'geth dump' but using snapshots)",
+				Usage:     "Dump a specific block from storage (same as 'sila dump' but using snapshots)",
 				ArgsUsage: "[? <blockHash> | <blockNum>]",
 				Action:    dumpState,
 				Flags: slices.Concat([]cli.Flag{
@@ -155,7 +155,7 @@ If --account is specified, only the storage trie of that account is traversed.
 					utils.DumpLimitFlag,
 				}, utils.NetworkFlags, utils.DatabaseFlags),
 				Description: `
-This command is semantically equivalent to 'geth dump', but uses the snapshots
+This command is semantically equivalent to 'sila dump', but uses the snapshots
 as the backend data source, making this command a lot faster.
 
 The argument is interpreted as block number or hash. If none is provided, the latest

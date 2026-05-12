@@ -51,7 +51,7 @@ See https://sila-blockchain.org/docs/interacting-with-sila/javascript-console.`,
 The Sila console is an interactive shell for the JavaScript runtime environment
 which exposes a node admin interface as well as the أگapp JavaScript API.
 See https://sila-blockchain.org/docs/interacting-with-sila/javascript-console.
-This command allows to open a console on a running geth node.`,
+This command allows to open a console on a running sila node.`,
 	}
 
 	javascriptCommand = &cli.Command{
@@ -66,7 +66,7 @@ JavaScript API. See https://sila-blockchain.org/docs/interacting-with-sila/javas
 	}
 )
 
-// localConsole starts a new geth node, attaching a JavaScript console to it at the
+// localConsole starts a new sila node, attaching a JavaScript console to it at the
 // same time.
 func localConsole(ctx *cli.Context) error {
 	// Create and start the node based on the CLI flags
@@ -108,7 +108,7 @@ func localConsole(ctx *cli.Context) error {
 	return nil
 }
 
-// remoteConsole will connect to a remote geth instance, attaching a JavaScript
+// remoteConsole will connect to a remote sila instance, attaching a JavaScript
 // console to it.
 func remoteConsole(ctx *cli.Context) error {
 	if ctx.Args().Len() > 1 {
@@ -122,7 +122,7 @@ func remoteConsole(ctx *cli.Context) error {
 	}
 	client, err := utils.DialRPCWithHeaders(endpoint, ctx.StringSlice(utils.HttpHeaderFlag.Name))
 	if err != nil {
-		utils.Fatalf("Unable to attach to remote geth: %v", err)
+		utils.Fatalf("Unable to attach to remote sila: %v", err)
 	}
 	config := console.Config{
 		DataDir: utils.MakeDataDir(ctx),
@@ -147,7 +147,7 @@ func remoteConsole(ctx *cli.Context) error {
 	return nil
 }
 
-// ephemeralConsole starts a new geth node, attaches an ephemeral JavaScript
+// ephemeralConsole starts a new sila node, attaches an ephemeral JavaScript
 // console to it, executes each of the files specified as arguments and tears
 // everything down.
 func ephemeralConsole(ctx *cli.Context) error {
