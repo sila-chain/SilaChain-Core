@@ -28,7 +28,7 @@ import (
 	"github.com/sila-org/sila/rpc"
 )
 
-type testgeth struct {
+type testSila struct {
 	*cmdtest.TestCmd
 
 	// template variables for expect
@@ -55,7 +55,7 @@ func TestMain(m *testing.M) {
 	os.Exit(m.Run())
 }
 
-func initGeth(t *testing.T) string {
+func initSila(t *testing.T) string {
 	args := []string{"--networkid=42", "init", "./testdata/clique.json"}
 	t.Logf("Initializing sila: %v ", args)
 	g := runSila(t, args...)
@@ -66,8 +66,8 @@ func initGeth(t *testing.T) string {
 
 // spawns sila with the given command line args. If the args don't set --datadir, the
 // child g gets a temporary data directory.
-func runSila(t *testing.T, args ...string) *testgeth {
-	tt := &testgeth{}
+func runSila(t *testing.T, args ...string) *testSila {
+	tt := &testSila{}
 	tt.TestCmd = cmdtest.NewTestCmd(t, tt)
 	for i, arg := range args {
 		switch arg {

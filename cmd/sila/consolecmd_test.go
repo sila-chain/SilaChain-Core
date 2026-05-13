@@ -37,7 +37,7 @@ const (
 // spawns sila with the given command line args, using a set of flags to minimise
 // memory and disk IO. If the args don't set --datadir, the
 // child g gets a temporary data directory.
-func runMinimalSila(t *testing.T, args ...string) *testgeth {
+func runMinimalSila(t *testing.T, args ...string) *testSila {
 	// --holesky to make the 'writing genesis to disk' faster (no accounts)
 	// --networkid=1337 to avoid cache bump
 	// --syncmode=full to avoid allocating fast sync bloom
@@ -119,7 +119,7 @@ func TestAttachWelcome(t *testing.T) {
 	sila.Kill()
 }
 
-func testAttachWelcome(t *testing.T, sila *testgeth, endpoint, apis string) {
+func testAttachWelcome(t *testing.T, sila *testSila, endpoint, apis string) {
 	// Attach to a running sila node and terminate immediately
 	attach := runSila(t, "attach", endpoint)
 	defer attach.ExpectExit()

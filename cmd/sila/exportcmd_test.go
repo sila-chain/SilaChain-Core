@@ -29,7 +29,7 @@ import (
 func TestExport(t *testing.T) {
 	t.Parallel()
 	outfile := fmt.Sprintf("%v/testExport.out", t.TempDir())
-	sila := runSila(t, "--datadir", initGeth(t), "export", outfile)
+	sila := runSila(t, "--datadir", initSila(t), "export", outfile)
 	sila.WaitExit()
 	if have, want := sila.ExitStatus(), 0; have != want {
 		t.Errorf("exit error, have %d want %d", have, want)
