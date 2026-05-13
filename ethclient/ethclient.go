@@ -1,18 +1,18 @@
-// Copyright 2016 The go-ethereum Authors
-// This file is part of the SilaChain library (derived from go-ethereum).
+// Copyright 2016 The SilaChain Authors
+// This file is part of the SilaChain library.
 //
-// The go-ethereum library is free software: you can redistribute it and/or modify
+// The SilaChain library is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// The go-ethereum library is distributed in the hope that it will be useful,
+// The SilaChain library is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with the go-ethereum library. If not, see <http://www.gnu.org/licenses/>.
+// along with the SilaChain library. If not, see <http://www.gnu.org/licenses/>.
 
 // Package ethclient provides a client for the Ethereum RPC API.
 package ethclient
@@ -501,7 +501,7 @@ func toFilterArg(q ethereum.FilterQuery) (interface{}, error) {
 	// Only include "address" when there are actual address filters.
 	// An empty slice is treated the same as nil (no filter), and omitting
 	// the field avoids sending "address":[] to nodes that reject empty arrays
-	// (e.g. Hedera, some non-Geth implementations).
+	// (e.g. Hedera, some non-SilaChain implementations).
 	if len(q.Addresses) > 0 {
 		arg["address"] = q.Addresses
 	}
@@ -750,7 +750,7 @@ func (ec *Client) SendRawTransactionSync(
 
 // RevertErrorData returns the 'revert reason' data of a contract call.
 //
-// This can be used with CallContract and EstimateGas, and only when the server is Geth.
+// This can be used with CallContract and EstimateGas, and only when the server supports SilaChain-compatible error data.
 func RevertErrorData(err error) ([]byte, bool) {
 	var ec rpc.Error
 	var ed rpc.DataError

@@ -1,18 +1,18 @@
-// Copyright 2024 The go-ethereum Authors
-// This file is part of the SilaChain library (derived from go-ethereum).
+// Copyright 2024 The SilaChain Authors
+// This file is part of the SilaChain library.
 //
-// The go-ethereum library is free software: you can redistribute it and/or modify
+// The SilaChain library is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// The go-ethereum library is distributed in the hope that it will be useful,
+// The SilaChain library is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with the go-ethereum library. If not, see <http://www.gnu.org/licenses/>.
+// along with the SilaChain library. If not, see <http://www.gnu.org/licenses/>.
 
 package simulated
 
@@ -43,7 +43,7 @@ func WithCallGasLimit(gaslimit uint64) func(nodeConf *node.Config, ethConf *ethc
 // WithMinerMinTip configures the simulated backend to require a specific minimum
 // gas tip for a transaction to be included.
 //
-// 0 is not possible as a live Geth node would reject that due to DoS protection,
+// 0 is not possible as a live SilaChain node would reject that due to DoS protection,
 // so the simulated backend will replicate that behavior for consistency.
 func WithMinerMinTip(tip *big.Int) func(nodeConf *node.Config, ethConf *ethconfig.Config) {
 	if tip == nil || tip.Sign() <= 0 {

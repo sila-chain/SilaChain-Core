@@ -1,18 +1,18 @@
-// Copyright 2016 The go-ethereum Authors
-// This file is part of the SilaChain library (derived from go-ethereum).
+// Copyright 2016 The SilaChain Authors
+// This file is part of the SilaChain library.
 //
-// The go-ethereum library is free software: you can redistribute it and/or modify
+// The SilaChain library is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// The go-ethereum library is distributed in the hope that it will be useful,
+// The SilaChain library is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with the go-ethereum library. If not, see <http://www.gnu.org/licenses/>.
+// along with the SilaChain library. If not, see <http://www.gnu.org/licenses/>.
 
 package ethclient
 
@@ -55,7 +55,7 @@ func TestToFilterArg(t *testing.T) {
 		},
 		{
 			// empty Addresses slice must be treated same as nil:
-			// the "address" field must be omitted so that non-Geth nodes
+			// the "address" field must be omitted so that non-SilaChain nodes
 			// (e.g. Hedera) do not reject the request with an error.
 			"with empty addresses slice",
 			ethereum.FilterQuery{

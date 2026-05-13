@@ -1,20 +1,20 @@
-// Copyright 2021 The go-ethereum Authors
-// This file is part of the SilaChain library (derived from go-ethereum).
+// Copyright 2021 The SilaChain Authors
+// This file is part of the SilaChain library.
 //
-// The go-ethereum library is free software: you can redistribute it and/or modify
+// The SilaChain library is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// The go-ethereum library is distributed in the hope that it will be useful,
+// The SilaChain library is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with the go-ethereum library. If not, see <http://www.gnu.org/licenses/>.
+// along with the SilaChain library. If not, see <http://www.gnu.org/licenses/>.
 
-// Package gethclient provides an RPC client for geth-specific APIs.
+// Package gethclient provides an RPC client for SilaChain-specific APIs.
 package gethclient
 
 import (
@@ -35,7 +35,7 @@ import (
 	"github.com/sila-org/sila/rpc"
 )
 
-// Client is a wrapper around rpc.Client that implements geth-specific functionality.
+// Client is a wrapper around rpc.Client that implements SilaChain-specific functionality.
 //
 // If you want to use the standardized Ethereum RPC functionality, use ethclient.Client instead.
 type Client struct {
@@ -171,14 +171,14 @@ func (ec *Client) CallContractWithBlockOverrides(ctx context.Context, msg ethere
 	return hex, err
 }
 
-// GCStats retrieves the current garbage collection stats from a geth node.
+// GCStats retrieves the current garbage collection stats from a SilaChain node.
 func (ec *Client) GCStats(ctx context.Context) (*debug.GCStats, error) {
 	var result debug.GCStats
 	err := ec.c.CallContext(ctx, &result, "debug_gcStats")
 	return &result, err
 }
 
-// MemStats retrieves the current memory stats from a geth node.
+// MemStats retrieves the current memory stats from a SilaChain node.
 func (ec *Client) MemStats(ctx context.Context) (*runtime.MemStats, error) {
 	var result runtime.MemStats
 	err := ec.c.CallContext(ctx, &result, "debug_memStats")
@@ -192,7 +192,7 @@ func (ec *Client) SetHead(ctx context.Context, number *big.Int) error {
 	return ec.c.CallContext(ctx, nil, "debug_setHead", toBlockNumArg(number))
 }
 
-// GetNodeInfo retrieves the node info of a geth node.
+// GetNodeInfo retrieves the node info of a SilaChain node.
 func (ec *Client) GetNodeInfo(ctx context.Context) (*p2p.NodeInfo, error) {
 	var result p2p.NodeInfo
 	err := ec.c.CallContext(ctx, &result, "admin_nodeInfo")
