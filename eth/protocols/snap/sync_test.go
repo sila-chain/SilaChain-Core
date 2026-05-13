@@ -1,5 +1,5 @@
 // Copyright 2026 The SilaChain Authors
-// This file is part of the SilaChain library (derived from go-ethereum).
+// This file is part of the SilaChain library.
 //
 // The SilaChain library is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
@@ -276,7 +276,7 @@ func createAccountRequestResponse(t *testPeer, root common.Hash, origin common.H
 	}
 	// Unless we send the entire trie, we need to supply proofs
 	// Actually, we need to supply proofs either way! This seems to be an implementation
-	// quirk in go-ethereum
+	// quirk in SilaChain
 	proof := trienode.NewProofSet()
 	if err := t.accountTrie.Prove(origin[:], proof); err != nil {
 		t.logger.Error("Could not prove inexistence of origin", "origin", origin, "error", err)

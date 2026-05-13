@@ -1,5 +1,5 @@
 // Copyright 2026 The SilaChain Authors
-// This file is part of the SilaChain library (derived from go-ethereum).
+// This file is part of the SilaChain library.
 //
 // The SilaChain library is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
@@ -104,7 +104,7 @@ func (d *Downloader) concurrentFetch(queue typedQueue) error {
 	// Track the timed-out but not-yet-answered requests separately. We want to
 	// keep tracking which peers are busy (potentially overloaded), so removing
 	// all trace of a timed out request is not good. We also can't just cancel
-	// the pending request altogether as that would prevent a late response from
+	// the pending request altosilaer as that would prevent a late response from
 	// being delivered, thus never unblocking the peer.
 	stales := make(map[string]*eth.Request)
 	defer func() {

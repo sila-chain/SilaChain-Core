@@ -1,5 +1,5 @@
 // Copyright 2026 The SilaChain Authors
-// This file is part of the SilaChain library (derived from go-ethereum).
+// This file is part of the SilaChain library.
 //
 // The SilaChain library is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
@@ -34,7 +34,7 @@ import (
 // Options are the contextual parameters to execute the requested call.
 //
 // Whilst it would be possible to pass a blockchain object that aggregates all
-// these together, it would be excessively hard to test. Splitting the parts out
+// these tosilaer, it would be excessively hard to test. Splitting the parts out
 // allows testing without needing a proper live chain.
 type Options struct {
 	Config *params.ChainConfig // Chain configuration for hard fork selection

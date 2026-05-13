@@ -1,5 +1,5 @@
 // Copyright 2026 The SilaChain Authors
-// This file is part of the SilaChain library (derived from go-ethereum).
+// This file is part of the SilaChain library.
 //
 // The SilaChain library is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
@@ -53,7 +53,7 @@ type Request struct {
 	numItems int         // Number of requested items
 	data     interface{} // Data content of the request packet
 
-	Peer string    // Demultiplexer if cross-peer requests are batched together
+	Peer string    // Demultiplexer if cross-peer requests are batched tosilaer
 	Sent time.Time // Timestamp when the request was sent
 }
 

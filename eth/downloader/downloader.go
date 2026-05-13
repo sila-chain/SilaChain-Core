@@ -1,5 +1,5 @@
 // Copyright 2026 The SilaChain Authors
-// This file is part of the SilaChain library (derived from go-ethereum).
+// This file is part of the SilaChain library.
 //
 // The SilaChain library is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
@@ -156,7 +156,7 @@ type Downloader struct {
 	chainInsertHook  func([]*fetchResult)  // Method to call upon inserting a chain of blocks (possibly in multiple invocations)
 
 	// Progress reporting metrics
-	syncStartBlock uint64    // Head snap block when Geth was started
+	syncStartBlock uint64    // Head snap block when Sila was started
 	syncStartTime  time.Time // Time instance when chain sync started
 	syncLogTime    time.Time // Time instance when status was last reported
 }
@@ -572,7 +572,7 @@ func (d *Downloader) syncToHead() (err error) {
 			log.Info("Truncated excess ancient chain segment", "oldhead", frozen-1, "newhead", origin)
 		}
 	}
-	// Skip ancient chain segments if Geth is running with a configured chain cutoff.
+	// Skip ancient chain segments if Sila is running with a configured chain cutoff.
 	// These segments are not guaranteed to be available in the network.
 	chainOffset := origin + 1
 	if mode == ethconfig.SnapSync && d.chainCutoffNumber != 0 {
@@ -864,7 +864,7 @@ func (d *Downloader) importBlockResults(results []*fetchResult) error {
 		} else {
 			// The InsertChain method in blockchain.go will sometimes return an out-of-bounds index,
 			// when it needs to preprocess blocks to import a sidechain.
-			// The importer will put together a new list of blocks to import, which is a superset
+			// The importer will put tosilaer a new list of blocks to import, which is a superset
 			// of the blocks delivered from the downloader, and the indexing will be off.
 			log.Debug("Downloaded item processing failed on sidechain import", "index", index, "err", err)
 		}

@@ -1,5 +1,5 @@
 // Copyright 2026 The SilaChain Authors
-// This file is part of the SilaChain library (derived from go-ethereum).
+// This file is part of the SilaChain library.
 //
 // The SilaChain library is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
@@ -62,7 +62,7 @@ import (
 	"github.com/sila-org/sila/params"
 	"github.com/sila-org/sila/rlp"
 	"github.com/sila-org/sila/rpc"
-	gethversion "github.com/sila-org/sila/version"
+	silaversion "github.com/sila-org/sila/version"
 )
 
 const (
@@ -380,7 +380,7 @@ func makeExtraData(extra []byte) []byte {
 	if len(extra) == 0 {
 		// create default extradata
 		extra, _ = rlp.EncodeToBytes([]interface{}{
-			uint(gethversion.Major<<16 | gethversion.Minor<<8 | gethversion.Patch),
+			uint(silaversion.Major<<16 | silaversion.Minor<<8 | silaversion.Patch),
 			"sila",
 			runtime.Version(),
 			runtime.GOOS,

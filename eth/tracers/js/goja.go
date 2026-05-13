@@ -1,5 +1,5 @@
 // Copyright 2026 The SilaChain Authors
-// This file is part of the SilaChain library (derived from go-ethereum).
+// This file is part of the SilaChain library.
 //
 // The SilaChain library is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
@@ -41,7 +41,7 @@ import (
 
 var assetTracers = make(map[string]string)
 
-// init retrieves the JavaScript transaction tracers included in go-ethereum.
+// init retrieves the JavaScript transaction tracers included in SilaChain.
 func init() {
 	var err error
 	assetTracers, err = jsassets.Load()
@@ -148,7 +148,7 @@ type jsTracer struct {
 //
 // The methods `result` and `fault` are required to be present.
 // The methods `step`, `enter`, and `exit` are optional, but note that
-// `enter` and `exit` always go together.
+// `enter` and `exit` always go tosilaer.
 func newJsTracer(code string, ctx *tracers.Context, cfg json.RawMessage, chainConfig *params.ChainConfig) (*tracers.Tracer, error) {
 	vm := goja.New()
 	// By default field names are exported to JS as is, i.e. capitalized.

@@ -1,5 +1,5 @@
 // Copyright 2026 The SilaChain Authors
-// This file is part of the SilaChain library (derived from go-ethereum).
+// This file is part of the SilaChain library.
 //
 // The SilaChain library is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
@@ -133,7 +133,7 @@ type Config struct {
 	BinTrieGroupDepth int `toml:",omitempty"`
 
 	// RequiredBlocks is a set of block number -> hash mappings which must be in the
-	// canonical chain of all remote peers. Setting the option makes geth verify the
+	// canonical chain of all remote peers. Setting the option makes sila verify the
 	// presence of these blocks for every new peer connection.
 	RequiredBlocks map[uint64]common.Hash `toml:"-"`
 
@@ -223,7 +223,7 @@ type Config struct {
 // only exist on already merged networks.
 func CreateConsensusEngine(config *params.ChainConfig, db ethdb.Database) (consensus.Engine, error) {
 	if config.TerminalTotalDifficulty == nil {
-		log.Error("Geth only supports PoS networks. Please transition legacy networks using Geth v1.13.x.")
+		log.Error("Sila only supports PoS networks. Please transition legacy networks using Sila v1.13.x.")
 		return nil, errors.New("'terminalTotalDifficulty' is not set in genesis block")
 	}
 	// Wrap previously supported consensus engines into their post-merge counterpart

@@ -1,5 +1,5 @@
 // Copyright 2026 The SilaChain Authors
-// This file is part of the SilaChain library (derived from go-ethereum).
+// This file is part of the SilaChain library.
 //
 // The SilaChain library is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
@@ -71,7 +71,7 @@ var errSyncReorged = errors.New("sync reorged")
 var errSyncTrimmed = errors.New("sync trimmed")
 
 // errTerminated is returned if the sync mechanism was terminated for this run of
-// the process. This is usually the case when Geth is shutting down and some events
+// the process. This is usually the case when Sila is shutting down and some events
 // might still be propagating.
 var errTerminated = errors.New("terminated")
 
@@ -103,7 +103,7 @@ func init() {
 // The subchains use the exact same database namespace and are not disjoint from
 // each other. As such, extending one to overlap the other entails reducing the
 // second one first. This combined buffer model is used to avoid having to move
-// data on disk when two subchains are joined together.
+// data on disk when two subchains are joined tosilaer.
 type subchain struct {
 	Head uint64      // Block number of the newest header in the subchain
 	Tail uint64      // Block number of the oldest header in the subchain
@@ -271,7 +271,7 @@ func (s *skeleton) startup() {
 	for {
 		select {
 		case errc := <-s.terminate:
-			// No head was announced but Geth is shutting down
+			// No head was announced but Sila is shutting down
 			errc <- nil
 			return
 
@@ -322,7 +322,7 @@ func (s *skeleton) startup() {
 
 				default:
 					// Sync either successfully terminated or failed with an unhandled
-					// error. Abort and wait until Geth requests a termination.
+					// error. Abort and wait until Sila requests a termination.
 					errc := <-s.terminate
 					errc <- err
 					return
@@ -377,7 +377,7 @@ func (s *skeleton) linked(number uint64, hash common.Hash) bool {
 	// You can try to produce the edge case by these steps:
 	// - sync the chain
 	// - debug.setHead(`0x1`)
-	// - kill the geth process (the chain segment will be left with chain head rewound)
+	// - kill the sila process (the chain segment will be left with chain head rewound)
 	// - restart
 	if s.chain.CurrentSnapBlock() != nil {
 		linked = linked && s.chain.CurrentSnapBlock().Number.Uint64() >= number
@@ -547,7 +547,7 @@ func (s *skeleton) sync(head *types.Header) (*types.Header, error) {
 			// sync and restart with the merged subchains.
 			//
 			// If we managed to link to the existing local chain or genesis block,
-			// abort sync altogether.
+			// abort sync altosilaer.
 			linked, merged := s.processResponse(res)
 			if linked {
 				log.Debug("Beacon sync linked to local chain")
@@ -587,7 +587,7 @@ func (s *skeleton) initSync(head *types.Header) {
 				Next: head.ParentHash,
 			}
 			for len(s.progress.Subchains) > 0 {
-				// If the last chain is above the new head, delete altogether
+				// If the last chain is above the new head, delete altosilaer
 				lastchain := s.progress.Subchains[0]
 				if lastchain.Tail >= headchain.Tail {
 					log.Debug("Dropping skeleton subchain", "head", lastchain.Head, "tail", lastchain.Tail)

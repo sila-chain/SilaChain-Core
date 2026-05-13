@@ -1,5 +1,5 @@
 // Copyright 2026 The SilaChain Authors
-// This file is part of the SilaChain library (derived from go-ethereum).
+// This file is part of the SilaChain library.
 //
 // The SilaChain library is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
@@ -37,7 +37,7 @@ type syncReq struct {
 	errc chan error
 }
 
-// Syncer is an auxiliary service that allows Geth to perform full sync
+// Syncer is an auxiliary service that allows Sila to perform full sync
 // alone without consensus-layer attached. Users must specify a valid block hash
 // as the sync target.
 //
@@ -82,7 +82,7 @@ func (s *Syncer) APIs() []rpc.API {
 
 // run is the main loop that monitors sync requests from users and initiates
 // sync operations when necessary. It also checks whether the specified target
-// has been reached and shuts down Geth if requested by the user.
+// has been reached and shuts down Sila if requested by the user.
 func (s *Syncer) run() {
 	defer s.wg.Done()
 
@@ -131,7 +131,7 @@ func (s *Syncer) run() {
 			}
 			if resync {
 				if mode := s.backend.Downloader().ConfigSyncMode(); mode != ethconfig.FullSync {
-					req.errc <- fmt.Errorf("unsupported syncmode %v, please relaunch geth with --syncmode full", mode)
+					req.errc <- fmt.Errorf("unsupported syncmode %v, please relaunch sila with --syncmode full", mode)
 				} else {
 					req.errc <- s.backend.Downloader().BeaconDevSync(target)
 				}

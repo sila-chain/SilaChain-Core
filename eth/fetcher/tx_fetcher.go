@@ -1,5 +1,5 @@
 // Copyright 2026 The SilaChain Authors
-// This file is part of the SilaChain library (derived from go-ethereum).
+// This file is part of the SilaChain library.
 //
 // The SilaChain library is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
@@ -952,7 +952,7 @@ func (f *TxFetcher) rescheduleTimeout(timer *mclock.Timer, trigger chan struct{}
 
 	earliest := now
 	for _, req := range f.requests {
-		// If this request already timed out, skip it altogether
+		// If this request already timed out, skip it altosilaer
 		if req.hashes == nil {
 			continue
 		}

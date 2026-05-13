@@ -1,5 +1,5 @@
 // Copyright 2026 The SilaChain Authors
-// This file is part of the SilaChain library (derived from go-ethereum).
+// This file is part of the SilaChain library.
 //
 // The SilaChain library is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
@@ -305,7 +305,7 @@ type accountTask struct {
 	// This is a list of account hashes whose storage are already completed
 	// in this cycle. This field is newly introduced in v1.14 and will be
 	// empty if the task is resolved from legacy progress data. Furthermore,
-	// this additional field will be ignored by legacy Geth. The only side
+	// this additional field will be ignored by legacy Sila. The only side
 	// effect is that these contracts might be resynced in the new cycle,
 	// retaining the legacy behavior.
 	StorageCompleted []common.Hash `json:",omitempty"`
@@ -1400,7 +1400,7 @@ func (s *Syncer) assignTrienodeHealTasks(success chan *trienodeHealResponse, fai
 	for len(s.healer.trieTasks) > 0 || s.healer.scheduler.Pending() > 0 {
 		// If there are not enough trie tasks queued to fully assign, fill the
 		// queue from the state sync scheduler. The trie synced schedules these
-		// together with bytecodes, so we need to queue them combined.
+		// tosilaer with bytecodes, so we need to queue them combined.
 		var (
 			have = len(s.healer.trieTasks) + len(s.healer.codeTasks)
 			want = maxTrieRequestCount + maxCodeRequestCount
@@ -1528,7 +1528,7 @@ func (s *Syncer) assignBytecodeHealTasks(success chan *bytecodeHealResponse, fai
 	for len(s.healer.codeTasks) > 0 || s.healer.scheduler.Pending() > 0 {
 		// If there are not enough trie tasks queued to fully assign, fill the
 		// queue from the state sync scheduler. The trie synced schedules these
-		// together with trie nodes, so we need to queue them combined.
+		// tosilaer with trie nodes, so we need to queue them combined.
 		var (
 			have = len(s.healer.trieTasks) + len(s.healer.codeTasks)
 			want = maxTrieRequestCount + maxCodeRequestCount
