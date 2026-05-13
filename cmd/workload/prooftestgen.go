@@ -210,7 +210,7 @@ func genStorageProof(cli *client, startBlock uint64, endBlock uint64, number int
 			if tx.To() == nil {
 				continue
 			}
-			ret, err := cli.Geth.TraceTransaction(context.Background(), tx.Hash(), &tracers.TraceConfig{
+			ret, err := cli.Client.TraceTransaction(context.Background(), tx.Hash(), &tracers.TraceConfig{
 				Tracer:       &tracer,
 				TracerConfig: configBlob,
 			})
@@ -310,7 +310,7 @@ func generateProofTests(clictx *cli.Context) error {
 	for i, blockNumber := range test.BlockNumbers {
 		var hashes []common.Hash
 		for j := 0; j < len(test.Addresses[i]); j++ {
-			res, err := client.Geth.GetProof(ctx, test.Addresses[i][j], test.StorageKeys[i][j], big.NewInt(int64(blockNumber)))
+			res, err := client.Client.GetProof(ctx, test.Addresses[i][j], test.StorageKeys[i][j], big.NewInt(int64(blockNumber)))
 			if err != nil {
 				log.Error("Failed to prove the state", "number", blockNumber, "address", test.Addresses[i][j], "slots", len(test.StorageKeys[i][j]), "err", err)
 				continue

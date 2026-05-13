@@ -89,7 +89,7 @@ func (s *traceTestSuite) traceBlock(t *utesting.T) {
 
 	for i, hash := range s.tests.BlockHashes {
 		config := s.tests.TraceConfigs[i]
-		result, err := s.cfg.client.Geth.TraceBlock(ctx, hash, &config)
+		result, err := s.cfg.client.Client.TraceBlock(ctx, hash, &config)
 		if err != nil {
 			t.Fatalf("Transaction %d (hash %v): error %v", i, hash, err)
 		}

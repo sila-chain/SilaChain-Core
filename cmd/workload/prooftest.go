@@ -87,7 +87,7 @@ func (s *proofTestSuite) getProof(t *utesting.T) {
 	ctx := context.Background()
 	for i, blockNumber := range s.tests.BlockNumbers {
 		for j := 0; j < len(s.tests.Addresses[i]); j++ {
-			res, err := s.cfg.client.Geth.GetProof(ctx, s.tests.Addresses[i][j], s.tests.StorageKeys[i][j], big.NewInt(int64(blockNumber)))
+			res, err := s.cfg.client.Client.GetProof(ctx, s.tests.Addresses[i][j], s.tests.StorageKeys[i][j], big.NewInt(int64(blockNumber)))
 			if err != nil {
 				t.Errorf("State proving fails, blockNumber: %d, address: %x, keys: %v, err: %v\n", blockNumber, s.tests.Addresses[i][j], strings.Join(s.tests.StorageKeys[i][j], " "), err)
 				continue

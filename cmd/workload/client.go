@@ -30,9 +30,9 @@ import (
 )
 
 type client struct {
-	Eth  *ethclient.Client
-	Geth *gethclient.Client
-	RPC  *rpc.Client
+	Eth    *ethclient.Client
+	Client *gethclient.Client
+	RPC    *rpc.Client
 }
 
 func makeClient(ctx *cli.Context) *client {
@@ -45,9 +45,9 @@ func makeClient(ctx *cli.Context) *client {
 		exit(fmt.Errorf("could not create RPC client at %s: %v", url, err))
 	}
 	return &client{
-		RPC:  cl,
-		Eth:  ethclient.NewClient(cl),
-		Geth: gethclient.New(cl),
+		RPC:    cl,
+		Eth:    ethclient.NewClient(cl),
+		Client: gethclient.New(cl),
 	}
 }
 
