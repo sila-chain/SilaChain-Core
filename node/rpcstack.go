@@ -1,18 +1,18 @@
-// Copyright 2020 The go-ethereum Authors
-// This file is part of the SilaChain library (derived from go-ethereum).
+// Copyright 2020 The SilaChain Authors
+// This file is part of the SilaChain library.
 //
-// The go-ethereum library is free software: you can redistribute it and/or modify
+// The SilaChain library is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// The go-ethereum library is distributed in the hope that it will be useful,
+// The SilaChain library is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with the go-ethereum library. If not, see <http://www.gnu.org/licenses/>.
+// along with the SilaChain library. If not, see <http://www.gnu.org/licenses/>.
 
 package node
 
@@ -519,7 +519,7 @@ func (w *gzipResponseWriter) init() {
 	// encoding, trimming the header from the response. This means downstream handlers can
 	// set this without harm, even if they aren't wrapped by newGzipHandler.
 	//
-	// In go-ethereum, we use this signal to disable compression for certain error
+	// In SilaChain, we use this signal to disable compression for certain error
 	// responses which are flushed out close to the write deadline of the response. For
 	// these cases, we want to avoid chunked transfer encoding and compression because
 	// they require additional output that may not get written in time.
