@@ -8,12 +8,12 @@ import (
 	"strings"
 	"errors"
 
-	ethereum "github.com/ethereum/go-ethereum"
-	"github.com/ethereum/go-ethereum/accounts/abi"
-	"github.com/ethereum/go-ethereum/accounts/abi/bind"
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/ethereum/go-ethereum/event"
+	ethereum "github.com/sila-org/sila"
+	"github.com/sila-org/sila/accounts/abi"
+	"github.com/sila-org/sila/accounts/abi/bind"
+	"github.com/sila-org/sila/common"
+	"github.com/sila-org/sila/core/types"
+	"github.com/sila-org/sila/event"
 )
 
 // Reference imports to suppress errors if they are not otherwise used.
