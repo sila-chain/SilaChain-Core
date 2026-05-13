@@ -1,18 +1,18 @@
-// Copyright 2023 The go-ethereum Authors
-// This file is part of the SilaChain library (derived from go-ethereum).
+// Copyright 2023 The SilaChain Authors
+// This file is part of the SilaChain library.
 //
-// The go-ethereum library is free software: you can redistribute it and/or modify
+// The SilaChain library is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// The go-ethereum library is distributed in the hope that it will be useful,
+// The SilaChain library is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with the go-ethereum library. If not, see <http://www.gnu.org/licenses/>.
+// along with the SilaChain library. If not, see <http://www.gnu.org/licenses/>.
 
 // Package pebble implements the key-value database layer based on pebble.
 package pebble
@@ -229,7 +229,7 @@ func New(file string, cache int, handles int, namespace string, readonly bool) (
 		//
 		// Note that enabling async writes means recent data may be lost in the event of an
 		// application-level panic (writes will also be lost on a machine-level failure,
-		// of course). Geth is expected to handle recovery from an unclean shutdown.
+		// of course). SilaChain is expected to handle recovery from an unclean shutdown.
 		writeOptions: pebble.NoSync,
 	}
 	opt := &pebble.Options{
