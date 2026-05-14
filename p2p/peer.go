@@ -412,7 +412,7 @@ func decodeDisconnectMessage(r io.Reader) (reason DiscReason) {
 		s.List()
 		err = s.Decode(&reason)
 	} else {
-		// Legacy path: some implementations, including geth, used to send the disconnect
+		// Legacy path: some implementations used to send the disconnect
 		// reason as a byte array by accident.
 		err = s.Decode(&reason)
 	}
