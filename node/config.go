@@ -321,7 +321,7 @@ func (c *Config) NodeName() string {
 	if name == "sila" {
 		name = "Sila"
 	}
-	// Backwards compatibility: previous versions used legacy geth names, keep that.
+	// Backwards compatibility: previous versions used legacy client names, keep that.
 	if name == "geth" || name == "geth-testnet" {
 		name = "Sila"
 	}
@@ -365,7 +365,7 @@ func (c *Config) ResolvePath(path string) string {
 		return ""
 	}
 	// Backwards-compatibility: ensure that data directory files created
-	// by legacy geth 1.4 are used if they exist.
+	// by legacy client 1.4 are used if they exist.
 	if warn, isOld := isOldGethResource[path]; isOld {
 		oldpath := ""
 		if c.name() == "sila" {
