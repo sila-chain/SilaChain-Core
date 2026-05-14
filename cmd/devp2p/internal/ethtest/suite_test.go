@@ -1,18 +1,18 @@
-// Copyright 2021 The go-ethereum Authors
-// This file is part of go-ethereum.
+// Copyright 2021 The SilaChain Authors
+// This file is part of SilaChain.
 //
-// go-ethereum is free software: you can redistribute it and/or modify
+// SilaChain is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// go-ethereum is distributed in the hope that it will be useful,
+// SilaChain is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with go-ethereum. If not, see <http://www.gnu.org/licenses/>.
+// along with SilaChain. If not, see <http://www.gnu.org/licenses/>.
 
 package ethtest
 
@@ -51,13 +51,13 @@ func TestEthSuite(t *testing.T) {
 	if err != nil {
 		t.Fatalf("could not make jwt secret: %v", err)
 	}
-	geth, err := runGeth("./testdata", jwtPath)
+	sila, err := runSila("./testdata", jwtPath)
 	if err != nil {
-		t.Fatalf("could not run geth: %v", err)
+		t.Fatalf("could not run sila: %v", err)
 	}
-	defer geth.Close()
+	defer sila.Close()
 
-	suite, err := NewSuite(geth.Server().Self(), "./testdata", geth.HTTPAuthEndpoint(), common.Bytes2Hex(secret[:]))
+	suite, err := NewSuite(sila.Server().Self(), "./testdata", sila.HTTPAuthEndpoint(), common.Bytes2Hex(secret[:]))
 	if err != nil {
 		t.Fatalf("could not create new test suite: %v", err)
 	}
@@ -79,13 +79,13 @@ func TestSnapSuite(t *testing.T) {
 	if err != nil {
 		t.Fatalf("could not make jwt secret: %v", err)
 	}
-	geth, err := runGeth("./testdata", jwtPath)
+	sila, err := runSila("./testdata", jwtPath)
 	if err != nil {
-		t.Fatalf("could not run geth: %v", err)
+		t.Fatalf("could not run sila: %v", err)
 	}
-	defer geth.Close()
+	defer sila.Close()
 
-	suite, err := NewSuite(geth.Server().Self(), "./testdata", geth.HTTPAuthEndpoint(), common.Bytes2Hex(secret[:]))
+	suite, err := NewSuite(sila.Server().Self(), "./testdata", sila.HTTPAuthEndpoint(), common.Bytes2Hex(secret[:]))
 	if err != nil {
 		t.Fatalf("could not create new test suite: %v", err)
 	}
@@ -99,8 +99,8 @@ func TestSnapSuite(t *testing.T) {
 	}
 }
 
-// runGeth creates and starts a geth node
-func runGeth(dir string, jwtPath string) (*node.Node, error) {
+// runSila creates and starts a SilaChain node
+func runSila(dir string, jwtPath string) (*node.Node, error) {
 	stack, err := node.New(&node.Config{
 		AuthAddr: "127.0.0.1",
 		AuthPort: 0,
