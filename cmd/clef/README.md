@@ -158,7 +158,7 @@ The client is responsible for creating a backup of the keystore. If the keystore
 None
 
 #### Result
-  - address [string]: account address that is derived from the generated key
+  - address [string]: SilaChain account address generated from the key
 
 #### Sample call
 ```json
@@ -189,7 +189,7 @@ None
 
 #### Result
   - array with account records:
-     - account.address [string]: account address that is derived from the generated key
+     - account.address [string]: SilaChain account address generated from the key
 
 #### Sample call
 ```json

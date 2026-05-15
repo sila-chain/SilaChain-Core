@@ -1,6 +1,6 @@
-﻿# SilaChain
+# SilaChain
 
-Golang execution layer implementation of the SilaChain protocol, derived from Ethereum architecture.
+Golang execution layer implementation of the SilaChain protocol.
 
 [![API Reference](https://pkg.go.dev/badge/github.com/sila-org/sila.svg)](https://pkg.go.dev/github.com/sila-org/sila?tab=doc)
 [![Go Report Card](https://goreportcard.com/badge/github.com/sila-org/sila)](https://goreportcard.com/report/github.com/sila-org/sila)
