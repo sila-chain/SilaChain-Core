@@ -2,7 +2,7 @@
 // This file is part of the SilaChain library.
 //
 
-package silaexec
+package main
 
 import (
 	"github.com/sila-org/sila/beacon/blsync"

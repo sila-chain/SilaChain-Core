@@ -22,7 +22,6 @@ import (
 	"runtime"
 	"strings"
 
-	"github.com/sila-org/sila/internal/silaexec"
 	"github.com/sila-org/sila/internal/version"
 	"github.com/urfave/cli/v2"
 )
@@ -48,7 +47,7 @@ The output of this command is supposed to be machine-readable.
 func printVersion(ctx *cli.Context) error {
 	git, _ := version.VCS()
 
-	fmt.Println(strings.Title(silaexec.ClientIdentifier()))
+	fmt.Println(strings.Title(ClientIdentifier()))
 	fmt.Println("Version:", version.WithMeta)
 	if git.Commit != "" {
 		fmt.Println("Git Commit:", git.Commit)

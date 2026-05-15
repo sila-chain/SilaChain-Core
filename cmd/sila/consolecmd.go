@@ -23,7 +23,6 @@ import (
 
 	"github.com/sila-org/sila/cmd/utils"
 	"github.com/sila-org/sila/console"
-	"github.com/sila-org/sila/internal/silaexec"
 	"github.com/urfave/cli/v2"
 )
 
@@ -116,7 +115,7 @@ func remoteConsole(ctx *cli.Context) error {
 	}
 	endpoint := ctx.Args().First()
 	if endpoint == "" {
-		cfg := silaexec.DefaultNodeConfig()
+		cfg := DefaultNodeConfig()
 		utils.SetDataDir(ctx, &cfg)
 		endpoint = cfg.IPCEndpoint()
 	}

@@ -2,7 +2,7 @@
 // This file is part of the SilaChain library.
 //
 
-package silaexec
+package main
 
 import (
 	bparams "github.com/sila-org/sila/beacon/params"

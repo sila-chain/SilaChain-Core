@@ -15,7 +15,6 @@ import (
 	"github.com/sila-org/sila/console/prompt"
 	"github.com/sila-org/sila/internal/debug"
 	"github.com/sila-org/sila/internal/flags"
-	"github.com/sila-org/sila/internal/silaexec"
 	"github.com/sila-org/sila/node"
 	"github.com/urfave/cli/v2"
 	"go.uber.org/automaxprocs/maxprocs"
@@ -221,7 +220,7 @@ func newConfiguredSilaApp(cfg silaAppConfig) *cli.App {
 }
 
 func initSilaApp(app *cli.App, cfg silaAppConfig) {
-	silaexec.SetClientIdentifier(cfg.ClientIdentifier)
+	SetClientIdentifier(cfg.ClientIdentifier)
 
 	app.Action = runSilaCommand
 	app.Commands = []*cli.Command{
@@ -289,11 +288,11 @@ func runSilaCommand(ctx *cli.Context) error {
 }
 
 func prepare(ctx *cli.Context) {
-	silaexec.Prepare(ctx)
+	Prepare(ctx)
 }
 
 func startNode(ctx *cli.Context, stack *node.Node, isConsole bool) {
-	silaexec.StartExecutionNode(ctx, stack, isConsole)
+	StartExecutionNode(ctx, stack, isConsole)
 }
 
 func main() {

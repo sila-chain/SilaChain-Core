@@ -21,7 +21,6 @@ import (
 	"github.com/sila-org/sila/cmd/utils"
 	"github.com/sila-org/sila/crypto"
 	"github.com/sila-org/sila/internal/flags"
-	"github.com/sila-org/sila/internal/silaexec"
 	"github.com/sila-org/sila/log"
 	"github.com/sila-org/sila/node"
 	"github.com/urfave/cli/v2"
@@ -48,9 +47,9 @@ var (
 )
 
 // These settings ensure that TOML keys use the same names as Go struct fields.
-var tomlSettings = silaexec.ConfigTOMLSettings
+var tomlSettings = ConfigTOMLSettings
 
-type gethConfig = silaexec.ExecutionConfig
+type gethConfig = ExecutionConfig
 
 // makeConfigNode loads the real execution/node wiring layer.
 //
@@ -59,14 +58,14 @@ type gethConfig = silaexec.ExecutionConfig
 // execution assembly remain inside the Sila execution runtime boundary.
 
 func makeConfigNode(ctx *cli.Context) (*node.Node, gethConfig) {
-	cfg := silaexec.LoadBaseConfig(
+	cfg := LoadBaseConfig(
 		ctx,
 		ctx.String(configFileFlag.Name),
 		utils.SetNodeConfig,
 	)
-	stack := silaexec.NewNodeOrFatal(&cfg.Node)
+	stack := NewNodeOrFatal(&cfg.Node)
 	// Node doesn't by default populate account manager backends
-	if err := silaexec.SetAccountManagerBackends(stack.Config(), stack.AccountManager(), stack.KeyStoreDir()); err != nil {
+	if err := SetAccountManagerBackends(stack.Config(), stack.AccountManager(), stack.KeyStoreDir()); err != nil {
 		utils.Fatalf("Failed to set account manager backends: %v", err)
 	}
 
@@ -74,7 +73,7 @@ func makeConfigNode(ctx *cli.Context) (*node.Node, gethConfig) {
 	if ctx.IsSet(utils.EthStatsURLFlag.Name) {
 		cfg.Ethstats.URL = ctx.String(utils.EthStatsURLFlag.Name)
 	}
-	silaexec.ApplyMetricConfig(ctx, &cfg)
+	ApplyMetricConfig(ctx, &cfg)
 
 	return stack, cfg
 }
@@ -122,7 +121,7 @@ func constructDevModeBanner(ctx *cli.Context, cfg gethConfig) string {
 func makeFullNode(ctx *cli.Context) *node.Node {
 	stack, cfg := makeConfigNode(ctx)
 
-	return silaexec.BuildExecutionNode(ctx, stack, &cfg, func() {
+	return BuildExecutionNode(ctx, stack, &cfg, func() {
 		banner := constructDevModeBanner(ctx, cfg)
 		for _, line := range strings.Split(banner, "\n") {
 			log.Warn(line)

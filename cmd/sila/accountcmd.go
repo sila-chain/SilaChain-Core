@@ -27,7 +27,6 @@ import (
 	"github.com/sila-org/sila/cmd/utils"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/crypto"
-	"github.com/sila-org/sila/internal/silaexec"
 	"github.com/urfave/cli/v2"
 )
 
@@ -193,7 +192,7 @@ nodes.
 
 // makeAccountManager creates an account manager with backends
 func makeAccountManager(ctx *cli.Context) *accounts.Manager {
-	cfg := silaexec.LoadBaseConfig(
+	cfg := LoadBaseConfig(
 		ctx,
 		ctx.String(configFileFlag.Name),
 		utils.SetNodeConfig,
@@ -207,7 +206,7 @@ func makeAccountManager(ctx *cli.Context) *accounts.Manager {
 		utils.Fatalf("Can't use ephemeral directory as keystore path")
 	}
 
-	if err := silaexec.SetAccountManagerBackends(&cfg.Node, am, keydir); err != nil {
+	if err := SetAccountManagerBackends(&cfg.Node, am, keydir); err != nil {
 		utils.Fatalf("Failed to set account manager backends: %v", err)
 	}
 	return am
@@ -246,7 +245,7 @@ func readPasswordFromFile(path string) (string, bool) {
 
 // accountCreate creates a new account into the keystore defined by the CLI flags.
 func accountCreate(ctx *cli.Context) error {
-	cfg := silaexec.LoadBaseConfig(
+	cfg := LoadBaseConfig(
 		ctx,
 		ctx.String(configFileFlag.Name),
 		utils.SetNodeConfig,
