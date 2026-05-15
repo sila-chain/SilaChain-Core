@@ -40,7 +40,7 @@ jobs:
 
     - name: Run ci.go
       run: |
-        go run build/ci.go debsrc -upload ethereum/ethereum -sftp-user geth-ci -signer "Go Ethereum Linux Builder <geth-ci@ethereum.org>"
+        go run build/ci.go debsrc -upload sila/sila -sftp-user sila-ci -signer "SilaChain Linux Builder <sila-ci@sila-blockchain.org>"
       env:
         PPA_SIGNING_KEY: ${{ secrets.PPA_SIGNING_KEY }}
         PPA_SSH_KEY: ${{ secrets.PPA_SSH_KEY }}
