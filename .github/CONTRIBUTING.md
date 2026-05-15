@@ -35,6 +35,6 @@ and help.
 
 ## Configuration, dependencies, and tests
 
-Please see the [Developers' Guide](https://sila-blockchain.org/docs/developers/geth-developer/dev-guide)
+Please see the [Developers' Guide](https://sila-blockchain.org/docs/developers/sila-developer/dev-guide)
 for more details on configuring your environment, managing project dependencies
 and testing procedures.
