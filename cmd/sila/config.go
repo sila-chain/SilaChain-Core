@@ -17,12 +17,21 @@
 package main
 
 import (
+	"bufio"
+	"errors"
+	"reflect"
+	"unicode"
+
+	"github.com/naoina/toml"
+
 	"fmt"
 	bparams "github.com/sila-org/sila/beacon/params"
 	"github.com/sila-org/sila/cmd/utils"
 	"github.com/sila-org/sila/crypto"
+	"github.com/sila-org/sila/eth/ethconfig"
 	"github.com/sila-org/sila/internal/flags"
 	"github.com/sila-org/sila/log"
+	"github.com/sila-org/sila/metrics"
 	"github.com/sila-org/sila/node"
 	"github.com/urfave/cli/v2"
 	"os"
@@ -280,5 +289,128 @@ func ApplyMetricConfig(ctx *cli.Context, cfg *ExecutionConfig) {
 		} else if enableExportV2 && v1FlagIsSet {
 			utils.Fatalf("Flags --%s, --%s are only available for influxdb-v1", utils.MetricsInfluxDBUsernameFlag.Name, utils.MetricsInfluxDBPasswordFlag.Name)
 		}
+	}
+}
+
+var deprecatedConfigFields = map[string]bool{
+	"ethconfig.Config.EVMInterpreter":          true,
+	"ethconfig.Config.EWASMInterpreter":        true,
+	"ethconfig.Config.TrieCleanCacheJournal":   true,
+	"ethconfig.Config.TrieCleanCacheRejournal": true,
+	"ethconfig.Config.LightServ":               true,
+	"ethconfig.Config.LightIngress":            true,
+	"ethconfig.Config.LightEgress":             true,
+	"ethconfig.Config.LightPeers":              true,
+	"ethconfig.Config.LightNoPrune":            true,
+	"ethconfig.Config.LightNoSyncServe":        true,
+}
+
+var ConfigTOMLSettings = toml.Config{
+	NormFieldName: func(rt reflect.Type, key string) string {
+		return key
+	},
+	FieldToKey: func(rt reflect.Type, field string) string {
+		return field
+	},
+	MissingField: func(rt reflect.Type, field string) error {
+		id := fmt.Sprintf("%s.%s", rt.String(), field)
+		if deprecatedConfigFields[id] {
+			log.Warn(fmt.Sprintf("Config field '%s' is deprecated and won't have any effect.", id))
+			return nil
+		}
+		var link string
+		if unicode.IsUpper(rune(rt.Name()[0])) && rt.PkgPath() != "main" {
+			link = fmt.Sprintf(", see https://godoc.org/%s#%s for available fields", rt.PkgPath(), rt.Name())
+		}
+		return fmt.Errorf("field '%s' is not defined in %s%s", field, rt.String(), link)
+	},
+}
+
+func LoadConfig(file string, cfg any) error {
+	f, err := os.Open(file)
+	if err != nil {
+		return err
+	}
+	defer f.Close()
+
+	err = ConfigTOMLSettings.NewDecoder(bufio.NewReader(f)).Decode(cfg)
+	if _, ok := err.(*toml.LineError); ok {
+		err = errors.New(file + ", " + err.Error())
+	}
+	return err
+}
+
+func LoadConfigOrFatal(file string, cfg any) {
+	if file == "" {
+		return
+	}
+	if err := LoadConfig(file, cfg); err != nil {
+		utils.Fatalf("%v", err)
+	}
+}
+
+// EthstatsConfig represents ethstats connectivity configuration.
+type EthstatsConfig struct {
+	URL string `toml:",omitempty"`
+}
+
+// ExecutionConfig represents the shared execution runtime configuration.
+type ExecutionConfig struct {
+	Eth      ethconfig.Config
+	Node     node.Config
+	Ethstats EthstatsConfig
+	Metrics  metrics.Config
+}
+
+// DefaultExecutionConfig returns the shared execution defaults.
+func DefaultExecutionConfig() ExecutionConfig {
+	return ExecutionConfig{
+		Eth:     ethconfig.Defaults,
+		Node:    DefaultNodeConfig(),
+		Metrics: metrics.DefaultConfig,
+	}
+}
+
+// LoadBaseConfig loads the shared execution configuration.
+func LoadBaseConfig(
+	ctx *cli.Context,
+	configFile string,
+	applyNode func(*cli.Context, *node.Config),
+) ExecutionConfig {
+	cfg := DefaultExecutionConfig()
+
+	LoadConfigOrFatal(configFile, &cfg)
+
+	applyNode(ctx, &cfg.Node)
+
+	return cfg
+}
+
+// ApplyNodeConfig applies node configuration defaults.
+var ApplyNodeConfig = utils.SetNodeConfig
+
+// NewNodeOrFatal creates a node or exits on failure.
+func NewNodeOrFatal(cfg *node.Config) *node.Node {
+	stack, err := node.New(cfg)
+	if err != nil {
+		utils.Fatalf("Failed to create the protocol stack: %v", err)
+	}
+	return stack
+}
+
+// Prepare prepares the shared runtime context.
+func Prepare(ctx *cli.Context) {
+	switch {
+	case ctx.IsSet(utils.SepoliaFlag.Name):
+		log.Info("Starting Sila on Sepolia testnet...")
+
+	case ctx.IsSet(utils.HoleskyFlag.Name):
+		log.Info("Starting Sila on Holesky testnet...")
+
+	case ctx.IsSet(utils.HoodiFlag.Name):
+		log.Info("Starting Sila on Hoodi testnet...")
+
+	case !ctx.IsSet(utils.NetworkIdFlag.Name):
+		log.Info("Starting Sila on Sila mainnet...")
 	}
 }
