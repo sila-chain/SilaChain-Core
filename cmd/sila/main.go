@@ -6,12 +6,30 @@
 package main
 
 import (
+	"time"
+
 	"fmt"
+	"github.com/sila-org/sila/accounts"
+	"github.com/sila-org/sila/beacon/blsync"
+	bparams "github.com/sila-org/sila/beacon/params"
+	"github.com/sila-org/sila/common"
+	"github.com/sila-org/sila/eth"
+	"github.com/sila-org/sila/eth/catalyst"
+	"github.com/sila-org/sila/eth/downloader"
 	ethconfig "github.com/sila-org/sila/eth/ethconfig"
+	"github.com/sila-org/sila/eth/filters"
+	"github.com/sila-org/sila/ethclient"
+	ethapi "github.com/sila-org/sila/internal/ethapi"
+	"github.com/sila-org/sila/internal/telemetry/tracesetup"
 	"github.com/sila-org/sila/internal/version"
+	"github.com/sila-org/sila/log"
+	"github.com/sila-org/sila/metrics"
+	"github.com/sila-org/sila/rpc"
 	"os"
+	"runtime"
 	"slices"
 	"sort"
+	"strings"
 
 	"github.com/sila-org/sila/cmd/utils"
 	"github.com/sila-org/sila/console/prompt"
@@ -345,4 +363,212 @@ func DefaultNodeConfig() node.Config {
 	cfg.IPCPath = clientIdentifier + ".ipc"
 
 	return cfg
+}
+
+// RegisterExecutionService registers the Sila execution service.
+func RegisterExecutionService(stack *node.Node, cfg *ethconfig.Config) (*eth.EthAPIBackend, *eth.Ethereum) {
+	return utils.RegisterEthService(stack, cfg)
+}
+
+// RegisterSyncOverrideService configures synchronization override service.
+func RegisterSyncOverrideService(stack *node.Node, ethBackend *eth.Ethereum, target common.Hash, exitWhenSynced bool) {
+	utils.RegisterSyncOverrideService(stack, ethBackend, target, exitWhenSynced)
+}
+
+// RegisterEngineAPI launches the engine API for interacting with an external consensus client.
+func RegisterEngineAPI(stack *node.Node, ethBackend *eth.Ethereum) error {
+	return catalyst.Register(stack, ethBackend)
+}
+
+// ConfigureConsensusRuntime configures the execution consensus runtime.
+func ConfigureConsensusRuntime(
+	stack *node.Node,
+	ethBackend *eth.Ethereum,
+	devMode bool,
+	devPeriod uint64,
+	pendingFeeRecipient common.Address,
+	beaconMode bool,
+	beaconConfig bparams.ClientConfig,
+) error {
+	if devMode {
+		simBeacon, err := catalyst.NewSimulatedBeacon(devPeriod, pendingFeeRecipient, ethBackend)
+		if err != nil {
+			return err
+		}
+		catalyst.RegisterSimulatedBeaconAPIs(stack, simBeacon)
+		stack.RegisterLifecycle(simBeacon)
+		return nil
+	}
+
+	if beaconMode {
+		srv := rpc.NewServer()
+		srv.RegisterName("engine", catalyst.NewConsensusAPI(ethBackend))
+
+		blsyncer := blsync.NewClient(beaconConfig)
+		blsyncer.SetEngineRPC(rpc.DialInProc(srv))
+
+		stack.RegisterLifecycle(blsyncer)
+		return nil
+	}
+
+	return RegisterEngineAPI(stack, ethBackend)
+}
+
+// RegisterBuildInfoGauge creates gauge with SilaChain system and build information.
+func RegisterBuildInfoGauge(ethBackend *eth.Ethereum, version string) {
+	if ethBackend == nil {
+		return
+	}
+	var protos []string
+	for _, p := range ethBackend.Protocols() {
+		protos = append(protos, fmt.Sprintf("%v/%d", p.Name, p.Version))
+	}
+	metrics.NewRegisteredGaugeInfo("sila/info", nil).Update(metrics.GaugeInfoValue{
+		"arch":      runtime.GOARCH,
+		"os":        runtime.GOOS,
+		"version":   version,
+		"protocols": strings.Join(protos, ","),
+	})
+}
+
+// RegisterFilterAPI configures the log filter RPC API.
+func RegisterFilterAPI(stack *node.Node, backend ethapi.Backend, cfg *ethconfig.Config) *filters.FilterSystem {
+	return utils.RegisterFilterAPI(stack, backend, cfg)
+}
+
+// RegisterGraphQLService configures GraphQL if requested.
+func RegisterGraphQLService(stack *node.Node, backend ethapi.Backend, filterSystem *filters.FilterSystem, cfg *node.Config) {
+	utils.RegisterGraphQLService(stack, backend, filterSystem, cfg)
+}
+
+// RegisterEthStatsService adds the Sila stats daemon if requested.
+func RegisterEthStatsService(stack *node.Node, backend *eth.EthAPIBackend, url string) {
+	utils.RegisterEthStatsService(stack, backend, url)
+}
+
+// StartExecutionNode starts the node and shared execution runtime services.
+func StartExecutionNode(ctx *cli.Context, stack *node.Node, isConsole bool) {
+	utils.StartNode(ctx, stack, isConsole)
+
+	if ctx.IsSet(utils.UnlockedAccountFlag.Name) {
+		log.Warn(`The "unlock" flag has been deprecated and has no effect`)
+	}
+
+	startWalletLifecycle(stack)
+
+	if ctx.Bool(utils.ExitWhenSyncedFlag.Name) {
+		startSyncExitLifecycle(stack)
+	}
+}
+
+func startWalletLifecycle(stack *node.Node) {
+	events := make(chan accounts.WalletEvent, 16)
+	stack.AccountManager().Subscribe(events)
+
+	rpcClient := stack.Attach()
+	ethClient := ethclient.NewClient(rpcClient)
+
+	go func() {
+		for _, wallet := range stack.AccountManager().Wallets() {
+			if err := wallet.Open(""); err != nil {
+				log.Warn("Failed to open wallet", "url", wallet.URL(), "err", err)
+			}
+		}
+
+		for event := range events {
+			switch event.Kind {
+			case accounts.WalletArrived:
+				if err := event.Wallet.Open(""); err != nil {
+					log.Warn("New wallet appeared, failed to open", "url", event.Wallet.URL(), "err", err)
+				}
+
+			case accounts.WalletOpened:
+				status, _ := event.Wallet.Status()
+
+				log.Info(
+					"New wallet appeared",
+					"url", event.Wallet.URL(),
+					"status", status,
+				)
+
+				var derivationPaths []accounts.DerivationPath
+
+				if event.Wallet.URL().Scheme == "ledger" {
+					derivationPaths = append(
+						derivationPaths,
+						accounts.LegacyLedgerBaseDerivationPath,
+					)
+				}
+
+				derivationPaths = append(
+					derivationPaths,
+					accounts.DefaultBaseDerivationPath,
+				)
+
+				event.Wallet.SelfDerive(
+					derivationPaths,
+					ethClient,
+				)
+
+			case accounts.WalletDropped:
+				log.Info(
+					"Old wallet dropped",
+					"url", event.Wallet.URL(),
+				)
+
+				event.Wallet.Close()
+			}
+		}
+	}()
+}
+
+func startSyncExitLifecycle(stack *node.Node) {
+	go func() {
+		sub := stack.EventMux().Subscribe(downloader.DoneEvent{})
+		defer sub.Unsubscribe()
+
+		for {
+			event := <-sub.Chan()
+
+			if event == nil {
+				continue
+			}
+
+			done, ok := event.Data.(downloader.DoneEvent)
+			if !ok {
+				continue
+			}
+
+			timestamp := time.Unix(int64(done.Latest.Time), 0)
+
+			if time.Since(timestamp) < 10*time.Minute {
+				log.Info(
+					"Synchronisation completed",
+					"latestnum", done.Latest.Number,
+					"latesthash", done.Latest.Hash(),
+					"age", common.PrettyAge(timestamp),
+				)
+
+				stack.Close()
+			}
+		}
+	}()
+}
+
+// SetupTelemetry sets up OpenTelemetry reporting if enabled.
+func SetupTelemetry(cfg node.OpenTelemetryConfig, stack *node.Node) error {
+	return tracesetup.SetupTelemetry(cfg, stack)
+}
+
+// SyncTargetFromContext parses the optional sync target hash from CLI context.
+func SyncTargetFromContext(ctx *cli.Context) (common.Hash, error) {
+	var synctarget common.Hash
+	if ctx.IsSet(utils.SyncTargetFlag.Name) {
+		target := ctx.String(utils.SyncTargetFlag.Name)
+		if !common.IsHexHash(target) {
+			return common.Hash{}, fmt.Errorf("sync target hash is not a valid hex hash: %s", target)
+		}
+		synctarget = common.HexToHash(target)
+	}
+	return synctarget, nil
 }
