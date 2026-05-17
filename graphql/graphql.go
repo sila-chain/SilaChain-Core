@@ -35,6 +35,7 @@ import (
 	"github.com/sila-org/sila/core/types"
 	"github.com/sila-org/sila/eth/filters"
 	"github.com/sila-org/sila/internal/silaapi"
+	"github.com/sila-org/sila/internal/silaapi/backend"
 	"github.com/sila-org/sila/internal/silaapi/txargs"
 	"github.com/sila-org/sila/rlp"
 	"github.com/sila-org/sila/rpc"
@@ -1296,7 +1297,7 @@ func (p *Pending) EstimateGas(ctx context.Context, args struct {
 
 // Resolver is the top-level object in the GraphQL hierarchy.
 type Resolver struct {
-	backend      silaapi.Backend
+	backend      backend.Backend
 	filterSystem *filters.FilterSystem
 }
 
