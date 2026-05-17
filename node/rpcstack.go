@@ -648,6 +648,19 @@ func isLegacyCompatibilityNamespace(namespace string) bool {
 	}
 }
 
+func filterLegacyCompatibilityAPIs(apis []rpc.API, exposeLegacy bool) []rpc.API {
+	if exposeLegacy {
+		return apis
+	}
+	filtered := make([]rpc.API, 0, len(apis))
+	for _, api := range apis {
+		if !isLegacyCompatibilityNamespace(api.Namespace) {
+			filtered = append(filtered, api)
+		}
+	}
+	return filtered
+}
+
 func RegisterApis(apis []rpc.API, modules []string, srv *rpc.Server) error {
 	if bad, available := checkModuleAvailability(modules, apis); len(bad) > 0 {
 		log.Error("Unavailable modules in HTTP API list", "unavailable", bad, "available", available)
