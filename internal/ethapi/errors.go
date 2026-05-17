@@ -30,6 +30,11 @@ type txSyncTimeoutError struct {
 	hash common.Hash
 }
 
+// NewTxIndexingError creates a TxIndexingError instance.
+func NewTxIndexingError() *ethapierrors.TxIndexingError {
+	return ethapierrors.NewTxIndexingError()
+}
+
 type callError struct {
 	Message string `json:"message"`
 	Code    int    `json:"code"`
