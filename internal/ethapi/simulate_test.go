@@ -22,7 +22,7 @@ import (
 
 	"github.com/sila-org/sila/common/hexutil"
 	"github.com/sila-org/sila/core/types"
-	"github.com/sila-org/sila/internal/ethapi/override"
+	"github.com/sila-org/sila/internal/silaapi/override"
 )
 
 func TestSimulateSanitizeBlockOrder(t *testing.T) {

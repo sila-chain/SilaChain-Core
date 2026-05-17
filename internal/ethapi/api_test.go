@@ -54,7 +54,7 @@ import (
 	"github.com/sila-org/sila/ethdb"
 	"github.com/sila-org/sila/event"
 	"github.com/sila-org/sila/internal/blocktest"
-	"github.com/sila-org/sila/internal/ethapi/override"
+	"github.com/sila-org/sila/internal/silaapi/override"
 	"github.com/sila-org/sila/params"
 	"github.com/sila-org/sila/rpc"
 	"github.com/stretchr/testify/require"
