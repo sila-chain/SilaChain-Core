@@ -1330,6 +1330,7 @@ func setHTTP(ctx *cli.Context, cfg *node.Config) {
 
 	if ctx.IsSet(HTTPApiFlag.Name) {
 		cfg.HTTPModules = SplitAndTrim(ctx.String(HTTPApiFlag.Name))
+		cfg.ExposeLegacyRPC = hasLegacyCompatibilityModule(cfg.HTTPModules)
 	}
 
 	if ctx.IsSet(HTTPVirtualHostsFlag.Name) {
@@ -1384,11 +1385,22 @@ func setWS(ctx *cli.Context, cfg *node.Config) {
 
 	if ctx.IsSet(WSApiFlag.Name) {
 		cfg.WSModules = SplitAndTrim(ctx.String(WSApiFlag.Name))
+		cfg.ExposeLegacyRPC = hasLegacyCompatibilityModule(cfg.WSModules)
 	}
 
 	if ctx.IsSet(WSPathPrefixFlag.Name) {
 		cfg.WSPathPrefix = ctx.String(WSPathPrefixFlag.Name)
 	}
+}
+
+func hasLegacyCompatibilityModule(modules []string) bool {
+	for _, module := range modules {
+		switch module {
+		case "eth", "net", "web3", "engine":
+			return true
+		}
+	}
+	return false
 }
 
 // setIPC creates an IPC path configuration from the set command line flags,
