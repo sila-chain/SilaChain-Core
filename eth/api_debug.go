@@ -30,7 +30,7 @@ import (
 	"github.com/sila-org/sila/core/stateless"
 	"github.com/sila-org/sila/core/types"
 	"github.com/sila-org/sila/crypto"
-	silaapi "github.com/sila-org/sila/internal/ethapi"
+	"github.com/sila-org/sila/internal/silaapi"
 	"github.com/sila-org/sila/log"
 	"github.com/sila-org/sila/rlp"
 	"github.com/sila-org/sila/rpc"
