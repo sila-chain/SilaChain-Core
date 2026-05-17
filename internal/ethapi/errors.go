@@ -92,6 +92,14 @@ func txValidationError(err error) *ethapierrors.InvalidTxError {
 	}
 }
 
-func (e *txSyncTimeoutError) Error() string          { return e.msg }
-func (e *txSyncTimeoutError) ErrorCode() int         { return errCodeTxSyncTimeout }
-func (e *txSyncTimeoutError) ErrorData() interface{} { return e.hash.Hex() }
+func (e *txSyncTimeoutError) Error() string {
+	return e.msg
+}
+
+func (e *txSyncTimeoutError) ErrorCode() int {
+	return errCodeTxSyncTimeout
+}
+
+func (e *txSyncTimeoutError) ErrorData() interface{} {
+	return e.hash.Hex()
+}

@@ -7,6 +7,7 @@ import (
 	"fmt"
 
 	"github.com/sila-org/sila/accounts/abi"
+	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/common/hexutil"
 	"github.com/sila-org/sila/core/vm"
 )
@@ -94,10 +95,28 @@ func (e *TxIndexingError) Error() string {
 }
 
 // ErrorCode returns the JSON error code for a revert.
-// See: JSON-RPC error codes
 func (e *TxIndexingError) ErrorCode() int {
-	return -32000 // to be decided
+	return -32000
 }
 
 // ErrorData returns the hex encoded revert reason.
-func (e *TxIndexingError) ErrorData() interface{} { return "transaction indexing is in progress" }
+func (e *TxIndexingError) ErrorData() interface{} {
+	return "transaction indexing is in progress"
+}
+
+type TxSyncTimeoutError struct {
+	Message string
+	Hash    common.Hash
+}
+
+func (e *TxSyncTimeoutError) Error() string {
+	return e.Message
+}
+
+func (e *TxSyncTimeoutError) ErrorCode() int {
+	return 4
+}
+
+func (e *TxSyncTimeoutError) ErrorData() interface{} {
+	return e.Hash.Hex()
+}
