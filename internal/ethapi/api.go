@@ -41,7 +41,7 @@ import (
 	"github.com/sila-org/sila/crypto"
 	"github.com/sila-org/sila/eth/gasestimator"
 	"github.com/sila-org/sila/eth/tracers/logger"
-	"github.com/sila-org/sila/internal/ethapi/override"
+	"github.com/sila-org/sila/internal/silaapi/override"
 	"github.com/sila-org/sila/log"
 	"github.com/sila-org/sila/p2p"
 	"github.com/sila-org/sila/params"
