@@ -130,6 +130,10 @@ type Config struct {
 	// exposed.
 	HTTPModules []string
 
+	// ExposeLegacyRPC keeps legacy Ethereum compatibility namespaces enabled
+	// for IPC/in-process/internal compatibility layers.
+	ExposeLegacyRPC bool
+
 	// HTTPTimeouts allows for customization of the timeout values used by the HTTP RPC
 	// interface.
 	HTTPTimeouts rpc.HTTPTimeouts
