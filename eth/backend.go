@@ -50,7 +50,7 @@ import (
 	"github.com/sila-org/sila/eth/tracers"
 	"github.com/sila-org/sila/ethdb"
 	"github.com/sila-org/sila/event"
-	"github.com/sila-org/sila/internal/ethapi"
+	silaapi "github.com/sila-org/sila/internal/ethapi"
 	"github.com/sila-org/sila/internal/shutdowncheck"
 	"github.com/sila-org/sila/internal/version"
 	"github.com/sila-org/sila/log"
@@ -118,7 +118,7 @@ type Ethereum struct {
 	gasPrice *big.Int
 
 	networkID     uint64
-	netRPCService *ethapi.NetAPI
+	netRPCService *silaapi.NetAPI
 
 	p2pServer *p2p.Server
 
@@ -363,7 +363,7 @@ func New(stack *node.Node, config *ethconfig.Config) (*Ethereum, error) {
 	eth.APIBackend.gpo = gasprice.NewOracle(eth.APIBackend, config.GPO, config.Miner.GasPrice)
 
 	// Start the RPC service
-	eth.netRPCService = ethapi.NewNetAPI(eth.p2pServer, networkID)
+	eth.netRPCService = silaapi.NewNetAPI(eth.p2pServer, networkID)
 
 	// Register the backend on the node
 	stack.RegisterAPIs(eth.APIs())
@@ -396,7 +396,7 @@ func makeExtraData(extra []byte) []byte {
 // APIs return the collection of RPC services the ethereum package offers.
 // NOTE, some of these services probably need to be moved to somewhere else.
 func (s *Ethereum) APIs() []rpc.API {
-	apis := ethapi.GetAPIs(s.APIBackend)
+	apis := silaapi.GetAPIs(s.APIBackend)
 
 	// Append all the local APIs and return
 	return append(apis, []rpc.API{
