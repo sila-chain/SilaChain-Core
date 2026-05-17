@@ -50,6 +50,7 @@ var (
 	DefaultAuthVhosts        = []string{"localhost"} // Default virtual hosts for the authenticated apis
 	DefaultAuthOrigins       = []string{"localhost"} // Default origins for the authenticated apis
 	DefaultAuthPrefix        = ""                    // Default prefix for the authenticated apis
+	DefaultAuthModules       = []string{"sila", "silaEngine"}
 	DefaultLegacyAuthModules = []string{"eth", "engine"}
 )
 
