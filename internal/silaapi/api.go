@@ -6,7 +6,6 @@ package silaapi
 import ethapi "github.com/sila-org/sila/internal/ethapi"
 
 type Backend = ethapi.Backend
-type TransactionArgs = ethapi.TransactionArgs
 type NetAPI = ethapi.NetAPI
 
 var GetAPIs = ethapi.GetAPIs
