@@ -1330,7 +1330,6 @@ func setHTTP(ctx *cli.Context, cfg *node.Config) {
 
 	if ctx.IsSet(HTTPApiFlag.Name) {
 		cfg.HTTPModules = SplitAndTrim(ctx.String(HTTPApiFlag.Name))
-		cfg.ExposeLegacyRPC = hasLegacyCompatibilityModule(cfg.HTTPModules)
 	}
 
 	if ctx.IsSet(HTTPVirtualHostsFlag.Name) {
@@ -1385,7 +1384,6 @@ func setWS(ctx *cli.Context, cfg *node.Config) {
 
 	if ctx.IsSet(WSApiFlag.Name) {
 		cfg.WSModules = SplitAndTrim(ctx.String(WSApiFlag.Name))
-		cfg.ExposeLegacyRPC = hasLegacyCompatibilityModule(cfg.WSModules)
 	}
 
 	if ctx.IsSet(WSPathPrefixFlag.Name) {

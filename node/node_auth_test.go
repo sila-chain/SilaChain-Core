@@ -104,14 +104,13 @@ func TestAuthEndpoints(t *testing.T) {
 	}
 	// We get ports assigned by the node automatically
 	conf := &Config{
-		HTTPHost:        "127.0.0.1",
-		HTTPPort:        0,
-		WSHost:          "127.0.0.1",
-		WSPort:          0,
-		AuthAddr:        "127.0.0.1",
-		AuthPort:        0,
-		JWTSecret:       jwtPath,
-		ExposeLegacyRPC: true,
+		HTTPHost:  "127.0.0.1",
+		HTTPPort:  0,
+		WSHost:    "127.0.0.1",
+		WSPort:    0,
+		AuthAddr:  "127.0.0.1",
+		AuthPort:  0,
+		JWTSecret: jwtPath,
 
 		WSModules:   []string{"eth", "engine"},
 		HTTPModules: []string{"eth", "engine"},
@@ -209,14 +208,13 @@ func TestSilaAuthEndpoints(t *testing.T) {
 	}
 
 	conf := &Config{
-		HTTPHost:        "127.0.0.1",
-		HTTPPort:        0,
-		WSHost:          "127.0.0.1",
-		WSPort:          0,
-		AuthAddr:        "127.0.0.1",
-		AuthPort:        0,
-		JWTSecret:       jwtPath,
-		ExposeLegacyRPC: false,
+		HTTPHost:  "127.0.0.1",
+		HTTPPort:  0,
+		WSHost:    "127.0.0.1",
+		WSPort:    0,
+		AuthAddr:  "127.0.0.1",
+		AuthPort:  0,
+		JWTSecret: jwtPath,
 
 		WSModules:   []string{"sila", "silaEngine"},
 		HTTPModules: []string{"sila", "silaEngine"},
