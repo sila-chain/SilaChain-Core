@@ -444,9 +444,6 @@ func (n *Node) startRPC() error {
 			httpBodyLimit:          engineAPIBodyLimit,
 		}
 		authModules := DefaultAuthModules
-		if n.config.ExposeLegacyRPC {
-			authModules = DefaultLegacyAuthModules
-		}
 
 		err := server.enableRPC(allAPIs, httpConfig{
 			CorsAllowedOrigins: DefaultAuthCors,
