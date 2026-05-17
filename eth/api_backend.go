@@ -44,7 +44,7 @@ import (
 	"github.com/sila-org/sila/rpc"
 )
 
-// EthAPIBackend implements silaapi.Backend and tracers.Backend for full nodes
+// EthAPIBackend implements backend.Backend and tracers.Backend for full nodes
 type EthAPIBackend struct {
 	extRPCEnabled       bool
 	allowUnprotectedTxs bool
