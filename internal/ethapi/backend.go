@@ -19,6 +19,7 @@ package ethapi
 
 import (
 	"context"
+	"github.com/sila-org/sila/internal/silaapi/addrlock"
 	"math/big"
 	"time"
 
@@ -104,7 +105,7 @@ type Backend interface {
 }
 
 func GetAPIs(apiBackend Backend) []rpc.API {
-	nonceLock := new(AddrLocker)
+	nonceLock := new(addrlock.AddrLocker)
 	return []rpc.API{
 		{
 			Namespace: "eth",

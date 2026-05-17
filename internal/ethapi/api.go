@@ -21,6 +21,7 @@ import (
 	"encoding/hex"
 	"errors"
 	"fmt"
+	"github.com/sila-org/sila/internal/silaapi/addrlock"
 	gomath "math"
 	"math/big"
 	"strings"
@@ -1409,12 +1410,12 @@ func AccessList(ctx context.Context, b Backend, blockNrOrHash rpc.BlockNumberOrH
 // TransactionAPI exposes methods for reading and creating transaction data.
 type TransactionAPI struct {
 	b         Backend
-	nonceLock *AddrLocker
+	nonceLock *addrlock.AddrLocker
 	signer    types.Signer
 }
 
 // NewTransactionAPI creates a new RPC service with methods for interacting with transactions.
-func NewTransactionAPI(b Backend, nonceLock *AddrLocker) *TransactionAPI {
+func NewTransactionAPI(b Backend, nonceLock *addrlock.AddrLocker) *TransactionAPI {
 	// The signer used by the API should always be the 'latest' known one because we expect
 	// signers to be backwards-compatible with old transactions.
 	signer := types.LatestSigner(b.ChainConfig())

@@ -24,6 +24,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/sila-org/sila/internal/silaapi/addrlock"
 	"math/big"
 	"os"
 	"path/filepath"
@@ -3617,7 +3618,7 @@ func TestRPCGetTransactionReceipt(t *testing.T) {
 
 	var (
 		backend, txHashes = setupReceiptBackend(t, 6)
-		api               = NewTransactionAPI(backend, new(AddrLocker))
+		api               = NewTransactionAPI(backend, new(addrlock.AddrLocker))
 	)
 
 	var testSuite = []struct {
@@ -4051,7 +4052,7 @@ func TestSendRawTransactionSync_Success(t *testing.T) {
 	b := newTestBackend(t, 0, genesis, ethash.NewFaker(), nil)
 	b.autoMine = true // immediately “mines” the tx in-memory
 
-	api := NewTransactionAPI(b, new(AddrLocker))
+	api := NewTransactionAPI(b, new(addrlock.AddrLocker))
 
 	raw, _ := makeSelfSignedRaw(t, api, b.acc.Address)
 
@@ -4077,7 +4078,7 @@ func TestSendRawTransactionSync_Timeout(t *testing.T) {
 	b := newTestBackend(t, 0, genesis, ethash.NewFaker(), nil)
 	b.autoMine = false // don't mine, should time out
 
-	api := NewTransactionAPI(b, new(AddrLocker))
+	api := NewTransactionAPI(b, new(addrlock.AddrLocker))
 
 	raw, _ := makeSelfSignedRaw(t, api, b.acc.Address)
 
