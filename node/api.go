@@ -44,6 +44,7 @@ func (n *Node) apis() []rpc.API {
 			Namespace: "debug",
 			Service:   &p2pDebugAPI{n},
 		}, {
+			// Legacy compatibility namespace. Public HTTP/WS defaults use "silaWeb3".
 			Namespace: "web3",
 			Service:   &web3API{n},
 		}, {
