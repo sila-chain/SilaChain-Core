@@ -26,7 +26,10 @@ import (
 	"testing"
 	"time"
 
+	"context"
+
 	"github.com/sila-org/sila/internal/version"
+	"github.com/sila-org/sila/rpc"
 )
 
 const (
@@ -116,9 +119,55 @@ func TestAttachWelcome(t *testing.T) {
 		waitForEndpoint(t, endpoint, 2*time.Minute)
 		testAttachWelcome(t, sila, endpoint, httpAPIs)
 	})
-	sila.Kill()
 }
 
+func TestSilaOnlyRPCModules(t *testing.T) {
+	t.Parallel()
+
+	var ipc string
+	if runtime.GOOS == "windows" {
+		ipc = `\\.\pipe\sila` + strconv.Itoa(trulyRandInt(100000, 999999))
+	} else {
+		ipc = filepath.Join(t.TempDir(), "sila.ipc")
+	}
+
+	sila := runMinimalSila(t,
+		"--ipcpath", ipc,
+		"--http",
+		"--http.api", "sila,silaNet,silaWeb3",
+		"--ws",
+		"--ws.api", "sila,silaNet,silaWeb3",
+	)
+	defer sila.Kill()
+
+	waitForEndpoint(t, ipc, 2*time.Minute)
+
+	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+	defer cancel()
+
+	client, err := rpc.DialContext(ctx, ipc)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer client.Close()
+
+	modules := make(map[string]string)
+	if err := client.CallContext(ctx, &modules, "rpc_modules"); err != nil {
+		t.Fatal(err)
+	}
+
+	for _, namespace := range []string{"sila", "silaEngine", "silaNet", "silaWeb3"} {
+		if modules[namespace] != "1.0" {
+			t.Fatalf("missing Sila namespace %q in modules: %v", namespace, modules)
+		}
+	}
+
+	for _, namespace := range []string{"eth", "net", "web3", "engine"} {
+		if _, ok := modules[namespace]; ok {
+			t.Fatalf("legacy namespace %q exposed in Sila-only modules: %v", namespace, modules)
+		}
+	}
+}
 func testAttachWelcome(t *testing.T, sila *testSila, endpoint, apis string) {
 	// Attach to a running sila node and terminate immediately
 	attach := runSila(t, "attach", endpoint)
