@@ -51,8 +51,8 @@ import (
 	"github.com/sila-org/sila/ethdb"
 	"github.com/sila-org/sila/event"
 	"github.com/sila-org/sila/internal/shutdowncheck"
-	"github.com/sila-org/sila/internal/silaapi"
 	"github.com/sila-org/sila/internal/silaapi/netapi"
+	"github.com/sila-org/sila/internal/silaapi/registry"
 	"github.com/sila-org/sila/internal/version"
 	"github.com/sila-org/sila/log"
 	"github.com/sila-org/sila/miner"
@@ -397,7 +397,7 @@ func makeExtraData(extra []byte) []byte {
 // APIs return the collection of RPC services the ethereum package offers.
 // NOTE, some of these services probably need to be moved to somewhere else.
 func (s *Ethereum) APIs() []rpc.API {
-	apis := silaapi.GetAPIs(s.APIBackend)
+	apis := registry.GetAPIs(s.APIBackend)
 
 	// Append all the local APIs and return
 	return append(apis, []rpc.API{
