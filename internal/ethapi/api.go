@@ -370,7 +370,7 @@ func (n *proofList) Delete(key []byte) error {
 // GetProof returns the Merkle-proof for a given account and optionally some storage keys.
 func (api *BlockChainAPI) GetProof(ctx context.Context, address common.Address, storageKeys []string, blockNrOrHash rpc.BlockNumberOrHash) (*AccountResult, error) {
 	if len(storageKeys) > maxGetProofKeys {
-		return nil, &invalidParamsError{fmt.Sprintf("too many storage keys requested (max %d, got %d)", maxGetProofKeys, len(storageKeys))}
+		return nil, &ethapierrors.InvalidParamsError{fmt.Sprintf("too many storage keys requested (max %d, got %d)", maxGetProofKeys, len(storageKeys))}
 	}
 	var (
 		keys         = make([]common.Hash, len(storageKeys))
@@ -382,7 +382,7 @@ func (api *BlockChainAPI) GetProof(ctx context.Context, address common.Address, 
 		var err error
 		keys[i], keyLengths[i], err = decodeStorageKey(hexKey)
 		if err != nil {
-			return nil, &invalidParamsError{fmt.Sprintf("%v: %q", err, hexKey)}
+			return nil, &ethapierrors.InvalidParamsError{fmt.Sprintf("%v: %q", err, hexKey)}
 		}
 	}
 	statedb, header, err := api.b.StateAndHeaderByNumberOrHash(ctx, blockNrOrHash)
@@ -600,7 +600,7 @@ func (api *BlockChainAPI) GetStorageAt(ctx context.Context, address common.Addre
 	}
 	key, _, err := decodeStorageKey(hexKey)
 	if err != nil {
-		return nil, &invalidParamsError{fmt.Sprintf("%v: %q", err, hexKey)}
+		return nil, &ethapierrors.InvalidParamsError{fmt.Sprintf("%v: %q", err, hexKey)}
 	}
 	res := state.GetState(address, key)
 	return res[:], state.Error()
@@ -614,11 +614,11 @@ func (api *BlockChainAPI) GetStorageValues(ctx context.Context, requests map[com
 	for _, keys := range requests {
 		totalSlots += len(keys)
 		if totalSlots > maxGetStorageSlots {
-			return nil, &clientLimitExceededError{message: fmt.Sprintf("too many slots (max %d)", maxGetStorageSlots)}
+			return nil, &ethapierrors.ClientLimitExceededError{Message: fmt.Sprintf("too many slots (max %d)", maxGetStorageSlots)}
 		}
 	}
 	if totalSlots == 0 {
-		return nil, &invalidParamsError{message: "empty request"}
+		return nil, &ethapierrors.InvalidParamsError{Message: "empty request"}
 	}
 
 	state, _, err := api.b.StateAndHeaderByNumberOrHash(ctx, blockNrOrHash)
@@ -855,18 +855,18 @@ func (api *BlockChainAPI) Call(ctx context.Context, args TransactionArgs, blockN
 // useful to execute and retrieve values.
 func (api *BlockChainAPI) SimulateV1(ctx context.Context, opts simOpts, blockNrOrHash *rpc.BlockNumberOrHash) ([]*simBlockResult, error) {
 	if len(opts.BlockStateCalls) == 0 {
-		return nil, &invalidParamsError{message: "empty input"}
+		return nil, &ethapierrors.InvalidParamsError{Message: "empty input"}
 	} else if len(opts.BlockStateCalls) > maxSimulateBlocks {
-		return nil, &clientLimitExceededError{message: "too many blocks"}
+		return nil, &ethapierrors.ClientLimitExceededError{Message: "too many blocks"}
 	}
 	var totalCalls int
 	for _, block := range opts.BlockStateCalls {
 		if len(block.Calls) > maxSimulateCallsPerBlock {
-			return nil, &clientLimitExceededError{message: fmt.Sprintf("too many calls in block: %d > %d", len(block.Calls), maxSimulateCallsPerBlock)}
+			return nil, &ethapierrors.ClientLimitExceededError{Message: fmt.Sprintf("too many calls in block: %d > %d", len(block.Calls), maxSimulateCallsPerBlock)}
 		}
 		totalCalls += len(block.Calls)
 		if totalCalls > maxSimulateTotalCalls {
-			return nil, &clientLimitExceededError{message: fmt.Sprintf("too many calls: %d > %d", totalCalls, maxSimulateTotalCalls)}
+			return nil, &ethapierrors.ClientLimitExceededError{Message: fmt.Sprintf("too many calls: %d > %d", totalCalls, maxSimulateTotalCalls)}
 		}
 	}
 	if blockNrOrHash == nil {

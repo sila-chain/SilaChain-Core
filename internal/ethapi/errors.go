@@ -108,31 +108,6 @@ func txValidationError(err error) *ethapierrors.InvalidTxError {
 	}
 }
 
-type invalidParamsError struct{ message string }
-
-func (e *invalidParamsError) Error() string  { return e.message }
-func (e *invalidParamsError) ErrorCode() int { return errCodeInvalidParams }
-
-type clientLimitExceededError struct{ message string }
-
-func (e *clientLimitExceededError) Error() string  { return e.message }
-func (e *clientLimitExceededError) ErrorCode() int { return errCodeClientLimitExceeded }
-
-type invalidBlockNumberError struct{ message string }
-
-func (e *invalidBlockNumberError) Error() string  { return e.message }
-func (e *invalidBlockNumberError) ErrorCode() int { return errCodeBlockNumberInvalid }
-
-type invalidBlockTimestampError struct{ message string }
-
-func (e *invalidBlockTimestampError) Error() string  { return e.message }
-func (e *invalidBlockTimestampError) ErrorCode() int { return errCodeBlockTimestampInvalid }
-
-type blockGasLimitReachedError struct{ message string }
-
-func (e *blockGasLimitReachedError) Error() string  { return e.message }
-func (e *blockGasLimitReachedError) ErrorCode() int { return errCodeBlockGasLimitReached }
-
 func (e *txSyncTimeoutError) Error() string          { return e.msg }
 func (e *txSyncTimeoutError) ErrorCode() int         { return errCodeTxSyncTimeout }
 func (e *txSyncTimeoutError) ErrorData() interface{} { return e.hash.Hex() }

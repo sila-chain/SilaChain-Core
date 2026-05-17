@@ -451,7 +451,7 @@ func (sim *simulator) sanitizeCall(call *TransactionArgs, state vm.StateDB, head
 		call.Gas = (*hexutil.Uint64)(&remaining)
 	}
 	if remaining < uint64(*call.Gas) {
-		return false, &blockGasLimitReachedError{fmt.Sprintf("block gas limit reached: remaining: %d, required: %d", remaining, *call.Gas)}
+		return false, &ethapierrors.BlockGasLimitReachedError{fmt.Sprintf("block gas limit reached: remaining: %d, required: %d", remaining, *call.Gas)}
 	}
 	// Clamp to the cross-block gas budget.
 	gas := sim.budget.cap(uint64(*call.Gas))
@@ -493,10 +493,10 @@ func (sim *simulator) sanitizeChain(blocks []simBlock) ([]simBlock, error) {
 		}
 		diff := new(big.Int).Sub(block.BlockOverrides.Number.ToInt(), prevNumber)
 		if diff.Cmp(common.Big0) <= 0 {
-			return nil, &invalidBlockNumberError{fmt.Sprintf("block numbers must be in order: %d <= %d", block.BlockOverrides.Number.ToInt().Uint64(), prevNumber)}
+			return nil, &ethapierrors.InvalidBlockNumberError{fmt.Sprintf("block numbers must be in order: %d <= %d", block.BlockOverrides.Number.ToInt().Uint64(), prevNumber)}
 		}
 		if total := new(big.Int).Sub(block.BlockOverrides.Number.ToInt(), base.Number); total.Cmp(big.NewInt(maxSimulateBlocks)) > 0 {
-			return nil, &clientLimitExceededError{message: "too many blocks"}
+			return nil, &ethapierrors.ClientLimitExceededError{Message: "too many blocks"}
 		}
 		if diff.Cmp(big.NewInt(1)) > 0 {
 			// Fill the gap with empty blocks.
@@ -525,7 +525,7 @@ func (sim *simulator) sanitizeChain(blocks []simBlock) ([]simBlock, error) {
 		} else {
 			t = uint64(*block.BlockOverrides.Time)
 			if t <= prevTimestamp {
-				return nil, &invalidBlockTimestampError{fmt.Sprintf("block timestamps must be in order: %d <= %d", t, prevTimestamp)}
+				return nil, &ethapierrors.InvalidBlockTimestampError{fmt.Sprintf("block timestamps must be in order: %d <= %d", t, prevTimestamp)}
 			}
 		}
 		prevTimestamp = t

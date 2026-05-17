@@ -1714,7 +1714,7 @@ func TestSimulateV1(t *testing.T) {
 				}},
 			}},
 			want:      []blockRes{},
-			expectErr: &invalidBlockNumberError{message: "block numbers must be in order: 11 <= 12"},
+			expectErr: &ethapierrors.InvalidBlockNumberError{Message: "block numbers must be in order: 11 <= 12"},
 		},
 		// Test on solidity storage example. Set value in one call, read in next.
 		{

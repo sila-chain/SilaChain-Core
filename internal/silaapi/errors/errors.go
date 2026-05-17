@@ -55,3 +55,28 @@ func (e *InvalidTxError) Error() string {
 func (e *InvalidTxError) ErrorCode() int {
 	return e.Code
 }
+
+type InvalidParamsError struct{ Message string }
+
+func (e *InvalidParamsError) Error() string  { return e.Message }
+func (e *InvalidParamsError) ErrorCode() int { return -32602 }
+
+type ClientLimitExceededError struct{ Message string }
+
+func (e *ClientLimitExceededError) Error() string  { return e.Message }
+func (e *ClientLimitExceededError) ErrorCode() int { return -38026 }
+
+type InvalidBlockNumberError struct{ Message string }
+
+func (e *InvalidBlockNumberError) Error() string  { return e.Message }
+func (e *InvalidBlockNumberError) ErrorCode() int { return -38020 }
+
+type InvalidBlockTimestampError struct{ Message string }
+
+func (e *InvalidBlockTimestampError) Error() string  { return e.Message }
+func (e *InvalidBlockTimestampError) ErrorCode() int { return -38021 }
+
+type BlockGasLimitReachedError struct{ Message string }
+
+func (e *BlockGasLimitReachedError) Error() string  { return e.Message }
+func (e *BlockGasLimitReachedError) ErrorCode() int { return -38015 }
