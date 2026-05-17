@@ -35,6 +35,7 @@ import (
 	"github.com/sila-org/sila/core/types"
 	"github.com/sila-org/sila/eth/filters"
 	"github.com/sila-org/sila/internal/silaapi"
+	"github.com/sila-org/sila/internal/silaapi/txargs"
 	"github.com/sila-org/sila/rlp"
 	"github.com/sila-org/sila/rpc"
 )
@@ -1205,7 +1206,7 @@ func (c *CallResult) Status() hexutil.Uint64 {
 }
 
 func (b *Block) Call(ctx context.Context, args struct {
-	Data silaapi.TransactionArgs
+	Data txargs.TransactionArgs
 }) (*CallResult, error) {
 	result, err := silaapi.DoCall(ctx, b.r.backend, args.Data, *b.numberOrHash, nil, nil, b.r.backend.RPCEVMTimeout(), b.r.backend.RPCGasCap())
 	if err != nil {
@@ -1224,7 +1225,7 @@ func (b *Block) Call(ctx context.Context, args struct {
 }
 
 func (b *Block) EstimateGas(ctx context.Context, args struct {
-	Data silaapi.TransactionArgs
+	Data txargs.TransactionArgs
 }) (hexutil.Uint64, error) {
 	return silaapi.DoEstimateGas(ctx, b.r.backend, args.Data, *b.numberOrHash, nil, nil, b.r.backend.RPCGasCap())
 }
@@ -1267,7 +1268,7 @@ func (p *Pending) Account(ctx context.Context, args struct {
 }
 
 func (p *Pending) Call(ctx context.Context, args struct {
-	Data silaapi.TransactionArgs
+	Data txargs.TransactionArgs
 }) (*CallResult, error) {
 	pendingBlockNr := rpc.BlockNumberOrHashWithNumber(rpc.PendingBlockNumber)
 	result, err := silaapi.DoCall(ctx, p.r.backend, args.Data, pendingBlockNr, nil, nil, p.r.backend.RPCEVMTimeout(), p.r.backend.RPCGasCap())
@@ -1287,7 +1288,7 @@ func (p *Pending) Call(ctx context.Context, args struct {
 }
 
 func (p *Pending) EstimateGas(ctx context.Context, args struct {
-	Data silaapi.TransactionArgs
+	Data txargs.TransactionArgs
 }) (hexutil.Uint64, error) {
 	latestBlockNr := rpc.BlockNumberOrHashWithNumber(rpc.LatestBlockNumber)
 	return silaapi.DoEstimateGas(ctx, p.r.backend, args.Data, latestBlockNr, nil, nil, p.r.backend.RPCGasCap())
