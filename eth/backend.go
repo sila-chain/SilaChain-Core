@@ -407,6 +407,9 @@ func (s *Ethereum) APIs() []rpc.API {
 			Namespace: "eth",
 			Service:   downloader.NewDownloaderAPI(s.handler.downloader, s.blockchain, s.eventMux),
 		}, {
+			Namespace: "sila",
+			Service:   downloader.NewDownloaderAPI(s.handler.downloader, s.blockchain, s.eventMux),
+		}, {
 			Namespace: "admin",
 			Service:   NewAdminAPI(s),
 		}, {
@@ -414,6 +417,9 @@ func (s *Ethereum) APIs() []rpc.API {
 			Service:   NewDebugAPI(s),
 		}, {
 			Namespace: "net",
+			Service:   s.netRPCService,
+		}, {
+			Namespace: "silaNet",
 			Service:   s.netRPCService,
 		},
 	}...)

@@ -110,10 +110,19 @@ func GetAPIs(apiBackend Backend) []rpc.API {
 			Namespace: "eth",
 			Service:   NewEthereumAPI(apiBackend),
 		}, {
+			Namespace: "sila",
+			Service:   NewEthereumAPI(apiBackend),
+		}, {
 			Namespace: "eth",
 			Service:   NewBlockChainAPI(apiBackend),
 		}, {
+			Namespace: "sila",
+			Service:   NewBlockChainAPI(apiBackend),
+		}, {
 			Namespace: "eth",
+			Service:   NewTransactionAPI(apiBackend, nonceLock),
+		}, {
+			Namespace: "sila",
 			Service:   NewTransactionAPI(apiBackend, nonceLock),
 		}, {
 			Namespace: "txpool",
@@ -123,6 +132,9 @@ func GetAPIs(apiBackend Backend) []rpc.API {
 			Service:   NewDebugAPI(apiBackend),
 		}, {
 			Namespace: "eth",
+			Service:   NewEthereumAccountAPI(apiBackend.AccountManager()),
+		}, {
+			Namespace: "sila",
 			Service:   NewEthereumAccountAPI(apiBackend.AccountManager()),
 		},
 	}

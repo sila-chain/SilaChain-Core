@@ -46,6 +46,9 @@ func (n *Node) apis() []rpc.API {
 		}, {
 			Namespace: "web3",
 			Service:   &web3API{n},
+		}, {
+			Namespace: "silaWeb3",
+			Service:   &web3API{n},
 		},
 	}
 }
