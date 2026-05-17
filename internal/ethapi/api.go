@@ -1507,7 +1507,7 @@ func (api *TransactionAPI) GetTransactionByHash(ctx context.Context, hash common
 		}
 		// If also not in the pool there is a chance the tx indexer is still in progress.
 		if !api.b.TxIndexDone() {
-			return nil, NewTxIndexingError()
+			return nil, ethapierrors.NewTxIndexingError()
 		}
 		// If the transaction is not found in the pool and the indexer is done, return nil
 		return nil, nil
@@ -1529,7 +1529,7 @@ func (api *TransactionAPI) GetRawTransactionByHash(ctx context.Context, hash com
 		}
 		// If also not in the pool there is a chance the tx indexer is still in progress.
 		if !api.b.TxIndexDone() {
-			return nil, NewTxIndexingError()
+			return nil, ethapierrors.NewTxIndexingError()
 		}
 		// If the transaction is not found in the pool and the indexer is done, return nil
 		return nil, nil
@@ -1543,7 +1543,7 @@ func (api *TransactionAPI) GetTransactionReceipt(ctx context.Context, hash commo
 	if !found {
 		// Make sure indexer is done.
 		if !api.b.TxIndexDone() {
-			return nil, NewTxIndexingError()
+			return nil, ethapierrors.NewTxIndexingError()
 		}
 		// No such tx.
 		return nil, nil
@@ -2073,7 +2073,7 @@ func (api *DebugAPI) GetRawTransaction(ctx context.Context, hash common.Hash) (h
 		}
 		// If also not in the pool there is a chance the tx indexer is still in progress.
 		if !api.b.TxIndexDone() {
-			return nil, NewTxIndexingError()
+			return nil, ethapierrors.NewTxIndexingError()
 		}
 		// Transaction is not found in the pool and the indexer is done.
 		return nil, nil
