@@ -230,6 +230,14 @@ func (c *Console) initExtensions() error {
 	// Apply aliases.
 	c.jsre.Do(func(vm *goja.Runtime) {
 		web3 := getObject(vm, "web3")
+		if eth := web3.Get("eth"); eth != nil {
+			web3.Set("sila", eth)
+		}
+		if net := web3.Get("net"); net != nil {
+			web3.Set("silaNet", net)
+		}
+		web3.Set("silaWeb3", web3)
+
 		for name := range aliases {
 			if v := web3.Get(name); v != nil {
 				vm.Set(name, v)
