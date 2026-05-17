@@ -18,50 +18,16 @@ package ethapi
 
 import (
 	"errors"
-	"fmt"
 
-	"github.com/sila-org/sila/accounts/abi"
 	"github.com/sila-org/sila/common"
-	"github.com/sila-org/sila/common/hexutil"
 	"github.com/sila-org/sila/core"
 	"github.com/sila-org/sila/core/vm"
+	ethapierrors "github.com/sila-org/sila/internal/silaapi/errors"
 )
-
-// revertError is an API error that encompasses an EVM revert with JSON error
-// code and a binary data blob.
-type revertError struct {
-	error
-	reason string // revert reason hex encoded
-}
 
 type txSyncTimeoutError struct {
 	msg  string
 	hash common.Hash
-}
-
-// ErrorCode returns the JSON error code for a revert.
-// See: JSON-RPC error codes
-func (e *revertError) ErrorCode() int {
-	return 3
-}
-
-// ErrorData returns the hex encoded revert reason.
-func (e *revertError) ErrorData() interface{} {
-	return e.reason
-}
-
-// newRevertError creates a revertError instance with the provided revert data.
-func newRevertError(revert []byte) *revertError {
-	err := vm.ErrExecutionReverted
-
-	reason, errUnpack := abi.UnpackRevert(revert)
-	if errUnpack == nil {
-		err = fmt.Errorf("%w: %v", vm.ErrExecutionReverted, reason)
-	}
-	return &revertError{
-		error:  err,
-		reason: hexutil.Encode(revert),
-	}
 }
 
 // TxIndexingError is an API error that indicates the transaction indexing is not
@@ -91,14 +57,6 @@ type callError struct {
 	Data    string `json:"data,omitempty"`
 }
 
-type invalidTxError struct {
-	Message string `json:"message"`
-	Code    int    `json:"code"`
-}
-
-func (e *invalidTxError) Error() string  { return e.Message }
-func (e *invalidTxError) ErrorCode() int { return e.Code }
-
 const (
 	errCodeNonceTooHigh            = -38011
 	errCodeNonceTooLow             = -38010
@@ -116,35 +74,35 @@ const (
 	errCodeTxSyncTimeout           = 4
 )
 
-func txValidationError(err error) *invalidTxError {
+func txValidationError(err error) *ethapierrors.InvalidTxError {
 	if err == nil {
 		return nil
 	}
 	switch {
 	case errors.Is(err, core.ErrNonceTooHigh):
-		return &invalidTxError{Message: err.Error(), Code: errCodeNonceTooHigh}
+		return &ethapierrors.InvalidTxError{Message: err.Error(), Code: errCodeNonceTooHigh}
 	case errors.Is(err, core.ErrNonceTooLow):
-		return &invalidTxError{Message: err.Error(), Code: errCodeNonceTooLow}
+		return &ethapierrors.InvalidTxError{Message: err.Error(), Code: errCodeNonceTooLow}
 	case errors.Is(err, core.ErrSenderNoEOA):
-		return &invalidTxError{Message: err.Error(), Code: errCodeSenderIsNotEOA}
+		return &ethapierrors.InvalidTxError{Message: err.Error(), Code: errCodeSenderIsNotEOA}
 	case errors.Is(err, core.ErrFeeCapVeryHigh):
-		return &invalidTxError{Message: err.Error(), Code: errCodeInvalidParams}
+		return &ethapierrors.InvalidTxError{Message: err.Error(), Code: errCodeInvalidParams}
 	case errors.Is(err, core.ErrTipVeryHigh):
-		return &invalidTxError{Message: err.Error(), Code: errCodeInvalidParams}
+		return &ethapierrors.InvalidTxError{Message: err.Error(), Code: errCodeInvalidParams}
 	case errors.Is(err, core.ErrTipAboveFeeCap):
-		return &invalidTxError{Message: err.Error(), Code: errCodeInvalidParams}
+		return &ethapierrors.InvalidTxError{Message: err.Error(), Code: errCodeInvalidParams}
 	case errors.Is(err, core.ErrFeeCapTooLow):
-		return &invalidTxError{Message: err.Error(), Code: errCodeInvalidParams}
+		return &ethapierrors.InvalidTxError{Message: err.Error(), Code: errCodeInvalidParams}
 	case errors.Is(err, core.ErrInsufficientFunds):
-		return &invalidTxError{Message: err.Error(), Code: errCodeInsufficientFunds}
+		return &ethapierrors.InvalidTxError{Message: err.Error(), Code: errCodeInsufficientFunds}
 	case errors.Is(err, core.ErrIntrinsicGas):
-		return &invalidTxError{Message: err.Error(), Code: errCodeIntrinsicGas}
+		return &ethapierrors.InvalidTxError{Message: err.Error(), Code: errCodeIntrinsicGas}
 	case errors.Is(err, core.ErrInsufficientFundsForTransfer):
-		return &invalidTxError{Message: err.Error(), Code: errCodeInsufficientFunds}
+		return &ethapierrors.InvalidTxError{Message: err.Error(), Code: errCodeInsufficientFunds}
 	case errors.Is(err, vm.ErrMaxInitCodeSizeExceeded):
-		return &invalidTxError{Message: err.Error(), Code: errCodeMaxInitCodeSizeExceeded}
+		return &ethapierrors.InvalidTxError{Message: err.Error(), Code: errCodeMaxInitCodeSizeExceeded}
 	}
-	return &invalidTxError{
+	return &ethapierrors.InvalidTxError{
 		Message: err.Error(),
 		Code:    errCodeInternalError,
 	}

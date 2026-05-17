@@ -25,6 +25,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/sila-org/sila/internal/silaapi/addrlock"
+	ethapierrors "github.com/sila-org/sila/internal/silaapi/errors"
 	"math/big"
 	"os"
 	"path/filepath"
@@ -931,7 +932,7 @@ func TestEstimateGas(t *testing.T) {
 				},
 			},
 			blockOverrides: override.BlockOverrides{Number: (*hexutil.Big)(big.NewInt(11))},
-			expectErr:      newRevertError(packRevert("block 11")),
+			expectErr:      ethapierrors.NewRevertError(packRevert("block 11")),
 		},
 		// Should be able to send to an EIP-7702 delegated account.
 		{
@@ -1597,7 +1598,7 @@ func TestSimulateV1(t *testing.T) {
 				}},
 			}},
 			want:      nil,
-			expectErr: &invalidTxError{Message: fmt.Sprintf("err: insufficient funds for gas * price + value: address %s have 0 want 1000 (supplied gas 4712388)", randomAccounts[0].addr.String()), Code: errCodeInsufficientFunds},
+			expectErr: &ethapierrors.InvalidTxError{Message: fmt.Sprintf("err: insufficient funds for gas * price + value: address %s have 0 want 1000 (supplied gas 4712388)", randomAccounts[0].addr.String()), Code: errCodeInsufficientFunds},
 		}, {
 			// EVM error
 			name: "evm-error",
@@ -2063,7 +2064,7 @@ func TestSimulateV1(t *testing.T) {
 			}},
 			validation: &validation,
 			want:       nil,
-			expectErr:  &invalidTxError{Message: fmt.Sprintf("err: nonce too high: address %s, tx: 2 state: 0 (supplied gas 4712388)", accounts[2].addr), Code: errCodeNonceTooHigh},
+			expectErr:  &ethapierrors.InvalidTxError{Message: fmt.Sprintf("err: nonce too high: address %s, tx: 2 state: 0 (supplied gas 4712388)", accounts[2].addr), Code: errCodeNonceTooHigh},
 		},
 		// Contract sends tx in validation mode.
 		{

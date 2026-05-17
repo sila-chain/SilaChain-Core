@@ -22,6 +22,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/sila-org/sila/internal/silaapi/addrlock"
+	ethapierrors "github.com/sila-org/sila/internal/silaapi/errors"
 	gomath "math"
 	"math/big"
 	"strings"
@@ -840,7 +841,7 @@ func (api *BlockChainAPI) Call(ctx context.Context, args TransactionArgs, blockN
 		return nil, err
 	}
 	if errors.Is(result.Err, vm.ErrExecutionReverted) {
-		return nil, newRevertError(result.Revert())
+		return nil, ethapierrors.NewRevertError(result.Revert())
 	}
 	return result.Return(), result.Err
 }
@@ -938,7 +939,7 @@ func DoEstimateGas(ctx context.Context, b Backend, args TransactionArgs, blockNr
 	estimate, revert, err := gasestimator.Estimate(ctx, call, opts, gasCap)
 	if err != nil {
 		if errors.Is(err, vm.ErrExecutionReverted) {
-			return 0, newRevertError(revert)
+			return 0, ethapierrors.NewRevertError(revert)
 		}
 		return 0, err
 	}

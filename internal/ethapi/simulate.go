@@ -21,6 +21,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	ethapierrors "github.com/sila-org/sila/internal/silaapi/errors"
 	"math"
 	"math/big"
 	"time"
@@ -372,7 +373,7 @@ func (sim *simulator) processBlock(ctx context.Context, block *simBlock, header,
 			callRes.Status = hexutil.Uint64(types.ReceiptStatusFailed)
 			if errors.Is(result.Err, vm.ErrExecutionReverted) {
 				// If the result contains a revert reason, try to unpack it.
-				revertErr := newRevertError(result.Revert())
+				revertErr := ethapierrors.NewRevertError(result.Revert())
 				callRes.Error = &callError{Message: revertErr.Error(), Code: revertErr.ErrorCode(), Data: revertErr.ErrorData().(string)}
 			} else {
 				msg := result.Err.Error()
