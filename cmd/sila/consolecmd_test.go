@@ -156,13 +156,13 @@ func TestSilaOnlyRPCModules(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	for _, namespace := range []string{"eth", "engine", "web3"} {
+	for _, namespace := range []string{"eth", "silaNet", "silaWeb3"} {
 		if modules[namespace] != "1.0" {
 			t.Fatalf("missing namespace %q in modules: %v", namespace, modules)
 		}
 	}
 
-	for _, namespace := range []string{"web3", "engine"} {
+	for _, namespace := range []string{"web3", "net"} {
 		if _, ok := modules[namespace]; ok {
 			t.Fatalf("unexpected namespace %q exposed in Sila-only modules: %v", namespace, modules)
 		}

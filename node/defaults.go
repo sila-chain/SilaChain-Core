@@ -50,7 +50,7 @@ var (
 	DefaultAuthVhosts  = []string{"localhost"} // Default virtual hosts for the authenticated apis
 	DefaultAuthOrigins = []string{"localhost"} // Default origins for the authenticated apis
 	DefaultAuthPrefix  = ""                    // Default prefix for the authenticated apis
-	DefaultAuthModules = []string{"eth", "net", "web3", "engine"}
+	DefaultAuthModules = []string{"eth", "silaNet", "silaWeb3", "engine"}
 )
 
 // DefaultConfig contains reasonable default settings.
@@ -60,11 +60,11 @@ var DefaultConfig = Config{
 	AuthAddr:             DefaultAuthHost,
 	AuthPort:             DefaultAuthPort,
 	AuthVirtualHosts:     DefaultAuthVhosts,
-	HTTPModules:          []string{"eth", "net", "web3"},
+	HTTPModules:          []string{"eth", "silaNet", "silaWeb3"},
 	HTTPVirtualHosts:     []string{"localhost"},
 	HTTPTimeouts:         rpc.DefaultHTTPTimeouts,
 	WSPort:               DefaultWSPort,
-	WSModules:            []string{"eth", "net", "web3"},
+	WSModules:            []string{"eth", "silaNet", "silaWeb3"},
 	BatchRequestLimit:    1000,
 	BatchResponseMaxSize: 25 * 1000 * 1000,
 	GraphQLVirtualHosts:  []string{"localhost"},

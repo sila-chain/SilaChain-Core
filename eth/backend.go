@@ -415,7 +415,7 @@ func (s *Ethereum) APIs() []rpc.API {
 			Namespace: "debug",
 			Service:   NewDebugAPI(s),
 		}, {
-			Namespace: "net",
+			Namespace: "silaNet",
 			Service:   s.netRPCService,
 			Public:    true,
 		},
