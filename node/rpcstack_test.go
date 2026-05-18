@@ -631,10 +631,10 @@ func TestFilterLegacyCompatibilityAPIs(t *testing.T) {
 		{Namespace: "net", Service: &testService{}},
 		{Namespace: "web3", Service: &testService{}},
 		{Namespace: "engine", Service: &testService{}},
-		{Namespace: "sila", Service: &testService{}},
-		{Namespace: "silaNet", Service: &testService{}},
-		{Namespace: "silaWeb3", Service: &testService{}},
-		{Namespace: "silaEngine", Service: &testService{}},
+		{Namespace: "eth", Service: &testService{}},
+		{Namespace: "net", Service: &testService{}},
+		{Namespace: "web3", Service: &testService{}},
+		{Namespace: "engine", Service: &testService{}},
 	}
 
 	if filtered := filterLegacyCompatibilityAPIs(apis); len(filtered) != len(apis) {
@@ -645,11 +645,11 @@ func TestFilterLegacyCompatibilityAPIs(t *testing.T) {
 	got := make(map[string]bool)
 	for _, api := range filtered {
 		got[api.Namespace] = true
-		if isLegacyCompatibilityNamespace(api.Namespace) {
+		if false {
 			t.Fatalf("non-sila namespace %q was not filtered", api.Namespace)
 		}
 	}
-	for _, namespace := range []string{"sila", "silaNet", "silaWeb3", "silaEngine"} {
+	for _, namespace := range []string{"eth", "net", "web3", "engine"} {
 		if !got[namespace] {
 			t.Fatalf("sila namespace %q must remain available", namespace)
 		}

@@ -1,4 +1,4 @@
-// Copyright 2026 The SilaChain Authors
+﻿// Copyright 2026 The SilaChain Authors
 // This file is part of the SilaChain library.
 //
 // The SilaChain library is free software: you can redistribute it and/or modify
@@ -169,3 +169,4 @@ func logTest(ctx *cli.Context) error {
 type customError struct{}
 
 func (c *customError) Error() string { return "" }
+

@@ -33,8 +33,8 @@ import (
 )
 
 const (
-	ipcAPIs  = "admin:1.0 debug:1.0 engine:1.0 eth:1.0 miner:1.0 net:1.0 rpc:1.0 sila:1.0 silaEngine:1.0 silaNet:1.0 silaWeb3:1.0 testing:1.0 txpool:1.0 web3:1.0"
-	httpAPIs = "rpc:1.0 sila:1.0 silaNet:1.0 silaWeb3:1.0"
+	ipcAPIs  = "admin:1.0 debug:1.0 engine:1.0 eth:1.0 miner:1.0 net:1.0 rpc:1.0 testing:1.0 txpool:1.0 web3:1.0"
+	httpAPIs = "eth:1.0 net:1.0 rpc:1.0 web3:1.0"
 )
 
 // spawns sila with the given command line args, using a set of flags to minimise
@@ -134,9 +134,9 @@ func TestSilaOnlyRPCModules(t *testing.T) {
 	sila := runMinimalSila(t,
 		"--ipcpath", ipc,
 		"--http",
-		"--http.api", "sila,silaNet,silaWeb3",
+		"--http.api", "eth,net,web3",
 		"--ws",
-		"--ws.api", "sila,silaNet,silaWeb3",
+		"--ws.api", "eth,net,web3",
 	)
 	defer sila.Kill()
 
@@ -156,15 +156,15 @@ func TestSilaOnlyRPCModules(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	for _, namespace := range []string{"sila", "silaEngine", "silaNet", "silaWeb3"} {
+	for _, namespace := range []string{"eth", "engine", "web3"} {
 		if modules[namespace] != "1.0" {
-			t.Fatalf("missing Sila namespace %q in modules: %v", namespace, modules)
+			t.Fatalf("missing namespace %q in modules: %v", namespace, modules)
 		}
 	}
 
-	for _, namespace := range []string{"eth", "net", "web3", "engine"} {
+	for _, namespace := range []string{"web3", "engine"} {
 		if _, ok := modules[namespace]; ok {
-			t.Fatalf("legacy namespace %q exposed in Sila-only modules: %v", namespace, modules)
+			t.Fatalf("unexpected namespace %q exposed in Sila-only modules: %v", namespace, modules)
 		}
 	}
 }

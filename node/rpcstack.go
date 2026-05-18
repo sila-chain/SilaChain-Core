@@ -639,25 +639,10 @@ func (is *ipcServer) stop() error {
 
 // RegisterApis checks the given modules' availability, generates an allowlist based on the allowed modules,
 // and then registers all of the APIs exposed by the services.
-func isLegacyCompatibilityNamespace(namespace string) bool {
-	switch namespace {
-	case "eth", "net", "web3", "engine":
-		return true
-	default:
-		return false
-	}
-}
 
 func filterLegacyCompatibilityAPIs(apis []rpc.API) []rpc.API {
-	filtered := make([]rpc.API, 0, len(apis))
-	for _, api := range apis {
-		if !isLegacyCompatibilityNamespace(api.Namespace) {
-			filtered = append(filtered, api)
-		}
-	}
-	return filtered
+	return apis
 }
-
 func RegisterApis(apis []rpc.API, modules []string, srv *rpc.Server) error {
 	if bad, available := checkModuleAvailability(modules, apis); len(bad) > 0 {
 		log.Error("Unavailable modules in HTTP API list", "unavailable", bad, "available", available)

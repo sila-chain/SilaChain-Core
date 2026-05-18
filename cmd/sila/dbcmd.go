@@ -1,4 +1,4 @@
-// Copyright 2026 The SilaChain Authors
+﻿// Copyright 2026 The SilaChain Authors
 // This file is part of the SilaChain library.
 //
 // The SilaChain library is free software: you can redistribute it and/or modify
@@ -250,7 +250,7 @@ func removeDB(ctx *cli.Context) error {
 	// Resolve folder paths.
 	var (
 		rootDir    = stack.ResolvePath("chaindata")
-		ancientDir = config.Eth.DatabaseFreezer
+		ancientDir = config.sila.DatabaseFreezer
 	)
 	switch {
 	case ancientDir == "":
@@ -1046,3 +1046,4 @@ func inspectHistory(ctx *cli.Context) error {
 	}
 	return inspectStorage(triedb, start, end, address, slot, ctx.Bool("raw"))
 }
+

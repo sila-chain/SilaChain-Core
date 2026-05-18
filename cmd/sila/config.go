@@ -64,7 +64,7 @@ type gethConfig = ExecutionConfig
 // makeConfigNode loads the real execution/node wiring layer.
 //
 // Shared bootstrap/runtime/config helpers belong in the Sila CLI layer.
-// Real protocol wiring, account backends and Ethereum-compatible
+// Real protocol wiring, account backends and SilaChain-compatible
 // execution assembly remain inside the Sila execution runtime boundary.
 
 func makeConfigNode(ctx *cli.Context) (*node.Node, gethConfig) {
@@ -79,7 +79,7 @@ func makeConfigNode(ctx *cli.Context) (*node.Node, gethConfig) {
 		utils.Fatalf("Failed to set account manager backends: %v", err)
 	}
 
-	utils.SetEthConfig(ctx, stack, &cfg.Eth)
+	utils.SetEthConfig(ctx, stack, &cfg.sila)
 	if ctx.IsSet(utils.EthStatsURLFlag.Name) {
 		cfg.Ethstats.URL = ctx.String(utils.EthStatsURLFlag.Name)
 	}
@@ -99,7 +99,7 @@ func constructDevModeBanner(ctx *cli.Context, cfg gethConfig) string {
      your computer or losing power will wipe your entire block data and chain state for
      your dev environment.
   3. A random, pre-allocated developer account will be available and unlocked as
-     eth.coinbase, which can be used for testing. The random dev account is temporary,
+     sila.coinbase, which can be used for testing. The random dev account is temporary,
      stored on a ramdisk, and will be lost if your machine is restarted.
   4. Mining is enabled by default. However, the client will only seal blocks if transactions
      are pending in the mempool. The miner's minimum accepted gas price is 1.
@@ -113,9 +113,9 @@ func constructDevModeBanner(ctx *cli.Context, cfg gethConfig) string {
 
        Account
        ------------------
-       0x%x (10^49 ETH)
-`, cfg.Eth.Miner.PendingFeeRecipient)
-		if cfg.Eth.Miner.PendingFeeRecipient == utils.DeveloperAddr {
+       0x%x (10^49 sila)
+`, cfg.sila.Miner.PendingFeeRecipient)
+		if cfg.sila.Miner.PendingFeeRecipient == utils.DeveloperAddr {
 			devModeBanner += fmt.Sprintf(`
        Private Key
        ------------------
@@ -144,8 +144,8 @@ func dumpConfig(ctx *cli.Context) error {
 	_, cfg := makeConfigNode(ctx)
 	comment := ""
 
-	if cfg.Eth.Genesis != nil {
-		cfg.Eth.Genesis = nil
+	if cfg.sila.Genesis != nil {
+		cfg.sila.Genesis = nil
 		comment += "# Note: this config doesn't contain the genesis block.\n\n"
 	}
 
@@ -170,7 +170,7 @@ func dumpConfig(ctx *cli.Context) error {
 
 // BuildExecutionNode wires the Sila execution runtime into the node stack.
 func BuildExecutionNode(ctx *cli.Context, stack *node.Node, cfg *ExecutionConfig, onDevMode func()) *node.Node {
-	ApplyProtocolOverrides(ctx, &cfg.Eth)
+	ApplyProtocolOverrides(ctx, &cfg.sila)
 
 	utils.SetupMetrics(&cfg.Metrics)
 
@@ -178,11 +178,11 @@ func BuildExecutionNode(ctx *cli.Context, stack *node.Node, cfg *ExecutionConfig
 		utils.Fatalf("failed to setup OpenTelemetry: %v", err)
 	}
 
-	backend, eth := RegisterExecutionService(stack, &cfg.Eth)
+	backend, sila := RegisterExecutionService(stack, &cfg.sila)
 
-	RegisterBuildInfoGauge(eth, cfg.Node.Version)
+	RegisterBuildInfoGauge(sila, cfg.Node.Version)
 
-	filterSystem := RegisterFilterAPI(stack, backend, &cfg.Eth)
+	filterSystem := RegisterFilterAPI(stack, backend, &cfg.sila)
 
 	if ctx.IsSet(utils.GraphQLEnabledFlag.Name) {
 		RegisterGraphQLService(stack, backend, filterSystem, &cfg.Node)
@@ -195,7 +195,7 @@ func BuildExecutionNode(ctx *cli.Context, stack *node.Node, cfg *ExecutionConfig
 	if err != nil {
 		utils.Fatalf("%v", err)
 	}
-	RegisterSyncOverrideService(stack, eth, synctarget, ctx.Bool(utils.ExitWhenSyncedFlag.Name))
+	RegisterSyncOverrideService(stack, sila, synctarget, ctx.Bool(utils.ExitWhenSyncedFlag.Name))
 
 	beaconMode := ctx.IsSet(utils.BeaconApiFlag.Name)
 	var beaconConfig bparams.ClientConfig
@@ -205,10 +205,10 @@ func BuildExecutionNode(ctx *cli.Context, stack *node.Node, cfg *ExecutionConfig
 
 	if err := ConfigureConsensusRuntime(
 		stack,
-		eth,
+		sila,
 		ctx.IsSet(utils.DeveloperFlag.Name),
 		ctx.Uint64(utils.DeveloperPeriodFlag.Name),
-		cfg.Eth.Miner.PendingFeeRecipient,
+		cfg.sila.Miner.PendingFeeRecipient,
 		beaconMode,
 		beaconConfig,
 	); err != nil {
@@ -356,7 +356,7 @@ type EthstatsConfig struct {
 
 // ExecutionConfig represents the shared execution runtime configuration.
 type ExecutionConfig struct {
-	Eth      ethconfig.Config
+	sila     ethconfig.Config
 	Node     node.Config
 	Ethstats EthstatsConfig
 	Metrics  metrics.Config
@@ -365,7 +365,7 @@ type ExecutionConfig struct {
 // DefaultExecutionConfig returns the shared execution defaults.
 func DefaultExecutionConfig() ExecutionConfig {
 	return ExecutionConfig{
-		Eth:     ethconfig.Defaults,
+		sila:    ethconfig.Defaults,
 		Node:    DefaultNodeConfig(),
 		Metrics: metrics.DefaultConfig,
 	}

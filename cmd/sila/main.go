@@ -13,7 +13,7 @@ import (
 	"github.com/sila-org/sila/beacon/blsync"
 	bparams "github.com/sila-org/sila/beacon/params"
 	"github.com/sila-org/sila/common"
-	"github.com/sila-org/sila/eth"
+	sila "github.com/sila-org/sila/eth"
 	"github.com/sila-org/sila/eth/catalyst"
 	"github.com/sila-org/sila/eth/downloader"
 	ethconfig "github.com/sila-org/sila/eth/ethconfig"
@@ -364,24 +364,24 @@ func DefaultNodeConfig() node.Config {
 }
 
 // RegisterExecutionService registers the Sila execution service.
-func RegisterExecutionService(stack *node.Node, cfg *ethconfig.Config) (*eth.EthAPIBackend, *eth.Ethereum) {
+func RegisterExecutionService(stack *node.Node, cfg *ethconfig.Config) (*sila.EthAPIBackend, *sila.Ethereum) {
 	return utils.RegisterEthService(stack, cfg)
 }
 
 // RegisterSyncOverrideService configures synchronization override service.
-func RegisterSyncOverrideService(stack *node.Node, ethBackend *eth.Ethereum, target common.Hash, exitWhenSynced bool) {
+func RegisterSyncOverrideService(stack *node.Node, ethBackend *sila.Ethereum, target common.Hash, exitWhenSynced bool) {
 	utils.RegisterSyncOverrideService(stack, ethBackend, target, exitWhenSynced)
 }
 
 // RegisterEngineAPI launches the engine API for interacting with an external consensus client.
-func RegisterEngineAPI(stack *node.Node, ethBackend *eth.Ethereum) error {
+func RegisterEngineAPI(stack *node.Node, ethBackend *sila.Ethereum) error {
 	return catalyst.Register(stack, ethBackend)
 }
 
 // ConfigureConsensusRuntime configures the execution consensus runtime.
 func ConfigureConsensusRuntime(
 	stack *node.Node,
-	ethBackend *eth.Ethereum,
+	ethBackend *sila.Ethereum,
 	devMode bool,
 	devPeriod uint64,
 	pendingFeeRecipient common.Address,
@@ -413,7 +413,7 @@ func ConfigureConsensusRuntime(
 }
 
 // RegisterBuildInfoGauge creates gauge with SilaChain system and build information.
-func RegisterBuildInfoGauge(ethBackend *eth.Ethereum, version string) {
+func RegisterBuildInfoGauge(ethBackend *sila.Ethereum, version string) {
 	if ethBackend == nil {
 		return
 	}
@@ -440,7 +440,7 @@ func RegisterGraphQLService(stack *node.Node, backend ethapi.Backend, filterSyst
 }
 
 // RegisterEthStatsService adds the Sila stats daemon if requested.
-func RegisterEthStatsService(stack *node.Node, backend *eth.EthAPIBackend, url string) {
+func RegisterEthStatsService(stack *node.Node, backend *sila.EthAPIBackend, url string) {
 	utils.RegisterEthStatsService(stack, backend, url)
 }
 

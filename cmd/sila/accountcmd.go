@@ -1,4 +1,4 @@
-// Copyright 2026 The SilaChain Authors
+﻿// Copyright 2026 The SilaChain Authors
 // This file is part of the SilaChain library.
 //
 // The SilaChain library is free software: you can redistribute it and/or modify
@@ -186,7 +186,7 @@ For non-interactive use the password can be specified with the -password flag:
     sila account import [options] <keyfile>
 
 Note:
-As you can directly copy your encrypted accounts to another ethereum instance,
+As you can directly copy your encrypted accounts to another SilaChain instance,
 this import mechanism is not needed when you transfer an account between
 nodes.
 `,
@@ -435,3 +435,4 @@ func SetAccountManagerBackends(conf *node.Config, am *accounts.Manager, keydir s
 
 	return nil
 }
+

@@ -48,7 +48,7 @@ func (n *Node) apis() []rpc.API {
 			Namespace: "web3",
 			Service:   &web3API{n},
 		}, {
-			Namespace: "silaWeb3",
+			Namespace: "web3",
 			Service:   &web3API{n},
 		},
 	}
@@ -202,7 +202,7 @@ func (api *adminAPI) StartHTTP(host *string, port *int, cors *string, apis *stri
 	if apis != nil {
 		config.Modules = nil
 		for _, m := range strings.Split(*apis, ",") {
-			config.Modules = append(config.Modules, strings.TrimSpace(m))
+			config.Modules = append(config.Modules, strings.TrimSpace(m)) // SilaControlLayer
 		}
 	}
 
@@ -268,7 +268,7 @@ func (api *adminAPI) StartWS(host *string, port *int, allowedOrigins *string, ap
 	if apis != nil {
 		config.Modules = nil
 		for _, m := range strings.Split(*apis, ",") {
-			config.Modules = append(config.Modules, strings.TrimSpace(m))
+			config.Modules = append(config.Modules, strings.TrimSpace(m)) // SilaControlLayer
 		}
 	}
 	if allowedOrigins != nil {
@@ -326,7 +326,7 @@ func (api *adminAPI) Datadir() string {
 	return api.node.DataDir()
 }
 
-// web3API offers helper utils
+// silaWeb3API offers helper utils
 type web3API struct {
 	stack *Node
 }
@@ -336,7 +336,7 @@ func (s *web3API) ClientVersion() string {
 	return s.stack.Server().Name
 }
 
-// Sha3 applies the ethereum sha3 implementation on the input.
+// Sha3 applies the SilaChain sha3 implementation on the input.
 // It assumes the input is hex encoded.
 func (s *web3API) Sha3(input hexutil.Bytes) hexutil.Bytes {
 	return crypto.Keccak256(input)

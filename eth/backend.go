@@ -405,12 +405,9 @@ func (s *Ethereum) APIs() []rpc.API {
 			Namespace: "miner",
 			Service:   NewMinerAPI(s),
 		}, {
-			// Legacy compatibility namespace. Public HTTP/WS defaults use "sila".
 			Namespace: "eth",
 			Service:   downloader.NewDownloaderAPI(s.handler.downloader, s.blockchain, s.eventMux),
-		}, {
-			Namespace: "sila",
-			Service:   downloader.NewDownloaderAPI(s.handler.downloader, s.blockchain, s.eventMux),
+			Public:    true,
 		}, {
 			Namespace: "admin",
 			Service:   NewAdminAPI(s),
@@ -418,12 +415,9 @@ func (s *Ethereum) APIs() []rpc.API {
 			Namespace: "debug",
 			Service:   NewDebugAPI(s),
 		}, {
-			// Legacy compatibility namespace. Public HTTP/WS defaults use "silaNet".
 			Namespace: "net",
 			Service:   s.netRPCService,
-		}, {
-			Namespace: "silaNet",
-			Service:   s.netRPCService,
+			Public:    true,
 		},
 	}...)
 }

@@ -1,4 +1,4 @@
-// Copyright 2026 The SilaChain Authors
+﻿// Copyright 2026 The SilaChain Authors
 // This file is part of the SilaChain library.
 //
 // The SilaChain library is free software: you can redistribute it and/or modify
@@ -51,7 +51,7 @@ var (
 		Subcommands: []*cli.Command{
 			{
 				Name:      "prune-state",
-				Usage:     "Prune stale ethereum state data based on the snapshot",
+				Usage:     "Prune stale SilaChain state data based on the snapshot",
 				ArgsUsage: "<root>",
 				Action:    pruneState,
 				Flags: slices.Concat([]cli.Flag{
@@ -909,3 +909,4 @@ func listEIP7610EligibleAccounts(ctx *cli.Context) error {
 	}
 	return nil
 }
+

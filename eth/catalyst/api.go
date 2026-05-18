@@ -56,11 +56,6 @@ func Register(stack *node.Node, backend *eth.Ethereum) error {
 			Service:       NewConsensusAPI(backend),
 			Authenticated: true,
 		},
-		{
-			Namespace:     "silaEngine",
-			Service:       NewSilaEngineAPI(backend),
-			Authenticated: true,
-		},
 	})
 	return nil
 }

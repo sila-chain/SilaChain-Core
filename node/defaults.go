@@ -50,7 +50,7 @@ var (
 	DefaultAuthVhosts  = []string{"localhost"} // Default virtual hosts for the authenticated apis
 	DefaultAuthOrigins = []string{"localhost"} // Default origins for the authenticated apis
 	DefaultAuthPrefix  = ""                    // Default prefix for the authenticated apis
-	DefaultAuthModules = []string{"sila", "silaEngine"}
+	DefaultAuthModules = []string{"eth", "net", "web3", "engine"}
 )
 
 // DefaultConfig contains reasonable default settings.
@@ -60,11 +60,11 @@ var DefaultConfig = Config{
 	AuthAddr:             DefaultAuthHost,
 	AuthPort:             DefaultAuthPort,
 	AuthVirtualHosts:     DefaultAuthVhosts,
-	HTTPModules:          []string{"sila", "silaNet", "silaWeb3"},
+	HTTPModules:          []string{"eth", "net", "web3"},
 	HTTPVirtualHosts:     []string{"localhost"},
 	HTTPTimeouts:         rpc.DefaultHTTPTimeouts,
 	WSPort:               DefaultWSPort,
-	WSModules:            []string{"sila", "silaNet", "silaWeb3"},
+	WSModules:            []string{"eth", "net", "web3"},
 	BatchRequestLimit:    1000,
 	BatchResponseMaxSize: 25 * 1000 * 1000,
 	GraphQLVirtualHosts:  []string{"localhost"},
@@ -73,8 +73,7 @@ var DefaultConfig = Config{
 		MaxPeers:    50,
 		NAT:         nat.Any(),
 		DiscoveryV4: true,
-		DiscoveryV5: true,
-	},
+		DiscoveryV5: true},
 	DBEngine: "", // Use whatever exists, will default to Pebble if non-existent and supported
 }
 

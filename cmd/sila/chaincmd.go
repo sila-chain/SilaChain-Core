@@ -1,4 +1,4 @@
-// Copyright 2026 The SilaChain Authors
+﻿// Copyright 2026 The SilaChain Authors
 // This file is part of the SilaChain library.
 //
 // The SilaChain library is free software: you can redistribute it and/or modify
@@ -875,3 +875,4 @@ func parseRange(s string) (start uint64, end uint64, ok bool) {
 	}
 	return 0, 0, false
 }
+
