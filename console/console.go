@@ -198,7 +198,7 @@ func (c *Console) initWeb3(bridge *bridge) error {
 	return err
 }
 
-var defaultAPIs = map[string]string{"eth": "1.0", "net": "1.0", "debug": "1.0"}
+var defaultAPIs = map[string]string{"sila": "1.0", "silaNet": "1.0", "silaWeb3": "1.0", "debug": "1.0"}
 
 // initExtensions loads and registers web3.js extensions.
 func (c *Console) initExtensions() error {
