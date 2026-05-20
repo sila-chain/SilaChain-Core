@@ -156,7 +156,7 @@ func TestSilaOnlyRPCModules(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	for _, namespace := range []string{"eth", "silaNet", "silaWeb3"} {
+	for _, namespace := range []string{"sila", "silaNet", "silaWeb3"} {
 		if modules[namespace] != "1.0" {
 			t.Fatalf("missing namespace %q in modules: %v", namespace, modules)
 		}
