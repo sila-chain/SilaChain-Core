@@ -129,7 +129,21 @@ func TestAuthEndpoints(t *testing.T) {
 			Authenticated: true,
 		},
 		{
+			Namespace:     "silaEngine",
+			Version:       "1.0",
+			Service:       helloRPC("hello engine"),
+			Public:        true,
+			Authenticated: true,
+		},
+		{
 			Namespace:     "eth",
+			Version:       "1.0",
+			Service:       helloRPC("hello eth"),
+			Public:        true,
+			Authenticated: true,
+		},
+		{
+			Namespace:     "sila",
 			Version:       "1.0",
 			Service:       helloRPC("hello eth"),
 			Public:        true,
