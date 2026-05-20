@@ -214,7 +214,7 @@ func (c *Console) initExtensions() error {
 	}
 
 	// Compute aliases from server-provided modules.
-	aliases := map[string]struct{}{"eth": {}}
+	aliases := map[string]struct{}{"eth": {}, "sila": {}}
 	for api := range apis {
 		if api == "web3" {
 			continue
@@ -232,6 +232,7 @@ func (c *Console) initExtensions() error {
 		web3 := getObject(vm, "web3")
 		if eth := web3.Get("eth"); eth != nil {
 			web3.Set("sila", eth)
+			vm.Set("sila", eth)
 		}
 		if net := web3.Get("net"); net != nil {
 			web3.Set("silaNet", net)
