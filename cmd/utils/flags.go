@@ -1394,7 +1394,7 @@ func setWS(ctx *cli.Context, cfg *node.Config) {
 func hasLegacyCompatibilityModule(modules []string) bool {
 	for _, module := range modules {
 		switch module {
-		case "sila", "silaNet", "silaWeb3", "silaEngine", "eth", "net", "web3", "engine":
+		case "sila", "silaNet", "silaWeb3", "silaEngine":
 			return true
 		}
 	}
