@@ -34,7 +34,7 @@ import (
 
 const (
 	ipcAPIs  = "admin:1.0 debug:1.0 engine:1.0 eth:1.0 miner:1.0 rpc:1.0 sila:1.0 silaEngine:1.0 silaNet:1.0 silaWeb3:1.0 testing:1.0 txpool:1.0"
-	httpAPIs = "eth:1.0 rpc:1.0 sila:1.0 silaNet:1.0 silaWeb3:1.0"
+	httpAPIs = "rpc:1.0 sila:1.0 silaNet:1.0 silaWeb3:1.0"
 )
 
 // spawns sila with the given command line args, using a set of flags to minimise
