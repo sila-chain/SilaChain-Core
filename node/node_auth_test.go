@@ -122,8 +122,8 @@ func TestAuthEndpoints(t *testing.T) {
 		AuthPort:  0,
 		JWTSecret: jwtPath,
 
-		WSModules:   []string{"eth", "sila", "engine", "silaEngine"},
-		HTTPModules: []string{"eth", "sila", "engine", "silaEngine"},
+		WSModules:   []string{"sila", "engine", "silaEngine"},
+		HTTPModules: []string{"sila", "engine", "silaEngine"},
 	}
 	node, err := New(conf)
 	if err != nil {
@@ -142,13 +142,6 @@ func TestAuthEndpoints(t *testing.T) {
 			Namespace:     "silaEngine",
 			Version:       "1.0",
 			Service:       helloRPC("hello engine"),
-			Public:        true,
-			Authenticated: true,
-		},
-		{
-			Namespace:     "eth",
-			Version:       "1.0",
-			Service:       helloRPC("hello eth"),
 			Public:        true,
 			Authenticated: true,
 		},
