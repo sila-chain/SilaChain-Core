@@ -2230,7 +2230,7 @@ func RegisterSilaStatsService(stack *node.Node, backend *eth.EthAPIBackend, url 
 
 func RegisterEthStatsService(stack *node.Node, backend *eth.EthAPIBackend, url string) {
 	if err := ethstats.New(stack, backend, backend.Engine(), url); err != nil {
-		Fatalf("Failed to register the Ethereum Stats service: %v", err)
+		Fatalf("Failed to register the Sila Stats service: %v", err)
 	}
 }
 
