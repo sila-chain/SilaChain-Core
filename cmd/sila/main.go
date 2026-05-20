@@ -369,19 +369,19 @@ func RegisterExecutionService(stack *node.Node, cfg *ethconfig.Config) (*sila.Et
 }
 
 // RegisterSyncOverrideService configures synchronization override service.
-func RegisterSyncOverrideService(stack *node.Node, ethBackend *sila.Ethereum, target common.Hash, exitWhenSynced bool) {
-	utils.RegisterSyncOverrideService(stack, ethBackend, target, exitWhenSynced)
+func RegisterSyncOverrideService(stack *node.Node, silaBackend *sila.Ethereum, target common.Hash, exitWhenSynced bool) {
+	utils.RegisterSyncOverrideService(stack, silaBackend, target, exitWhenSynced)
 }
 
 // RegisterEngineAPI launches the engine API for interacting with an external consensus client.
-func RegisterEngineAPI(stack *node.Node, ethBackend *sila.Ethereum) error {
-	return catalyst.Register(stack, ethBackend)
+func RegisterEngineAPI(stack *node.Node, silaBackend *sila.Ethereum) error {
+	return catalyst.Register(stack, silaBackend)
 }
 
 // ConfigureConsensusRuntime configures the execution consensus runtime.
 func ConfigureConsensusRuntime(
 	stack *node.Node,
-	ethBackend *sila.Ethereum,
+	silaBackend *sila.Ethereum,
 	devMode bool,
 	devPeriod uint64,
 	pendingFeeRecipient common.Address,
@@ -389,7 +389,7 @@ func ConfigureConsensusRuntime(
 	beaconConfig bparams.ClientConfig,
 ) error {
 	if devMode {
-		simBeacon, err := catalyst.NewSimulatedBeacon(devPeriod, pendingFeeRecipient, ethBackend)
+		simBeacon, err := catalyst.NewSimulatedBeacon(devPeriod, pendingFeeRecipient, silaBackend)
 		if err != nil {
 			return err
 		}
@@ -400,7 +400,7 @@ func ConfigureConsensusRuntime(
 
 	if beaconMode {
 		srv := rpc.NewServer()
-		srv.RegisterName("engine", catalyst.NewConsensusAPI(ethBackend))
+		srv.RegisterName("engine", catalyst.NewConsensusAPI(silaBackend))
 
 		blsyncer := blsync.NewClient(beaconConfig)
 		blsyncer.SetEngineRPC(rpc.DialInProc(srv))
@@ -409,16 +409,16 @@ func ConfigureConsensusRuntime(
 		return nil
 	}
 
-	return RegisterEngineAPI(stack, ethBackend)
+	return RegisterEngineAPI(stack, silaBackend)
 }
 
 // RegisterBuildInfoGauge creates gauge with SilaChain system and build information.
-func RegisterBuildInfoGauge(ethBackend *sila.Ethereum, version string) {
-	if ethBackend == nil {
+func RegisterBuildInfoGauge(silaBackend *sila.Ethereum, version string) {
+	if silaBackend == nil {
 		return
 	}
 	var protos []string
-	for _, p := range ethBackend.Protocols() {
+	for _, p := range silaBackend.Protocols() {
 		protos = append(protos, fmt.Sprintf("%v/%d", p.Name, p.Version))
 	}
 	metrics.NewRegisteredGaugeInfo("sila/info", nil).Update(metrics.GaugeInfoValue{
