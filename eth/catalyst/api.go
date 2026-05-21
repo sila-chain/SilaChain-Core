@@ -141,7 +141,7 @@ func NewConsensusAPI(eth *eth.Ethereum) *ConsensusAPI {
 }
 
 // SilaEngineAPI exposes the consensus API under SilaEngine method names while
-// sharing the same execution semantics as the legacy engine API.
+// sharing the same execution semantics as the compatibility engine API.
 type SilaEngineAPI struct {
 	*ConsensusAPI
 }
@@ -486,7 +486,7 @@ func (api *ConsensusAPI) GetPayloadV4(payloadID engine.PayloadID) (*engine.Execu
 // GetPayloadV5 returns a cached payload by id. This endpoint should only
 // be used after the Osaka fork.
 //
-// This method follows the same specification as engine_getPayloadV4 with
+// This method follows the same specification as silaEngine_getPayloadV4 with
 // changes of returning BlobsBundleV2 with BlobSidecar version 1.
 func (api *ConsensusAPI) GetPayloadV5(payloadID engine.PayloadID) (*engine.ExecutionPayloadEnvelope, error) {
 	return api.getPayload(
@@ -561,7 +561,7 @@ func (api *ConsensusAPI) GetBlobsV1(hashes []common.Hash) ([]*engine.BlobAndProo
 	// follow https://github.com/ethereum/execution-apis/blob/main/src/engine/osaka.md#cancun-api
 	head := api.eth.BlockChain().CurrentHeader()
 	if !api.checkFork(head.Time, forks.Cancun, forks.Prague) {
-		return nil, unsupportedForkErr("engine_getBlobsV1 is only available at Cancun/Prague fork")
+		return nil, unsupportedForkErr("silaEngine_getBlobsV1 is only available at Cancun/Prague fork")
 	}
 	if len(hashes) > 128 {
 		return nil, engine.TooLargeRequest.With(fmt.Errorf("requested blob count too large: %v", len(hashes)))
@@ -587,7 +587,7 @@ func (api *ConsensusAPI) GetBlobsV1(hashes []common.Hash) ([]*engine.BlobAndProo
 // GetBlobsV2 returns a blob from the transaction pool.
 //
 // Specification:
-// Refer to the specification for engine_getBlobsV1 with changes of the following:
+// Refer to the specification for silaEngine_getBlobsV1 with changes of the following:
 //
 // Given an array of blob versioned hashes client software MUST respond with an
 // array of BlobAndProofV2 objects with matching versioned hashes, respecting
@@ -1133,8 +1133,8 @@ func (api *ConsensusAPI) GetClientVersionV1(info engine.ClientVersionV1) []engin
 	}
 }
 
-// GetPayloadBodiesByHashV1 implements engine_getPayloadBodiesByHashV1 which allows for retrieval of a list
-// of block bodies by the engine api.
+// GetPayloadBodiesByHashV1 implements silaEngine_getPayloadBodiesByHashV1 which allows for retrieval of a list
+// of block bodies by the Sila Engine API.
 func (api *ConsensusAPI) GetPayloadBodiesByHashV1(hashes []common.Hash) []*engine.ExecutionPayloadBody {
 	bodies := make([]*engine.ExecutionPayloadBody, len(hashes))
 	for i, hash := range hashes {
@@ -1144,8 +1144,8 @@ func (api *ConsensusAPI) GetPayloadBodiesByHashV1(hashes []common.Hash) []*engin
 	return bodies
 }
 
-// GetPayloadBodiesByHashV2 implements engine_getPayloadBodiesByHashV1 which allows for retrieval of a list
-// of block bodies by the engine api.
+// GetPayloadBodiesByHashV2 implements silaEngine_getPayloadBodiesByHashV2 which allows for retrieval of a list
+// of block bodies by the Sila Engine API.
 func (api *ConsensusAPI) GetPayloadBodiesByHashV2(hashes []common.Hash) []*engine.ExecutionPayloadBody {
 	bodies := make([]*engine.ExecutionPayloadBody, len(hashes))
 	for i, hash := range hashes {
@@ -1155,14 +1155,14 @@ func (api *ConsensusAPI) GetPayloadBodiesByHashV2(hashes []common.Hash) []*engin
 	return bodies
 }
 
-// GetPayloadBodiesByRangeV1 implements engine_getPayloadBodiesByRangeV1 which allows for retrieval of a range
-// of block bodies by the engine api.
+// GetPayloadBodiesByRangeV1 implements silaEngine_getPayloadBodiesByRangeV1 which allows for retrieval of a range
+// of block bodies by the Sila Engine API.
 func (api *ConsensusAPI) GetPayloadBodiesByRangeV1(start, count hexutil.Uint64) ([]*engine.ExecutionPayloadBody, error) {
 	return api.getBodiesByRange(start, count)
 }
 
-// GetPayloadBodiesByRangeV2 implements engine_getPayloadBodiesByRangeV1 which allows for retrieval of a range
-// of block bodies by the engine api.
+// GetPayloadBodiesByRangeV2 implements silaEngine_getPayloadBodiesByRangeV2 which allows for retrieval of a range
+// of block bodies by the Sila Engine API.
 func (api *ConsensusAPI) GetPayloadBodiesByRangeV2(start, count hexutil.Uint64) ([]*engine.ExecutionPayloadBody, error) {
 	return api.getBodiesByRange(start, count)
 }
