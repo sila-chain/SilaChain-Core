@@ -217,7 +217,7 @@ func (c *SimulatedBeacon) sealBlock(withdrawals []*types.Withdrawal, timestamp u
 	// simulating an incoming engine API request from a real consensus client.
 	fcCtx, fcSpanEnd := telemetry.StartServerSpan(context.Background(), tracer, telemetry.RPCInfo{
 		System:  "jsonrpc",
-		Service: "engine",
+		Service: "silaEngine",
 		Method:  "forkchoiceUpdatedV" + fmt.Sprintf("%d", version),
 	})
 	fcResponse, err := c.engineAPI.forkchoiceUpdated(fcCtx, c.curForkchoiceState, attribute, version, false)
@@ -239,7 +239,7 @@ func (c *SimulatedBeacon) sealBlock(withdrawals []*types.Withdrawal, timestamp u
 	// coming back to retrieve the built payload.
 	_, gpSpanEnd := telemetry.StartServerSpan(context.Background(), tracer, telemetry.RPCInfo{
 		System:  "jsonrpc",
-		Service: "engine",
+		Service: "silaEngine",
 		Method:  "getPayloadV" + fmt.Sprintf("%d", version),
 	})
 	envelope, err := c.engineAPI.getPayload(*fcResponse.PayloadID, true, nil, nil)
@@ -288,7 +288,7 @@ func (c *SimulatedBeacon) sealBlock(withdrawals []*types.Withdrawal, timestamp u
 	// sending the execution payload for validation.
 	npCtx, npSpanEnd := telemetry.StartServerSpan(context.Background(), tracer, telemetry.RPCInfo{
 		System:  "jsonrpc",
-		Service: "engine",
+		Service: "silaEngine",
 		Method:  "newPayloadV" + fmt.Sprintf("%d", version),
 	})
 
@@ -304,7 +304,7 @@ func (c *SimulatedBeacon) sealBlock(withdrawals []*types.Withdrawal, timestamp u
 	// which sets the new block as the canonical chain head.
 	fcuCtx, fcuSpanEnd := telemetry.StartServerSpan(context.Background(), tracer, telemetry.RPCInfo{
 		System:  "jsonrpc",
-		Service: "engine",
+		Service: "silaEngine",
 		Method:  "forkchoiceUpdatedV" + fmt.Sprintf("%d", version),
 	})
 	_, err = c.engineAPI.forkchoiceUpdated(fcuCtx, c.curForkchoiceState, nil, version, false)
