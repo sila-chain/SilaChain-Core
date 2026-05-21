@@ -132,13 +132,6 @@ func TestAuthEndpoints(t *testing.T) {
 	// register dummy apis so we can test the modules are available and reachable with authentication
 	node.RegisterAPIs([]rpc.API{
 		{
-			Namespace:     "engine",
-			Version:       "1.0",
-			Service:       helloRPC("hello engine"),
-			Public:        true,
-			Authenticated: true,
-		},
-		{
 			Namespace:     "silaEngine",
 			Version:       "1.0",
 			Service:       helloRPC("hello engine"),
@@ -272,13 +265,6 @@ func TestSilaEngineAuthCompatibilityFallback(t *testing.T) {
 	apis := []rpc.API{
 		{
 			Namespace:     "silaEngine",
-			Version:       "1.0",
-			Service:       helloRPC("hello engine"),
-			Public:        true,
-			Authenticated: true,
-		},
-		{
-			Namespace:     "engine",
 			Version:       "1.0",
 			Service:       helloRPC("hello engine"),
 			Public:        true,
