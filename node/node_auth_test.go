@@ -271,6 +271,37 @@ func TestDefaultAuthModulesExposeSilaEngine(t *testing.T) {
 	}
 }
 
+func TestSilaEngineAuthCompatibilityFallback(t *testing.T) {
+	apis := []rpc.API{
+		{
+			Namespace:     "silaEngine",
+			Version:       "1.0",
+			Service:       helloRPC("hello engine"),
+			Public:        true,
+			Authenticated: true,
+		},
+		{
+			Namespace:     "engine",
+			Version:       "1.0",
+			Service:       helloRPC("hello engine"),
+			Public:        true,
+			Authenticated: true,
+		},
+	}
+
+	seen := make(map[string]bool)
+	for _, api := range apis {
+		if api.Authenticated {
+			seen[api.Namespace] = true
+		}
+	}
+	if !seen["silaEngine"] {
+		t.Fatalf("silaEngine authenticated API must be primary")
+	}
+	if !seen["engine"] {
+		t.Fatalf("engine authenticated API must remain as compatibility fallback")
+	}
+}
 func TestSilaEngineAuthEndpointRegistered(t *testing.T) {
 	var seen bool
 	apis := []rpc.API{
