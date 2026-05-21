@@ -61,7 +61,7 @@ func (at *authTest) Run(t *testing.T) {
 	}
 
 	var x string
-	err = cl.CallContext(ctx, &x, "engine_helloWorld")
+	err = cl.CallContext(ctx, &x, "silaEngine_helloWorld")
 	if at.expectCall1Fail {
 		if err == nil {
 			t.Fatal("expected call 1 to fail")
@@ -179,8 +179,8 @@ func TestAuthEndpoints(t *testing.T) {
 
 	testCases := []authTest{
 		// Auth works
-		{name: "ws good", endpoint: node.WSAuthEndpoint(), prov: goodAuth, expectCall1Fail: false},
-		{name: "http good", endpoint: node.HTTPAuthEndpoint(), prov: goodAuth, expectCall1Fail: false},
+		{name: "ws good silaEngine", endpoint: node.WSAuthEndpoint(), prov: goodAuth, expectCall1Fail: false},
+		{name: "http good silaEngine", endpoint: node.HTTPAuthEndpoint(), prov: goodAuth, expectCall1Fail: false},
 
 		// Try a bad auth
 		{name: "ws bad", endpoint: node.WSAuthEndpoint(), prov: badAuth, expectDialFail: true},      // ws auth is immediate
