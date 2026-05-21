@@ -299,3 +299,11 @@ func TestSilaEngineAuthEndpointRegistered(t *testing.T) {
 		t.Fatalf("silaEngine authenticated API must be registered")
 	}
 }
+
+func TestDefaultAuthModulesDoNotExposeLegacyEngine(t *testing.T) {
+	for _, module := range DefaultAuthModules {
+		if module == "engine" {
+			t.Fatalf("default authenticated modules must not expose legacy engine: %v", DefaultAuthModules)
+		}
+	}
+}
