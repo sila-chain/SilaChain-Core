@@ -47,7 +47,7 @@ import (
 	"github.com/sila-org/sila/rpc"
 )
 
-// Register adds the engine API and related APIs to the full node.
+// Register adds the Sila Engine API and related compatibility APIs to the full node.
 func Register(stack *node.Node, backend *eth.Ethereum) error {
 	stack.RegisterAPIs([]rpc.API{
 		newTestingAPI(backend),
@@ -159,7 +159,7 @@ func (api *SilaEngineAPI) ExchangeCapabilities([]string) []string {
 // newConsensusAPIWithoutHeartbeat creates a new consensus api for the SimulatedBeacon Node.
 func newConsensusAPIWithoutHeartbeat(eth *eth.Ethereum) *ConsensusAPI {
 	if eth.BlockChain().Config().TerminalTotalDifficulty == nil {
-		log.Warn("Engine API started but chain not configured for merge yet")
+		log.Warn("Sila Engine API started but chain not configured for merge yet")
 	}
 	api := &ConsensusAPI{
 		eth:               eth,
@@ -261,7 +261,7 @@ func (api *ConsensusAPI) forkchoiceUpdated(ctx context.Context, update engine.Fo
 	api.forkchoiceLock.Lock()
 	defer api.forkchoiceLock.Unlock()
 
-	log.Trace("Engine API request received", "method", "ForkchoiceUpdated", "head", update.HeadBlockHash, "finalized", update.FinalizedBlockHash, "safe", update.SafeBlockHash)
+	log.Trace("Sila Engine API request received", "method", "ForkchoiceUpdated", "head", update.HeadBlockHash, "finalized", update.FinalizedBlockHash, "safe", update.SafeBlockHash)
 	if update.HeadBlockHash == (common.Hash{}) {
 		log.Warn("Forkchoice requested update to zero hash")
 		return engine.STATUS_INVALID, nil // TODO(karalabe): Why does someone send us this?
@@ -412,7 +412,7 @@ func (api *ConsensusAPI) forkchoiceUpdated(ctx context.Context, update engine.Fo
 // ExchangeTransitionConfigurationV1 checks the given configuration against
 // the configuration of the node.
 func (api *ConsensusAPI) ExchangeTransitionConfigurationV1(config engine.TransitionConfigurationV1) (*engine.TransitionConfigurationV1, error) {
-	log.Trace("Engine API request received", "method", "ExchangeTransitionConfiguration", "ttd", config.TerminalTotalDifficulty)
+	log.Trace("Sila Engine API request received", "method", "ExchangeTransitionConfiguration", "ttd", config.TerminalTotalDifficulty)
 	if config.TerminalTotalDifficulty == nil {
 		return nil, errors.New("invalid terminal total difficulty")
 	}
@@ -520,7 +520,7 @@ func (api *ConsensusAPI) GetPayloadV6(payloadID engine.PayloadID) (*engine.Execu
 //
 // Note passing nil `forks`, `versions` disables the respective check.
 func (api *ConsensusAPI) getPayload(payloadID engine.PayloadID, full bool, versions []engine.PayloadVersion, forks []forks.Fork) (*engine.ExecutionPayloadEnvelope, error) {
-	log.Trace("Engine API request received", "method", "GetPayload", "id", payloadID)
+	log.Trace("Sila Engine API request received", "method", "GetPayload", "id", payloadID)
 	if versions != nil && !payloadID.Is(versions...) {
 		return nil, engine.UnsupportedFork
 	}
@@ -808,7 +808,7 @@ func (api *ConsensusAPI) newPayload(ctx context.Context, params engine.Executabl
 	api.newPayloadLock.Lock()
 	defer api.newPayloadLock.Unlock()
 
-	log.Trace("Engine API request received", "method", "NewPayload", "number", params.Number, "hash", params.BlockHash)
+	log.Trace("Sila Engine API request received", "method", "NewPayload", "number", params.Number, "hash", params.BlockHash)
 	block, err := engine.ExecutableDataToBlock(params, versionedHashes, beaconRoot, requests)
 	if err != nil {
 		bgu := "nil"
@@ -1118,7 +1118,7 @@ func (api *ConsensusAPI) exchangeCapabilities(namespace string) []string {
 
 // GetClientVersionV1 exchanges client version data of this node.
 func (api *ConsensusAPI) GetClientVersionV1(info engine.ClientVersionV1) []engine.ClientVersionV1 {
-	log.Trace("Engine API request received", "method", "GetClientVersionV1", "info", info.String())
+	log.Trace("Sila Engine API request received", "method", "GetClientVersionV1", "info", info.String())
 	commit := make([]byte, 4)
 	if vcs, ok := version.VCS(); ok {
 		commit = common.FromHex(vcs.Commit)[0:4]
