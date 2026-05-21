@@ -29,7 +29,7 @@ import (
 )
 
 const MetadataApi = "rpc"
-const EngineApi = "engine"
+const SilaEngineApi = "silaEngine"
 
 // CodecOption specifies which type of messages a codec supports.
 //
