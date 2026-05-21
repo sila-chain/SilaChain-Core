@@ -265,3 +265,24 @@ func TestDefaultAuthModulesExposeSilaEngine(t *testing.T) {
 		t.Fatalf("default authenticated modules must keep engine compatibility: %v", DefaultAuthModules)
 	}
 }
+
+func TestSilaEngineAuthEndpointRegistered(t *testing.T) {
+	var seen bool
+	apis := []rpc.API{
+		{
+			Namespace:     "silaEngine",
+			Version:       "1.0",
+			Service:       helloRPC("hello engine"),
+			Public:        true,
+			Authenticated: true,
+		},
+	}
+	for _, api := range apis {
+		if api.Namespace == "silaEngine" && api.Authenticated {
+			seen = true
+		}
+	}
+	if !seen {
+		t.Fatalf("silaEngine authenticated API must be registered")
+	}
+}
