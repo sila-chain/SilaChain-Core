@@ -26,7 +26,7 @@ var Modules = map[string]string{
 	"eth":      SilaExecutionTemplateJs,
 	"miner":    MinerJs,
 	"net":      NetJs,
-	"sila":     SilaJs,
+	"sila":     SilaExecutionJs,
 	"silaNet":  SilaNetJs,
 	"silaWeb3": SilaWeb3Js,
 	"rpc":      RpcJs,
@@ -673,7 +673,7 @@ web3._extend({
 });
 `
 
-var SilaJs = strings.NewReplacer(
+var SilaExecutionJs = strings.NewReplacer(
 	"property: 'eth'",
 	"property: 'sila'",
 	"call: 'eth_",
