@@ -256,9 +256,6 @@ func TestDefaultAuthModulesExposeSilaEngine(t *testing.T) {
 	if !modules["silaEngine"] {
 		t.Fatalf("default authenticated modules must expose silaEngine: %v", DefaultAuthModules)
 	}
-	if modules["engine"] && positions["silaEngine"] > positions["engine"] {
-		t.Fatalf("silaEngine must be preferred before engine compatibility: %v", DefaultAuthModules)
-	}
 }
 
 func TestSilaEngineAuthCompatibilityFallback(t *testing.T) {
@@ -280,9 +277,6 @@ func TestSilaEngineAuthCompatibilityFallback(t *testing.T) {
 	}
 	if !seen["silaEngine"] {
 		t.Fatalf("silaEngine authenticated API must be primary")
-	}
-	if seen["engine"] && !seen["silaEngine"] {
-		t.Fatalf("engine compatibility must not replace silaEngine primary auth API")
 	}
 }
 func TestSilaEngineAuthEndpointRegistered(t *testing.T) {

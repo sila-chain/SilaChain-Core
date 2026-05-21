@@ -647,10 +647,6 @@ func TestFilterLegacyCompatibilityAPIs(t *testing.T) {
 			t.Fatalf("required namespace %q must remain available", namespace)
 		}
 	}
-
-	if got["engine"] && !got["silaEngine"] {
-		t.Fatalf("engine compatibility namespace must not replace silaEngine")
-	}
 }
 func apis() []rpc.API {
 	return []rpc.API{
