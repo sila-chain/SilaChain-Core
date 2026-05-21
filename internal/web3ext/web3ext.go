@@ -23,7 +23,7 @@ var Modules = map[string]string{
 	"admin":    AdminJs,
 	"clique":   CliqueJs,
 	"debug":    DebugJs,
-	"eth":      EthJs,
+	"eth":      SilaExecutionTemplateJs,
 	"miner":    MinerJs,
 	"net":      NetJs,
 	"sila":     SilaJs,
@@ -485,7 +485,7 @@ web3._extend({
 });
 `
 
-const EthJs = `
+const SilaExecutionTemplateJs = `
 web3._extend({
 	property: 'eth',
 	methods: [
@@ -680,7 +680,7 @@ var SilaJs = strings.NewReplacer(
 	"call: 'sila_",
 	"getter: 'eth_",
 	"getter: 'sila_",
-).Replace(EthJs)
+).Replace(SilaExecutionTemplateJs)
 
 const MinerJs = `
 web3._extend({
