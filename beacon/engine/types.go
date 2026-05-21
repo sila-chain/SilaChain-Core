@@ -117,7 +117,7 @@ type executableDataMarshaling struct {
 	SlotNumber    *hexutil.Uint64
 }
 
-// StatelessPayloadStatusV1 is the result of a stateless payload execution.
+// StatelessPayloadStatusV1 is the result of a Sila stateless payload execution.
 type StatelessPayloadStatusV1 struct {
 	Status          string      `json:"status"`
 	StateRoot       common.Hash `json:"stateRoot"`
