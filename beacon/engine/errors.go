@@ -21,7 +21,7 @@ import (
 	"github.com/sila-org/sila/rpc"
 )
 
-// EngineAPIError is a standardized error message between consensus and execution
+// EngineAPIError is a Sila Engine API standardized error message between consensus and execution
 // clients, also containing any custom error message the execution client might include.
 type EngineAPIError struct {
 	code int
@@ -55,22 +55,22 @@ var (
 )
 
 var (
-	// VALID is returned by the engine API in the following calls:
+	// VALID is returned by the Sila Engine API in the following calls:
 	//   - newPayloadV1:       if the payload was already known or was just validated and executed
 	//   - forkchoiceUpdateV1: if the chain accepted the reorg (might ignore if it's stale)
 	VALID = "VALID"
 
-	// INVALID is returned by the engine API in the following calls:
+	// INVALID is returned by the Sila Engine API in the following calls:
 	//   - newPayloadV1:       if the payload failed to execute on top of the local chain
 	//   - forkchoiceUpdateV1: if the new head is unknown, pre-merge, or reorg to it fails
 	INVALID = "INVALID"
 
-	// SYNCING is returned by the engine API in the following calls:
+	// SYNCING is returned by the Sila Engine API in the following calls:
 	//   - newPayloadV1:       if the payload was accepted on top of an active sync
 	//   - forkchoiceUpdateV1: if the new head was seen before, but not part of the chain
 	SYNCING = "SYNCING"
 
-	// ACCEPTED is returned by the engine API in the following calls:
+	// ACCEPTED is returned by the Sila Engine API in the following calls:
 	//   - newPayloadV1: if the payload was accepted, but not processed (side chain)
 	ACCEPTED = "ACCEPTED"
 
