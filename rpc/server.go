@@ -239,6 +239,11 @@ func (s *RPCService) Modules() map[string]string {
 
 	modules := make(map[string]string)
 	for name := range s.server.services.services {
+		if name == "engine" {
+			if _, ok := s.server.services.services["silaEngine"]; ok {
+				continue
+			}
+		}
 		modules[name] = "1.0"
 	}
 	return modules

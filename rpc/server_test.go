@@ -310,3 +310,20 @@ func TestSilaEngineRegistersLegacyEngineAlias(t *testing.T) {
 		t.Fatal("engine compatibility alias not registered")
 	}
 }
+
+func TestSilaEngineHidesLegacyEngineFromModules(t *testing.T) {
+	server := NewServer()
+	service := new(testService)
+
+	if err := server.RegisterName("silaEngine", service); err != nil {
+		t.Fatalf("register silaEngine: %v", err)
+	}
+
+	modules := server.services.services["rpc"].callbacks["modules"].rcvr.Interface().(*RPCService).Modules()
+	if _, ok := modules["silaEngine"]; !ok {
+		t.Fatal("silaEngine namespace not visible")
+	}
+	if _, ok := modules["engine"]; ok {
+		t.Fatal("engine compatibility alias should be hidden from modules")
+	}
+}
