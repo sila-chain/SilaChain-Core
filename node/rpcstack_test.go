@@ -643,10 +643,14 @@ func TestFilterLegacyCompatibilityAPIs(t *testing.T) {
 	for _, api := range filtered {
 		got[api.Namespace] = true
 	}
-	for _, namespace := range []string{"sila", "silaNet", "silaWeb3", "silaEngine", "engine"} {
+	for _, namespace := range []string{"sila", "silaNet", "silaWeb3", "silaEngine"} {
 		if !got[namespace] {
 			t.Fatalf("required namespace %q must remain available", namespace)
 		}
+	}
+
+	if got["engine"] && !got["silaEngine"] {
+		t.Fatalf("engine compatibility namespace must not replace silaEngine")
 	}
 }
 func apis() []rpc.API {
