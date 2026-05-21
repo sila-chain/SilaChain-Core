@@ -291,3 +291,22 @@ func TestServerWebsocketReadLimit(t *testing.T) {
 		})
 	}
 }
+
+func TestSilaEngineRegistersLegacyEngineAlias(t *testing.T) {
+	server := NewServer()
+	service := new(testService)
+
+	if err := server.RegisterName("silaEngine", service); err != nil {
+		t.Fatalf("register silaEngine: %v", err)
+	}
+
+	server.services.mu.Lock()
+	defer server.services.mu.Unlock()
+
+	if _, ok := server.services.services["silaEngine"]; !ok {
+		t.Fatal("silaEngine namespace not registered")
+	}
+	if _, ok := server.services.services["engine"]; !ok {
+		t.Fatal("engine compatibility alias not registered")
+	}
+}
