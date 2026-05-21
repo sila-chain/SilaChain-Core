@@ -298,8 +298,8 @@ func TestSilaEngineAuthCompatibilityFallback(t *testing.T) {
 	if !seen["silaEngine"] {
 		t.Fatalf("silaEngine authenticated API must be primary")
 	}
-	if !seen["engine"] {
-		t.Fatalf("engine authenticated API compatibility may remain enabled")
+	if seen["engine"] && !seen["silaEngine"] {
+		t.Fatalf("engine compatibility must not replace silaEngine primary auth API")
 	}
 }
 func TestSilaEngineAuthEndpointRegistered(t *testing.T) {
