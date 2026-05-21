@@ -27,6 +27,7 @@ import (
 	"math/big"
 	"math/rand"
 	"reflect"
+	"strings"
 	"sync"
 	"testing"
 	"time"
@@ -2109,5 +2110,19 @@ func runGetBlobs(t testing.TB, getBlobs getBlobsFn, start, limit int, fillRandom
 	}
 	if !reflect.DeepEqual(result, expect) {
 		t.Fatalf("Unexpected result for case %s", name)
+	}
+}
+
+func TestSilaEngineExchangeCapabilitiesAreSilaNamespaced(t *testing.T) {
+	api := &SilaEngineAPI{ConsensusAPI: &ConsensusAPI{}}
+	caps := api.ExchangeCapabilities(nil)
+
+	if len(caps) == 0 {
+		t.Fatalf("expected Sila engine capabilities")
+	}
+	for _, cap := range caps {
+		if !strings.HasPrefix(cap, "silaEngine_") {
+			t.Fatalf("expected Sila engine capability prefix, got %q", cap)
+		}
 	}
 }
