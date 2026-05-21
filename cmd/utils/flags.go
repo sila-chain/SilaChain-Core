@@ -2206,9 +2206,15 @@ func SetDNSDiscoveryDefaults(cfg *ethconfig.Config, genesis common.Hash) {
 	}
 }
 
+// SilaAPIBackend is the Sila execution API backend used by cmd/utils.
+type SilaAPIBackend = eth.EthAPIBackend
+
+// SilaExecutionBackend is the Sila execution backend used by cmd/utils.
+type SilaExecutionBackend = eth.Ethereum
+
 // RegisterSilaService adds the Sila execution client to the stack.
 // The second return value is the full node instance.
-func RegisterSilaService(stack *node.Node, cfg *ethconfig.Config) (*eth.EthAPIBackend, *eth.Ethereum) {
+func RegisterSilaService(stack *node.Node, cfg *ethconfig.Config) (*SilaAPIBackend, *SilaExecutionBackend) {
 	backend, err := eth.New(stack, cfg)
 	if err != nil {
 		Fatalf("Failed to register the SilaChain service: %v", err)
@@ -2218,20 +2224,20 @@ func RegisterSilaService(stack *node.Node, cfg *ethconfig.Config) (*eth.EthAPIBa
 }
 
 // RegisterEthService adds the Sila execution compatibility client to the stack.
-func RegisterEthService(stack *node.Node, cfg *ethconfig.Config) (*eth.EthAPIBackend, *eth.Ethereum) {
+func RegisterEthService(stack *node.Node, cfg *ethconfig.Config) (*SilaAPIBackend, *SilaExecutionBackend) {
 	return RegisterSilaService(stack, cfg)
 }
 
 // RegisterEthStatsService configures the Sila Stats compatibility daemon and adds it to the node.
 // RegisterSilaStatsService configures the Sila Stats daemon and adds it to the node.
-func RegisterSilaStatsService(stack *node.Node, backend *eth.EthAPIBackend, url string) {
+func RegisterSilaStatsService(stack *node.Node, backend *SilaAPIBackend, url string) {
 	if err := ethstats.New(stack, backend, backend.Engine(), url); err != nil {
 		Fatalf("Failed to register the Sila Stats service: %v", err)
 	}
 }
 
 // RegisterEthStatsService configures the Sila Stats compatibility daemon and adds it to the node.
-func RegisterEthStatsService(stack *node.Node, backend *eth.EthAPIBackend, url string) {
+func RegisterEthStatsService(stack *node.Node, backend *SilaAPIBackend, url string) {
 	RegisterSilaStatsService(stack, backend, url)
 }
 
@@ -2258,7 +2264,7 @@ func RegisterFilterAPI(stack *node.Node, backend ethapi.Backend, ethcfg *ethconf
 }
 
 // RegisterSyncOverrideService adds the synchronization override service into node.
-func RegisterSyncOverrideService(stack *node.Node, silaBackend *eth.Ethereum, target common.Hash, exitWhenSynced bool) {
+func RegisterSyncOverrideService(stack *node.Node, silaBackend *SilaExecutionBackend, target common.Hash, exitWhenSynced bool) {
 	if target != (common.Hash{}) {
 		log.Info("Registered sync override service", "hash", target, "exitWhenSynced", exitWhenSynced)
 	} else {
