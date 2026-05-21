@@ -52,13 +52,13 @@ func Register(stack *node.Node, backend *eth.Ethereum) error {
 	stack.RegisterAPIs([]rpc.API{
 		newTestingAPI(backend),
 		{
-			Namespace:     "engine",
-			Service:       NewConsensusAPI(backend),
+			Namespace:     "silaEngine",
+			Service:       NewSilaEngineAPI(backend),
 			Authenticated: true,
 		},
 		{
-			Namespace:     "silaEngine",
-			Service:       NewSilaEngineAPI(backend),
+			Namespace:     "engine",
+			Service:       NewConsensusAPI(backend),
 			Authenticated: true,
 		},
 	})
