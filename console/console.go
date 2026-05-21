@@ -214,7 +214,7 @@ func (c *Console) initExtensions() error {
 	}
 
 	// Compute aliases from server-provided modules.
-	aliases := map[string]struct{}{"eth": {}, "sila": {}}
+	aliases := map[string]struct{}{"sila": {}}
 	for api := range apis {
 		if api == "web3" {
 			continue
