@@ -252,3 +252,16 @@ func offsetTimeAuth(secret [32]byte, offset time.Duration) rpc.HTTPAuth {
 		return nil
 	}
 }
+
+func TestDefaultAuthModulesExposeSilaEngine(t *testing.T) {
+	modules := make(map[string]bool)
+	for _, module := range DefaultAuthModules {
+		modules[module] = true
+	}
+	if !modules["silaEngine"] {
+		t.Fatalf("default authenticated modules must expose silaEngine: %v", DefaultAuthModules)
+	}
+	if !modules["engine"] {
+		t.Fatalf("default authenticated modules must keep engine compatibility: %v", DefaultAuthModules)
+	}
+}
