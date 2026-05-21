@@ -641,7 +641,34 @@ func (is *ipcServer) stop() error {
 // and then registers all of the APIs exposed by the services.
 
 func filterLegacyCompatibilityAPIs(apis []rpc.API) []rpc.API {
-	return apis
+	hasSila := make(map[string]bool)
+	for _, api := range apis {
+		hasSila[api.Namespace] = true
+	}
+
+	filtered := apis[:0]
+	for _, api := range apis {
+		switch api.Namespace {
+		case "eth":
+			if hasSila["sila"] {
+				continue
+			}
+		case "net":
+			if hasSila["silaNet"] {
+				continue
+			}
+		case "web3":
+			if hasSila["silaWeb3"] {
+				continue
+			}
+		case "engine":
+			if hasSila["silaEngine"] {
+				continue
+			}
+		}
+		filtered = append(filtered, api)
+	}
+	return filtered
 }
 func RegisterApis(apis []rpc.API, modules []string, srv *rpc.Server) error {
 	if bad, available := checkModuleAvailability(modules, apis); len(bad) > 0 {
