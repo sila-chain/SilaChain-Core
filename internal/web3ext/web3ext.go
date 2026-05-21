@@ -484,6 +484,7 @@ web3._extend({
 });
 `
 
+// SilaLegacyExecutionTemplateJs is the temporary compatibility source for SilaExecutionJs.
 const SilaLegacyExecutionTemplateJs = `
 web3._extend({
 	property: 'eth',
