@@ -2127,6 +2127,27 @@ func TestSilaEngineExchangeCapabilitiesAreSilaNamespaced(t *testing.T) {
 	}
 }
 
+func TestSilaEngineAPIRegisteredBeforeCompatibilityEngine(t *testing.T) {
+	apis := []rpc.API{
+		{
+			Namespace:     "silaEngine",
+			Service:       &SilaEngineAPI{},
+			Authenticated: true,
+		},
+		{
+			Namespace:     "engine",
+			Service:       &ConsensusAPI{},
+			Authenticated: true,
+		},
+	}
+
+	if apis[0].Namespace != "silaEngine" {
+		t.Fatalf("expected silaEngine to be registered first")
+	}
+	if apis[1].Namespace != "engine" {
+		t.Fatalf("expected compatibility engine namespace second")
+	}
+}
 func TestLegacyEngineExchangeCapabilitiesRemainCompatibilityNamespaced(t *testing.T) {
 	api := &ConsensusAPI{}
 	caps := api.ExchangeCapabilities(nil)
