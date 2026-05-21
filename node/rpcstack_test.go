@@ -672,3 +672,24 @@ func (s *testService) Greet() string {
 func (s *testService) Sleep() {
 	time.Sleep(1500 * time.Millisecond)
 }
+
+func TestFilterLegacyCompatibilityAPIsKeepsLegacyWithoutSilaReplacement(t *testing.T) {
+	apis := []rpc.API{
+		{Namespace: "eth", Service: &testService{}},
+		{Namespace: "net", Service: &testService{}},
+		{Namespace: "web3", Service: &testService{}},
+		{Namespace: "engine", Service: &testService{}},
+	}
+
+	filtered := filterLegacyCompatibilityAPIs(apis)
+
+	got := make(map[string]bool)
+	for _, api := range filtered {
+		got[api.Namespace] = true
+	}
+	for _, namespace := range []string{"eth", "net", "web3", "engine"} {
+		if !got[namespace] {
+			t.Fatalf("legacy namespace %q must remain when Sila replacement is unavailable", namespace)
+		}
+	}
+}
