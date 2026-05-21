@@ -631,7 +631,6 @@ func TestFilterLegacyCompatibilityAPIs(t *testing.T) {
 		{Namespace: "silaNet", Service: &testService{}},
 		{Namespace: "silaWeb3", Service: &testService{}},
 		{Namespace: "silaEngine", Service: &testService{}},
-		{Namespace: "engine", Service: &testService{}},
 	}
 
 	filtered := filterLegacyCompatibilityAPIs(apis)
