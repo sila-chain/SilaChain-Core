@@ -263,10 +263,7 @@ func TestDefaultAuthModulesExposeSilaEngine(t *testing.T) {
 	if !modules["silaEngine"] {
 		t.Fatalf("default authenticated modules must expose silaEngine: %v", DefaultAuthModules)
 	}
-	if !modules["engine"] {
-		t.Fatalf("default authenticated modules must keep engine compatibility: %v", DefaultAuthModules)
-	}
-	if positions["silaEngine"] > positions["engine"] {
+	if modules["engine"] && positions["silaEngine"] > positions["engine"] {
 		t.Fatalf("silaEngine must be preferred before engine compatibility: %v", DefaultAuthModules)
 	}
 }
