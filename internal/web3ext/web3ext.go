@@ -23,7 +23,6 @@ var Modules = map[string]string{
 	"admin":    AdminJs,
 	"clique":   CliqueJs,
 	"debug":    DebugJs,
-	"eth":      SilaExecutionTemplateJs,
 	"miner":    MinerJs,
 	"net":      NetJs,
 	"sila":     SilaExecutionJs,
