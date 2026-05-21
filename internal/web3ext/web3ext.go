@@ -484,7 +484,7 @@ web3._extend({
 });
 `
 
-const SilaExecutionTemplateJs = `
+const SilaLegacyExecutionTemplateJs = `
 web3._extend({
 	property: 'eth',
 	methods: [
@@ -679,7 +679,7 @@ var SilaExecutionJs = strings.NewReplacer(
 	"call: 'sila_",
 	"getter: 'eth_",
 	"getter: 'sila_",
-).Replace(SilaExecutionTemplateJs)
+).Replace(SilaLegacyExecutionTemplateJs)
 
 const MinerJs = `
 web3._extend({
