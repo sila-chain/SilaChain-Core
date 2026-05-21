@@ -332,3 +332,24 @@ func TestSilaConsoleExecutionAPI(t *testing.T) {
 		t.Fatalf("sila.getBlock returned nil")
 	}
 }
+
+func TestSilaConsoleDoesNotLoadEthExtensionWhenSilaExists(t *testing.T) {
+	tester := newTester(t, nil)
+	defer tester.Close(t)
+
+	result, err := tester.console.jsre.Run(`typeof eth`)
+	if err != nil {
+		t.Fatalf("failed to inspect eth extension: %v", err)
+	}
+	if result.String() != "undefined" {
+		t.Fatalf("eth extension should not be loaded when sila exists, got %q", result.String())
+	}
+
+	result, err = tester.console.jsre.Run(`typeof sila.getBlock`)
+	if err != nil {
+		t.Fatalf("failed to inspect sila.getBlock: %v", err)
+	}
+	if result.String() != "function" {
+		t.Fatalf("sila.getBlock should be available, got %q", result.String())
+	}
+}
