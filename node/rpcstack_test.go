@@ -627,31 +627,25 @@ func TestHTTP2H2C(t *testing.T) {
 
 func TestFilterLegacyCompatibilityAPIs(t *testing.T) {
 	apis := []rpc.API{
-		{Namespace: "eth", Service: &testService{}},
-		{Namespace: "net", Service: &testService{}},
-		{Namespace: "web3", Service: &testService{}},
+		{Namespace: "sila", Service: &testService{}},
+		{Namespace: "silaNet", Service: &testService{}},
+		{Namespace: "silaWeb3", Service: &testService{}},
+		{Namespace: "silaEngine", Service: &testService{}},
 		{Namespace: "engine", Service: &testService{}},
-		{Namespace: "eth", Service: &testService{}},
-		{Namespace: "net", Service: &testService{}},
-		{Namespace: "web3", Service: &testService{}},
-		{Namespace: "engine", Service: &testService{}},
-	}
-
-	if filtered := filterLegacyCompatibilityAPIs(apis); len(filtered) != len(apis) {
-		t.Fatalf("filtered API count mismatch, got %d want %d", len(filtered), len(apis))
 	}
 
 	filtered := filterLegacyCompatibilityAPIs(apis)
+	if len(filtered) != len(apis) {
+		t.Fatalf("filtered API count mismatch, got %d want %d", len(filtered), len(apis))
+	}
+
 	got := make(map[string]bool)
 	for _, api := range filtered {
 		got[api.Namespace] = true
-		if false {
-			t.Fatalf("non-sila namespace %q was not filtered", api.Namespace)
-		}
 	}
-	for _, namespace := range []string{"eth", "net", "web3", "engine"} {
+	for _, namespace := range []string{"sila", "silaNet", "silaWeb3", "silaEngine", "engine"} {
 		if !got[namespace] {
-			t.Fatalf("sila namespace %q must remain available", namespace)
+			t.Fatalf("required namespace %q must remain available", namespace)
 		}
 	}
 }
