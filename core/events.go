@@ -39,7 +39,7 @@ type ChainHeadEvent struct {
 	Header *types.Header
 }
 
-// NewPayloadEvent is posted when engine_newPayloadVX processes a block.
+// NewPayloadEvent is posted when silaEngine_newPayloadVX processes a block.
 type NewPayloadEvent struct {
 	Hash           common.Hash
 	Number         uint64
