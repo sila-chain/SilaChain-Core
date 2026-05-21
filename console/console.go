@@ -219,6 +219,11 @@ func (c *Console) initExtensions() error {
 		if api == "web3" {
 			continue
 		}
+		if api == "eth" {
+			if _, hasSila := apis["sila"]; hasSila {
+				continue
+			}
+		}
 		aliases[api] = struct{}{}
 		if file, ok := web3ext.Modules[api]; ok {
 			if err = c.jsre.Compile(api+".js", file); err != nil {
