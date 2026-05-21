@@ -106,7 +106,17 @@ func (s *Server) SetWebsocketReadLimit(limit int64) {
 // subscription an error is returned. Otherwise a new service is created and added to the
 // service collection this server provides to clients.
 func (s *Server) RegisterName(name string, receiver interface{}) error {
-	return s.services.registerName(name, receiver)
+	if err := s.services.registerName(name, receiver); err != nil {
+		return err
+	}
+
+	if name == "silaEngine" {
+		if err := s.services.registerName("engine", receiver); err != nil {
+			return err
+		}
+	}
+
+	return nil
 }
 
 // ServeCodec reads incoming requests from codec, calls the appropriate callback and writes
