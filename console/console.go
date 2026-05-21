@@ -235,6 +235,7 @@ func (c *Console) initExtensions() error {
 	// Apply aliases.
 	c.jsre.Do(func(vm *goja.Runtime) {
 		web3 := getObject(vm, "web3")
+		// Keep this compatibility bootstrap until the Sila execution extension can initialize web3.sila natively.
 		if eth := web3.Get("eth"); eth != nil {
 			web3.Set("sila", eth)
 			vm.Set("sila", eth)
