@@ -122,8 +122,8 @@ func TestAuthEndpoints(t *testing.T) {
 		AuthPort:  0,
 		JWTSecret: jwtPath,
 
-		WSModules:   []string{"sila", "engine", "silaEngine"},
-		HTTPModules: []string{"sila", "engine", "silaEngine"},
+		WSModules:   []string{"sila", "silaEngine", "engine"},
+		HTTPModules: []string{"sila", "silaEngine", "engine"},
 	}
 	node, err := New(conf)
 	if err != nil {
