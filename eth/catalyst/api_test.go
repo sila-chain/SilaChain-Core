@@ -2126,3 +2126,17 @@ func TestSilaEngineExchangeCapabilitiesAreSilaNamespaced(t *testing.T) {
 		}
 	}
 }
+
+func TestLegacyEngineExchangeCapabilitiesRemainCompatibilityNamespaced(t *testing.T) {
+	api := &ConsensusAPI{}
+	caps := api.ExchangeCapabilities(nil)
+
+	if len(caps) == 0 {
+		t.Fatalf("expected legacy engine compatibility capabilities")
+	}
+	for _, cap := range caps {
+		if !strings.HasPrefix(cap, "engine_") {
+			t.Fatalf("expected legacy engine capability prefix, got %q", cap)
+		}
+	}
+}
