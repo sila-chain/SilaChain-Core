@@ -319,3 +319,16 @@ func TestIndenting(t *testing.T) {
 		}
 	}
 }
+
+func TestSilaConsoleExecutionAPI(t *testing.T) {
+	tester := newTester(t, nil)
+	defer tester.Close(t)
+
+	result, err := tester.console.jsre.Run(`sila.getBlock(0).number`)
+	if err != nil {
+		t.Fatalf("failed to execute sila.getBlock in console: %v", err)
+	}
+	if result == nil {
+		t.Fatalf("sila.getBlock returned nil")
+	}
+}
