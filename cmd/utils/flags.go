@@ -2206,9 +2206,8 @@ func SetDNSDiscoveryDefaults(cfg *ethconfig.Config, genesis common.Hash) {
 	}
 }
 
-// RegisterEthService adds the Sila execution compatibility client to the stack.
-// The second return value is the full node instance.
 // RegisterSilaService adds the Sila execution client to the stack.
+// The second return value is the full node instance.
 func RegisterSilaService(stack *node.Node, cfg *ethconfig.Config) (*eth.EthAPIBackend, *eth.Ethereum) {
 	backend, err := eth.New(stack, cfg)
 	if err != nil {
