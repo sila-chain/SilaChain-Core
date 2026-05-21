@@ -64,11 +64,11 @@ func (ec *engineClient) updateLoop(headCh <-chan types.ChainHeadEvent) {
 	for {
 		select {
 		case <-ec.rootCtx.Done():
-			log.Debug("Stopping engine API update loop")
+			log.Debug("Stopping Sila Engine API update loop")
 			return
 
 		case event := <-headCh:
-			if ec.rpc == nil { // dry run, no engine API specified
+			if ec.rpc == nil { // dry run, no Sila Engine API specified
 				log.Info("New execution block retrieved", "number", event.Block.NumberU64(), "hash", event.Block.Hash(), "finalized", event.Finalized)
 				continue
 			}
@@ -106,16 +106,16 @@ func (ec *engineClient) callNewPayload(fork string, event types.ChainHeadEvent) 
 	)
 	switch fork {
 	case "altair", "bellatrix":
-		method = "engine_newPayloadV1"
+		method = "silaEngine_newPayloadV1"
 	case "capella":
-		method = "engine_newPayloadV2"
+		method = "silaEngine_newPayloadV2"
 	case "deneb":
-		method = "engine_newPayloadV3"
+		method = "silaEngine_newPayloadV3"
 		parentBeaconRoot := event.BeaconHead.ParentRoot
 		blobHashes := collectBlobHashes(event.Block)
 		params = append(params, blobHashes, parentBeaconRoot)
 	default: // electra, fulu and above
-		method = "engine_newPayloadV4"
+		method = "silaEngine_newPayloadV4"
 		parentBeaconRoot := event.BeaconHead.ParentRoot
 		blobHashes := collectBlobHashes(event.Block)
 		hexRequests := make([]hexutil.Bytes, len(event.ExecRequests))
@@ -150,11 +150,11 @@ func (ec *engineClient) callForkchoiceUpdated(fork string, event types.ChainHead
 	var method string
 	switch fork {
 	case "altair", "bellatrix":
-		method = "engine_forkchoiceUpdatedV1"
+		method = "silaEngine_forkchoiceUpdatedV1"
 	case "capella":
-		method = "engine_forkchoiceUpdatedV2"
+		method = "silaEngine_forkchoiceUpdatedV2"
 	default: // deneb, electra, fulu and above
-		method = "engine_forkchoiceUpdatedV3"
+		method = "silaEngine_forkchoiceUpdatedV3"
 	}
 
 	ctx, cancel := context.WithTimeout(ec.rootCtx, time.Second*5)
