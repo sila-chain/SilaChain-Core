@@ -38,11 +38,11 @@ const (
 )
 
 const (
-	// Engine API batch limits: these are not configurable by users, and should cover the
+	// Sila Engine API batch limits: these are not configurable by users, and should cover the
 	// needs of all CLs.
-	engineAPIBatchItemLimit         = 2000
-	engineAPIBatchResponseSizeLimit = 250 * 1000 * 1000
-	engineAPIBodyLimit              = 128 * 1024 * 1024
+	silaEngineAPIBatchItemLimit         = 2000
+	silaEngineAPIBatchResponseSizeLimit = 250 * 1000 * 1000
+	silaEngineAPIBodyLimit              = 128 * 1024 * 1024
 )
 
 var (

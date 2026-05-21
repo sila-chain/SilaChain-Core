@@ -439,9 +439,9 @@ func (n *Node) startRPC() error {
 		}
 		sharedConfig := rpcEndpointConfig{
 			jwtSecret:              secret,
-			batchItemLimit:         engineAPIBatchItemLimit,
-			batchResponseSizeLimit: engineAPIBatchResponseSizeLimit,
-			httpBodyLimit:          engineAPIBodyLimit,
+			batchItemLimit:         silaEngineAPIBatchItemLimit,
+			batchResponseSizeLimit: silaEngineAPIBatchResponseSizeLimit,
+			httpBodyLimit:          silaEngineAPIBodyLimit,
 		}
 		authModules := DefaultAuthModules
 
