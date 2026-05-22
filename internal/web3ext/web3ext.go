@@ -484,8 +484,8 @@ web3._extend({
 });
 `
 
-// SilaLegacyExecutionTemplateJs is the temporary compatibility source for SilaExecutionJs.
-const SilaLegacyExecutionTemplateJs = `
+// SilaExecutionTemplateJs is the Sila execution extension source for SilaExecutionJs.
+const SilaExecutionTemplateJs = `
 web3._extend({
 	property: 'eth',
 	methods: [
@@ -680,7 +680,7 @@ var SilaExecutionJs = strings.NewReplacer(
 	"call: 'sila_",
 	"getter: 'eth_",
 	"getter: 'sila_",
-).Replace(SilaLegacyExecutionTemplateJs) + `
+).Replace(SilaExecutionTemplateJs) + `
 web3.sila.getBlock = function(block, full) {
 if (typeof block === "number") {
 block = "0x" + block.toString(16);
