@@ -680,7 +680,14 @@ var SilaExecutionJs = strings.NewReplacer(
 	"call: 'sila_",
 	"getter: 'eth_",
 	"getter: 'sila_",
-).Replace(SilaLegacyExecutionTemplateJs)
+).Replace(SilaLegacyExecutionTemplateJs) + `
+web3.sila.getBlock = function(block, full) {
+if (typeof block === "number") {
+block = "0x" + block.toString(16);
+}
+return web3.sila.getBlockByNumber(block, full);
+};
+`
 
 const MinerJs = `
 web3._extend({

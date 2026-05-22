@@ -198,7 +198,7 @@ func (c *Console) initWeb3(bridge *bridge) error {
 	return err
 }
 
-var defaultAPIs = map[string]string{"sila": "1.0", "silaNet": "1.0", "silaWeb3": "1.0", "debug": "1.0"}
+var defaultAPIs = map[string]string{"admin": "1.0", "sila": "1.0", "silaNet": "1.0", "silaWeb3": "1.0", "debug": "1.0"}
 
 // initExtensions loads and registers web3.js extensions.
 func (c *Console) initExtensions() error {
@@ -235,10 +235,9 @@ func (c *Console) initExtensions() error {
 	// Apply aliases.
 	c.jsre.Do(func(vm *goja.Runtime) {
 		web3 := getObject(vm, "web3")
-		// Keep this compatibility bootstrap until the Sila execution extension can initialize web3.sila natively.
-		if eth := web3.Get("eth"); eth != nil {
-			web3.Set("sila", eth)
-			vm.Set("sila", eth)
+		if sila := web3.Get("sila"); sila != nil {
+			web3.Set("sila", sila)
+			vm.Set("sila", web3.Get("sila"))
 		}
 		if net := web3.Get("net"); net != nil {
 			web3.Set("silaNet", net)
@@ -315,7 +314,10 @@ func (c *Console) Welcome() {
 	// Print some generic Sila metadata
 	if res, err := c.jsre.Run(`
 		var message = "instance: " + admin.nodeInfo.name + "\n";
-		message += "at block: " + sila.blockNumber + " (" + new Date(1000 * sila.getBlock(sila.blockNumber).timestamp) + ")\n";
+		try {
+var latest = sila.getBlockByNumber("latest");
+message += "at block: " + parseInt(latest.number, 16) + " (" + new Date(1000 * latest.timestamp) + ")\n";
+} catch (err) {}
 		try {
 			message += " datadir: " + admin.datadir + "\n";
 		} catch (err) {}
