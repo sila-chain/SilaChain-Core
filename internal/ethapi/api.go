@@ -84,7 +84,7 @@ func NewEthereumAPI(b Backend) *EthereumAPI {
 }
 
 // GasPrice returns a suggestion for a gas price for legacy transactions.
-func (api *EthereumAPI) GasPrice(ctx context.Context) (*hexutil.Big, error) {
+func (api *SilaAPI) GasPrice(ctx context.Context) (*hexutil.Big, error) {
 	tipcap, err := api.b.SuggestGasTipCap(ctx)
 	if err != nil {
 		return nil, err
@@ -96,7 +96,7 @@ func (api *EthereumAPI) GasPrice(ctx context.Context) (*hexutil.Big, error) {
 }
 
 // MaxPriorityFeePerGas returns a suggestion for a gas tip cap for dynamic fee transactions.
-func (api *EthereumAPI) MaxPriorityFeePerGas(ctx context.Context) (*hexutil.Big, error) {
+func (api *SilaAPI) MaxPriorityFeePerGas(ctx context.Context) (*hexutil.Big, error) {
 	tipcap, err := api.b.SuggestGasTipCap(ctx)
 	if err != nil {
 		return nil, err
@@ -114,7 +114,7 @@ type feeHistoryResult struct {
 }
 
 // FeeHistory returns the fee market history.
-func (api *EthereumAPI) FeeHistory(ctx context.Context, blockCount math.HexOrDecimal64, lastBlock rpc.BlockNumber, rewardPercentiles []float64) (*feeHistoryResult, error) {
+func (api *SilaAPI) FeeHistory(ctx context.Context, blockCount math.HexOrDecimal64, lastBlock rpc.BlockNumber, rewardPercentiles []float64) (*feeHistoryResult, error) {
 	oldest, reward, baseFee, gasUsed, blobBaseFee, blobGasUsed, err := api.b.FeeHistory(ctx, uint64(blockCount), lastBlock, rewardPercentiles)
 	if err != nil {
 		return nil, err
@@ -151,7 +151,7 @@ func (api *EthereumAPI) FeeHistory(ctx context.Context, blockCount math.HexOrDec
 }
 
 // BlobBaseFee returns the base fee for blob gas at the current head.
-func (api *EthereumAPI) BlobBaseFee(ctx context.Context) *hexutil.Big {
+func (api *SilaAPI) BlobBaseFee(ctx context.Context) *hexutil.Big {
 	return (*hexutil.Big)(api.b.BlobBaseFee(ctx))
 }
 
@@ -162,7 +162,7 @@ func (api *EthereumAPI) BlobBaseFee(ctx context.Context) *hexutil.Big {
 // - highestBlock:  block number of the highest block header this node has received from peers
 // - pulledStates:  number of state entries processed until now
 // - knownStates:   number of known state entries that still need to be pulled
-func (api *EthereumAPI) Syncing(ctx context.Context) (interface{}, error) {
+func (api *SilaAPI) Syncing(ctx context.Context) (interface{}, error) {
 	progress := api.b.SyncProgress(ctx)
 
 	// Return not syncing if the synchronisation already completed
@@ -309,7 +309,7 @@ func NewEthereumAccountAPI(am *accounts.Manager) *EthereumAccountAPI {
 }
 
 // Accounts returns the collection of accounts this node manages.
-func (api *EthereumAccountAPI) Accounts() []common.Address {
+func (api *SilaAccountAPI) Accounts() []common.Address {
 	return api.am.Accounts()
 }
 
