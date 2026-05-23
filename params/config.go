@@ -493,6 +493,9 @@ type ChainConfig struct {
 	BlobScheduleConfig *BlobScheduleConfig `json:"blobSchedule,omitempty"`
 }
 
+// SilaLegacyPoWConfig aliases the legacy proof-of-work consensus configuration.
+type SilaLegacyPoWConfig = EthashConfig
+
 // EthashConfig stores the legacy proof-of-work consensus configuration kept for compatibility.
 type EthashConfig struct{}
 
