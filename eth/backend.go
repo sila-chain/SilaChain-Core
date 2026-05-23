@@ -86,9 +86,12 @@ const (
 	maxParallelENRRequests = 16
 )
 
-// Config contains the configuration options of the ETH protocol.
+// Config contains the configuration options of the SilaChain execution protocol.
 // Deprecated: use ethconfig.Config instead.
 type Config = ethconfig.Config
+
+// SilaChain is the public SilaChain execution service type.
+type SilaChain = Ethereum
 
 // Ethereum implements the SilaChain full node service.
 type Ethereum struct {
