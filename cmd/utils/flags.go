@@ -1440,10 +1440,10 @@ func MakeDatabaseHandles(max int) int {
 	return int(raised / 2) // Leave half for networking and other stuff
 }
 
-// setEtherbase retrieves the etherbase from the directly specified command line flags.
+// setEtherbase retrieves the legacy fee recipient from the directly specified command line flags.
 func setEtherbase(ctx *cli.Context, cfg *ethconfig.Config) {
 	if ctx.IsSet(MinerEtherbaseFlag.Name) {
-		log.Warn("Option --miner.etherbase is deprecated as the etherbase is set by the consensus client post-merge")
+		log.Warn("Option --miner.etherbase is deprecated; the Sila fee recipient is set by the consensus client after merge")
 	}
 	if !ctx.IsSet(MinerPendingFeeRecipientFlag.Name) {
 		return
