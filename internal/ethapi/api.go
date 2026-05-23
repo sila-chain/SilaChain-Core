@@ -66,12 +66,15 @@ const maxGetProofKeys = 1024
 var errBlobTxNotSupported = errors.New("signing blob transactions not supported")
 var errSubClosed = errors.New("chain subscription closed")
 
-// EthereumAPI provides an API to access Ethereum related information.
+// SilaAPI provides an API to access SilaChain related information.
+type SilaAPI = EthereumAPI
+
+// EthereumAPI provides an API to access SilaChain related information.
 type EthereumAPI struct {
 	b Backend
 }
 
-// NewEthereumAPI creates a new Ethereum protocol API.
+// NewEthereumAPI creates a new SilaChain protocol API.
 func NewEthereumAPI(b Backend) *EthereumAPI {
 	return &EthereumAPI{b}
 }
@@ -283,13 +286,16 @@ func (api *TxPoolAPI) Inspect() map[string]map[string]map[string]string {
 	return content
 }
 
+// SilaAccountAPI provides an API to access accounts managed by this node.
+type SilaAccountAPI = EthereumAccountAPI
+
 // EthereumAccountAPI provides an API to access accounts managed by this node.
 // It offers only methods that can retrieve accounts.
 type EthereumAccountAPI struct {
 	am *accounts.Manager
 }
 
-// NewEthereumAccountAPI creates a new EthereumAccountAPI.
+// NewEthereumAccountAPI creates a new SilaChain account API.
 func NewEthereumAccountAPI(am *accounts.Manager) *EthereumAccountAPI {
 	return &EthereumAccountAPI{am: am}
 }
