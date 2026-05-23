@@ -18,11 +18,11 @@
 package web3ext
 
 var Modules = map[string]string{
-	"admin":    AdminJs,
-	"clique":   CliqueJs,
-	"debug":    DebugJs,
-	"miner":    MinerJs,
-	"net":      NetJs,
+	"admin":  AdminJs,
+	"clique": CliqueJs,
+	"debug":  DebugJs,
+	"miner":  MinerJs,
+
 	"sila":     SilaExecutionJs,
 	"silaNet":  SilaNetJs,
 	"silaWeb3": SilaWeb3Js,
