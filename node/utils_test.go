@@ -100,7 +100,7 @@ func (f *FullService) APIs() []rpc.API {
 			Namespace: "debug",
 		},
 		{
-			Namespace: "net",
+			Namespace: "silaNet",
 		},
 	}
 }
