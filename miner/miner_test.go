@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with the SilaChain library. If not, see <http://www.gnu.org/licenses/>.
 
-// Package miner implements Ethereum block creation and mining.
+// Package miner implements SilaChain payload creation and sealing.
 package miner
 
 import (
@@ -140,7 +140,7 @@ func minerTestGenesisBlock(period uint64, gasLimit uint64, faucet common.Address
 }
 
 func createMiner(t *testing.T) *Miner {
-	// Create Ethash config
+	// Create legacy consensus config
 	config := Config{
 		PendingFeeRecipient: common.HexToAddress("123456789"),
 	}
@@ -154,7 +154,7 @@ func createMiner(t *testing.T) *Miner {
 	}
 	// Create consensus engine
 	engine := clique.New(chainConfig.Clique, chainDB)
-	// Create Ethereum backend
+	// Create SilaChain execution backend
 	bc, err := core.NewBlockChain(chainDB, genesis, engine, nil)
 	if err != nil {
 		t.Fatalf("can't create new chain %v", err)
