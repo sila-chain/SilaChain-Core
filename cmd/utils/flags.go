@@ -1996,7 +1996,7 @@ func SetEthConfig(ctx *cli.Context, stack *node.Node, cfg *ethconfig.Config) {
 		}
 
 		// Figure out the dev account address.
-		// setEtherbase has been called above, configuring the miner address from command line flags.
+		// setEtherbase has been called above, configuring the legacy fee recipient from command line flags.
 		if cfg.Miner.PendingFeeRecipient != (common.Address{}) {
 			developer = accounts.Account{Address: cfg.Miner.PendingFeeRecipient}
 		} else if accs := ks.Accounts(); len(accs) > 0 {

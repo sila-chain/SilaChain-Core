@@ -117,7 +117,7 @@ var (
 	MinerEtherbaseFlag = &cli.StringFlag{
 		Name:     "miner.etherbase",
 		Hidden:   true,
-		Usage:    "0x prefixed public address for block mining rewards (deprecated)",
+		Usage:    "0x-prefixed legacy fee recipient address (deprecated; use miner.pending-fee-recipient)",
 		Category: flags.DeprecatedCategory,
 	}
 	MiningEnabledFlag = &cli.BoolFlag{
