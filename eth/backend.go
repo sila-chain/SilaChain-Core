@@ -191,7 +191,7 @@ func New(stack *node.Node, config *ethconfig.Config) (*Ethereum, error) {
 		networkID = chainConfig.ChainID.Uint64()
 	}
 
-	// Assemble the Ethereum object.
+	// Assemble the SilaChain execution object.
 	eth := &Ethereum{
 		config:          config,
 		chainDb:         chainDb,

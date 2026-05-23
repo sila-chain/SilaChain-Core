@@ -174,7 +174,7 @@ func (p *testTxPool) FilterType(kind byte) bool {
 	return false
 }
 
-// testHandler is a live implementation of the Ethereum protocol handler, just
+// testHandler is a live implementation of the SilaChain protocol handler, just
 // preinitialized with some sane testing defaults and the transaction pool mocked
 // out.
 type testHandler struct {
