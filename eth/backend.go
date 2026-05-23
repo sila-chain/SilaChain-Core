@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with the SilaChain library. If not, see <http://www.gnu.org/licenses/>.
 
-// Package eth implements the Ethereum protocol.
+// Package eth implements the SilaChain execution protocol.
 package eth
 
 import (
@@ -90,7 +90,7 @@ const (
 // Deprecated: use ethconfig.Config instead.
 type Config = ethconfig.Config
 
-// Ethereum implements the Ethereum full node service.
+// Ethereum implements the SilaChain full node service.
 type Ethereum struct {
 	// core protocol objects
 	config         *ethconfig.Config
@@ -128,7 +128,7 @@ type Ethereum struct {
 	shutdownTracker *shutdowncheck.ShutdownTracker // Tracks if and when the node has shutdown ungracefully
 }
 
-// New creates a new Ethereum object (including the initialisation of the common Ethereum object),
+// New creates a new SilaChain execution object,
 // whose lifecycle will be managed by the provided node.
 func New(stack *node.Node, config *ethconfig.Config) (*Ethereum, error) {
 	// Ensure configuration values are compatible and sane
@@ -394,7 +394,7 @@ func makeExtraData(extra []byte) []byte {
 	return extra
 }
 
-// APIs return the collection of RPC services the ethereum package offers.
+// APIs return the collection of RPC services the SilaChain execution package offers.
 // NOTE, some of these services probably need to be moved to somewhere else.
 func (s *Ethereum) APIs() []rpc.API {
 	apis := registry.GetAPIs(s.APIBackend)
@@ -456,7 +456,7 @@ func (s *Ethereum) Protocols() []p2p.Protocol {
 }
 
 // Start implements node.Lifecycle, starting all internal goroutines needed by the
-// Ethereum protocol implementation.
+// SilaChain execution protocol implementation.
 func (s *Ethereum) Start() error {
 	if err := s.setupDiscovery(); err != nil {
 		return err
@@ -588,7 +588,7 @@ func (s *Ethereum) setupDiscovery() error {
 }
 
 // Stop implements node.Lifecycle, terminating all internal goroutines used by the
-// Ethereum protocol.
+// SilaChain execution protocol.
 func (s *Ethereum) Stop() error {
 	// Stop all the peer-related stuff first.
 	s.discmix.Close()
