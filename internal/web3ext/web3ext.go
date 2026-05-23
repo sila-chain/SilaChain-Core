@@ -706,19 +706,6 @@ web3._extend({
 });
 `
 
-const NetJs = `
-web3._extend({
-	property: 'net',
-	methods: [],
-	properties: [
-		new web3._extend.Property({
-			name: 'version',
-			getter: 'net_version'
-		}),
-	]
-});
-`
-
 const RpcJs = `
 web3._extend({
 	property: 'rpc',
