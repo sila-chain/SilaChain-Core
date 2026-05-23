@@ -69,12 +69,12 @@ var errSubClosed = errors.New("chain subscription closed")
 // SilaAPI provides an API to access SilaChain related information.
 type SilaAPI = EthereumAPI
 
-// EthereumAPI provides an API to access SilaChain related information.
+// EthereumAPI is kept as a compatibility API type for SilaChain related information.
 type EthereumAPI struct {
 	b Backend
 }
 
-// NewEthereumAPI creates a new SilaChain protocol API.
+// NewEthereumAPI creates a compatibility SilaChain protocol API.
 func NewSilaAPI(b Backend) *SilaAPI {
 	return &EthereumAPI{b}
 }
@@ -293,13 +293,13 @@ func (api *TxPoolAPI) Inspect() map[string]map[string]map[string]string {
 // SilaAccountAPI provides an API to access accounts managed by this node.
 type SilaAccountAPI = EthereumAccountAPI
 
-// EthereumAccountAPI provides an API to access accounts managed by this node.
+// EthereumAccountAPI is kept as a compatibility account API type.
 // It offers only methods that can retrieve accounts.
 type EthereumAccountAPI struct {
 	am *accounts.Manager
 }
 
-// NewEthereumAccountAPI creates a new SilaChain account API.
+// NewEthereumAccountAPI creates a compatibility SilaChain account API.
 func NewSilaAccountAPI(am *accounts.Manager) *SilaAccountAPI {
 	return &EthereumAccountAPI{am: am}
 }
@@ -313,17 +313,17 @@ func (api *EthereumAccountAPI) Accounts() []common.Address {
 	return api.am.Accounts()
 }
 
-// BlockChainAPI provides an API to access Ethereum blockchain data.
+// BlockChainAPI provides an API to access SilaChain blockchain data.
 type BlockChainAPI struct {
 	b Backend
 }
 
-// NewBlockChainAPI creates a new Ethereum blockchain API.
+// NewBlockChainAPI creates a new SilaChain blockchain API.
 func NewBlockChainAPI(b Backend) *BlockChainAPI {
 	return &BlockChainAPI{b}
 }
 
-// ChainId is the EIP-155 replay-protection chain id for the current Ethereum chain config.
+// ChainId is the replay-protection chain id for the current SilaChain config.
 //
 // Note, this method does not conform to EIP-695 because the configured chain ID is always
 // returned, regardless of the current head block. We used to return an error when the chain
@@ -2001,7 +2001,7 @@ func (api *TransactionAPI) Resend(ctx context.Context, sendArgs TransactionArgs,
 	return common.Hash{}, fmt.Errorf("transaction %#x not found", matchTx.Hash())
 }
 
-// DebugAPI is the collection of Ethereum APIs exposed over the debugging
+// DebugAPI is the collection of SilaChain APIs exposed over the debugging
 // namespace.
 type DebugAPI struct {
 	b Backend
