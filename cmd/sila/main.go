@@ -367,24 +367,24 @@ func DefaultNodeConfig() node.Config {
 type SilaAPIBackend = sila.EthAPIBackend
 
 // RegisterExecutionService registers the Sila execution service.
-func RegisterExecutionService(stack *node.Node, cfg *ethconfig.Config) (*SilaAPIBackend, *sila.Ethereum) {
+func RegisterExecutionService(stack *node.Node, cfg *ethconfig.Config) (*SilaAPIBackend, *sila.SilaChain) {
 	return utils.RegisterSilaService(stack, cfg)
 }
 
 // RegisterSyncOverrideService configures synchronization override service.
-func RegisterSyncOverrideService(stack *node.Node, silaBackend *sila.Ethereum, target common.Hash, exitWhenSynced bool) {
+func RegisterSyncOverrideService(stack *node.Node, silaBackend *sila.SilaChain, target common.Hash, exitWhenSynced bool) {
 	utils.RegisterSyncOverrideService(stack, silaBackend, target, exitWhenSynced)
 }
 
 // RegisterEngineAPI launches the engine API for interacting with an external consensus client.
-func RegisterEngineAPI(stack *node.Node, silaBackend *sila.Ethereum) error {
+func RegisterEngineAPI(stack *node.Node, silaBackend *sila.SilaChain) error {
 	return catalyst.Register(stack, silaBackend)
 }
 
 // ConfigureConsensusRuntime configures the execution consensus runtime.
 func ConfigureConsensusRuntime(
 	stack *node.Node,
-	silaBackend *sila.Ethereum,
+	silaBackend *sila.SilaChain,
 	devMode bool,
 	devPeriod uint64,
 	pendingFeeRecipient common.Address,
@@ -416,7 +416,7 @@ func ConfigureConsensusRuntime(
 }
 
 // RegisterBuildInfoGauge creates gauge with SilaChain system and build information.
-func RegisterBuildInfoGauge(silaBackend *sila.Ethereum, version string) {
+func RegisterBuildInfoGauge(silaBackend *sila.SilaChain, version string) {
 	if silaBackend == nil {
 		return
 	}
