@@ -24,11 +24,11 @@ import (
 
 // MinerAPI provides an API to control the miner.
 type MinerAPI struct {
-	e *Ethereum
+	e *SilaChain
 }
 
 // NewMinerAPI creates a new MinerAPI instance.
-func NewMinerAPI(e *Ethereum) *MinerAPI {
+func NewMinerAPI(e *SilaChain) *MinerAPI {
 	return &MinerAPI{e}
 }
 

@@ -40,11 +40,11 @@ import (
 // DebugAPI is the collection of SilaChain full node APIs for debugging the
 // execution protocol.
 type DebugAPI struct {
-	eth *Ethereum
+	eth *SilaChain
 }
 
 // NewDebugAPI creates a new DebugAPI instance.
-func NewDebugAPI(eth *Ethereum) *DebugAPI {
+func NewDebugAPI(eth *SilaChain) *DebugAPI {
 	return &DebugAPI{eth: eth}
 }
 

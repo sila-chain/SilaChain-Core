@@ -32,11 +32,11 @@ import (
 // AdminAPI is the collection of SilaChain full node related APIs for node
 // administration.
 type AdminAPI struct {
-	eth *Ethereum
+	eth *SilaChain
 }
 
 // NewAdminAPI creates a new instance of AdminAPI.
-func NewAdminAPI(eth *Ethereum) *AdminAPI {
+func NewAdminAPI(eth *SilaChain) *AdminAPI {
 	return &AdminAPI{eth: eth}
 }
 
