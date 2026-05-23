@@ -427,7 +427,7 @@ func TestEth2DeepReorg(t *testing.T) {
 }
 
 // startEthService creates a full node instance for testing.
-func startEthService(t testing.TB, genesis *core.Genesis, blocks []*types.Block) (*node.Node, *eth.Ethereum) {
+func startEthService(t testing.TB, genesis *core.Genesis, blocks []*types.Block) (*node.Node, *eth.SilaChain) {
 	t.Helper()
 
 	n, err := node.New(&node.Config{
@@ -488,7 +488,7 @@ func TestFullAPI(t *testing.T) {
 	setupBlocks(t, ethservice, 10, parent, callback, nil, nil)
 }
 
-func setupBlocks(t *testing.T, ethservice *eth.Ethereum, n int, parent *types.Header, callback func(parent *types.Header), withdrawals [][]*types.Withdrawal, beaconRoots []common.Hash) []*types.Header {
+func setupBlocks(t *testing.T, ethservice *eth.SilaChain, n int, parent *types.Header, callback func(parent *types.Header), withdrawals [][]*types.Withdrawal, beaconRoots []common.Hash) []*types.Header {
 	api := newConsensusAPIWithoutHeartbeat(ethservice)
 	var blocks []*types.Header
 	for i := 0; i < n; i++ {
@@ -1243,7 +1243,7 @@ func TestNilWithdrawals(t *testing.T) {
 	}
 }
 
-func setupBodies(t *testing.T) (*node.Node, *eth.Ethereum, []*types.Block) {
+func setupBodies(t *testing.T) (*node.Node, *eth.SilaChain, []*types.Block) {
 	genesis, blocks := generateMergeChain(10, true)
 
 	// Enable next forks on the last block.

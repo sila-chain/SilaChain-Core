@@ -35,7 +35,7 @@ import (
 	"github.com/sila-org/sila/params"
 )
 
-func startSimulatedBeaconEthService(t *testing.T, genesis *core.Genesis, period uint64) (*node.Node, *eth.Ethereum, *SimulatedBeacon) {
+func startSimulatedBeaconEthService(t *testing.T, genesis *core.Genesis, period uint64) (*node.Node, *eth.SilaChain, *SimulatedBeacon) {
 	t.Helper()
 
 	n, err := node.New(&node.Config{
