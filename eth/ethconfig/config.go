@@ -49,7 +49,7 @@ var FullNodeGPO = gasprice.Config{
 	IgnorePrice:      gasprice.DefaultIgnorePrice,
 }
 
-// Defaults contains default settings for use on the Ethereum main net.
+// Defaults contains default settings for use on the SilaChain mainnet.
 var Defaults = Config{
 	HistoryMode:             history.KeepAll,
 	SyncMode:                SnapSync,
@@ -86,7 +86,7 @@ var Defaults = Config{
 // Config contains configuration options for ETH and LES protocols.
 type Config struct {
 	// The genesis block, which is inserted if the database is empty.
-	// If nil, the Ethereum main net block is used.
+	// If nil, the SilaChain mainnet block is used.
 	Genesis *core.Genesis `toml:",omitempty"`
 
 	// Network ID separates blockchains on the peer-to-peer networking level. When left

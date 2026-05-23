@@ -240,7 +240,7 @@ var (
 	}
 
 	// AllCliqueProtocolChanges contains every protocol change (EIPs) introduced
-	// and accepted by the Ethereum core developers into the Clique consensus.
+	// and accepted into the legacy proof-of-authority consensus.
 	AllCliqueProtocolChanges = &ChainConfig{
 		ChainID:                 big.NewInt(1337),
 		HomesteadBlock:          big.NewInt(0),
@@ -270,7 +270,7 @@ var (
 	}
 
 	// TestChainConfig contains every protocol change (EIPs) introduced
-	// and accepted by the Ethereum core developers for testing purposes.
+	// and accepted for SilaChain testing purposes.
 	TestChainConfig = &ChainConfig{
 		ChainID:                 big.NewInt(1),
 		HomesteadBlock:          big.NewInt(0),
@@ -300,7 +300,7 @@ var (
 	}
 
 	// MergedTestChainConfig contains every protocol change (EIPs) introduced
-	// and accepted by the Ethereum core developers for testing purposes.
+	// and accepted for SilaChain testing purposes.
 	MergedTestChainConfig = &ChainConfig{
 		ChainID:                 big.NewInt(1),
 		HomesteadBlock:          big.NewInt(0),
@@ -409,7 +409,7 @@ var (
 		Max:            21,
 		UpdateFraction: 13739630,
 	}
-	// DefaultBlobSchedule is the latest configured blob schedule for Ethereum mainnet.
+	// DefaultBlobSchedule is the latest configured blob schedule for SilaChain mainnet.
 	DefaultBlobSchedule = &BlobScheduleConfig{
 		Cancun: DefaultCancunBlobConfig,
 		Prague: DefaultPragueBlobConfig,
