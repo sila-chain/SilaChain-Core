@@ -75,6 +75,10 @@ type EthereumAPI struct {
 }
 
 // NewEthereumAPI creates a new SilaChain protocol API.
+func NewSilaAPI(b Backend) *SilaAPI {
+	return &EthereumAPI{b}
+}
+
 func NewEthereumAPI(b Backend) *EthereumAPI {
 	return &EthereumAPI{b}
 }
@@ -296,6 +300,10 @@ type EthereumAccountAPI struct {
 }
 
 // NewEthereumAccountAPI creates a new SilaChain account API.
+func NewSilaAccountAPI(am *accounts.Manager) *SilaAccountAPI {
+	return &EthereumAccountAPI{am: am}
+}
+
 func NewEthereumAccountAPI(am *accounts.Manager) *EthereumAccountAPI {
 	return &EthereumAccountAPI{am: am}
 }
