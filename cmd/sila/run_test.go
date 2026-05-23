@@ -1,4 +1,4 @@
-﻿// Copyright 2026 The SilaChain Authors
+// Copyright 2026 The SilaChain Authors
 // This file is part of the SilaChain library.
 //
 // The SilaChain library is free software: you can redistribute it and/or modify
@@ -32,8 +32,8 @@ type testSila struct {
 	*cmdtest.TestCmd
 
 	// template variables for expect
-	Datadir   string
-	Etherbase string
+	Datadir       string
+	SilaMinerBase string
 }
 
 func init() {
@@ -77,7 +77,7 @@ func runSila(t *testing.T, args ...string) *testSila {
 			}
 		case "--miner.etherbase":
 			if i < len(args)-1 {
-				tt.Etherbase = args[i+1]
+				tt.SilaMinerBase = args[i+1]
 			}
 		}
 	}
@@ -118,4 +118,3 @@ func waitForEndpoint(t *testing.T, endpoint string, timeout time.Duration) {
 		time.Sleep(200 * time.Millisecond)
 	}
 }
-
