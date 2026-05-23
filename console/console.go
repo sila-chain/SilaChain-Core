@@ -239,9 +239,7 @@ func (c *Console) initExtensions() error {
 			web3.Set("sila", sila)
 			vm.Set("sila", web3.Get("sila"))
 		}
-		if net := web3.Get("net"); net != nil {
-			web3.Set("silaNet", net)
-		}
+
 		web3.Set("silaWeb3", web3)
 
 		for name := range aliases {
