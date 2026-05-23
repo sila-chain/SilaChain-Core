@@ -90,11 +90,11 @@ const (
 // Deprecated: use ethconfig.Config instead.
 type Config = ethconfig.Config
 
-// SilaChain is the public SilaChain execution service type.
-type SilaChain = Ethereum
+// Ethereum is kept as a compatibility alias for the SilaChain execution service.
+type Ethereum = SilaChain
 
-// Ethereum implements the SilaChain full node service.
-type Ethereum struct {
+// SilaChain implements the SilaChain full node service.
+type SilaChain struct {
 	// core protocol objects
 	config         *ethconfig.Config
 	txPool         *txpool.TxPool
