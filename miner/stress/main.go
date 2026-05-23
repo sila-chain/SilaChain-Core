@@ -168,7 +168,7 @@ func makeGenesis(faucets []*ecdsa.PrivateKey) *core.Genesis {
 }
 
 func makeNode(genesis *core.Genesis) (*node.Node, *eth.Ethereum, *catalyst.SimulatedBeacon, error) {
-	// Define the basic configurations for the Ethereum node
+	// Define the basic configurations for the SilaChain node
 	datadir, _ := os.MkdirTemp("", "")
 
 	config := &node.Config{
