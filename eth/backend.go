@@ -399,7 +399,7 @@ func makeExtraData(extra []byte) []byte {
 
 // APIs return the collection of RPC services the SilaChain execution package offers.
 // NOTE, some of these services probably need to be moved to somewhere else.
-func (s *Ethereum) APIs() []rpc.API {
+func (s *SilaChain) APIs() []rpc.API {
 	apis := registry.GetAPIs(s.APIBackend)
 
 	// Append all the local APIs and return
@@ -430,27 +430,27 @@ func (s *Ethereum) APIs() []rpc.API {
 	}...)
 }
 
-func (s *Ethereum) ResetWithGenesisBlock(gb *types.Block) {
+func (s *SilaChain) ResetWithGenesisBlock(gb *types.Block) {
 	s.blockchain.ResetWithGenesisBlock(gb)
 }
 
-func (s *Ethereum) Miner() *miner.Miner { return s.miner }
+func (s *SilaChain) Miner() *miner.Miner { return s.miner }
 
-func (s *Ethereum) AccountManager() *accounts.Manager  { return s.accountManager }
-func (s *Ethereum) BlockChain() *core.BlockChain       { return s.blockchain }
-func (s *Ethereum) TxPool() *txpool.TxPool             { return s.txPool }
-func (s *Ethereum) BlobTxPool() *blobpool.BlobPool     { return s.blobTxPool }
-func (s *Ethereum) Engine() consensus.Engine           { return s.engine }
-func (s *Ethereum) ChainDb() ethdb.Database            { return s.chainDb }
-func (s *Ethereum) IsListening() bool                  { return true } // Always listening
-func (s *Ethereum) Downloader() *downloader.Downloader { return s.handler.downloader }
-func (s *Ethereum) Synced() bool                       { return s.handler.synced.Load() }
-func (s *Ethereum) SetSynced()                         { s.handler.enableSyncedFeatures() }
-func (s *Ethereum) ArchiveMode() bool                  { return s.config.NoPruning }
+func (s *SilaChain) AccountManager() *accounts.Manager  { return s.accountManager }
+func (s *SilaChain) BlockChain() *core.BlockChain       { return s.blockchain }
+func (s *SilaChain) TxPool() *txpool.TxPool             { return s.txPool }
+func (s *SilaChain) BlobTxPool() *blobpool.BlobPool     { return s.blobTxPool }
+func (s *SilaChain) Engine() consensus.Engine           { return s.engine }
+func (s *SilaChain) ChainDb() ethdb.Database            { return s.chainDb }
+func (s *SilaChain) IsListening() bool                  { return true } // Always listening
+func (s *SilaChain) Downloader() *downloader.Downloader { return s.handler.downloader }
+func (s *SilaChain) Synced() bool                       { return s.handler.synced.Load() }
+func (s *SilaChain) SetSynced()                         { s.handler.enableSyncedFeatures() }
+func (s *SilaChain) ArchiveMode() bool                  { return s.config.NoPruning }
 
 // Protocols returns all the currently configured
 // network protocols to start.
-func (s *Ethereum) Protocols() []p2p.Protocol {
+func (s *SilaChain) Protocols() []p2p.Protocol {
 	protos := eth.MakeProtocols((*ethHandler)(s.handler), s.networkID, s.discmix)
 	if s.config.SnapshotCache > 0 {
 		protos = append(protos, snap.MakeProtocols((*snapHandler)(s.handler))...)
@@ -460,7 +460,7 @@ func (s *Ethereum) Protocols() []p2p.Protocol {
 
 // Start implements node.Lifecycle, starting all internal goroutines needed by the
 // SilaChain execution protocol implementation.
-func (s *Ethereum) Start() error {
+func (s *SilaChain) Start() error {
 	if err := s.setupDiscovery(); err != nil {
 		return err
 	}
@@ -480,14 +480,14 @@ func (s *Ethereum) Start() error {
 	return nil
 }
 
-func (s *Ethereum) newChainView(head *types.Header) *filtermaps.ChainView {
+func (s *SilaChain) newChainView(head *types.Header) *filtermaps.ChainView {
 	if head == nil {
 		return nil
 	}
 	return filtermaps.NewChainView(s.blockchain, head.Number.Uint64(), head.Hash())
 }
 
-func (s *Ethereum) updateFilterMapsHeads() {
+func (s *SilaChain) updateFilterMapsHeads() {
 	headEventCh := make(chan core.ChainEvent, 10)
 	blockProcCh := make(chan bool, 10)
 	sub := s.blockchain.SubscribeChainEvent(headEventCh)
@@ -541,7 +541,7 @@ func (s *Ethereum) updateFilterMapsHeads() {
 	}
 }
 
-func (s *Ethereum) setupDiscovery() error {
+func (s *SilaChain) setupDiscovery() error {
 	eth.StartENRUpdater(s.blockchain, s.p2pServer.LocalNode())
 
 	// Add eth nodes from DNS.
@@ -592,7 +592,7 @@ func (s *Ethereum) setupDiscovery() error {
 
 // Stop implements node.Lifecycle, terminating all internal goroutines used by the
 // SilaChain execution protocol.
-func (s *Ethereum) Stop() error {
+func (s *SilaChain) Stop() error {
 	// Stop all the peer-related stuff first.
 	s.discmix.Close()
 	s.dropper.Stop()
