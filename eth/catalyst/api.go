@@ -48,7 +48,7 @@ import (
 )
 
 // Register adds the Sila Engine API and related compatibility APIs to the full node.
-func Register(stack *node.Node, backend *eth.Ethereum) error {
+func Register(stack *node.Node, backend *eth.SilaChain) error {
 	stack.RegisterAPIs([]rpc.API{
 		newTestingAPI(backend),
 		{
@@ -90,7 +90,7 @@ const (
 )
 
 type ConsensusAPI struct {
-	eth *eth.Ethereum
+	eth *eth.SilaChain
 
 	remoteBlocks *headerQueue  // Cache of remote payloads received
 	localBlocks  *payloadQueue // Cache of local payloads generated
@@ -134,7 +134,7 @@ type ConsensusAPI struct {
 //
 // This function creates a long-lived object with an attached background thread.
 // For testing or other short-term use cases, please use newConsensusAPIWithoutHeartbeat.
-func NewConsensusAPI(eth *eth.Ethereum) *ConsensusAPI {
+func NewConsensusAPI(eth *eth.SilaChain) *ConsensusAPI {
 	api := newConsensusAPIWithoutHeartbeat(eth)
 	go api.heartbeat()
 	return api
@@ -147,7 +147,7 @@ type SilaEngineAPI struct {
 }
 
 // NewSilaEngineAPI creates a Sila-namespaced consensus API wrapper.
-func NewSilaEngineAPI(eth *eth.Ethereum) *SilaEngineAPI {
+func NewSilaEngineAPI(eth *eth.SilaChain) *SilaEngineAPI {
 	return &SilaEngineAPI{ConsensusAPI: NewConsensusAPI(eth)}
 }
 
@@ -157,7 +157,7 @@ func (api *SilaEngineAPI) ExchangeCapabilities([]string) []string {
 }
 
 // newConsensusAPIWithoutHeartbeat creates a new consensus api for the SimulatedBeacon Node.
-func newConsensusAPIWithoutHeartbeat(eth *eth.Ethereum) *ConsensusAPI {
+func newConsensusAPIWithoutHeartbeat(eth *eth.SilaChain) *ConsensusAPI {
 	if eth.BlockChain().Config().TerminalTotalDifficulty == nil {
 		log.Warn("Sila Engine API started but chain not configured for merge yet")
 	}
