@@ -45,7 +45,7 @@ type syncReq struct {
 // post-merge, but only for full-sync.
 type Syncer struct {
 	stack          *node.Node
-	backend        *eth.Ethereum
+	backend        *eth.SilaChain
 	target         common.Hash
 	request        chan *syncReq
 	closed         chan struct{}
@@ -55,7 +55,7 @@ type Syncer struct {
 
 // Register registers the synchronization override service into the node
 // stack for launching and stopping the service controlled by node.
-func Register(stack *node.Node, backend *eth.Ethereum, target common.Hash, exitWhenSynced bool) (*Syncer, error) {
+func Register(stack *node.Node, backend *eth.SilaChain, target common.Hash, exitWhenSynced bool) (*Syncer, error) {
 	s := &Syncer{
 		stack:          stack,
 		backend:        backend,

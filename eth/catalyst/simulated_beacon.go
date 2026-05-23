@@ -89,7 +89,7 @@ func (w *withdrawalQueue) subscribe(ch chan<- newWithdrawalsEvent) event.Subscri
 // (seconds) or on every transaction via Commit, Fork and AdjustTime.
 type SimulatedBeacon struct {
 	shutdownCh  chan struct{}
-	eth         *eth.Ethereum
+	eth         *eth.SilaChain
 	period      uint64
 	withdrawals withdrawalQueue
 
@@ -114,7 +114,7 @@ func payloadVersion(config *params.ChainConfig, time uint64) engine.PayloadVersi
 }
 
 // NewSimulatedBeacon constructs a new simulated beacon chain.
-func NewSimulatedBeacon(period uint64, feeRecipient common.Address, eth *eth.Ethereum) (*SimulatedBeacon, error) {
+func NewSimulatedBeacon(period uint64, feeRecipient common.Address, eth *eth.SilaChain) (*SimulatedBeacon, error) {
 	block := eth.BlockChain().CurrentBlock()
 	current := engine.ForkchoiceStateV1{
 		HeadBlockHash:      block.Hash(),

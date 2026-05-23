@@ -31,10 +31,10 @@ import (
 // testingAPI implements the testing_ namespace.
 // It's an engine-API adjacent namespace for testing purposes.
 type testingAPI struct {
-	eth *eth.Ethereum
+	eth *eth.SilaChain
 }
 
-func newTestingAPI(backend *eth.Ethereum) rpc.API {
+func newTestingAPI(backend *eth.SilaChain) rpc.API {
 	return rpc.API{
 		Namespace:     "testing",
 		Service:       &testingAPI{backend},
