@@ -70,7 +70,7 @@ func initBackend(withLocal bool) *EthAPIBackend {
 	legacyPool := legacypool.New(txconfig, chain)
 	txpool, _ := txpool.New(txconfig.PriceLimit, chain, []txpool.SubPool{legacyPool, blobPool})
 
-	eth := &Ethereum{
+	eth := &SilaChain{
 		blockchain: chain,
 		txPool:     txpool,
 	}
