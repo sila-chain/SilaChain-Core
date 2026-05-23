@@ -195,7 +195,7 @@ func New(stack *node.Node, config *ethconfig.Config) (*SilaChain, error) {
 	}
 
 	// Assemble the SilaChain execution object.
-	eth := &Ethereum{
+	eth := &SilaChain{
 		config:          config,
 		chainDb:         chainDb,
 		eventMux:        stack.EventMux(),
