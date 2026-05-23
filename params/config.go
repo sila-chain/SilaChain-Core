@@ -493,8 +493,14 @@ type ChainConfig struct {
 	BlobScheduleConfig *BlobScheduleConfig `json:"blobSchedule,omitempty"`
 }
 
+// AllSilaProtocolChanges aliases the full SilaChain protocol configuration set.
+var AllSilaProtocolChanges = AllEthashProtocolChanges
+
 // SilaLegacyPoWConfig aliases the legacy proof-of-work consensus configuration.
 type SilaLegacyPoWConfig = EthashConfig
+
+// SilaPoWConfig aliases the legacy proof-of-work consensus configuration for SilaChain-native references.
+type SilaPoWConfig = EthashConfig
 
 // EthashConfig stores the legacy proof-of-work consensus configuration kept for compatibility.
 type EthashConfig struct{}
