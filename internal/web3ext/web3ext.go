@@ -17,8 +17,6 @@
 // Package web3ext contains SilaChain-specific web3.js extensions.
 package web3ext
 
-import "strings"
-
 var Modules = map[string]string{
 	"admin":    AdminJs,
 	"clique":   CliqueJs,
@@ -487,76 +485,76 @@ web3._extend({
 // SilaExecutionTemplateJs is the Sila execution extension source for SilaExecutionJs.
 const SilaExecutionTemplateJs = `
 web3._extend({
-	property: 'eth',
+	property: 'sila',
 	methods: [
 		new web3._extend.Method({
 			name: 'chainId',
-			call: 'eth_chainId',
+			call: 'sila_chainId',
 			params: 0
 		}),
 		new web3._extend.Method({
 			name: 'sign',
-			call: 'eth_sign',
+			call: 'sila_sign',
 			params: 2,
 			inputFormatter: [web3._extend.formatters.inputAddressFormatter, null]
 		}),
 		new web3._extend.Method({
 			name: 'resend',
-			call: 'eth_resend',
+			call: 'sila_resend',
 			params: 3,
 			inputFormatter: [web3._extend.formatters.inputTransactionFormatter, web3._extend.utils.fromDecimal, web3._extend.utils.fromDecimal]
 		}),
 		new web3._extend.Method({
 			name: 'signTransaction',
-			call: 'eth_signTransaction',
+			call: 'sila_signTransaction',
 			params: 1,
 			inputFormatter: [web3._extend.formatters.inputTransactionFormatter]
 		}),
 		new web3._extend.Method({
 			name: 'estimateGas',
-			call: 'eth_estimateGas',
+			call: 'sila_estimateGas',
 			params: 4,
 			inputFormatter: [web3._extend.formatters.inputCallFormatter, web3._extend.formatters.inputBlockNumberFormatter, null, null],
 			outputFormatter: web3._extend.utils.toDecimal
 		}),
 		new web3._extend.Method({
 			name: 'submitTransaction',
-			call: 'eth_submitTransaction',
+			call: 'sila_submitTransaction',
 			params: 1,
 			inputFormatter: [web3._extend.formatters.inputTransactionFormatter]
 		}),
 		new web3._extend.Method({
 			name: 'fillTransaction',
-			call: 'eth_fillTransaction',
+			call: 'sila_fillTransaction',
 			params: 1,
 			inputFormatter: [web3._extend.formatters.inputTransactionFormatter]
 		}),
 		new web3._extend.Method({
 			name: 'getHeaderByNumber',
-			call: 'eth_getHeaderByNumber',
+			call: 'sila_getHeaderByNumber',
 			params: 1,
 			inputFormatter: [web3._extend.formatters.inputBlockNumberFormatter]
 		}),
 		new web3._extend.Method({
 			name: 'getHeaderByHash',
-			call: 'eth_getHeaderByHash',
+			call: 'sila_getHeaderByHash',
 			params: 1
 		}),
 		new web3._extend.Method({
 			name: 'getBlockByNumber',
-			call: 'eth_getBlockByNumber',
+			call: 'sila_getBlockByNumber',
 			params: 2,
 			inputFormatter: [web3._extend.formatters.inputBlockNumberFormatter, function (val) { return !!val; }]
 		}),
 		new web3._extend.Method({
 			name: 'getBlockByHash',
-			call: 'eth_getBlockByHash',
+			call: 'sila_getBlockByHash',
 			params: 2,
 			inputFormatter: [null, function (val) { return !!val; }]
 		}),
 		new web3._extend.Method({
 			name: 'getRawTransaction',
-			call: 'eth_getRawTransactionByHash',
+			call: 'sila_getRawTransactionByHash',
 			params: 1
 		}),
 		new web3._extend.Method({
@@ -569,60 +567,60 @@ web3._extend({
 		}),
 		new web3._extend.Method({
 			name: 'getProof',
-			call: 'eth_getProof',
+			call: 'sila_getProof',
 			params: 3,
 			inputFormatter: [web3._extend.formatters.inputAddressFormatter, null, web3._extend.formatters.inputBlockNumberFormatter]
 		}),
 		new web3._extend.Method({
 			name: 'getStorageValues',
-			call: 'eth_getStorageValues',
+			call: 'sila_getStorageValues',
 			params: 2,
 			inputFormatter: [null, web3._extend.formatters.inputBlockNumberFormatter]
 		}),
 		new web3._extend.Method({
 			name: 'createAccessList',
-			call: 'eth_createAccessList',
+			call: 'sila_createAccessList',
 			params: 2,
 			inputFormatter: [null, web3._extend.formatters.inputBlockNumberFormatter],
 		}),
 		new web3._extend.Method({
 			name: 'feeHistory',
-			call: 'eth_feeHistory',
+			call: 'sila_feeHistory',
 			params: 3,
 			inputFormatter: [null, web3._extend.formatters.inputBlockNumberFormatter, null]
 		}),
 		new web3._extend.Method({
 			name: 'getLogs',
-			call: 'eth_getLogs',
+			call: 'sila_getLogs',
 			params: 1,
 		}),
 		new web3._extend.Method({
 			name: 'call',
-			call: 'eth_call',
+			call: 'sila_call',
 			params: 4,
 			inputFormatter: [web3._extend.formatters.inputCallFormatter, web3._extend.formatters.inputDefaultBlockNumberFormatter, null, null],
 		}),
 		new web3._extend.Method({
 			name: 'simulateV1',
-			call: 'eth_simulateV1',
+			call: 'sila_simulateV1',
 			params: 2,
 			inputFormatter: [null, web3._extend.formatters.inputDefaultBlockNumberFormatter],
 		}),
 		new web3._extend.Method({
 			name: 'getBlockReceipts',
-			call: 'eth_getBlockReceipts',
+			call: 'sila_getBlockReceipts',
 			params: 1,
 		}),
 		new web3._extend.Method({
 			name: 'config',
-			call: 'eth_config',
+			call: 'sila_config',
 			params: 0,
 		})
 	],
 	properties: [
 		new web3._extend.Property({
 			name: 'pendingTransactions',
-			getter: 'eth_pendingTransactions',
+			getter: 'sila_pendingTransactions',
 			outputFormatter: function(txs) {
 				var formatted = [];
 				for (var i = 0; i < txs.length; i++) {
@@ -634,7 +632,7 @@ web3._extend({
 		}),
 		new web3._extend.Property({
 			name: 'maxPriorityFeePerGas',
-			getter: 'eth_maxPriorityFeePerGas',
+			getter: 'sila_maxPriorityFeePerGas',
 			outputFormatter: web3._extend.utils.toBigNumber
 		}),
 	]
@@ -673,14 +671,7 @@ web3._extend({
 });
 `
 
-var SilaExecutionJs = strings.NewReplacer(
-	"property: 'eth'",
-	"property: 'sila'",
-	"call: 'eth_",
-	"call: 'sila_",
-	"getter: 'eth_",
-	"getter: 'sila_",
-).Replace(SilaExecutionTemplateJs) + `
+var SilaExecutionJs = SilaExecutionTemplateJs + `
 web3.sila.getBlock = function(block, full) {
 if (typeof block === "number") {
 block = "0x" + block.toString(16);
