@@ -240,8 +240,6 @@ func (c *Console) initExtensions() error {
 			vm.Set("sila", web3.Get("sila"))
 		}
 
-		web3.Set("silaWeb3", web3)
-
 		for name := range aliases {
 			if v := web3.Get(name); v != nil {
 				vm.Set(name, v)
