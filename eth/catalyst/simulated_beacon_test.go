@@ -80,7 +80,7 @@ func TestSimulatedBeaconSendWithdrawals(t *testing.T) {
 		// testKey is a private key to use for funding a tester account.
 		testKey, _ = crypto.HexToECDSA("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
 
-		// testAddr is the Ethereum address of the tester account.
+		// testAddr is the SilaChain address of the tester account.
 		testAddr = crypto.PubkeyToAddress(testKey.PublicKey)
 	)
 
