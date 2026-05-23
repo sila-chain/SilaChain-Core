@@ -102,7 +102,7 @@ func newTestBackendWithGenerator(blocks int, shanghai bool, cancun bool, generat
 			MergeNetsplitBlock:      big.NewInt(0),
 			ShanghaiTime:            u64(0),
 			TerminalTotalDifficulty: big.NewInt(0),
-			Ethash:                  new(params.EthashConfig),
+			Ethash:                  new(params.SilaPoWConfig),
 		}
 	}
 

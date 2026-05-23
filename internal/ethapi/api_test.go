@@ -3949,7 +3949,7 @@ func TestEIP7910Config(t *testing.T) {
 			CancunTime:              newUint64(0),
 			PragueTime:              newUint64(1742999832),
 			DepositContractAddress:  common.HexToAddress("0x00000000219ab540356cBB839Cbe05303d7705Fa"),
-			Ethash:                  new(params.EthashConfig),
+			Ethash:                  new(params.SilaPoWConfig),
 			BlobScheduleConfig: &params.BlobScheduleConfig{
 				Cancun: params.DefaultCancunBlobConfig,
 				Prague: params.DefaultPragueBlobConfig,
