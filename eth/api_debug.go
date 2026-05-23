@@ -37,8 +37,8 @@ import (
 	"github.com/sila-org/sila/trie"
 )
 
-// DebugAPI is the collection of Ethereum full node APIs for debugging the
-// protocol.
+// DebugAPI is the collection of SilaChain full node APIs for debugging the
+// execution protocol.
 type DebugAPI struct {
 	eth *Ethereum
 }
