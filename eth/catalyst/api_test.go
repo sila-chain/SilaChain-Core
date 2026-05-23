@@ -65,7 +65,7 @@ var (
 )
 
 func generateMergeChain(n int, merged bool) (*core.Genesis, []*types.Block) {
-	config := *params.AllEthashProtocolChanges
+	config := *params.AllSilaProtocolChanges
 	engine := beacon.New(ethash.NewFaker())
 	if merged {
 		config.TerminalTotalDifficulty = common.Big0
