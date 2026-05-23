@@ -111,6 +111,8 @@ func (s *Server) RegisterName(name string, receiver interface{}) error {
 	}
 
 	if name == "silaEngine" {
+		// Keep the legacy engine namespace as an internal compatibility alias for
+		// consensus clients while rpc_modules exposes only silaEngine.
 		if err := s.services.registerName("engine", receiver); err != nil {
 			return err
 		}
