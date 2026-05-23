@@ -80,6 +80,7 @@ func NewSilaAPI(b Backend) *SilaAPI {
 }
 
 // NewEthereumAPI creates a compatibility SilaChain protocol API.
+// Deprecated: use NewSilaAPI for SilaChain-native code.
 func NewEthereumAPI(b Backend) *EthereumAPI {
 	return &SilaAPI{b}
 }
@@ -306,6 +307,7 @@ func NewSilaAccountAPI(am *accounts.Manager) *SilaAccountAPI {
 }
 
 // NewEthereumAccountAPI creates a compatibility SilaChain account API.
+// Deprecated: use NewSilaAccountAPI for SilaChain-native code.
 func NewEthereumAccountAPI(am *accounts.Manager) *EthereumAccountAPI {
 	return &SilaAccountAPI{am: am}
 }
