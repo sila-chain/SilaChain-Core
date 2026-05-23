@@ -182,8 +182,8 @@ var (
 			BPO2:   DefaultBPO2BlobConfig,
 		},
 	}
-	// AllEthashProtocolChanges contains every protocol change (EIPs) introduced
-	// and accepted by the Ethereum core developers into the Ethash consensus.
+	// AllEthashProtocolChanges contains every protocol change introduced
+	// and accepted into the legacy proof-of-work consensus.
 	AllEthashProtocolChanges = &ChainConfig{
 		ChainID:                 big.NewInt(1337),
 		HomesteadBlock:          big.NewInt(0),
@@ -493,7 +493,7 @@ type ChainConfig struct {
 	BlobScheduleConfig *BlobScheduleConfig `json:"blobSchedule,omitempty"`
 }
 
-// EthashConfig is the consensus engine configs for proof-of-work based sealing.
+// EthashConfig stores the legacy proof-of-work consensus configuration kept for compatibility.
 type EthashConfig struct{}
 
 // String implements the stringer interface, returning the consensus engine details.
@@ -614,7 +614,7 @@ func (c *ChainConfig) Description() string {
 	banner += fmt.Sprintf("Chain ID:  %v (%s)\n", c.ChainID, network)
 	switch {
 	case c.Ethash != nil:
-		banner += "Consensus: Beacon (proof-of-stake), merged from Ethash (proof-of-work)\n"
+		banner += "Consensus: Sila Beacon (proof-of-stake), transitioned from legacy proof-of-work\n"
 	case c.Clique != nil:
 		banner += "Consensus: Beacon (proof-of-stake), merged from Clique (proof-of-authority)\n"
 	default:
@@ -693,7 +693,7 @@ func (c *ChainConfig) Description() string {
 	if c.UBTTime != nil {
 		banner += fmt.Sprintf(" - UBT:                         @%-10v blob: (%s)\n", *c.UBTTime, c.BlobScheduleConfig.UBT)
 	}
-	banner += fmt.Sprintf("\nAll fork specifications can be found at https://ethereum.github.io/execution-specs/src/ethereum/forks/\n")
+	banner += fmt.Sprintf("\nAll fork specifications can be found at https://docs.silachain.org/specs/src/sila/forks/\n")
 	return banner
 }
 
