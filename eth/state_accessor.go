@@ -42,7 +42,7 @@ var noopReleaser = tracers.StateReleaseFunc(func() {})
 // attempting to reconstruct missing historical state for hash-scheme nodes.
 const reexecLimit = uint64(128)
 
-func (eth *Ethereum) hashState(ctx context.Context, block *types.Block, base *state.StateDB, readOnly bool, preferDisk bool) (statedb *state.StateDB, release tracers.StateReleaseFunc, err error) {
+func (eth *SilaChain) hashState(ctx context.Context, block *types.Block, base *state.StateDB, readOnly bool, preferDisk bool) (statedb *state.StateDB, release tracers.StateReleaseFunc, err error) {
 	var (
 		current  *types.Block
 		database state.Database
@@ -180,7 +180,7 @@ func (eth *Ethereum) hashState(ctx context.Context, block *types.Block, base *st
 	return statedb, func() { tdb.Dereference(block.Root()) }, nil
 }
 
-func (eth *Ethereum) pathState(block *types.Block) (*state.StateDB, func(), error) {
+func (eth *SilaChain) pathState(block *types.Block) (*state.StateDB, func(), error) {
 	// Check if the requested state is available in the live chain.
 	header := block.Header()
 	statedb, err := eth.blockchain.StateAt(header)
@@ -214,7 +214,7 @@ func (eth *Ethereum) pathState(block *types.Block) (*state.StateDB, func(), erro
 //   - preferDisk: This arg can be used by the caller to signal that even though the 'base' is
 //     provided, it would be preferable to start from a fresh state, if we have it
 //     on disk.
-func (eth *Ethereum) stateAtBlock(ctx context.Context, block *types.Block, base *state.StateDB, readOnly bool, preferDisk bool) (statedb *state.StateDB, release tracers.StateReleaseFunc, err error) {
+func (eth *SilaChain) stateAtBlock(ctx context.Context, block *types.Block, base *state.StateDB, readOnly bool, preferDisk bool) (statedb *state.StateDB, release tracers.StateReleaseFunc, err error) {
 	if eth.blockchain.TrieDB().Scheme() == rawdb.HashScheme {
 		return eth.hashState(ctx, block, base, readOnly, preferDisk)
 	}
@@ -228,7 +228,7 @@ func (eth *Ethereum) stateAtBlock(ctx context.Context, block *types.Block, base 
 // function will return the state of block after the pre-block operations have
 // been completed (e.g. updating system contracts), but before post-block
 // operations are completed (e.g. processing withdrawals).
-func (eth *Ethereum) stateAtTransaction(ctx context.Context, block *types.Block, txIndex int) (*types.Transaction, vm.BlockContext, *state.StateDB, tracers.StateReleaseFunc, error) {
+func (eth *SilaChain) stateAtTransaction(ctx context.Context, block *types.Block, txIndex int) (*types.Transaction, vm.BlockContext, *state.StateDB, tracers.StateReleaseFunc, error) {
 	// Short circuit if it's genesis block.
 	if block.NumberU64() == 0 {
 		return nil, vm.BlockContext{}, nil, nil, errors.New("no transaction in genesis")
