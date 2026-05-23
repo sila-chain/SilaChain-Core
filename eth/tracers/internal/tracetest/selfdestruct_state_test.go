@@ -284,7 +284,7 @@ func TestSelfdestructStateTracer(t *testing.T) {
 			description:    "Pre-EIP-6780: Existing contract selfdestructs to recipient. Contract should be destroyed and balance transferred.",
 			targetContract: contract,
 			genesis: &core.Genesis{
-				Config: params.AllEthashProtocolChanges,
+				Config: params.AllSilaProtocolChanges,
 				Alloc: types.GenesisAlloc{
 					caller: {Balance: big.NewInt(params.Ether)},
 					contract: {
@@ -344,7 +344,7 @@ func TestSelfdestructStateTracer(t *testing.T) {
 			description:    "Pre-EIP-6780: Factory creates contract with 100 wei, contract selfdestructs back to factory. Contract destroyed, factory gets refund.",
 			targetContract: factory,
 			genesis: &core.Genesis{
-				Config: params.AllEthashProtocolChanges,
+				Config: params.AllSilaProtocolChanges,
 				Alloc: types.GenesisAlloc{
 					caller: {Balance: big.NewInt(params.Ether)},
 					factory: {
@@ -404,7 +404,7 @@ func TestSelfdestructStateTracer(t *testing.T) {
 			description:    "Pre-EIP-6780: Contract A selfdestructs sending funds to B, then B sends funds back to A's address. Funds sent to destroyed address are burnt.",
 			targetContract: coordinator,
 			genesis: &core.Genesis{
-				Config: params.AllEthashProtocolChanges,
+				Config: params.AllSilaProtocolChanges,
 				Alloc: types.GenesisAlloc{
 					caller: {Balance: big.NewInt(params.Ether)},
 					contractA: {

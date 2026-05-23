@@ -100,7 +100,7 @@ func TestSupplyGenesisAlloc(t *testing.T) {
 		addr2   = crypto.PubkeyToAddress(key2.PublicKey)
 		eth1    = new(big.Int).Mul(common.Big1, big.NewInt(params.Ether))
 
-		config = *params.AllEthashProtocolChanges
+		config = *params.AllSilaProtocolChanges
 
 		gspec = &core.Genesis{
 			Config: &config,
@@ -132,7 +132,7 @@ func TestSupplyGenesisAlloc(t *testing.T) {
 
 func TestSupplyRewards(t *testing.T) {
 	var (
-		config = *params.AllEthashProtocolChanges
+		config = *params.AllSilaProtocolChanges
 
 		gspec = &core.Genesis{
 			Config: &config,
@@ -160,7 +160,7 @@ func TestSupplyRewards(t *testing.T) {
 
 func TestSupplyRewardsWithUncle(t *testing.T) {
 	var (
-		config = *params.AllEthashProtocolChanges
+		config = *params.AllSilaProtocolChanges
 
 		gspec = &core.Genesis{
 			Config: &config,
@@ -208,7 +208,7 @@ func TestSupplyRewardsWithUncle(t *testing.T) {
 
 func TestSupplyEip1559Burn(t *testing.T) {
 	var (
-		config = *params.AllEthashProtocolChanges
+		config = *params.AllSilaProtocolChanges
 
 		aa = common.HexToAddress("0x000000000000000000000000000000000000aaaa")
 		// A sender who makes transactions, has some eth1
