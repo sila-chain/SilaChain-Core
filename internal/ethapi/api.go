@@ -67,20 +67,21 @@ var errBlobTxNotSupported = errors.New("signing blob transactions not supported"
 var errSubClosed = errors.New("chain subscription closed")
 
 // SilaAPI provides an API to access SilaChain related information.
-type SilaAPI = EthereumAPI
-
-// EthereumAPI is kept as a compatibility API type for SilaChain related information.
-type EthereumAPI struct {
+type SilaAPI struct {
 	b Backend
 }
 
-// NewEthereumAPI creates a compatibility SilaChain protocol API.
+// EthereumAPI is kept as a compatibility alias for the SilaChain protocol API.
+type EthereumAPI = SilaAPI
+
+// NewSilaAPI creates a new SilaChain protocol API.
 func NewSilaAPI(b Backend) *SilaAPI {
-	return &EthereumAPI{b}
+	return &SilaAPI{b}
 }
 
+// NewEthereumAPI creates a compatibility SilaChain protocol API.
 func NewEthereumAPI(b Backend) *EthereumAPI {
-	return &EthereumAPI{b}
+	return &SilaAPI{b}
 }
 
 // GasPrice returns a suggestion for a gas price for legacy transactions.
@@ -291,21 +292,22 @@ func (api *TxPoolAPI) Inspect() map[string]map[string]map[string]string {
 }
 
 // SilaAccountAPI provides an API to access accounts managed by this node.
-type SilaAccountAPI = EthereumAccountAPI
-
-// EthereumAccountAPI is kept as a compatibility account API type.
-// It offers only methods that can retrieve accounts.
-type EthereumAccountAPI struct {
+type SilaAccountAPI struct {
 	am *accounts.Manager
 }
 
-// NewEthereumAccountAPI creates a compatibility SilaChain account API.
+// EthereumAccountAPI is kept as a compatibility alias for the SilaChain account API.
+// It offers only methods that can retrieve accounts.
+type EthereumAccountAPI = SilaAccountAPI
+
+// NewSilaAccountAPI creates a new SilaChain account API.
 func NewSilaAccountAPI(am *accounts.Manager) *SilaAccountAPI {
-	return &EthereumAccountAPI{am: am}
+	return &SilaAccountAPI{am: am}
 }
 
+// NewEthereumAccountAPI creates a compatibility SilaChain account API.
 func NewEthereumAccountAPI(am *accounts.Manager) *EthereumAccountAPI {
-	return &EthereumAccountAPI{am: am}
+	return &SilaAccountAPI{am: am}
 }
 
 // Accounts returns the collection of accounts this node manages.
