@@ -71,18 +71,8 @@ type SilaAPI struct {
 	b Backend
 }
 
-// EthereumAPI is kept as a compatibility alias for the SilaChain protocol API.
-// Deprecated: use SilaAPI for SilaChain-native code.
-type EthereumAPI = SilaAPI
-
 // NewSilaAPI creates a new SilaChain protocol API.
 func NewSilaAPI(b Backend) *SilaAPI {
-	return &SilaAPI{b}
-}
-
-// NewEthereumAPI creates a compatibility SilaChain protocol API.
-// Deprecated: use NewSilaAPI for SilaChain-native code.
-func NewEthereumAPI(b Backend) *EthereumAPI {
 	return &SilaAPI{b}
 }
 
@@ -298,19 +288,8 @@ type SilaAccountAPI struct {
 	am *accounts.Manager
 }
 
-// EthereumAccountAPI is kept as a compatibility alias for the SilaChain account API.
-// It offers only methods that can retrieve accounts.
-// Deprecated: use SilaAccountAPI for SilaChain-native code.
-type EthereumAccountAPI = SilaAccountAPI
-
 // NewSilaAccountAPI creates a new SilaChain account API.
 func NewSilaAccountAPI(am *accounts.Manager) *SilaAccountAPI {
-	return &SilaAccountAPI{am: am}
-}
-
-// NewEthereumAccountAPI creates a compatibility SilaChain account API.
-// Deprecated: use NewSilaAccountAPI for SilaChain-native code.
-func NewEthereumAccountAPI(am *accounts.Manager) *EthereumAccountAPI {
 	return &SilaAccountAPI{am: am}
 }
 
