@@ -1981,7 +1981,7 @@ func testSetHeadWithScheme(t *testing.T, tt *rewindTest, snapshots bool, scheme 
 	var (
 		gspec = &Genesis{
 			BaseFee: big.NewInt(params.InitialBaseFee),
-			Config:  params.AllEthashProtocolChanges,
+			Config:  params.AllSilaProtocolChanges,
 		}
 		engine  = ethash.NewFullFaker()
 		options = &BlockChainConfig{

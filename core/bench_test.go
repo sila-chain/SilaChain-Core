@@ -300,7 +300,7 @@ func makeChainForBench(db ethdb.Database, genesis *Genesis, full bool, count uin
 }
 
 func benchWriteChain(b *testing.B, full bool, count uint64) {
-	genesis := &Genesis{Config: params.AllEthashProtocolChanges}
+	genesis := &Genesis{Config: params.AllSilaProtocolChanges}
 	for b.Loop() {
 		pdb, err := pebble.New(b.TempDir(), 1024, 128, "", false)
 		if err != nil {
@@ -321,7 +321,7 @@ func benchReadChain(b *testing.B, full bool, count uint64) {
 	}
 	db := rawdb.NewDatabase(pdb)
 
-	genesis := &Genesis{Config: params.AllEthashProtocolChanges}
+	genesis := &Genesis{Config: params.AllSilaProtocolChanges}
 	makeChainForBench(db, genesis, full, count)
 	db.Close()
 	options := DefaultConfig().WithArchive(true)

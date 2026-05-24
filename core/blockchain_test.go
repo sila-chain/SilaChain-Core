@@ -65,7 +65,7 @@ func newCanonical(engine consensus.Engine, n int, full bool, scheme string) (eth
 	var (
 		genesis = &Genesis{
 			BaseFee: big.NewInt(params.InitialBaseFee),
-			Config:  params.AllEthashProtocolChanges,
+			Config:  params.AllSilaProtocolChanges,
 		}
 	)
 	// Initialize a fresh chain with only a genesis block
@@ -3273,7 +3273,7 @@ func testEIP1559Transition(t *testing.T, scheme string) {
 		addr1   = crypto.PubkeyToAddress(key1.PublicKey)
 		addr2   = crypto.PubkeyToAddress(key2.PublicKey)
 		funds   = new(big.Int).Mul(common.Big1, big.NewInt(params.Ether))
-		config  = *params.AllEthashProtocolChanges
+		config  = *params.AllSilaProtocolChanges
 		gspec   = &Genesis{
 			Config: &config,
 			Alloc: types.GenesisAlloc{
@@ -3913,7 +3913,7 @@ func TestEIP3651(t *testing.T) {
 		addr1   = crypto.PubkeyToAddress(key1.PublicKey)
 		addr2   = crypto.PubkeyToAddress(key2.PublicKey)
 		funds   = new(big.Int).Mul(common.Big1, big.NewInt(params.Ether))
-		config  = *params.AllEthashProtocolChanges
+		config  = *params.AllSilaProtocolChanges
 		gspec   = &Genesis{
 			Config: &config,
 			Alloc: types.GenesisAlloc{

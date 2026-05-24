@@ -1778,7 +1778,7 @@ func testRepairWithScheme(t *testing.T, tt *rewindTest, snapshots bool, scheme s
 	var (
 		gspec = &Genesis{
 			BaseFee: big.NewInt(params.InitialBaseFee),
-			Config:  params.AllEthashProtocolChanges,
+			Config:  params.AllSilaProtocolChanges,
 		}
 		engine = ethash.NewFullFaker()
 		option = &BlockChainConfig{
