@@ -496,9 +496,6 @@ type ChainConfig struct {
 // AllSilaProtocolChanges defines the full SilaChain protocol configuration set.
 var AllSilaProtocolChanges = AllEthashProtocolChanges
 
-// SilaLegacyPoWConfig defines the legacy proof-of-work compatibility configuration.
-type SilaLegacyPoWConfig = EthashConfig
-
 // SilaPoWConfig defines the legacy proof-of-work compatibility configuration for SilaChain-native references.
 type SilaPoWConfig = EthashConfig
 
