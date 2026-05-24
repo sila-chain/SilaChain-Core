@@ -402,7 +402,8 @@ func makeExtraData(extra []byte) []byte {
 func (s *SilaChain) APIs() []rpc.API {
 	apis := registry.GetAPIs(s.APIBackend)
 
-	// Append all the local APIs and return
+	// Append all the local APIs and return. Sila namespaces are registered
+	// before legacy compatibility namespaces where both are exposed.
 	return append(apis, []rpc.API{
 		{
 			Namespace: "miner",
