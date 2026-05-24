@@ -1440,7 +1440,7 @@ func MakeDatabaseHandles(max int) int {
 	return int(raised / 2) // Leave half for networking and other stuff
 }
 
-// setLegacyFeeRecipient retrieves the legacy fee recipient from directly specified command line flags.
+// setLegacyFeeRecipient retrieves the legacy compatibility fee recipient from directly specified command line flags.
 func setLegacyFeeRecipient(ctx *cli.Context, cfg *ethconfig.Config) {
 	if ctx.IsSet(MinerEtherbaseFlag.Name) {
 		log.Warn("Option --miner.etherbase is deprecated; the Sila fee recipient is set by the consensus client after merge")
@@ -1996,7 +1996,7 @@ func SetEthConfig(ctx *cli.Context, stack *node.Node, cfg *ethconfig.Config) {
 		}
 
 		// Figure out the dev account address.
-		// setLegacyFeeRecipient has been called above, configuring the legacy fee recipient from command line flags.
+		// setLegacyFeeRecipient has been called above, configuring the legacy compatibility fee recipient from command line flags.
 		if cfg.Miner.PendingFeeRecipient != (common.Address{}) {
 			developer = accounts.Account{Address: cfg.Miner.PendingFeeRecipient}
 		} else if accs := ks.Accounts(); len(accs) > 0 {
