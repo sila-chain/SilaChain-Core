@@ -105,6 +105,8 @@ type Backend interface {
 }
 
 func GetAPIs(apiBackend Backend) []rpc.API {
+	// Sila namespaces are registered first. Legacy eth namespaces are retained
+	// only for JSON-RPC compatibility with existing tooling.
 	nonceLock := new(addrlock.AddrLocker)
 	return []rpc.API{
 		{
