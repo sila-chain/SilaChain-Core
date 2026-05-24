@@ -72,6 +72,7 @@ type SilaAPI struct {
 }
 
 // EthereumAPI is kept as a compatibility alias for the SilaChain protocol API.
+// Deprecated: use SilaAPI for SilaChain-native code.
 type EthereumAPI = SilaAPI
 
 // NewSilaAPI creates a new SilaChain protocol API.
@@ -299,6 +300,7 @@ type SilaAccountAPI struct {
 
 // EthereumAccountAPI is kept as a compatibility alias for the SilaChain account API.
 // It offers only methods that can retrieve accounts.
+// Deprecated: use SilaAccountAPI for SilaChain-native code.
 type EthereumAccountAPI = SilaAccountAPI
 
 // NewSilaAccountAPI creates a new SilaChain account API.
