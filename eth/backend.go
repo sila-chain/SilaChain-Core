@@ -408,12 +408,12 @@ func (s *SilaChain) APIs() []rpc.API {
 			Namespace: "miner",
 			Service:   NewMinerAPI(s),
 		}, {
-			Namespace: "eth",
+			Namespace: "sila",
 			Service:   downloader.NewDownloaderAPI(s.handler.downloader, s.blockchain, s.eventMux),
 			Public:    true,
 		},
 		{
-			Namespace: "sila",
+			Namespace: "eth",
 			Service:   downloader.NewDownloaderAPI(s.handler.downloader, s.blockchain, s.eventMux),
 			Public:    true,
 		}, {
