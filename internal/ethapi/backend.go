@@ -108,38 +108,43 @@ func GetAPIs(apiBackend Backend) []rpc.API {
 	nonceLock := new(addrlock.AddrLocker)
 	return []rpc.API{
 		{
+			Namespace: "sila",
+			Service:   NewSilaAPI(apiBackend),
+		},
+		{
 			Namespace: "eth",
 			Service:   NewSilaAPI(apiBackend),
 		},
 		{
 			Namespace: "sila",
-			Service:   NewSilaAPI(apiBackend),
-		}, {
+			Service:   NewBlockChainAPI(apiBackend),
+		},
+		{
 			Namespace: "eth",
 			Service:   NewBlockChainAPI(apiBackend),
 		},
 		{
 			Namespace: "sila",
-			Service:   NewBlockChainAPI(apiBackend),
-		}, {
+			Service:   NewTransactionAPI(apiBackend, nonceLock),
+		},
+		{
 			Namespace: "eth",
 			Service:   NewTransactionAPI(apiBackend, nonceLock),
 		},
 		{
-			Namespace: "sila",
-			Service:   NewTransactionAPI(apiBackend, nonceLock),
-		}, {
 			Namespace: "txpool",
 			Service:   NewTxPoolAPI(apiBackend),
-		}, {
+		},
+		{
 			Namespace: "debug",
 			Service:   NewDebugAPI(apiBackend),
-		}, {
-			Namespace: "eth",
+		},
+		{
+			Namespace: "sila",
 			Service:   NewSilaAccountAPI(apiBackend.AccountManager()),
 		},
 		{
-			Namespace: "sila",
+			Namespace: "eth",
 			Service:   NewSilaAccountAPI(apiBackend.AccountManager()),
 		},
 	}
