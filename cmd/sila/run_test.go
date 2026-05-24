@@ -75,7 +75,7 @@ func runSila(t *testing.T, args ...string) *testSila {
 			if i < len(args)-1 {
 				tt.Datadir = args[i+1]
 			}
-		case "--miner.etherbase":
+		case "--miner.pending.feeRecipient":
 			if i < len(args)-1 {
 				tt.SilaMinerBase = args[i+1]
 			}

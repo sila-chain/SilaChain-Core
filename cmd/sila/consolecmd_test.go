@@ -57,7 +57,7 @@ func TestConsoleWelcome(t *testing.T) {
 	coinbase := "0x8605cdbbdb6d264aa742e77020dcbc58fcdce182"
 
 	// Start a sila console, make sure it's cleaned up and terminate the console
-	sila := runMinimalSila(t, "--miner.etherbase", coinbase, "console")
+	sila := runMinimalSila(t, "--miner.pending.feeRecipient", coinbase, "console")
 
 	// Gather all the infos the welcome message needs to contain
 	sila.SetTemplateFunc("goos", func() string { return runtime.GOOS })
@@ -101,7 +101,7 @@ func TestAttachWelcome(t *testing.T) {
 	p := trulyRandInt(1024, 65533) // Yeah, sometimes this will fail, sorry :P
 	httpPort = strconv.Itoa(p)
 	wsPort = strconv.Itoa(p + 1)
-	sila := runMinimalSila(t, "--miner.etherbase", "0x8605cdbbdb6d264aa742e77020dcbc58fcdce182",
+	sila := runMinimalSila(t, "--miner.pending.feeRecipient", "0x8605cdbbdb6d264aa742e77020dcbc58fcdce182",
 		"--ipcpath", ipc,
 		"--http", "--http.port", httpPort,
 		"--ws", "--ws.port", wsPort)
