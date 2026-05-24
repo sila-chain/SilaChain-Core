@@ -90,9 +90,6 @@ const (
 // Deprecated: use ethconfig.Config instead.
 type Config = ethconfig.Config
 
-// Ethereum is kept as a compatibility alias for the SilaChain execution service.
-type Ethereum = SilaChain
-
 // SilaChain implements the SilaChain full node service.
 type SilaChain struct {
 	// core protocol objects
