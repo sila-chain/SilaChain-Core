@@ -1,6 +1,6 @@
-# Keeper - SilaChain as a zkvm guest
+﻿# Keeper - SilaChain as a zkvm guest
 
-Keeper command is a specialized tool for validating stateless execution of Ethereum blocks. It's designed to run as a zkvm guest.
+Keeper command is a specialized tool for validating stateless execution of Sila blocks. It's designed to run as a zkvm guest.
 
 ## Overview
 
@@ -67,3 +67,4 @@ func getInput() []byte {
     return encodedPayload
 }
 ```
+
