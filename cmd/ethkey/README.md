@@ -1,7 +1,7 @@
-ethkey
+﻿ethkey
 ======
 
-ethkey is a simple command-line tool for working with Ethereum keyfiles.
+ethkey is a simple command-line tool for working with Sila keyfiles using the legacy Ethereum-compatible keystore format.
 
 
 # Usage
@@ -51,3 +51,4 @@ contains the password.
 ## JSON
 
 In case you need to output the result in a JSON format, you shall use the `--json` flag.
+
