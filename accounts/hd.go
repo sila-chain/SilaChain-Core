@@ -40,6 +40,15 @@ var DefaultBaseDerivationPath = DerivationPath{0x80000000 + 44, 0x80000000 + 60,
 // second at m/44'/60'/0'/1, etc.
 var LegacyLedgerBaseDerivationPath = DerivationPath{0x80000000 + 44, 0x80000000 + 60, 0x80000000 + 0, 0}
 
+// SilaRootDerivationPath is the Sila-native alias for the default root derivation path.
+var SilaRootDerivationPath = DefaultRootDerivationPath
+
+// SilaBaseDerivationPath is the Sila-native alias for the default base derivation path.
+var SilaBaseDerivationPath = DefaultBaseDerivationPath
+
+// SilaLegacyLedgerBaseDerivationPath is the Sila-native alias for the legacy Ledger derivation path.
+var SilaLegacyLedgerBaseDerivationPath = LegacyLedgerBaseDerivationPath
+
 // DerivationPath represents the computer friendly version of a hierarchical
 // deterministic wallet account derivation path.
 //
