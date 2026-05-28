@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with the SilaChain library. If not, see <http://www.gnu.org/licenses/>.
 
-// fetchpayload queries an Ethereum node over RPC, fetches a block and its
+// fetchpayload queries a Sila node over RPC, fetches a block and its
 // execution witness, and writes the combined Payload (ChainID + Block +
 // Witness) to disk in the format consumed by cmd/keeper.
 package main
