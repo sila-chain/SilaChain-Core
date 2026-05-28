@@ -182,11 +182,9 @@ var (
 			BPO2:   DefaultBPO2BlobConfig,
 		},
 	}
-	// AllEthashProtocolChanges contains every protocol change introduced
-	// and accepted into the legacy proof-of-work consensus.
-	//
-	// Deprecated: use AllSilaProtocolChanges for SilaChain-native references.
-	AllEthashProtocolChanges = &ChainConfig{
+	// AllSilaProtocolChanges defines every protocol change introduced
+	// and accepted into SilaChain proof-of-work compatibility.
+	AllSilaProtocolChanges = &ChainConfig{
 		ChainID:                 big.NewInt(1337),
 		HomesteadBlock:          big.NewInt(0),
 		DAOForkBlock:            nil,
@@ -495,8 +493,11 @@ type ChainConfig struct {
 	BlobScheduleConfig *BlobScheduleConfig `json:"blobSchedule,omitempty"`
 }
 
-// AllSilaProtocolChanges defines the full SilaChain protocol configuration set.
-var AllSilaProtocolChanges = AllEthashProtocolChanges
+// AllEthashProtocolChanges contains every protocol change introduced
+// and accepted into the legacy proof-of-work consensus.
+//
+// Deprecated: use AllSilaProtocolChanges for SilaChain-native references.
+var AllEthashProtocolChanges = AllSilaProtocolChanges
 
 // SilaPoWConfig defines the legacy proof-of-work compatibility configuration for SilaChain-native references.
 type SilaPoWConfig struct{}
