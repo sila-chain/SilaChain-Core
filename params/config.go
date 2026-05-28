@@ -499,15 +499,17 @@ type ChainConfig struct {
 var AllSilaProtocolChanges = AllEthashProtocolChanges
 
 // SilaPoWConfig defines the legacy proof-of-work compatibility configuration for SilaChain-native references.
-type SilaPoWConfig = EthashConfig
-
-// EthashConfig stores the legacy proof-of-work consensus configuration kept for compatibility.
-type EthashConfig struct{}
+type SilaPoWConfig struct{}
 
 // String implements the stringer interface, returning the consensus engine details.
-func (c EthashConfig) String() string {
-	return "ethash"
+func (c SilaPoWConfig) String() string {
+	return "sila-pow"
 }
+
+// EthashConfig stores the legacy proof-of-work consensus configuration kept for compatibility.
+//
+// Deprecated: use SilaPoWConfig for SilaChain-native references.
+type EthashConfig = SilaPoWConfig
 
 // CliqueConfig is the consensus engine configs for proof-of-authority based sealing.
 type CliqueConfig struct {
