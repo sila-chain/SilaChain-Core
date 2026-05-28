@@ -517,6 +517,11 @@ func (c *ChainConfig) SilaPoW() *SilaPoWConfig {
 	return c.Ethash
 }
 
+// HasSilaPoW reports whether Sila proof-of-work compatibility is configured.
+func (c *ChainConfig) HasSilaPoW() bool {
+	return c.SilaPoW() != nil
+}
+
 // CliqueConfig is the consensus engine configs for proof-of-authority based sealing.
 type CliqueConfig struct {
 	Period uint64 `json:"period"` // Number of seconds between blocks to enforce
