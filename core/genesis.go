@@ -633,7 +633,7 @@ func EnableUBTAtGenesis(db ethdb.Database, genesis *Genesis) (bool, error) {
 	return false, nil
 }
 
-// DefaultGenesisBlock returns the Ethereum main net genesis block.
+// DefaultGenesisBlock returns the SilaChain main net genesis block.
 func DefaultGenesisBlock() *Genesis {
 	return &Genesis{
 		Config:     params.MainnetChainConfig,
