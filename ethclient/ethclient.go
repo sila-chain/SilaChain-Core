@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with the SilaChain library. If not, see <http://www.gnu.org/licenses/>.
 
-// Package ethclient provides a client for the Ethereum RPC API.
+// Package ethclient provides a client for the legacy Ethereum-compatible RPC API.
 package ethclient
 
 import (
@@ -32,7 +32,7 @@ import (
 	"github.com/sila-org/sila/rpc"
 )
 
-// Client defines typed wrappers for the Ethereum RPC API.
+// Client defines typed wrappers for the legacy Ethereum-compatible RPC API.
 type Client struct {
 	c *rpc.Client
 }
