@@ -19,7 +19,7 @@ package graphql
 const schema string = `
     # Bytes32 is a 32 byte binary string, represented as 0x-prefixed hexadecimal.
     scalar Bytes32
-    # Address is a 20 byte Ethereum address, represented as 0x-prefixed hexadecimal.
+    # Address is a 20 byte SilaChain address, represented as 0x-prefixed hexadecimal.
     scalar Address
     # Bytes is an arbitrary length binary string, represented as 0x-prefixed hexadecimal.
     # An empty byte string is represented as '0x'. Byte strings must have an even number of hexadecimal nybbles.
@@ -56,7 +56,7 @@ const schema string = `
         storage(slot: Bytes32!): Bytes32!
     }
 
-    # Log is an Ethereum event log.
+    # Log is a SilaChain event log.
     type Log {
         # Index is the index of this log in the block.
         index: Long!
