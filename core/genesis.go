@@ -505,7 +505,7 @@ func (g *Genesis) toBlockWithRoot(root common.Hash) *types.Block {
 		head.GasLimit = params.GenesisGasLimit
 	}
 	if g.Difficulty == nil {
-		if g.Config != nil && g.Config.Ethash == nil {
+		if g.Config != nil && !g.Config.HasSilaPoW() {
 			head.Difficulty = big.NewInt(0)
 		} else if g.Mixhash == (common.Hash{}) {
 			head.Difficulty = params.GenesisDifficulty
