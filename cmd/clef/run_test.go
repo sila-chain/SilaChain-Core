@@ -32,7 +32,7 @@ type testproc struct {
 
 	// template variables for expect
 	Datadir   string
-	Etherbase string
+	Etherbase string // Legacy template variable retained for clef test compatibility.
 }
 
 func init() {
