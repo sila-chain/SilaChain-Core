@@ -65,7 +65,7 @@ var (
 		BPO1Time:                newUint64(1765290071),
 		BPO2Time:                newUint64(1767747671),
 		DepositContractAddress:  common.HexToAddress("0x00000000219ab540356cbb839cbe05303d7705fa"),
-		Ethash:                  new(SilaPoWConfig),
+		Ethash:                  new(SilaPoWConfig), // Legacy ethash JSON compatibility field for Sila PoW.
 		BlobScheduleConfig: &BlobScheduleConfig{
 			Cancun: DefaultCancunBlobConfig,
 			Prague: DefaultPragueBlobConfig,
@@ -101,7 +101,7 @@ var (
 		BPO1Time:                newUint64(1759800000),
 		BPO2Time:                newUint64(1760389824),
 		DepositContractAddress:  common.HexToAddress("0x4242424242424242424242424242424242424242"),
-		Ethash:                  new(SilaPoWConfig),
+		Ethash:                  new(SilaPoWConfig), // Legacy ethash JSON compatibility field for Sila PoW.
 		BlobScheduleConfig: &BlobScheduleConfig{
 			Cancun: DefaultCancunBlobConfig,
 			Prague: DefaultPragueBlobConfig,
@@ -137,7 +137,7 @@ var (
 		BPO1Time:                newUint64(1761017184),
 		BPO2Time:                newUint64(1761607008),
 		DepositContractAddress:  common.HexToAddress("0x7f02c3e3c98b133055b8b348b2ac625669ed295d"),
-		Ethash:                  new(SilaPoWConfig),
+		Ethash:                  new(SilaPoWConfig), // Legacy ethash JSON compatibility field for Sila PoW.
 		BlobScheduleConfig: &BlobScheduleConfig{
 			Cancun: DefaultCancunBlobConfig,
 			Prague: DefaultPragueBlobConfig,
@@ -173,7 +173,7 @@ var (
 		BPO1Time:                newUint64(1762365720),
 		BPO2Time:                newUint64(1762955544),
 		DepositContractAddress:  common.HexToAddress("0x00000000219ab540356cBB839Cbe05303d7705Fa"),
-		Ethash:                  new(SilaPoWConfig),
+		Ethash:                  new(SilaPoWConfig), // Legacy ethash JSON compatibility field for Sila PoW.
 		BlobScheduleConfig: &BlobScheduleConfig{
 			Cancun: DefaultCancunBlobConfig,
 			Prague: DefaultPragueBlobConfig,
@@ -208,7 +208,7 @@ var (
 		PragueTime:              nil,
 		OsakaTime:               nil,
 		UBTTime:                 nil,
-		Ethash:                  new(SilaPoWConfig),
+		Ethash:                  new(SilaPoWConfig), // Legacy ethash JSON compatibility field for Sila PoW.
 		Clique:                  nil,
 	}
 
@@ -295,7 +295,7 @@ var (
 		OsakaTime:               nil,
 		UBTTime:                 nil,
 		TerminalTotalDifficulty: big.NewInt(math.MaxInt64),
-		Ethash:                  new(SilaPoWConfig),
+		Ethash:                  new(SilaPoWConfig), // Legacy ethash JSON compatibility field for Sila PoW.
 		Clique:                  nil,
 	}
 
@@ -325,7 +325,7 @@ var (
 		OsakaTime:               newUint64(0),
 		UBTTime:                 nil,
 		TerminalTotalDifficulty: big.NewInt(0),
-		Ethash:                  new(SilaPoWConfig),
+		Ethash:                  new(SilaPoWConfig), // Legacy ethash JSON compatibility field for Sila PoW.
 		Clique:                  nil,
 		BlobScheduleConfig: &BlobScheduleConfig{
 			Cancun: DefaultCancunBlobConfig,
@@ -360,7 +360,7 @@ var (
 		OsakaTime:               nil,
 		UBTTime:                 nil,
 		TerminalTotalDifficulty: big.NewInt(math.MaxInt64),
-		Ethash:                  new(SilaPoWConfig),
+		Ethash:                  new(SilaPoWConfig), // Legacy ethash JSON compatibility field for Sila PoW.
 		Clique:                  nil,
 	}
 	TestRules = TestChainConfig.Rules(new(big.Int), false, 0)
