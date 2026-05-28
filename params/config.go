@@ -487,7 +487,7 @@ type ChainConfig struct {
 	// those cases.
 	EnableUBTAtGenesis bool `json:"enableUBTAtGenesis,omitempty"`
 
-	// Consensus configuration. Ethash is retained only as legacy proof-of-work compatibility.
+	// Consensus configuration. Sila PoW is retained through the legacy ethash JSON field for compatibility.
 	Ethash             *EthashConfig       `json:"ethash,omitempty"`
 	Clique             *CliqueConfig       `json:"clique,omitempty"`
 	BlobScheduleConfig *BlobScheduleConfig `json:"blobSchedule,omitempty"`
