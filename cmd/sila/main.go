@@ -497,13 +497,13 @@ func startWalletLifecycle(stack *node.Node) {
 				if event.Wallet.URL().Scheme == "ledger" {
 					derivationPaths = append(
 						derivationPaths,
-						accounts.LegacyLedgerBaseDerivationPath,
+						accounts.SilaLegacyLedgerBaseDerivationPath,
 					)
 				}
 
 				derivationPaths = append(
 					derivationPaths,
-					accounts.DefaultBaseDerivationPath,
+					accounts.SilaBaseDerivationPath,
 				)
 
 				event.Wallet.SelfDerive(
