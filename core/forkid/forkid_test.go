@@ -439,7 +439,7 @@ func TestTimeBasedForkInGenesis(t *testing.T) {
 				MergeNetsplitBlock:      big.NewInt(0),
 				ShanghaiTime:            &shanghai,
 				CancunTime:              &cancun,
-				Ethash:                  new(params.EthashConfig),
+				Ethash:                  new(params.SilaPoWConfig),
 			}
 		}
 	)
