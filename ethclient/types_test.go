@@ -26,6 +26,13 @@ import (
 	"github.com/sila-org/sila/common"
 )
 
+func TestSilaClientAlias(t *testing.T) {
+	var client *Client
+	var silaClient *SilaClient = client
+	if silaClient != client {
+		t.Fatal("SilaClient alias must preserve Client identity")
+	}
+}
 func TestToFilterArg(t *testing.T) {
 	blockHashErr := errors.New("cannot specify both BlockHash and FromBlock/ToBlock")
 	addresses := []common.Address{
