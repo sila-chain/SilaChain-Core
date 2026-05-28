@@ -467,7 +467,7 @@ func startWalletLifecycle(stack *node.Node) {
 	stack.AccountManager().Subscribe(events)
 
 	rpcClient := stack.Attach()
-	ethClient := ethclient.NewClient(rpcClient)
+	ethClient := ethclient.NewSilaClient(rpcClient)
 
 	go func() {
 		for _, wallet := range stack.AccountManager().Wallets() {
