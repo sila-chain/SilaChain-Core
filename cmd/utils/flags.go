@@ -628,13 +628,13 @@ var (
 	// API options.
 	RPCGlobalGasCapFlag = &cli.Uint64Flag{
 		Name:     "rpc.gascap",
-		Usage:    "Sets a cap on gas that can be used in eth_call/estimateGas (0=infinite)",
+		Usage:    "Sets a cap on gas for Sila legacy-compatible call/estimate RPCs (0=infinite)",
 		Value:    ethconfig.Defaults.RPCGasCap,
 		Category: flags.APICategory,
 	}
 	RPCGlobalEVMTimeoutFlag = &cli.DurationFlag{
 		Name:     "rpc.evmtimeout",
-		Usage:    "Sets a timeout used for eth_call (0=infinite)",
+		Usage:    "Sets a timeout used for Sila legacy-compatible call RPCs (0=infinite)",
 		Value:    ethconfig.Defaults.RPCEVMTimeout,
 		Category: flags.APICategory,
 	}
@@ -646,19 +646,19 @@ var (
 	}
 	RPCGlobalLogQueryLimit = &cli.IntFlag{
 		Name:     "rpc.logquerylimit",
-		Usage:    "Maximum number of alternative addresses or topics allowed per search position in eth_getLogs filter criteria (0 = no cap)",
+		Usage:    "Maximum number of alternative addresses or topics allowed per search position in Sila legacy-compatible log filter criteria (0 = no cap)",
 		Value:    ethconfig.Defaults.LogQueryLimit,
 		Category: flags.APICategory,
 	}
 	RPCTxSyncDefaultTimeoutFlag = &cli.DurationFlag{
 		Name:     "rpc.txsync.defaulttimeout",
-		Usage:    "Default timeout for eth_sendRawTransactionSync (e.g. 2s, 500ms)",
+		Usage:    "Default timeout for Sila legacy-compatible sendRawTransactionSync (e.g. 2s, 500ms)",
 		Value:    ethconfig.Defaults.TxSyncDefaultTimeout,
 		Category: flags.APICategory,
 	}
 	RPCTxSyncMaxTimeoutFlag = &cli.DurationFlag{
 		Name:     "rpc.txsync.maxtimeout",
-		Usage:    "Maximum allowed timeout for eth_sendRawTransactionSync (e.g. 5m)",
+		Usage:    "Maximum allowed timeout for Sila legacy-compatible sendRawTransactionSync (e.g. 5m)",
 		Value:    ethconfig.Defaults.TxSyncMaxTimeout,
 		Category: flags.APICategory,
 	}
