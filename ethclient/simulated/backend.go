@@ -35,7 +35,7 @@ import (
 	"github.com/sila-org/sila/rpc"
 )
 
-// Client exposes the methods provided by the Ethereum RPC client.
+// Client exposes the methods provided by the legacy Ethereum-compatible RPC client.
 type Client interface {
 	ethereum.BlockNumberReader
 	ethereum.ChainReader
@@ -60,7 +60,7 @@ type simClient struct {
 }
 
 // Backend is a simulated blockchain. You can use it to test your contracts or
-// other code that interacts with the Ethereum chain.
+// other code that interacts with the Sila chain.
 type Backend struct {
 	node   *node.Node
 	beacon *catalyst.SimulatedBeacon
@@ -72,7 +72,7 @@ type Backend struct {
 //
 // A simulated backend always uses chainID 1337.
 func NewBackend(alloc types.GenesisAlloc, options ...func(nodeConf *node.Config, ethConf *ethconfig.Config)) *Backend {
-	// Create the default configurations for the outer node shell and the Ethereum
+	// Create the default configurations for the outer node shell and the Sila
 	// service to mutate with the options afterwards
 	nodeConf := node.DefaultConfig
 	nodeConf.DataDir = ""
@@ -92,7 +92,7 @@ func NewBackend(alloc types.GenesisAlloc, options ...func(nodeConf *node.Config,
 	for _, option := range options {
 		option(&nodeConf, &ethConf)
 	}
-	// Assemble the Ethereum stack to run the chain with
+	// Assemble the Sila stack to run the chain with
 	stack, err := node.New(&nodeConf)
 	if err != nil {
 		panic(err) // this should never happen
