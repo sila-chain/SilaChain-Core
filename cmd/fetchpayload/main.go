@@ -64,7 +64,7 @@ func main() {
 	}
 
 	// Connect to the node.
-	client, err := ethclient.DialContext(ctx, *rpcURL)
+	client, err := ethclient.DialSilaContext(ctx, *rpcURL)
 	if err != nil {
 		fatal("failed to connect to %s: %v", *rpcURL, err)
 	}
