@@ -181,6 +181,7 @@ type Backend interface {
 //	keccak256("\x19Ethereum Signed Message:\n"${message length}${message}).
 //
 // This gives context to the signed message and prevents signing of transactions.
+// The Ethereum Signed Message prefix is retained as a legacy wallet compatibility standard.
 func TextHash(data []byte) []byte {
 	hash, _ := TextAndHash(data)
 	return hash
@@ -194,6 +195,7 @@ func TextHash(data []byte) []byte {
 //	keccak256("\x19Ethereum Signed Message:\n"${message length}${message}).
 //
 // This gives context to the signed message and prevents signing of transactions.
+// The Ethereum Signed Message prefix is retained as a legacy wallet compatibility standard.
 func TextAndHash(data []byte) ([]byte, string) {
 	msg := fmt.Sprintf("\x19Ethereum Signed Message:\n%d%s", len(data), data)
 	hasher := keccak.NewLegacyKeccak256()
