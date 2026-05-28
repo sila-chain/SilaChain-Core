@@ -42,9 +42,17 @@ type Client struct {
 	c *rpc.Client
 }
 
+// SilaClient is the Sila-native alias for geth-compatible RPC extensions.
+type SilaClient = Client
+
 // New creates a client that uses the given RPC client.
 func New(c *rpc.Client) *Client {
 	return &Client{c}
+}
+
+// NewSila creates a Sila client for geth-compatible RPC extensions.
+func NewSila(c *rpc.Client) *SilaClient {
+	return New(c)
 }
 
 // CreateAccessList tries to create an access list for a specific transaction based on the
