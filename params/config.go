@@ -184,6 +184,8 @@ var (
 	}
 	// AllEthashProtocolChanges contains every protocol change introduced
 	// and accepted into the legacy proof-of-work consensus.
+	//
+	// Deprecated: use AllSilaProtocolChanges for SilaChain-native references.
 	AllEthashProtocolChanges = &ChainConfig{
 		ChainID:                 big.NewInt(1337),
 		HomesteadBlock:          big.NewInt(0),
