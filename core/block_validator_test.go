@@ -89,7 +89,9 @@ func testHeaderVerification(t *testing.T, scheme string) {
 }
 
 func TestHeaderVerificationForMergingClique(t *testing.T) { testHeaderVerificationForMerging(t, true) }
-func TestHeaderVerificationForMergingEthash(t *testing.T) { testHeaderVerificationForMerging(t, false) }
+func TestHeaderVerificationForMergingSilaPoW(t *testing.T) {
+	testHeaderVerificationForMerging(t, false)
+}
 
 // Tests the verification for eth1/2 merging, including pre-merge and post-merge
 func testHeaderVerificationForMerging(t *testing.T, isClique bool) {
