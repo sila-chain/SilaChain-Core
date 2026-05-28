@@ -425,9 +425,9 @@ Command line params that need to be supported are:
                                 `stdout` - into the stdout output
                                 `stderr` - into the stderr output
     --seal.clique value         Seal block with Clique. `stdin` or file name of where to find the Clique sealing data.
-    --seal.ethash               Seal block with ethash. (default: false)
-    --seal.ethash.dir value     Path to ethash DAG. If none exists, a new DAG will be generated.
-    --seal.ethash.mode value    Defines the type and amount of PoW verification an ethash engine makes. (default: "normal")
+    --seal.ethash               Seal block with Sila PoW compatibility. (default: false)
+    --seal.ethash.dir value     Path to Sila PoW compatibility DAG. If none exists, a new DAG will be generated.
+    --seal.ethash.mode value    Defines the type and amount of PoW verification a Sila PoW compatibility engine makes. (default: "normal")
     --verbosity value           Sets the verbosity level. (default: 3)
 ```
 
