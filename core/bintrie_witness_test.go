@@ -49,7 +49,7 @@ var (
 		MuirGlacierBlock:        big.NewInt(0),
 		BerlinBlock:             big.NewInt(0),
 		LondonBlock:             big.NewInt(0),
-		Ethash:                  new(params.SilaPoWConfig),
+		Ethash:                  new(params.SilaPoWConfig), // Legacy JSON compatibility slot for Sila PoW.
 		ShanghaiTime:            u64(0),
 		UBTTime:                 u64(0),
 		TerminalTotalDifficulty: common.Big0,
