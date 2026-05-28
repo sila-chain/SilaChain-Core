@@ -38,7 +38,7 @@ const schema string = `
         mutation: Mutation
     }
 
-    # Account is an Ethereum account at a particular block.
+    # Account is a SilaChain account at a particular block.
     type Account {
         # Address is the address owning the account.
         address: Address!
@@ -89,7 +89,7 @@ const schema string = `
         amount: Long!
     }
 
-    # Transaction is an Ethereum transaction.
+    # Transaction is a SilaChain transaction.
     type Transaction {
         # Hash is the hash of this transaction.
         hash: Bytes32!
@@ -192,7 +192,7 @@ const schema string = `
         topics: [[Bytes32!]!]
     }
 
-    # Block is an Ethereum block.
+    # Block is a SilaChain block.
     type Block {
         # Number is the number of this block, starting at 0 for the genesis block.
         number: Long!
@@ -255,7 +255,7 @@ const schema string = `
         transactionAt(index: Long!): Transaction
         # Logs returns a filtered set of logs from this block.
         logs(filter: BlockFilterCriteria!): [Log!]!
-        # Account fetches an Ethereum account at the current block's state.
+        # Account fetches a SilaChain account at the current block's state.
         account(address: Address!): Account!
         # Call executes a local call operation at the current block's state.
         call(data: CallData!): CallResult
@@ -350,7 +350,7 @@ const schema string = `
         transactionCount: Long!
         # Transactions is a list of transactions in the current pending state.
         transactions: [Transaction!]
-        # Account fetches an Ethereum account for the pending state.
+        # Account fetches a SilaChain account for the pending state.
         account(address: Address!): Account!
         # Call executes a local call operation for the pending state.
         call(data: CallData!): CallResult
@@ -360,7 +360,7 @@ const schema string = `
     }
 
     type Query {
-        # Block fetches an Ethereum block by number or by hash. If neither is
+        # Block fetches a SilaChain block by number or by hash. If neither is
         # supplied, the most recent known block is returned.
         block(number: Long, hash: Bytes32): Block
         # Blocks returns all the blocks between two numbers, inclusive. If

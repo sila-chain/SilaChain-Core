@@ -105,7 +105,7 @@ func (s *ExecuteStats) reportMetrics() {
 
 // slowBlockLog represents the JSON structure for slow block logging.
 // This format is designed for cross-client compatibility with other
-// Ethereum execution clients (reth, Besu, Nethermind).
+// SilaChain execution clients (reth, Besu, Nethermind).
 type slowBlockLog struct {
 	Level       string          `json:"level"`
 	Msg         string          `json:"msg"`
@@ -183,7 +183,7 @@ func durationToMs(d time.Duration) float64 {
 
 // logSlow prints the detailed execution statistics in JSON format if the block
 // is regarded as slow. The JSON format is designed for cross-client compatibility
-// with other Ethereum execution clients.
+// with other SilaChain execution clients.
 func (s *ExecuteStats) logSlow(block *types.Block, slowBlockThreshold time.Duration) {
 	// Negative threshold means disabled (default when flag not set)
 	if slowBlockThreshold < 0 {

@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with the SilaChain library. If not, see <http://www.gnu.org/licenses/>.
 
-// Package graphql provides a GraphQL interface to Ethereum node data.
+// Package graphql provides a GraphQL interface to SilaChain node data.
 package graphql
 
 import (
@@ -79,7 +79,7 @@ func (b *Long) UnmarshalGraphQL(input interface{}) error {
 	return err
 }
 
-// Account represents an Ethereum account at a particular block.
+// Account represents a SilaChain account at a particular block.
 type Account struct {
 	r             *Resolver
 	address       common.Address
@@ -210,7 +210,7 @@ func (w *Withdrawal) Amount(ctx context.Context) hexutil.Uint64 {
 	return hexutil.Uint64(w.amount)
 }
 
-// Transaction represents an Ethereum transaction.
+// Transaction represents a SilaChain transaction.
 // backend and hash are mandatory; all others will be fetched when required.
 type Transaction struct {
 	r    *Resolver
@@ -655,7 +655,7 @@ func (t *Transaction) RawReceipt(ctx context.Context) (hexutil.Bytes, error) {
 
 type BlockType int
 
-// Block represents an Ethereum block.
+// Block represents a SilaChain block.
 // backend, and numberOrHash are mandatory. All other fields are lazily fetched
 // when required.
 type Block struct {
