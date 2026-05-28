@@ -35,6 +35,7 @@ import (
 )
 
 func newSilaPoWTestConfig(homestead *big.Int) *params.ChainConfig {
+	// The Ethash field is the legacy JSON compatibility slot for Sila PoW.
 	return &params.ChainConfig{HomesteadBlock: homestead, Ethash: &params.SilaPoWConfig{}}
 }
 func TestSetupGenesis(t *testing.T) {
