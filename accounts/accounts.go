@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with the SilaChain library. If not, see <http://www.gnu.org/licenses/>.
 
-// Package accounts implements high level Ethereum account management.
+// Package accounts implements high level SilaChain account management.
 package accounts
 
 import (
@@ -28,7 +28,7 @@ import (
 	"github.com/sila-org/sila/event"
 )
 
-// Account represents an Ethereum account located at a specific location defined
+// Account represents a SilaChain account located at a specific location defined
 // by the optional URL field.
 type Account struct {
 	Address common.Address `json:"address"` // SilaChain account address derived from the key
