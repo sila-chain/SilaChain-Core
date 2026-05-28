@@ -73,7 +73,7 @@ type Database interface {
 	Commit(update *StateUpdate) error
 }
 
-// Trie is a Ethereum Merkle Patricia trie.
+// Trie is a SilaChain Merkle Patricia trie.
 type Trie interface {
 	// GetKey returns the sha3 preimage of a hashed key that was previously used
 	// to store a value.

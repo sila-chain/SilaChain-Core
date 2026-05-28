@@ -38,7 +38,7 @@ type journalEntry interface {
 	// revert undoes the changes introduced by this journal entry.
 	revert(*StateDB)
 
-	// dirtied returns the Ethereum address modified by this journal entry.
+	// dirtied returns the SilaChain address modified by this journal entry.
 	// indicates false if no address was changed.
 	dirtied() (common.Address, bool)
 

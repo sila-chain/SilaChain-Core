@@ -40,7 +40,7 @@ type ContractCode struct {
 	OriginBlob []byte // OriginBlob is the original binary representation of the contract code.
 }
 
-// AccountDelete represents a deletion operation for an Ethereum account.
+// AccountDelete represents a deletion operation for an SilaChain account.
 type AccountDelete struct {
 	Address        common.Address              // Address uniquely identifies the account.
 	Origin         *types.StateAccount         // Origin is the account state prior to deletion (never be null).
@@ -48,7 +48,7 @@ type AccountDelete struct {
 	StoragesOrigin map[common.Hash]common.Hash // StoragesOrigin holds original values of mutated slots; keys are hashes of raw storage slot keys.
 }
 
-// AccountUpdate represents an update operation for an Ethereum account.
+// AccountUpdate represents an update operation for an SilaChain account.
 type AccountUpdate struct {
 	Address  common.Address              // Address uniquely identifies the account.
 	Data     *types.StateAccount         // Data is the updated account state; nil indicates deletion.
@@ -205,7 +205,7 @@ func encodeSlot(value common.Hash) []byte {
 // into the Merkle-Patricia-Trie representation.
 //
 // It transforms account and storage updates into their corresponding MPT-encoded
-// key-value mappings, using the same encoding rules as the Ethereum state trie.
+// key-value mappings, using the same encoding rules as the SilaChain state trie.
 func (sc *StateUpdate) EncodeMPTState() (map[common.Hash][]byte, map[common.Address][]byte, map[common.Hash]map[common.Hash][]byte, map[common.Address]map[common.Hash][]byte) {
 	var (
 		accounts      = make(map[common.Hash][]byte, len(sc.Accounts))
@@ -248,7 +248,7 @@ func (sc *StateUpdate) EncodeMPTState() (map[common.Hash][]byte, map[common.Addr
 // into the Unified-Binary-Trie representation.
 //
 // It transforms account and storage updates into their corresponding UBT-encoded
-// key-value mappings, using the same encoding rules as the Ethereum state trie.
+// key-value mappings, using the same encoding rules as the SilaChain state trie.
 func (sc *StateUpdate) EncodeUBTState() (map[common.Hash][]byte, map[common.Address][]byte, map[common.Hash]map[common.Hash][]byte, map[common.Address]map[common.Hash][]byte) {
 	var (
 		accounts      = make(map[common.Hash][]byte, len(sc.Accounts))
