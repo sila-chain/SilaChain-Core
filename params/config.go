@@ -493,8 +493,8 @@ type ChainConfig struct {
 	BlobScheduleConfig *BlobScheduleConfig `json:"blobSchedule,omitempty"`
 }
 
-// AllEthashProtocolChanges contains every protocol change introduced
-// and accepted into the legacy proof-of-work consensus.
+// AllEthashProtocolChanges is retained as a deprecated alias for legacy
+// proof-of-work compatibility callers.
 //
 // Deprecated: use AllSilaProtocolChanges for SilaChain-native references.
 var AllEthashProtocolChanges = AllSilaProtocolChanges
