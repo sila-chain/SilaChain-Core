@@ -56,7 +56,7 @@ type PrecompiledContract interface {
 // PrecompiledContracts contains the precompiled contracts supported at the given fork.
 type PrecompiledContracts map[common.Address]PrecompiledContract
 
-// PrecompiledContractsHomestead contains the default set of pre-compiled Ethereum
+// PrecompiledContractsHomestead contains the default set of pre-compiled SilaChain
 // contracts used in the Frontier and Homestead releases.
 var PrecompiledContractsHomestead = PrecompiledContracts{
 	common.BytesToAddress([]byte{0x1}): &ecrecover{},
@@ -65,7 +65,7 @@ var PrecompiledContractsHomestead = PrecompiledContracts{
 	common.BytesToAddress([]byte{0x4}): &dataCopy{},
 }
 
-// PrecompiledContractsByzantium contains the default set of pre-compiled Ethereum
+// PrecompiledContractsByzantium contains the default set of pre-compiled SilaChain
 // contracts used in the Byzantium release.
 var PrecompiledContractsByzantium = PrecompiledContracts{
 	common.BytesToAddress([]byte{0x1}): &ecrecover{},
@@ -78,7 +78,7 @@ var PrecompiledContractsByzantium = PrecompiledContracts{
 	common.BytesToAddress([]byte{0x8}): &bn256PairingByzantium{},
 }
 
-// PrecompiledContractsIstanbul contains the default set of pre-compiled Ethereum
+// PrecompiledContractsIstanbul contains the default set of pre-compiled SilaChain
 // contracts used in the Istanbul release.
 var PrecompiledContractsIstanbul = PrecompiledContracts{
 	common.BytesToAddress([]byte{0x1}): &ecrecover{},
@@ -92,7 +92,7 @@ var PrecompiledContractsIstanbul = PrecompiledContracts{
 	common.BytesToAddress([]byte{0x9}): &blake2F{},
 }
 
-// PrecompiledContractsBerlin contains the default set of pre-compiled Ethereum
+// PrecompiledContractsBerlin contains the default set of pre-compiled SilaChain
 // contracts used in the Berlin release.
 var PrecompiledContractsBerlin = PrecompiledContracts{
 	common.BytesToAddress([]byte{0x1}): &ecrecover{},
@@ -106,7 +106,7 @@ var PrecompiledContractsBerlin = PrecompiledContracts{
 	common.BytesToAddress([]byte{0x9}): &blake2F{},
 }
 
-// PrecompiledContractsCancun contains the default set of pre-compiled Ethereum
+// PrecompiledContractsCancun contains the default set of pre-compiled SilaChain
 // contracts used in the Cancun release.
 var PrecompiledContractsCancun = PrecompiledContracts{
 	common.BytesToAddress([]byte{0x1}): &ecrecover{},
@@ -121,7 +121,7 @@ var PrecompiledContractsCancun = PrecompiledContracts{
 	common.BytesToAddress([]byte{0xa}): &kzgPointEvaluation{},
 }
 
-// PrecompiledContractsPrague contains the set of pre-compiled Ethereum
+// PrecompiledContractsPrague contains the set of pre-compiled SilaChain
 // contracts used in the Prague release.
 var PrecompiledContractsPrague = PrecompiledContracts{
 	common.BytesToAddress([]byte{0x01}): &ecrecover{},
@@ -147,7 +147,7 @@ var PrecompiledContractsBLS = PrecompiledContractsPrague
 
 var PrecompiledContractsVerkle = PrecompiledContractsBerlin
 
-// PrecompiledContractsOsaka contains the set of pre-compiled Ethereum
+// PrecompiledContractsOsaka contains the set of pre-compiled SilaChain
 // contracts used in the Osaka release.
 var PrecompiledContractsOsaka = PrecompiledContracts{
 	common.BytesToAddress([]byte{0x01}): &ecrecover{},
@@ -171,7 +171,7 @@ var PrecompiledContractsOsaka = PrecompiledContracts{
 	common.BytesToAddress([]byte{0x1, 0x00}): &p256Verify{},
 }
 
-// PrecompiledContractsP256Verify contains the precompiled Ethereum
+// PrecompiledContractsP256Verify contains the precompiled SilaChain
 // contract specified in EIP-7212. This is exported for testing purposes.
 var PrecompiledContractsP256Verify = PrecompiledContracts{
 	common.BytesToAddress([]byte{0x1, 0x00}): &p256Verify{},

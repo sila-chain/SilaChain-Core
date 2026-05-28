@@ -52,7 +52,7 @@ const (
 	SetCodeTxType    = 0x04
 )
 
-// Transaction is an Ethereum transaction.
+// Transaction is an SilaChain transaction.
 type Transaction struct {
 	inner TxData    // Consensus contents of a transaction
 	time  time.Time // Time first seen locally (spam avoidance)

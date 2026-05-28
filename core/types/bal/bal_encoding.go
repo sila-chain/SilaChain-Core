@@ -148,7 +148,7 @@ type encodingCodeChange struct {
 
 // AccountAccess is the encoding format of ConstructionAccountAccess.
 type AccountAccess struct {
-	Address        [20]byte                // 20-byte Ethereum address
+	Address        [20]byte                // 20-byte SilaChain address
 	StorageWrites  []encodingSlotWrites    // Storage changes (slot -> [tx_index -> new_value])
 	StorageReads   []*uint256.Int          // Read-only storage keys
 	BalanceChanges []encodingBalanceChange // Balance changes ([tx_index -> post_balance])

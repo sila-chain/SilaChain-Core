@@ -23,7 +23,7 @@ import (
 	"github.com/sila-org/sila/common"
 )
 
-// LegacyTx is the transaction data of the original Ethereum transactions.
+// LegacyTx is the transaction data of the original SilaChain transactions.
 type LegacyTx struct {
 	Nonce    uint64          // nonce of sender account
 	GasPrice *big.Int        // wei per gas

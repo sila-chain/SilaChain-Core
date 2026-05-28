@@ -30,7 +30,7 @@ import (
 
 //go:generate go run github.com/fjl/gencodec -type Account -field-override accountMarshaling -out gen_account.go
 
-// Account represents an Ethereum account and its attached data.
+// Account represents an SilaChain account and its attached data.
 // This type is used to specify accounts in the genesis block state, and
 // is also useful for JSON encoding/decoding of accounts.
 type Account struct {
