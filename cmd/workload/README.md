@@ -1,4 +1,4 @@
-﻿## Workload Testing Tool
+## Workload Testing Tool
 
 This tool performs RPC calls against a live node. It has tests for the Sepolia testnet and
 Mainnet. Note the tests require a fully synced node.
@@ -36,4 +36,3 @@ the following commands (in this directory) against a synced mainnet node:
 > go run . tracegen --trace-tests queries/trace_mainnet.json --trace-start 4000000 --trace-end 4000100 http://host:8545
 > go run . proofgen --proof-tests queries/proof_mainnet.json --proof-states 3000 http://host:8545
 ```
-
