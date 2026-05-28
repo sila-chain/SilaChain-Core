@@ -133,7 +133,7 @@ func newWithNode(stack *node.Node, conf *eth.Config, blockPeriod uint64) (*Backe
 	return &Backend{
 		node:   stack,
 		beacon: beacon,
-		client: simClient{ethclient.NewClient(stack.Attach())},
+		client: simClient{ethclient.NewSilaClient(stack.Attach())},
 	}, nil
 }
 
