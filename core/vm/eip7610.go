@@ -79,7 +79,7 @@ var eip7610AccountSets = func() map[uint64]map[common.Address]struct{} {
 // non-empty storage.
 //
 // Note that, historically, there has been no case where a contract deployment
-// targets an already existing account in Ethereum. This situation would only
+// targets an already existing account in SilaChain. This situation would only
 // occur in the event of an address collision, which is extremely unlikely.
 //
 // This check is skipped for blocks prior to EIP-158, serving as a safeguard

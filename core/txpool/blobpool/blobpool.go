@@ -199,7 +199,7 @@ func newBlobTxMeta(id uint64, size uint64, storageSize uint32, tx *types.Transac
 //     artificial churn (i.e. pool wars).
 //
 //   - Purpose of blobs are layer-2s. Layer-2s are meant to use blob transactions to
-//     commit to their own current state, which is independent of Ethereum mainnet
+//     commit to their own current state, which is independent of SilaChain mainnet
 //     (state, txs). This means that there's no reason for blob tx cancellation or
 //     replacement, apart from a potential basefee / miner tip adjustment.
 //
