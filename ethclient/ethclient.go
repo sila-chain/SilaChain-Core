@@ -37,9 +37,17 @@ type Client struct {
 	c *rpc.Client
 }
 
+// SilaClient is the Sila-native alias for the legacy Ethereum-compatible RPC client.
+type SilaClient = Client
+
 // Dial connects a client to the given URL.
 func Dial(rawurl string) (*Client, error) {
 	return DialContext(context.Background(), rawurl)
+}
+
+// DialSila connects a Sila client to the given URL.
+func DialSila(rawurl string) (*SilaClient, error) {
+	return DialSilaContext(context.Background(), rawurl)
 }
 
 // DialContext connects a client to the given URL with context.
@@ -51,9 +59,23 @@ func DialContext(ctx context.Context, rawurl string) (*Client, error) {
 	return NewClient(c), nil
 }
 
+// DialSilaContext connects a Sila client to the given URL with context.
+func DialSilaContext(ctx context.Context, rawurl string) (*SilaClient, error) {
+	client, err := DialContext(ctx, rawurl)
+	if err != nil {
+		return nil, err
+	}
+	return client, nil
+}
+
 // NewClient creates a client that uses the given RPC client.
 func NewClient(c *rpc.Client) *Client {
 	return &Client{c}
+}
+
+// NewSilaClient creates a Sila client that uses the given RPC client.
+func NewSilaClient(c *rpc.Client) *SilaClient {
+	return NewClient(c)
 }
 
 // Close closes the underlying RPC connection.
