@@ -1,4 +1,4 @@
-﻿# Keeper - SilaChain as a zkvm guest
+# Keeper - SilaChain as a zkvm guest
 
 Keeper command is a specialized tool for validating stateless execution of Sila blocks. It's designed to run as a zkvm guest.
 
@@ -67,4 +67,3 @@ func getInput() []byte {
     return encodedPayload
 }
 ```
-
