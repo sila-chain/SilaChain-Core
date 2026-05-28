@@ -511,6 +511,11 @@ func (c SilaPoWConfig) String() string {
 // Deprecated: use SilaPoWConfig for SilaChain-native references.
 type EthashConfig = SilaPoWConfig
 
+// SilaPoW returns the Sila proof-of-work compatibility configuration.
+func (c *ChainConfig) SilaPoW() *SilaPoWConfig {
+	return c.Ethash
+}
+
 // CliqueConfig is the consensus engine configs for proof-of-authority based sealing.
 type CliqueConfig struct {
 	Period uint64 `json:"period"` // Number of seconds between blocks to enforce
