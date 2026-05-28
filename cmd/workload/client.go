@@ -46,7 +46,7 @@ func makeClient(ctx *cli.Context) *client {
 	}
 	return &client{
 		RPC:    cl,
-		Eth:    ethclient.NewClient(cl),
+		Eth:    ethclient.NewSilaClient(cl),
 		Client: gethclient.New(cl),
 	}
 }
