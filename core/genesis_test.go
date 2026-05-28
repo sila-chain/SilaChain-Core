@@ -1,4 +1,4 @@
-﻿// Copyright 2026 The SilaChain Authors
+// Copyright 2026 The SilaChain Authors
 // This file is part of the SilaChain library.
 //
 // The SilaChain library is free software: you can redistribute it and/or modify
@@ -36,7 +36,7 @@ import (
 
 func newSilaPoWTestConfig(homestead *big.Int) *params.ChainConfig {
 	// The Ethash field is the legacy JSON compatibility slot for Sila PoW.
-	return &params.ChainConfig{HomesteadBlock: homestead, Ethash: &params.SilaPoWConfig{}, // Legacy JSON compatibility slot for Sila PoW.}
+	return &params.ChainConfig{HomesteadBlock: homestead, Ethash: &params.SilaPoWConfig{}}
 }
 func TestSetupGenesis(t *testing.T) {
 	testSetupGenesis(t, rawdb.HashScheme)
@@ -342,4 +342,3 @@ func TestBinaryGenesisCommit(t *testing.T) {
 		t.Fatal("could not find node")
 	}
 }
-
