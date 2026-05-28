@@ -628,7 +628,7 @@ func (c *ChainConfig) Description() string {
 	}
 	banner += fmt.Sprintf("Chain ID:  %v (%s)\n", c.ChainID, network)
 	switch {
-	case c.Ethash != nil:
+	case c.SilaPoW() != nil:
 		banner += "Consensus: Sila Beacon (proof-of-stake), transitioned from legacy proof-of-work\n"
 	case c.Clique != nil:
 		banner += "Consensus: Beacon (proof-of-stake), merged from Clique (proof-of-authority)\n"
