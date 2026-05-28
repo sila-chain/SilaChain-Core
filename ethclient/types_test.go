@@ -33,6 +33,15 @@ func TestSilaClientAlias(t *testing.T) {
 		t.Fatal("SilaClient alias must preserve Client identity")
 	}
 }
+func TestNewSilaClient(t *testing.T) {
+	silaClient := NewSilaClient(nil)
+	if silaClient == nil {
+		t.Fatal("NewSilaClient must return a client")
+	}
+	if silaClient.Client() != nil {
+		t.Fatal("NewSilaClient must preserve the provided RPC client")
+	}
+}
 func TestToFilterArg(t *testing.T) {
 	blockHashErr := errors.New("cannot specify both BlockHash and FromBlock/ToBlock")
 	addresses := []common.Address{
