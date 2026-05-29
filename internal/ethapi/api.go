@@ -2149,7 +2149,7 @@ func (api *NetAPI) PeerCount() hexutil.Uint {
 	return hexutil.Uint(api.net.PeerCount())
 }
 
-// Version returns the current ethereum protocol version.
+// Version returns the current legacy-compatible network protocol version.
 func (api *NetAPI) Version() string {
 	return fmt.Sprintf("%d", api.networkVersion)
 }
