@@ -2234,11 +2234,6 @@ func RegisterSilaService(stack *node.Node, cfg *ethconfig.Config) (*SilaAPIBacke
 	return backend.APIBackend, backend
 }
 
-// RegisterEthService adds the Sila execution compatibility client to the stack.
-func RegisterEthService(stack *node.Node, cfg *ethconfig.Config) (*SilaAPIBackend, *SilaExecutionBackend) {
-	return RegisterSilaService(stack, cfg)
-}
-
 // RegisterEthStatsService configures the Sila Stats compatibility daemon and adds it to the node.
 // RegisterSilaStatsService configures the Sila Stats daemon and adds it to the node.
 func RegisterSilaStatsService(stack *node.Node, backend *SilaAPIBackend, url string) {
