@@ -19,7 +19,7 @@ import (
 	ethconfig "github.com/sila-org/sila/eth/ethconfig"
 	"github.com/sila-org/sila/eth/filters"
 	"github.com/sila-org/sila/ethclient"
-	ethapi "github.com/sila-org/sila/internal/ethapi"
+	silabackend "github.com/sila-org/sila/internal/silaapi/backend"
 	"github.com/sila-org/sila/internal/telemetry/tracesetup"
 	"github.com/sila-org/sila/internal/version"
 	"github.com/sila-org/sila/log"
@@ -433,12 +433,12 @@ func RegisterBuildInfoGauge(silaBackend *sila.SilaChain, version string) {
 }
 
 // RegisterFilterAPI configures the log filter RPC API.
-func RegisterFilterAPI(stack *node.Node, backend ethapi.Backend, cfg *ethconfig.Config) *filters.FilterSystem {
+func RegisterFilterAPI(stack *node.Node, backend silabackend.Backend, cfg *ethconfig.Config) *filters.FilterSystem {
 	return utils.RegisterFilterAPI(stack, backend, cfg)
 }
 
 // RegisterGraphQLService configures GraphQL if requested.
-func RegisterGraphQLService(stack *node.Node, backend ethapi.Backend, filterSystem *filters.FilterSystem, cfg *node.Config) {
+func RegisterGraphQLService(stack *node.Node, backend silabackend.Backend, filterSystem *filters.FilterSystem, cfg *node.Config) {
 	utils.RegisterGraphQLService(stack, backend, filterSystem, cfg)
 }
 
