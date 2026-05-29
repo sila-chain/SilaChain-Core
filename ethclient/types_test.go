@@ -42,6 +42,21 @@ func TestNewSilaClient(t *testing.T) {
 		t.Fatal("NewSilaClient must preserve the provided RPC client")
 	}
 }
+
+func TestSilaClientRPCMethodNamespace(t *testing.T) {
+	legacyClient := NewClient(nil)
+	if got := legacyClient.rpcMethod("eth_chainId"); got != "eth_chainId" {
+		t.Fatalf("legacy client method = %q, want eth_chainId", got)
+	}
+
+	silaClient := NewSilaClient(nil)
+	if got := silaClient.rpcMethod("eth_chainId"); got != "sila_chainId" {
+		t.Fatalf("sila client method = %q, want sila_chainId", got)
+	}
+	if got := silaClient.rpcMethod("net_peerCount"); got != "net_peerCount" {
+		t.Fatalf("non-eth method = %q, want net_peerCount", got)
+	}
+}
 func TestToFilterArg(t *testing.T) {
 	blockHashErr := errors.New("cannot specify both BlockHash and FromBlock/ToBlock")
 	addresses := []common.Address{
