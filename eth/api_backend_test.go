@@ -55,7 +55,7 @@ var (
 	signer = types.LatestSignerForChainID(gspec.Config.ChainID)
 )
 
-func initBackend(withLocal bool) *EthAPIBackend {
+func initBackend(withLocal bool) *SilaAPIBackend {
 	var (
 		// Create a database pre-initialize with a genesis block
 		db     = rawdb.NewMemoryDatabase()
@@ -77,7 +77,7 @@ func initBackend(withLocal bool) *EthAPIBackend {
 	if withLocal {
 		eth.localTxTracker = locals.New("", time.Minute, gspec.Config, txpool)
 	}
-	return &EthAPIBackend{
+	return &SilaAPIBackend{
 		eth: eth,
 	}
 }
