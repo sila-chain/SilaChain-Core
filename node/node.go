@@ -105,6 +105,7 @@ func New(conf *Config) (*Node, error) {
 	}
 	server := rpc.NewServer()
 	server.SetBatchLimits(conf.BatchRequestLimit, conf.BatchResponseMaxSize)
+	server.SetLegacyEngineCompatibilityAlias(conf.LegacyEngineCompatibility)
 	node := &Node{
 		config:        conf,
 		inprocHandler: server,
