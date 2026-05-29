@@ -394,8 +394,9 @@ func (n *Node) startRPC() error {
 	)
 
 	rpcConfig := rpcEndpointConfig{
-		batchItemLimit:         n.config.BatchRequestLimit,
-		batchResponseSizeLimit: n.config.BatchResponseMaxSize,
+		batchItemLimit:            n.config.BatchRequestLimit,
+		batchResponseSizeLimit:    n.config.BatchResponseMaxSize,
+		legacyEngineCompatibility: n.config.LegacyEngineCompatibility,
 	}
 
 	initHttp := func(server *httpServer, port int) error {
@@ -439,10 +440,11 @@ func (n *Node) startRPC() error {
 			return err
 		}
 		sharedConfig := rpcEndpointConfig{
-			jwtSecret:              secret,
-			batchItemLimit:         silaEngineAPIBatchItemLimit,
-			batchResponseSizeLimit: silaEngineAPIBatchResponseSizeLimit,
-			httpBodyLimit:          silaEngineAPIBodyLimit,
+			jwtSecret:                 secret,
+			batchItemLimit:            silaEngineAPIBatchItemLimit,
+			batchResponseSizeLimit:    silaEngineAPIBatchResponseSizeLimit,
+			httpBodyLimit:             silaEngineAPIBodyLimit,
+			legacyEngineCompatibility: n.config.LegacyEngineCompatibility,
 		}
 		authModules := DefaultAuthModules
 
