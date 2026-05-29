@@ -10,8 +10,8 @@ To run the tests against a Sepolia node, use:
 ```
 
 To run a specific test, use the `--run` flag to filter the test cases. Filtering works
-similar to the `go test` command. For example, to run only tests for the Sila legacy-compatible RPC methods `eth_getBlockByHash`
-and `eth_getBlockByNumber`, use this command:
+similar to the `go test` command. For example, to run only tests for the Sila RPC methods `sila_getBlockByHash`
+and `sila_getBlockByNumber`, use this command:
 
 ```
 > ./workload test --sepolia --run History/getBlockBy http://host:8545
