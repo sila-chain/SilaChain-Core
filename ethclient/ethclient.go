@@ -34,7 +34,8 @@ import (
 
 // Client defines typed wrappers for the SilaChain RPC API.
 type Client struct {
-	c *rpc.Client
+	c         *rpc.Client
+	namespace string
 }
 
 // SilaClient is the primary SilaChain RPC client alias.
@@ -70,12 +71,22 @@ func DialSilaContext(ctx context.Context, rawurl string) (*SilaClient, error) {
 
 // NewClient creates a client that uses the given RPC client.
 func NewClient(c *rpc.Client) *Client {
-	return &Client{c}
+	return &Client{c: c, namespace: "eth"}
 }
 
 // NewSilaClient creates a Sila client that uses the given RPC client.
 func NewSilaClient(c *rpc.Client) *SilaClient {
-	return NewClient(c)
+	return &Client{c: c, namespace: "sila"}
+}
+
+func (ec *Client) rpcMethod(name string) string {
+	if ec.namespace == "" || ec.namespace == "eth" {
+		return name
+	}
+	if len(name) > 4 && name[:4] == "eth_" {
+		return ec.namespace + name[3:]
+	}
+	return name
 }
 
 // Close closes the underlying RPC connection.
@@ -93,7 +104,7 @@ func (ec *Client) Client() *rpc.Client {
 // ChainID retrieves the current chain ID for transaction replay protection.
 func (ec *Client) ChainID(ctx context.Context) (*big.Int, error) {
 	var result hexutil.Big
-	err := ec.c.CallContext(ctx, &result, "eth_chainId")
+	err := ec.c.CallContext(ctx, &result, ec.rpcMethod("eth_chainId"))
 	if err != nil {
 		return nil, err
 	}
@@ -132,7 +143,7 @@ func (ec *Client) BlockByNumber(ctx context.Context, number *big.Int) (*types.Bl
 // BlockNumber returns the most recent block number
 func (ec *Client) BlockNumber(ctx context.Context) (uint64, error) {
 	var result hexutil.Uint64
-	err := ec.c.CallContext(ctx, &result, "eth_blockNumber")
+	err := ec.c.CallContext(ctx, &result, ec.rpcMethod("eth_blockNumber"))
 	return uint64(result), err
 }
 
