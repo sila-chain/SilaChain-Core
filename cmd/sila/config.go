@@ -59,7 +59,7 @@ var (
 // These settings ensure that TOML keys use the same names as Go struct fields.
 var tomlSettings = ConfigTOMLSettings
 
-type gethConfig = ExecutionConfig
+type silaConfig = ExecutionConfig
 
 // makeConfigNode loads the real execution/node wiring layer.
 //
@@ -67,7 +67,7 @@ type gethConfig = ExecutionConfig
 // Real protocol wiring, account backends and SilaChain-compatible
 // execution assembly remain inside the Sila execution runtime boundary.
 
-func makeConfigNode(ctx *cli.Context) (*node.Node, gethConfig) {
+func makeConfigNode(ctx *cli.Context) (*node.Node, silaConfig) {
 	cfg := LoadBaseConfig(
 		ctx,
 		ctx.String(configFileFlag.Name),
@@ -90,7 +90,7 @@ func makeConfigNode(ctx *cli.Context) (*node.Node, gethConfig) {
 
 // constructs the disclaimer text block which will be printed in the logs upon
 // startup when Sila is running in dev mode.
-func constructDevModeBanner(ctx *cli.Context, cfg gethConfig) string {
+func constructDevModeBanner(ctx *cli.Context, cfg silaConfig) string {
 	devModeBanner := `You are running Sila in --dev mode. Please note the following:
 
   1. This mode is only intended for fast, iterative development without assumptions on
