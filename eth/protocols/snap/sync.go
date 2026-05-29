@@ -1989,7 +1989,7 @@ func (s *Syncer) processAccountResponse(res *accountResponse) {
 	}
 	// Delete any subtasks that have been aborted but not resumed. It's essential
 	// as the corresponding contract might be self-destructed in this cycle(it's
-	// no longer possible in ethereum as self-destruction is disabled in Cancun
+	// no longer possible in Sila as self-destruction is disabled in Cancun
 	// Fork, but the condition is still necessary for other networks).
 	//
 	// Keep the leftover storage tasks if they are not covered by the responded
@@ -2004,7 +2004,7 @@ func (s *Syncer) processAccountResponse(res *accountResponse) {
 				continue
 			}
 			// TODO(rjl493456442) degrade the log level before merging.
-			// It should never happen in ethereum.
+			// It should never happen in Sila.
 			if _, ok := resumed[hash]; !ok {
 				log.Error("Aborting suspended storage retrieval", "account", hash)
 				delete(res.task.SubTasks, hash)
