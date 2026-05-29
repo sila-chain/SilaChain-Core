@@ -147,6 +147,9 @@ type Config struct {
 	// for the authenticated api. This is by default {'localhost'}.
 	AuthVirtualHosts []string `toml:",omitempty"`
 
+	// LegacyEngineCompatibility enables the legacy engine namespace alias for
+	// consensus clients that have not migrated to silaEngine yet.
+	LegacyEngineCompatibility bool `toml:",omitempty"`
 	// WSHost is the host interface on which to start the websocket RPC server. If
 	// this field is empty, no websocket API endpoint will be started.
 	WSHost string
