@@ -88,7 +88,7 @@ var (
 		utils.TrienodeHistoryFullValueCheckpointFlag,
 		utils.BinTrieGroupDepthFlag,
 		utils.LightKDFFlag,
-		utils.EthRequiredBlocksFlag,
+		utils.SilaRequiredBlocksFlag,
 		utils.LegacyWhitelistFlag,
 		utils.CacheFlag,
 		utils.CacheDatabaseFlag,

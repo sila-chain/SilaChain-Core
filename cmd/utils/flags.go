@@ -238,7 +238,7 @@ var (
 		Usage:    "Reduce key-derivation RAM & CPU usage at some expense of KDF strength",
 		Category: flags.AccountCategory,
 	}
-	EthRequiredBlocksFlag = &cli.StringFlag{
+	SilaRequiredBlocksFlag = &cli.StringFlag{
 		Name:     "eth.requiredblocks",
 		Usage:    "Comma separated block number-to-hash mappings to require for peering (<number>=<hash>)",
 		Category: flags.EthCategory,
@@ -1731,7 +1731,7 @@ func setMiner(ctx *cli.Context, cfg *miner.Config) {
 }
 
 func setRequiredBlocks(ctx *cli.Context, cfg *ethconfig.Config) {
-	requiredBlocks := ctx.String(EthRequiredBlocksFlag.Name)
+	requiredBlocks := ctx.String(SilaRequiredBlocksFlag.Name)
 	if requiredBlocks == "" {
 		if ctx.IsSet(LegacyWhitelistFlag.Name) {
 			log.Warn("The flag --whitelist is deprecated and will be removed, please use --eth.requiredblocks")
