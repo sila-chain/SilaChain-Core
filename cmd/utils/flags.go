@@ -239,7 +239,8 @@ var (
 		Category: flags.AccountCategory,
 	}
 	SilaRequiredBlocksFlag = &cli.StringFlag{
-		Name:     "eth.requiredblocks",
+		Name:     "sila.requiredblocks",
+		Aliases:  []string{"eth.requiredblocks"},
 		Usage:    "Comma separated block number-to-hash mappings to require for peering (<number>=<hash>)",
 		Category: flags.EthCategory,
 	}
@@ -1734,7 +1735,7 @@ func setRequiredBlocks(ctx *cli.Context, cfg *ethconfig.Config) {
 	requiredBlocks := ctx.String(SilaRequiredBlocksFlag.Name)
 	if requiredBlocks == "" {
 		if ctx.IsSet(LegacyWhitelistFlag.Name) {
-			log.Warn("The flag --whitelist is deprecated and will be removed, please use --eth.requiredblocks")
+			log.Warn("The flag --whitelist is deprecated and will be removed, please use --sila.requiredblocks")
 			requiredBlocks = ctx.String(LegacyWhitelistFlag.Name)
 		} else {
 			return
