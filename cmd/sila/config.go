@@ -81,7 +81,7 @@ func makeConfigNode(ctx *cli.Context) (*node.Node, silaConfig) {
 
 	utils.SetEthConfig(ctx, stack, &cfg.sila)
 	if ctx.IsSet(utils.SilaStatsURLFlag.Name) {
-		cfg.Ethstats.URL = ctx.String(utils.SilaStatsURLFlag.Name)
+		cfg.SilaStats.URL = ctx.String(utils.SilaStatsURLFlag.Name)
 	}
 	ApplyMetricConfig(ctx, &cfg)
 
@@ -187,8 +187,8 @@ func BuildExecutionNode(ctx *cli.Context, stack *node.Node, cfg *ExecutionConfig
 	if ctx.IsSet(utils.GraphQLEnabledFlag.Name) {
 		RegisterGraphQLService(stack, backend, filterSystem, &cfg.Node)
 	}
-	if cfg.Ethstats.URL != "" {
-		RegisterSilaStatsService(stack, backend, cfg.Ethstats.URL)
+	if cfg.SilaStats.URL != "" {
+		RegisterSilaStatsService(stack, backend, cfg.SilaStats.URL)
 	}
 
 	synctarget, err := SyncTargetFromContext(ctx)
@@ -349,17 +349,17 @@ func LoadConfigOrFatal(file string, cfg any) {
 	}
 }
 
-// EthstatsConfig represents ethstats connectivity configuration.
-type EthstatsConfig struct {
+// SilaStatsConfig represents Sila stats connectivity configuration.
+type SilaStatsConfig struct {
 	URL string `toml:",omitempty"`
 }
 
 // ExecutionConfig represents the shared execution runtime configuration.
 type ExecutionConfig struct {
-	sila     ethconfig.Config
-	Node     node.Config
-	Ethstats EthstatsConfig
-	Metrics  metrics.Config
+	sila      ethconfig.Config
+	Node      node.Config
+	SilaStats SilaStatsConfig
+	Metrics   metrics.Config
 }
 
 // DefaultExecutionConfig returns the shared execution defaults.
