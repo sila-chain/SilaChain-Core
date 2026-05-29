@@ -22,6 +22,6 @@ jobs:
 
     - name: Run cleanup script
       run: |
-        go run build/ci.go purge -store gethstore/builds -days 14
+        go run build/ci.go purge -store silastore/builds -days 14
       env:
         AZURE_BLOBSTORE_TOKEN: ${{ secrets.AZURE_BLOBSTORE_TOKEN }}
