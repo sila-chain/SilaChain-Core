@@ -307,7 +307,7 @@ func (tx *rpcTransaction) UnmarshalJSON(msg []byte) error {
 // TransactionByHash returns the transaction with the given hash.
 func (ec *Client) TransactionByHash(ctx context.Context, hash common.Hash) (tx *types.Transaction, isPending bool, err error) {
 	var json *rpcTransaction
-	err = ec.c.CallContext(ctx, &json, "eth_getTransactionByHash", hash)
+	err = ec.c.CallContext(ctx, &json, ec.rpcMethod("eth_getTransactionByHash"), hash)
 	if err != nil {
 		return nil, false, err
 	} else if json == nil {
@@ -339,7 +339,7 @@ func (ec *Client) TransactionSender(ctx context.Context, tx *types.Transaction, 
 		Hash common.Hash
 		From common.Address
 	}
-	if err = ec.c.CallContext(ctx, &meta, "eth_getTransactionByBlockHashAndIndex", block, hexutil.Uint64(index)); err != nil {
+	if err = ec.c.CallContext(ctx, &meta, ec.rpcMethod("eth_getTransactionByBlockHashAndIndex"), block, hexutil.Uint64(index)); err != nil {
 		return common.Address{}, err
 	}
 	if meta.Hash == (common.Hash{}) || meta.Hash != tx.Hash() {
@@ -351,14 +351,14 @@ func (ec *Client) TransactionSender(ctx context.Context, tx *types.Transaction, 
 // TransactionCount returns the total number of transactions in the given block.
 func (ec *Client) TransactionCount(ctx context.Context, blockHash common.Hash) (uint, error) {
 	var num hexutil.Uint
-	err := ec.c.CallContext(ctx, &num, "eth_getBlockTransactionCountByHash", blockHash)
+	err := ec.c.CallContext(ctx, &num, ec.rpcMethod("eth_getBlockTransactionCountByHash"), blockHash)
 	return uint(num), err
 }
 
 // TransactionInBlock returns a single transaction at index in the given block.
 func (ec *Client) TransactionInBlock(ctx context.Context, blockHash common.Hash, index uint) (*types.Transaction, error) {
 	var json *rpcTransaction
-	err := ec.c.CallContext(ctx, &json, "eth_getTransactionByBlockHashAndIndex", blockHash, hexutil.Uint64(index))
+	err := ec.c.CallContext(ctx, &json, ec.rpcMethod("eth_getTransactionByBlockHashAndIndex"), blockHash, hexutil.Uint64(index))
 	if err != nil {
 		return nil, err
 	}
@@ -377,7 +377,7 @@ func (ec *Client) TransactionInBlock(ctx context.Context, blockHash common.Hash,
 // Note that the receipt is not available for pending transactions.
 func (ec *Client) TransactionReceipt(ctx context.Context, txHash common.Hash) (*types.Receipt, error) {
 	var r *types.Receipt
-	err := ec.c.CallContext(ctx, &r, "eth_getTransactionReceipt", txHash)
+	err := ec.c.CallContext(ctx, &r, ec.rpcMethod("eth_getTransactionReceipt"), txHash)
 	if err == nil && r == nil {
 		return nil, ethereum.NotFound
 	}
