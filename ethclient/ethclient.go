@@ -116,7 +116,7 @@ func (ec *Client) ChainID(ctx context.Context) (*big.Int, error) {
 // Note that loading full blocks requires two requests. Use HeaderByHash
 // if you don't need all transactions or uncle headers.
 func (ec *Client) BlockByHash(ctx context.Context, hash common.Hash) (*types.Block, error) {
-	return ec.getBlock(ctx, "eth_getBlockByHash", hash, true)
+	return ec.getBlock(ctx, ec.rpcMethod("eth_getBlockByHash"), hash, true)
 }
 
 // BlockByNumber returns a block from the current canonical chain.
@@ -137,7 +137,7 @@ func (ec *Client) BlockByHash(ctx context.Context, hash common.Hash) (*types.Blo
 // BlockByNumber(context.Background(), big.NewInt(int64(rpc.LatestBlockNumber)))
 // ```
 func (ec *Client) BlockByNumber(ctx context.Context, number *big.Int) (*types.Block, error) {
-	return ec.getBlock(ctx, "eth_getBlockByNumber", toBlockNumArg(number), true)
+	return ec.getBlock(ctx, ec.rpcMethod("eth_getBlockByNumber"), toBlockNumArg(number), true)
 }
 
 // BlockNumber returns the most recent block number
@@ -255,7 +255,7 @@ func (ec *Client) getBlock(ctx context.Context, method string, args ...interface
 // HeaderByHash returns the block header with the given hash.
 func (ec *Client) HeaderByHash(ctx context.Context, hash common.Hash) (*types.Header, error) {
 	var head *types.Header
-	err := ec.c.CallContext(ctx, &head, "eth_getBlockByHash", hash, false)
+	err := ec.c.CallContext(ctx, &head, ec.rpcMethod("eth_getBlockByHash"), hash, false)
 	if err == nil && head == nil {
 		err = ethereum.NotFound
 	}
@@ -279,7 +279,7 @@ func (ec *Client) HeaderByHash(ctx context.Context, hash common.Hash) (*types.He
 // ```
 func (ec *Client) HeaderByNumber(ctx context.Context, number *big.Int) (*types.Header, error) {
 	var head *types.Header
-	err := ec.c.CallContext(ctx, &head, "eth_getBlockByNumber", toBlockNumArg(number), false)
+	err := ec.c.CallContext(ctx, &head, ec.rpcMethod("eth_getBlockByNumber"), toBlockNumArg(number), false)
 	if err == nil && head == nil {
 		err = ethereum.NotFound
 	}
