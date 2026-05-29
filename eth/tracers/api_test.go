@@ -44,7 +44,7 @@ import (
 	"github.com/sila-org/sila/crypto"
 	"github.com/sila-org/sila/eth/tracers/logger"
 	"github.com/sila-org/sila/ethdb"
-	"github.com/sila-org/sila/internal/ethapi/override"
+	"github.com/sila-org/sila/internal/silaapi/override"
 	"github.com/sila-org/sila/internal/silaapi/txargs"
 	"github.com/sila-org/sila/params"
 	"github.com/sila-org/sila/rpc"
