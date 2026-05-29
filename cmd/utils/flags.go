@@ -58,8 +58,8 @@ import (
 	"github.com/sila-org/sila/ethdb/remotedb"
 	"github.com/sila-org/sila/ethstats"
 	"github.com/sila-org/sila/graphql"
-	"github.com/sila-org/sila/internal/ethapi"
 	"github.com/sila-org/sila/internal/flags"
+	silabackend "github.com/sila-org/sila/internal/silaapi/backend"
 	"github.com/sila-org/sila/log"
 	"github.com/sila-org/sila/metrics"
 	"github.com/sila-org/sila/metrics/exp"
@@ -2253,7 +2253,7 @@ func RegisterEthStatsService(stack *node.Node, backend *SilaAPIBackend, url stri
 }
 
 // RegisterGraphQLService adds the GraphQL API to the node.
-func RegisterGraphQLService(stack *node.Node, backend ethapi.Backend, filterSystem *filters.FilterSystem, cfg *node.Config) {
+func RegisterGraphQLService(stack *node.Node, backend silabackend.Backend, filterSystem *filters.FilterSystem, cfg *node.Config) {
 	err := graphql.New(stack, backend, filterSystem, cfg.GraphQLCors, cfg.GraphQLVirtualHosts)
 	if err != nil {
 		Fatalf("Failed to register the GraphQL service: %v", err)
@@ -2261,7 +2261,7 @@ func RegisterGraphQLService(stack *node.Node, backend ethapi.Backend, filterSyst
 }
 
 // RegisterFilterAPI adds the Sila log filtering RPC API to the node.
-func RegisterFilterAPI(stack *node.Node, backend ethapi.Backend, ethcfg *ethconfig.Config) *filters.FilterSystem {
+func RegisterFilterAPI(stack *node.Node, backend silabackend.Backend, ethcfg *ethconfig.Config) *filters.FilterSystem {
 	filterSystem := filters.NewFilterSystem(backend, filters.Config{
 		LogCacheSize:  ethcfg.FilterLogCacheSize,
 		LogQueryLimit: ethcfg.LogQueryLimit,
