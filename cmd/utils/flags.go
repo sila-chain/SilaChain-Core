@@ -1345,6 +1345,11 @@ func setHTTP(ctx *cli.Context, cfg *node.Config) {
 	if ctx.IsSet(HTTPPathPrefixFlag.Name) {
 		cfg.HTTPPathPrefix = ctx.String(HTTPPathPrefixFlag.Name)
 	}
+
+	if ctx.Bool(LegacyEngineCompatibilityFlag.Name) {
+		cfg.LegacyEngineCompatibility = true
+	}
+
 	if ctx.IsSet(AllowUnprotectedTxs.Name) {
 		cfg.AllowUnprotectedTxs = ctx.Bool(AllowUnprotectedTxs.Name)
 	}
