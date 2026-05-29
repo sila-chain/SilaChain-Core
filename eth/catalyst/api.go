@@ -902,7 +902,7 @@ func (api *ConsensusAPI) newPayload(ctx context.Context, params engine.Executabl
 	}
 	hash := block.Hash()
 
-	// Emit NewPayloadEvent for ethstats reporting
+	// Emit NewPayloadEvent for Sila stats reporting
 	api.eth.BlockChain().SendNewPayloadEvent(core.NewPayloadEvent{
 		Hash:           hash,
 		Number:         block.NumberU64(),
