@@ -591,7 +591,7 @@ func (ec *Client) PendingNonceAt(ctx context.Context, account common.Address) (u
 // PendingTransactionCount returns the total number of transactions in the pending state.
 func (ec *Client) PendingTransactionCount(ctx context.Context) (uint, error) {
 	var num hexutil.Uint
-	err := ec.c.CallContext(ctx, &num, "eth_getBlockTransactionCountByNumber", "pending")
+	err := ec.c.CallContext(ctx, &num, ec.rpcMethod("eth_getBlockTransactionCountByNumber"), "pending")
 	return uint(num), err
 }
 
@@ -605,7 +605,7 @@ func (ec *Client) PendingTransactionCount(ctx context.Context) (uint, error) {
 // blocks might not be available.
 func (ec *Client) CallContract(ctx context.Context, msg ethereum.CallMsg, blockNumber *big.Int) ([]byte, error) {
 	var hex hexutil.Bytes
-	err := ec.c.CallContext(ctx, &hex, "eth_call", toCallArg(msg), toBlockNumArg(blockNumber))
+	err := ec.c.CallContext(ctx, &hex, ec.rpcMethod("eth_call"), toCallArg(msg), toBlockNumArg(blockNumber))
 	if err != nil {
 		return nil, err
 	}
@@ -616,7 +616,7 @@ func (ec *Client) CallContract(ctx context.Context, msg ethereum.CallMsg, blockN
 // the block by block hash instead of block height.
 func (ec *Client) CallContractAtHash(ctx context.Context, msg ethereum.CallMsg, blockHash common.Hash) ([]byte, error) {
 	var hex hexutil.Bytes
-	err := ec.c.CallContext(ctx, &hex, "eth_call", toCallArg(msg), rpc.BlockNumberOrHashWithHash(blockHash, false))
+	err := ec.c.CallContext(ctx, &hex, ec.rpcMethod("eth_call"), toCallArg(msg), rpc.BlockNumberOrHashWithHash(blockHash, false))
 	if err != nil {
 		return nil, err
 	}
@@ -627,7 +627,7 @@ func (ec *Client) CallContractAtHash(ctx context.Context, msg ethereum.CallMsg, 
 // The state seen by the contract call is the pending state.
 func (ec *Client) PendingCallContract(ctx context.Context, msg ethereum.CallMsg) ([]byte, error) {
 	var hex hexutil.Bytes
-	err := ec.c.CallContext(ctx, &hex, "eth_call", toCallArg(msg), "pending")
+	err := ec.c.CallContext(ctx, &hex, ec.rpcMethod("eth_call"), toCallArg(msg), "pending")
 	if err != nil {
 		return nil, err
 	}
@@ -638,7 +638,7 @@ func (ec *Client) PendingCallContract(ctx context.Context, msg ethereum.CallMsg)
 // execution of a transaction.
 func (ec *Client) SuggestGasPrice(ctx context.Context) (*big.Int, error) {
 	var hex hexutil.Big
-	if err := ec.c.CallContext(ctx, &hex, "eth_gasPrice"); err != nil {
+	if err := ec.c.CallContext(ctx, &hex, ec.rpcMethod("eth_gasPrice")); err != nil {
 		return nil, err
 	}
 	return (*big.Int)(&hex), nil
@@ -648,7 +648,7 @@ func (ec *Client) SuggestGasPrice(ctx context.Context) (*big.Int, error) {
 // allow a timely execution of a transaction.
 func (ec *Client) SuggestGasTipCap(ctx context.Context) (*big.Int, error) {
 	var hex hexutil.Big
-	if err := ec.c.CallContext(ctx, &hex, "eth_maxPriorityFeePerGas"); err != nil {
+	if err := ec.c.CallContext(ctx, &hex, ec.rpcMethod("eth_maxPriorityFeePerGas")); err != nil {
 		return nil, err
 	}
 	return (*big.Int)(&hex), nil
@@ -657,7 +657,7 @@ func (ec *Client) SuggestGasTipCap(ctx context.Context) (*big.Int, error) {
 // BlobBaseFee retrieves the current blob base fee.
 func (ec *Client) BlobBaseFee(ctx context.Context) (*big.Int, error) {
 	var hex hexutil.Big
-	if err := ec.c.CallContext(ctx, &hex, "eth_blobBaseFee"); err != nil {
+	if err := ec.c.CallContext(ctx, &hex, ec.rpcMethod("eth_blobBaseFee")); err != nil {
 		return nil, err
 	}
 	return (*big.Int)(&hex), nil
@@ -673,7 +673,7 @@ type feeHistoryResultMarshaling struct {
 // FeeHistory retrieves the fee market history.
 func (ec *Client) FeeHistory(ctx context.Context, blockCount uint64, lastBlock *big.Int, rewardPercentiles []float64) (*ethereum.FeeHistory, error) {
 	var res feeHistoryResultMarshaling
-	if err := ec.c.CallContext(ctx, &res, "eth_feeHistory", hexutil.Uint(blockCount), toBlockNumArg(lastBlock), rewardPercentiles); err != nil {
+	if err := ec.c.CallContext(ctx, &res, ec.rpcMethod("eth_feeHistory"), hexutil.Uint(blockCount), toBlockNumArg(lastBlock), rewardPercentiles); err != nil {
 		return nil, err
 	}
 	reward := make([][]*big.Int, len(res.Reward))
@@ -705,7 +705,7 @@ func (ec *Client) FeeHistory(ctx context.Context, blockCount uint64, lastBlock *
 // state.
 func (ec *Client) EstimateGas(ctx context.Context, msg ethereum.CallMsg) (uint64, error) {
 	var hex hexutil.Uint64
-	err := ec.c.CallContext(ctx, &hex, "eth_estimateGas", toCallArg(msg))
+	err := ec.c.CallContext(ctx, &hex, ec.rpcMethod("eth_estimateGas"), toCallArg(msg))
 	if err != nil {
 		return 0, err
 	}
@@ -716,7 +716,7 @@ func (ec *Client) EstimateGas(ctx context.Context, msg ethereum.CallMsg) (uint64
 // instead of using the remote RPC's default state for gas estimation.
 func (ec *Client) EstimateGasAtBlock(ctx context.Context, msg ethereum.CallMsg, blockNumber *big.Int) (uint64, error) {
 	var hex hexutil.Uint64
-	err := ec.c.CallContext(ctx, &hex, "eth_estimateGas", toCallArg(msg), toBlockNumArg(blockNumber))
+	err := ec.c.CallContext(ctx, &hex, ec.rpcMethod("eth_estimateGas"), toCallArg(msg), toBlockNumArg(blockNumber))
 	if err != nil {
 		return 0, err
 	}
@@ -727,7 +727,7 @@ func (ec *Client) EstimateGasAtBlock(ctx context.Context, msg ethereum.CallMsg, 
 // hash instead of using the remote RPC's default state for gas estimation.
 func (ec *Client) EstimateGasAtBlockHash(ctx context.Context, msg ethereum.CallMsg, blockHash common.Hash) (uint64, error) {
 	var hex hexutil.Uint64
-	err := ec.c.CallContext(ctx, &hex, "eth_estimateGas", toCallArg(msg), rpc.BlockNumberOrHashWithHash(blockHash, false))
+	err := ec.c.CallContext(ctx, &hex, ec.rpcMethod("eth_estimateGas"), toCallArg(msg), rpc.BlockNumberOrHashWithHash(blockHash, false))
 	if err != nil {
 		return 0, err
 	}
@@ -743,7 +743,7 @@ func (ec *Client) SendTransaction(ctx context.Context, tx *types.Transaction) er
 	if err != nil {
 		return err
 	}
-	return ec.c.CallContext(ctx, nil, "eth_sendRawTransaction", hexutil.Encode(data))
+	return ec.c.CallContext(ctx, nil, ec.rpcMethod("eth_sendRawTransaction"), hexutil.Encode(data))
 }
 
 // SendTransactionSync submits a signed tx and waits for a receipt (or until
