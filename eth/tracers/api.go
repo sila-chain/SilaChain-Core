@@ -40,6 +40,7 @@ import (
 	"github.com/sila-org/sila/ethdb"
 	"github.com/sila-org/sila/internal/ethapi"
 	"github.com/sila-org/sila/internal/ethapi/override"
+	"github.com/sila-org/sila/internal/silaapi/chainctx"
 	"github.com/sila-org/sila/log"
 	"github.com/sila-org/sila/params"
 	"github.com/sila-org/sila/rlp"
@@ -101,7 +102,7 @@ func NewAPI(backend Backend) *API {
 // chainContext constructs the context reader which is used by the evm for reading
 // the necessary chain context.
 func (api *API) chainContext(ctx context.Context) core.ChainContext {
-	return ethapi.NewChainContext(ctx, api.backend)
+	return chainctx.NewChainContext(ctx, api.backend)
 }
 
 // blockByNumber is the wrapper of the chain access function offered by the backend.
