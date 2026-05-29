@@ -1,4 +1,4 @@
-﻿# The devp2p command
+# The devp2p command
 
 The devp2p command line tool is a utility for low-level peer-to-peer debugging and
 protocol development purposes. It can do many things.
@@ -139,4 +139,3 @@ Repeat the above process (re-initialising the node) in order to run the Eth Prot
 [dns-tutorial]: https://sila-blockchain.org/docs/developers/sila-developer/dns-discovery-setup
 [discv4]: https://github.com/ethereum/devp2p/tree/master/discv4.md
 [discv5]: https://github.com/ethereum/devp2p/tree/master/discv5/discv5.md
-
