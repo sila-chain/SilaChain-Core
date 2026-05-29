@@ -105,6 +105,7 @@ func TestAttachWelcome(t *testing.T) {
 		"--ipcpath", ipc,
 		"--http", "--http.port", httpPort,
 		"--ws", "--ws.port", wsPort)
+	defer sila.Kill()
 	t.Run("ipc", func(t *testing.T) {
 		waitForEndpoint(t, ipc, 2*time.Minute)
 		testAttachWelcome(t, sila, "ipc:"+ipc, ipcAPIs)
