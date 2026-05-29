@@ -3,6 +3,13 @@
 
 package silaapi
 
-import ethapi "github.com/sila-org/sila/internal/ethapi"
+import (
+	"github.com/sila-org/sila/common/hexutil"
+	"github.com/sila-org/sila/core/types"
+)
 
-type SignTransactionResult = ethapi.SignTransactionResult
+// SignTransactionResult represents a RLP encoded signed transaction.
+type SignTransactionResult struct {
+	Raw hexutil.Bytes      `json:"raw"`
+	Tx  *types.Transaction `json:"tx"`
+}
