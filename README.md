@@ -29,7 +29,7 @@ make all
 | **`sila`** | Main SilaChain CLI client. It is the entry point into the SilaChain network and can run as a full node, archive node, or light node. It exposes JSON-RPC endpoints over HTTP, WebSocket, and IPC transports. Use `sila --help` for command line options. |
 | `clef` | Stand-alone signing tool, usable as a backend signer for `sila`. |
 | `devp2p` | Utilities for interacting with nodes on the networking layer without running a full blockchain. |
-| `abigen` | Source code generator for Ethereum/Sila contract ABIs into type-safe Go packages. |
+| `abigen` | Source code generator for Sila contract ABIs into type-safe Go packages. |
 | `evm` | Developer utility for running and debugging EVM bytecode snippets. |
 | `rlpdump` | Developer utility for converting binary RLP dumps into a readable hierarchical representation. |
 
