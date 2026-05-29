@@ -113,7 +113,7 @@ type SilaChain struct {
 	filterMaps      *filtermaps.FilterMaps
 	closeFilterMaps chan chan struct{}
 
-	APIBackend *EthAPIBackend
+	APIBackend *SilaAPIBackend
 
 	miner    *miner.Miner
 	gasPrice *big.Int
@@ -357,7 +357,7 @@ func New(stack *node.Node, config *ethconfig.Config) (*SilaChain, error) {
 	eth.miner.SetExtra(makeExtraData(config.Miner.ExtraData))
 	eth.miner.SetPrioAddresses(config.TxPool.Locals)
 
-	eth.APIBackend = &EthAPIBackend{stack.Config().ExtRPCEnabled(), stack.Config().AllowUnprotectedTxs, eth, nil}
+	eth.APIBackend = &SilaAPIBackend{stack.Config().ExtRPCEnabled(), stack.Config().AllowUnprotectedTxs, eth, nil}
 	if eth.APIBackend.allowUnprotectedTxs {
 		log.Info("Unprotected transactions allowed")
 	}
