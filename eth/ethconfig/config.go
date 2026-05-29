@@ -195,7 +195,7 @@ type Config struct {
 	RPCEVMTimeout time.Duration
 
 	// RPCTxFeeCap is the global transaction fee (price * gas limit) cap for
-	// send-transaction variants. The unit is ether.
+	// send-transaction variants. The unit is Sila.
 	RPCTxFeeCap float64
 
 	// OverrideOsaka (TODO: remove after the fork)
