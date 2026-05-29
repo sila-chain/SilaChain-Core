@@ -41,7 +41,7 @@ Create the source packages:
 
 Then go into the source package directory for your running distribution and build the package:
 
-    $ cd dist/ethereum-unstable-1.9.6+bionic
+    $ cd dist/sila-unstable-1.9.6+bionic
     $ dpkg-buildpackage
 
 Built packages are placed in the dist/ directory.
