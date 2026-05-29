@@ -500,6 +500,3 @@ func (b *SilaAPIBackend) RPCTxSyncDefaultTimeout() time.Duration {
 func (b *SilaAPIBackend) RPCTxSyncMaxTimeout() time.Duration {
 	return b.eth.config.TxSyncMaxTimeout
 }
-
-// EthAPIBackend is retained as a compatibility alias during the Sila API migration.
-type EthAPIBackend = SilaAPIBackend
