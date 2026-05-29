@@ -36,7 +36,7 @@ While iterating during development, use `-short` for faster feedback:
 go run ./build/ci.go test -short
 ```
 
-Before committing, run the full test suite **without** `-short` to ensure all tests pass, including the Ethereum execution-spec tests and all state/block test permutations:
+Before committing, run the full test suite **without** `-short` to ensure all tests pass, including the Sila execution-spec compatibility tests and all state/block test permutations:
 
 ```sh
 go run ./build/ci.go test
