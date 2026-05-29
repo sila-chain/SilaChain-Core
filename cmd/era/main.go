@@ -32,8 +32,8 @@ import (
 	"github.com/sila-org/sila/internal/era"
 	"github.com/sila-org/sila/internal/era/execdb"
 	"github.com/sila-org/sila/internal/era/onedb"
-	"github.com/sila-org/sila/internal/ethapi"
 	"github.com/sila-org/sila/internal/flags"
+	blockapi "github.com/sila-org/sila/internal/silaapi/blockapi"
 	"github.com/sila-org/sila/params"
 	"github.com/sila-org/sila/trie"
 	"github.com/urfave/cli/v2"
@@ -124,7 +124,7 @@ func block(ctx *cli.Context) error {
 		return fmt.Errorf("error reading block %d: %w", num, err)
 	}
 	// Convert block to JSON and print.
-	val := ethapi.RPCMarshalBlock(block, ctx.Bool(txsFlag.Name), ctx.Bool(txsFlag.Name), params.MainnetChainConfig)
+	val := blockapi.RPCMarshalBlock(block, ctx.Bool(txsFlag.Name), ctx.Bool(txsFlag.Name), params.MainnetChainConfig)
 	b, err := json.MarshalIndent(val, "", "  ")
 	if err != nil {
 		return fmt.Errorf("error marshaling json: %w", err)
