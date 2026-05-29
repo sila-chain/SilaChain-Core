@@ -246,6 +246,44 @@ func offsetTimeAuth(secret [32]byte, offset time.Duration) rpc.HTTPAuth {
 	}
 }
 
+func TestLegacyEngineCompatibilityConfigDisablesEngineAlias(t *testing.T) {
+	conf := &Config{
+		HTTPHost:                  "127.0.0.1",
+		HTTPPort:                  0,
+		HTTPModules:               []string{"silaEngine"},
+		LegacyEngineCompatibility: false,
+	}
+	node, err := New(conf)
+	if err != nil {
+		t.Fatalf("could not create a new node: %v", err)
+	}
+	node.RegisterAPIs([]rpc.API{
+		{
+			Namespace: "silaEngine",
+			Version:   "1.0",
+			Service:   helloRPC("hello engine"),
+			Public:    true,
+		},
+	})
+	if err := node.Start(); err != nil {
+		t.Fatalf("failed to start test node: %v", err)
+	}
+	defer node.Close()
+
+	cl, err := rpc.DialHTTP(node.HTTPEndpoint())
+	if err != nil {
+		t.Fatalf("failed to dial http endpoint: %v", err)
+	}
+	defer cl.Close()
+
+	var x string
+	if err := cl.Call(&x, "silaEngine_helloWorld"); err != nil {
+		t.Fatalf("silaEngine method must remain available: %v", err)
+	}
+	if err := cl.Call(&x, "engine_helloWorld"); err == nil {
+		t.Fatal("legacy engine alias must be unavailable when disabled")
+	}
+}
 func TestDefaultAuthModulesExposeSilaEngine(t *testing.T) {
 	modules := make(map[string]bool)
 	for _, module := range DefaultAuthModules {
