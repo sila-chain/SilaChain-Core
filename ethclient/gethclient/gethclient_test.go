@@ -277,7 +277,7 @@ func testAccessList(t *testing.T, client *rpc.Client) {
 
 func testGetProof(t *testing.T, client *rpc.Client, addr common.Address) {
 	ec := New(client)
-	ethcl := ethclient.NewClient(client)
+	ethcl := ethclient.NewSilaClient(client)
 	result, err := ec.GetProof(context.Background(), addr, []string{testSlot.String()}, nil)
 	if err != nil {
 		t.Fatal(err)
@@ -416,7 +416,7 @@ func testSetHead(t *testing.T, client *rpc.Client) {
 
 func testSubscribePendingTransactions(t *testing.T, client *rpc.Client) {
 	ec := New(client)
-	ethcl := ethclient.NewClient(client)
+	ethcl := ethclient.NewSilaClient(client)
 
 	// Subscribe to Transactions
 	ch1 := make(chan common.Hash)
