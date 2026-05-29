@@ -69,7 +69,7 @@ func Register(stack *node.Node, backend *eth.SilaChain, target common.Hash, exit
 	return s, nil
 }
 
-// APIs return the collection of RPC services the ethereum package offers.
+// APIs return the collection of RPC services the Sila syncer offers.
 // NOTE, some of these services probably need to be moved to somewhere else.
 func (s *Syncer) APIs() []rpc.API {
 	return []rpc.API{
