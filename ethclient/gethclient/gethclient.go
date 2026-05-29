@@ -37,12 +37,12 @@ import (
 
 // Client is a wrapper around rpc.Client that implements SilaChain-specific functionality.
 //
-// If you want to use the standardized legacy-compatible RPC functionality, use ethclient.Client instead.
+// If you want to use the standardized Sila RPC functionality, use ethclient.SilaClient instead.
 type Client struct {
 	c *rpc.Client
 }
 
-// SilaClient is the Sila-native alias for geth-compatible RPC extensions.
+// SilaClient is the primary SilaChain alias for RPC extensions.
 type SilaClient = Client
 
 // New creates a client that uses the given RPC client.
@@ -50,7 +50,7 @@ func New(c *rpc.Client) *Client {
 	return &Client{c}
 }
 
-// NewSila creates a Sila client for geth-compatible RPC extensions.
+// NewSila creates a Sila client for SilaChain RPC extensions.
 func NewSila(c *rpc.Client) *SilaClient {
 	return New(c)
 }
