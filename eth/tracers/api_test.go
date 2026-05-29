@@ -44,8 +44,8 @@ import (
 	"github.com/sila-org/sila/crypto"
 	"github.com/sila-org/sila/eth/tracers/logger"
 	"github.com/sila-org/sila/ethdb"
-	"github.com/sila-org/sila/internal/ethapi"
 	"github.com/sila-org/sila/internal/ethapi/override"
+	"github.com/sila-org/sila/internal/silaapi/txargs"
 	"github.com/sila-org/sila/params"
 	"github.com/sila-org/sila/rpc"
 )
@@ -286,7 +286,7 @@ func TestStateHooks(t *testing.T) {
 	DefaultDirectory.Register("stateTracer", newStateTracer, false)
 	api := NewAPI(backend)
 	tracer := "stateTracer"
-	res, err := api.TraceCall(context.Background(), ethapi.TransactionArgs{From: &from, To: &to, Value: (*hexutil.Big)(big.NewInt(1000))}, rpc.BlockNumberOrHashWithNumber(rpc.LatestBlockNumber), &TraceCallConfig{TraceConfig: TraceConfig{Tracer: &tracer}})
+	res, err := api.TraceCall(context.Background(), txargs.TransactionArgs{From: &from, To: &to, Value: (*hexutil.Big)(big.NewInt(1000))}, rpc.BlockNumberOrHashWithNumber(rpc.LatestBlockNumber), &TraceCallConfig{TraceConfig: TraceConfig{Tracer: &tracer}})
 	if err != nil {
 		t.Fatalf("failed to trace call: %v", err)
 	}
@@ -360,7 +360,7 @@ func TestTraceCall(t *testing.T) {
 	api := NewAPI(backend)
 	var testSuite = []struct {
 		blockNumber rpc.BlockNumber
-		call        ethapi.TransactionArgs
+		call        txargs.TransactionArgs
 		config      *TraceCallConfig
 		expectErr   error
 		expect      string
@@ -368,7 +368,7 @@ func TestTraceCall(t *testing.T) {
 		// Standard JSON trace upon the genesis, plain transfer.
 		{
 			blockNumber: rpc.BlockNumber(0),
-			call: ethapi.TransactionArgs{
+			call: txargs.TransactionArgs{
 				From:  &accounts[0].addr,
 				To:    &accounts[1].addr,
 				Value: (*hexutil.Big)(big.NewInt(1000)),
@@ -380,7 +380,7 @@ func TestTraceCall(t *testing.T) {
 		// Standard JSON trace upon the head, plain transfer.
 		{
 			blockNumber: rpc.BlockNumber(genBlocks),
-			call: ethapi.TransactionArgs{
+			call: txargs.TransactionArgs{
 				From:  &accounts[0].addr,
 				To:    &accounts[1].addr,
 				Value: (*hexutil.Big)(big.NewInt(1000)),
@@ -392,7 +392,7 @@ func TestTraceCall(t *testing.T) {
 		// Upon the last state, default to the post block's state
 		{
 			blockNumber: rpc.BlockNumber(genBlocks - 1),
-			call: ethapi.TransactionArgs{
+			call: txargs.TransactionArgs{
 				From:  &accounts[2].addr,
 				To:    &accounts[0].addr,
 				Value: (*hexutil.Big)(new(big.Int).Add(big.NewInt(params.Ether), big.NewInt(100))),
@@ -403,7 +403,7 @@ func TestTraceCall(t *testing.T) {
 		// Before the first transaction, should be failed
 		{
 			blockNumber: rpc.BlockNumber(genBlocks - 1),
-			call: ethapi.TransactionArgs{
+			call: txargs.TransactionArgs{
 				From:  &accounts[2].addr,
 				To:    &accounts[0].addr,
 				Value: (*hexutil.Big)(new(big.Int).Add(big.NewInt(params.Ether), big.NewInt(100))),
@@ -414,7 +414,7 @@ func TestTraceCall(t *testing.T) {
 		// Before the target transaction, should be failed
 		{
 			blockNumber: rpc.BlockNumber(genBlocks - 1),
-			call: ethapi.TransactionArgs{
+			call: txargs.TransactionArgs{
 				From:  &accounts[2].addr,
 				To:    &accounts[0].addr,
 				Value: (*hexutil.Big)(new(big.Int).Add(big.NewInt(params.Ether), big.NewInt(100))),
@@ -425,7 +425,7 @@ func TestTraceCall(t *testing.T) {
 		// After the target transaction, should be succeeded
 		{
 			blockNumber: rpc.BlockNumber(genBlocks - 1),
-			call: ethapi.TransactionArgs{
+			call: txargs.TransactionArgs{
 				From:  &accounts[2].addr,
 				To:    &accounts[0].addr,
 				Value: (*hexutil.Big)(new(big.Int).Add(big.NewInt(params.Ether), big.NewInt(100))),
@@ -437,7 +437,7 @@ func TestTraceCall(t *testing.T) {
 		// Standard JSON trace upon the non-existent block, error expects
 		{
 			blockNumber: rpc.BlockNumber(genBlocks + 1),
-			call: ethapi.TransactionArgs{
+			call: txargs.TransactionArgs{
 				From:  &accounts[0].addr,
 				To:    &accounts[1].addr,
 				Value: (*hexutil.Big)(big.NewInt(1000)),
@@ -449,7 +449,7 @@ func TestTraceCall(t *testing.T) {
 		// Standard JSON trace upon the latest block
 		{
 			blockNumber: rpc.LatestBlockNumber,
-			call: ethapi.TransactionArgs{
+			call: txargs.TransactionArgs{
 				From:  &accounts[0].addr,
 				To:    &accounts[1].addr,
 				Value: (*hexutil.Big)(big.NewInt(1000)),
@@ -461,7 +461,7 @@ func TestTraceCall(t *testing.T) {
 		// Tracing on 'pending' should fail:
 		{
 			blockNumber: rpc.PendingBlockNumber,
-			call: ethapi.TransactionArgs{
+			call: txargs.TransactionArgs{
 				From:  &accounts[0].addr,
 				To:    &accounts[1].addr,
 				Value: (*hexutil.Big)(big.NewInt(1000)),
@@ -471,7 +471,7 @@ func TestTraceCall(t *testing.T) {
 		},
 		{
 			blockNumber: rpc.LatestBlockNumber,
-			call: ethapi.TransactionArgs{
+			call: txargs.TransactionArgs{
 				From:  &accounts[0].addr,
 				Input: &hexutil.Bytes{0x43}, // blocknumber
 			},
@@ -486,7 +486,7 @@ func TestTraceCall(t *testing.T) {
 		// Tests issue #33014 where accessing nil block number override panics.
 		{
 			blockNumber: rpc.BlockNumber(0),
-			call: ethapi.TransactionArgs{
+			call: txargs.TransactionArgs{
 				From:  &accounts[0].addr,
 				To:    &accounts[1].addr,
 				Value: (*hexutil.Big)(big.NewInt(1000)),
@@ -722,7 +722,7 @@ func TestTracingWithOverrides(t *testing.T) {
 
 	var testSuite = []struct {
 		blockNumber rpc.BlockNumber
-		call        ethapi.TransactionArgs
+		call        txargs.TransactionArgs
 		config      *TraceCallConfig
 		expectErr   error
 		want        string
@@ -730,7 +730,7 @@ func TestTracingWithOverrides(t *testing.T) {
 		// Call which can only succeed if state is state overridden
 		{
 			blockNumber: rpc.LatestBlockNumber,
-			call: ethapi.TransactionArgs{
+			call: txargs.TransactionArgs{
 				From:  &randomAccounts[0].addr,
 				To:    &randomAccounts[1].addr,
 				Value: (*hexutil.Big)(big.NewInt(1000)),
@@ -745,7 +745,7 @@ func TestTracingWithOverrides(t *testing.T) {
 		// Invalid call without state overriding
 		{
 			blockNumber: rpc.LatestBlockNumber,
-			call: ethapi.TransactionArgs{
+			call: txargs.TransactionArgs{
 				From:  &randomAccounts[0].addr,
 				To:    &randomAccounts[1].addr,
 				Value: (*hexutil.Big)(big.NewInt(1000)),
@@ -771,7 +771,7 @@ func TestTracingWithOverrides(t *testing.T) {
 		//  }
 		{
 			blockNumber: rpc.LatestBlockNumber,
-			call: ethapi.TransactionArgs{
+			call: txargs.TransactionArgs{
 				From: &randomAccounts[0].addr,
 				To:   &randomAccounts[2].addr,
 				Data: newRPCBytes(common.Hex2Bytes("8381f58a")), // call number()
@@ -789,7 +789,7 @@ func TestTracingWithOverrides(t *testing.T) {
 		},
 		{ // Override blocknumber
 			blockNumber: rpc.LatestBlockNumber,
-			call: ethapi.TransactionArgs{
+			call: txargs.TransactionArgs{
 				From: &accounts[0].addr,
 				// BLOCKNUMBER PUSH1 MSTORE
 				Input: newRPCBytes(common.Hex2Bytes("4360005260206000f3")),
@@ -801,7 +801,7 @@ func TestTracingWithOverrides(t *testing.T) {
 		},
 		{ // Override blocknumber, and query a blockhash
 			blockNumber: rpc.LatestBlockNumber,
-			call: ethapi.TransactionArgs{
+			call: txargs.TransactionArgs{
 				From: &accounts[0].addr,
 				Input: &hexutil.Bytes{
 					0x60, 0x00, 0x40, // BLOCKHASH(0)
@@ -821,7 +821,7 @@ func TestTracingWithOverrides(t *testing.T) {
 		},
 		{ // Override blocknumber with block n+1 and query a blockhash (resolves issue #32175)
 			blockNumber: rpc.LatestBlockNumber,
-			call: ethapi.TransactionArgs{
+			call: txargs.TransactionArgs{
 				From: &accounts[0].addr,
 				Input: newRPCBytes([]byte{
 					byte(vm.PUSH1), byte(genBlocks),
@@ -858,7 +858,7 @@ func TestTracingWithOverrides(t *testing.T) {
 		*/
 		{ // First with only code override, not storage override
 			blockNumber: rpc.LatestBlockNumber,
-			call: ethapi.TransactionArgs{
+			call: txargs.TransactionArgs{
 				From: &randomAccounts[0].addr,
 				To:   &randomAccounts[2].addr,
 				Data: newRPCBytes(common.Hex2Bytes("f8a8fd6d")), //
@@ -874,7 +874,7 @@ func TestTracingWithOverrides(t *testing.T) {
 		},
 		{ // Same again, this time with storage override
 			blockNumber: rpc.LatestBlockNumber,
-			call: ethapi.TransactionArgs{
+			call: txargs.TransactionArgs{
 				From: &randomAccounts[0].addr,
 				To:   &randomAccounts[2].addr,
 				Data: newRPCBytes(common.Hex2Bytes("f8a8fd6d")), //
@@ -892,7 +892,7 @@ func TestTracingWithOverrides(t *testing.T) {
 		},
 		{ // No state override
 			blockNumber: rpc.LatestBlockNumber,
-			call: ethapi.TransactionArgs{
+			call: txargs.TransactionArgs{
 				From: &randomAccounts[0].addr,
 				To:   &storageAccount,
 				Data: newRPCBytes(common.Hex2Bytes("f8a8fd6d")), //
@@ -927,7 +927,7 @@ func TestTracingWithOverrides(t *testing.T) {
 			// With a full override, where we set 3:0x11, the slot 4 should be
 			// removed. So SLOT(3)+SLOT(4) should be 0x11.
 			blockNumber: rpc.LatestBlockNumber,
-			call: ethapi.TransactionArgs{
+			call: txargs.TransactionArgs{
 				From: &randomAccounts[0].addr,
 				To:   &storageAccount,
 				Data: newRPCBytes(common.Hex2Bytes("f8a8fd6d")), //
@@ -965,7 +965,7 @@ func TestTracingWithOverrides(t *testing.T) {
 			// With a partial override, where we set 3:0x11, the slot 4 as before.
 			// So SLOT(3)+SLOT(4) should be 0x55.
 			blockNumber: rpc.LatestBlockNumber,
-			call: ethapi.TransactionArgs{
+			call: txargs.TransactionArgs{
 				From: &randomAccounts[0].addr,
 				To:   &storageAccount,
 				Data: newRPCBytes(common.Hex2Bytes("f8a8fd6d")), //
@@ -998,7 +998,7 @@ func TestTracingWithOverrides(t *testing.T) {
 		},
 		{ // Call to precompile ECREC (0x01), but code was modified to add 1 to input
 			blockNumber: rpc.LatestBlockNumber,
-			call: ethapi.TransactionArgs{
+			call: txargs.TransactionArgs{
 				From: &randomAccounts[0].addr,
 				To:   &ecRecoverAddress,
 				Data: newRPCBytes(common.Hex2Bytes("0000000000000000000000000000000000000000000000000000000000000001")),
@@ -1019,7 +1019,7 @@ func TestTracingWithOverrides(t *testing.T) {
 		},
 		{ // Call to ECREC Precompiled on a different address, expect the original behaviour of ECREC precompile
 			blockNumber: rpc.LatestBlockNumber,
-			call: ethapi.TransactionArgs{
+			call: txargs.TransactionArgs{
 				From: &randomAccounts[0].addr,
 				To:   &randomAccounts[2].addr, // Moved EcRecover
 				Data: newRPCBytes(common.Hex2Bytes("82f3df49d3645876de6313df2bbe9fbce593f21341a7b03acdb9423bc171fcc9000000000000000000000000000000000000000000000000000000000000001cba13918f50da910f2d55a7ea64cf716ba31dad91856f45908dde900530377d8a112d60f36900d18eb8f9d3b4f85a697b545085614509e3520e4b762e35d0d6bd")),
