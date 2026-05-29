@@ -34,7 +34,7 @@ func TestPathExpansion(t *testing.T) {
 			`/a/b/`:                     `\a\b`,
 			`C:\Documents\Newsletters\`: `C:\Documents\Newsletters`,
 			`C:\`:                       `C:\`,
-			`\\.\pipe\\pipe\geth621383`: `\\.\pipe\\pipe\geth621383`,
+			`\\.\pipe\\pipe\sila621383`: `\\.\pipe\\pipe\sila621383`,
 		}
 	} else {
 		tests = map[string]string{
@@ -45,7 +45,7 @@ func TestPathExpansion(t *testing.T) {
 			`/a/b/`:                     `/a/b`,
 			`C:\Documents\Newsletters\`: `C:\Documents\Newsletters\`,
 			`C:\`:                       `C:\`,
-			`\\.\pipe\\pipe\geth621383`: `\\.\pipe\\pipe\geth621383`,
+			`\\.\pipe\\pipe\sila621383`: `\\.\pipe\\pipe\sila621383`,
 		}
 	}
 
