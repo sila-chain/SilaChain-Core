@@ -116,7 +116,7 @@ func runSila(dir string, jwtPath string) (*node.Node, error) {
 		return nil, err
 	}
 
-	err = setupGeth(stack, dir)
+	err = setupSila(stack, dir)
 	if err != nil {
 		stack.Close()
 		return nil, err
@@ -128,7 +128,7 @@ func runSila(dir string, jwtPath string) (*node.Node, error) {
 	return stack, nil
 }
 
-func setupGeth(stack *node.Node, dir string) error {
+func setupSila(stack *node.Node, dir string) error {
 	chain, err := NewChain(dir)
 	if err != nil {
 		return err
