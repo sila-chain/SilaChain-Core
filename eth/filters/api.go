@@ -30,7 +30,7 @@ import (
 	"github.com/sila-org/sila/common/hexutil"
 	"github.com/sila-org/sila/core/history"
 	"github.com/sila-org/sila/core/types"
-	"github.com/sila-org/sila/internal/ethapi"
+	"github.com/sila-org/sila/internal/silaapi/rpctx"
 	"github.com/sila-org/sila/rpc"
 )
 
@@ -206,7 +206,7 @@ func (api *FilterAPI) NewPendingTransactions(ctx context.Context, fullTx *bool) 
 				latest := api.sys.backend.CurrentHeader()
 				for _, tx := range txs {
 					if fullTx != nil && *fullTx {
-						rpcTx := ethapi.NewRPCPendingTransaction(tx, latest, chainConfig)
+						rpcTx := rpctx.NewRPCPendingTransaction(tx, latest, chainConfig)
 						notifier.Notify(rpcSub.ID, rpcTx)
 					} else {
 						notifier.Notify(rpcSub.ID, tx.Hash())
@@ -373,7 +373,7 @@ func (api *FilterAPI) TransactionReceipts(ctx context.Context, filter *Transacti
 					// Convert to the same format as eth_getTransactionReceipt
 					marshaledReceipts := make([]map[string]interface{}, len(receiptsWithTxs))
 					for i, receiptWithTx := range receiptsWithTxs {
-						marshaledReceipts[i] = ethapi.MarshalReceipt(
+						marshaledReceipts[i] = rpctx.MarshalReceipt(
 							receiptWithTx.Receipt,
 							receiptWithTx.Receipt.BlockHash,
 							receiptWithTx.Receipt.BlockNumber.Uint64(),
@@ -577,9 +577,9 @@ func (api *FilterAPI) GetFilterChanges(id rpc.ID) (interface{}, error) {
 			return returnHashes(hashes), nil
 		case PendingTransactionsSubscription:
 			if f.fullTx {
-				txs := make([]*ethapi.RPCTransaction, 0, len(f.txs))
+				txs := make([]*rpctx.RPCTransaction, 0, len(f.txs))
 				for _, tx := range f.txs {
-					txs = append(txs, ethapi.NewRPCPendingTransaction(tx, latest, chainConfig))
+					txs = append(txs, rpctx.NewRPCPendingTransaction(tx, latest, chainConfig))
 				}
 				f.txs = nil
 				return txs, nil
