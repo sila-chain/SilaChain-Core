@@ -765,6 +765,12 @@ var (
 		Value:    "",
 		Category: flags.APICategory,
 	}
+	LegacyEngineCompatibilityFlag = &cli.BoolFlag{
+		Name:     "legacy.engine",
+		Usage:    "Enable the legacy engine_* RPC compatibility alias",
+		Category: flags.APICategory,
+	}
+
 	HTTPPathPrefixFlag = &cli.StringFlag{
 		Name:     "http.rpcprefix",
 		Usage:    "HTTP path prefix on which JSON-RPC is served. Use '/' to serve on all paths.",
