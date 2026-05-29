@@ -103,6 +103,12 @@ func (s *Server) SetWebsocketReadLimit(limit int64) {
 	s.wsReadLimit = limit
 }
 
+// SetLegacyEngineCompatibilityAlias controls whether registering silaEngine also
+// registers the legacy engine namespace compatibility alias.
+func (s *Server) SetLegacyEngineCompatibilityAlias(enabled bool) {
+	exposeLegacyEngineCompatibilityAlias = enabled
+}
+
 // RegisterName creates a service for the given receiver type under the given name. When no
 // methods on the given receiver match the criteria to be either an RPC method or a
 // subscription an error is returned. Otherwise a new service is created and added to the
