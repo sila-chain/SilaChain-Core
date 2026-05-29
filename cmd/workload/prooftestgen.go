@@ -99,7 +99,7 @@ func genAccountProof(cli *client, startBlock uint64, endBlock uint64, number int
 		ctx              = context.Background()
 		start            = time.Now()
 	)
-	chainID, err := cli.Eth.ChainID(ctx)
+	chainID, err := cli.Sila.ChainID(ctx)
 	if err != nil {
 		return nil, nil, nil, err
 	}
@@ -111,7 +111,7 @@ func genAccountProof(cli *client, startBlock uint64, endBlock uint64, number int
 		}
 		blockNumber := uint64(rand.Intn(int(endBlock-startBlock))) + startBlock
 
-		block, err := cli.Eth.BlockByNumber(context.Background(), big.NewInt(int64(blockNumber)))
+		block, err := cli.Sila.BlockByNumber(context.Background(), big.NewInt(int64(blockNumber)))
 		if err != nil {
 			continue
 		}
@@ -189,7 +189,7 @@ func genStorageProof(cli *client, startBlock uint64, endBlock uint64, number int
 		}
 		blockNumber := uint64(rand.Intn(int(endBlock-startBlock))) + startBlock
 
-		block, err := cli.Eth.BlockByNumber(context.Background(), big.NewInt(int64(blockNumber)))
+		block, err := cli.Sila.BlockByNumber(context.Background(), big.NewInt(int64(blockNumber)))
 		if err != nil {
 			continue
 		}
@@ -291,7 +291,7 @@ func generateProofTests(clictx *cli.Context) error {
 		startBlock = clictx.Uint64(proofTestStartBlockFlag.Name)
 		endBlock   = clictx.Uint64(proofTestEndBlockFlag.Name)
 	)
-	head, err := client.Eth.BlockNumber(ctx)
+	head, err := client.Sila.BlockNumber(ctx)
 	if err != nil {
 		exit(err)
 	}

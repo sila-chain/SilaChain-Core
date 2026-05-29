@@ -215,7 +215,7 @@ func (fq *filterQuery) calculateHash() common.Hash {
 func (fq *filterQuery) run(client *client, historyPruneBlock *uint64) {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*30)
 	defer cancel()
-	logs, err := client.Eth.FilterLogs(ctx, ethereum.FilterQuery{
+	logs, err := client.Sila.FilterLogs(ctx, ethereum.FilterQuery{
 		FromBlock: big.NewInt(fq.FromBlock),
 		ToBlock:   big.NewInt(fq.ToBlock),
 		Addresses: fq.Address,

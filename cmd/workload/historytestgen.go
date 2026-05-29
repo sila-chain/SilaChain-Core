@@ -71,7 +71,7 @@ func generateHistoryTests(clictx *cli.Context) error {
 	test := new(historyTest)
 
 	// Create the block numbers. Here we choose 1k blocks between earliest and head.
-	latest, err := client.Eth.BlockNumber(ctx)
+	latest, err := client.Sila.BlockNumber(ctx)
 	if err != nil {
 		exit(err)
 	}
@@ -88,7 +88,7 @@ func generateHistoryTests(clictx *cli.Context) error {
 	fmt.Println("Fetching blocks")
 	blocks := make([]*types.Block, len(test.BlockNumbers))
 	for i, blocknum := range test.BlockNumbers {
-		b, err := client.Eth.BlockByNumber(ctx, new(big.Int).SetUint64(blocknum))
+		b, err := client.Sila.BlockByNumber(ctx, new(big.Int).SetUint64(blocknum))
 		if err != nil {
 			exit(fmt.Errorf("error fetching block %d: %v", blocknum, err))
 		}

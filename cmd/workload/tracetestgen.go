@@ -89,7 +89,7 @@ func generateTraceTests(clictx *cli.Context) error {
 		ctx        = context.Background()
 		test       = new(traceTest)
 	)
-	latest, err := client.Eth.BlockNumber(ctx)
+	latest, err := client.Sila.BlockNumber(ctx)
 	if err != nil {
 		exit(err)
 	}
@@ -111,7 +111,7 @@ func generateTraceTests(clictx *cli.Context) error {
 	log.Info("Trace transactions around the chain tip", "head", latest, "start", startBlock, "end", endBlock)
 
 	for i := startBlock; i < endBlock; i++ {
-		header, err := client.Eth.HeaderByNumber(ctx, big.NewInt(int64(i)))
+		header, err := client.Sila.HeaderByNumber(ctx, big.NewInt(int64(i)))
 		if err != nil {
 			exit(err)
 		}

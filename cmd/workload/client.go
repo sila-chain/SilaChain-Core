@@ -30,7 +30,7 @@ import (
 )
 
 type client struct {
-	Eth    *ethclient.Client
+	Sila   *ethclient.SilaClient
 	Client *silaclient.Client
 	RPC    *rpc.Client
 }
@@ -46,7 +46,7 @@ func makeClient(ctx *cli.Context) *client {
 	}
 	return &client{
 		RPC:    cl,
-		Eth:    ethclient.NewSilaClient(cl),
+		Sila:   ethclient.NewSilaClient(cl),
 		Client: silaclient.NewSila(cl),
 	}
 }

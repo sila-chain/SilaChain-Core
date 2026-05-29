@@ -260,14 +260,14 @@ func getLatestHeader(client *client) (*types.Header, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
 	defer cancel()
 
-	return client.Eth.HeaderByNumber(ctx, big.NewInt(int64(rpc.LatestBlockNumber)))
+	return client.Sila.HeaderByNumber(ctx, big.NewInt(int64(rpc.LatestBlockNumber)))
 }
 
 func getHeaderByHash(client *client, hash common.Hash) (*types.Header, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
 	defer cancel()
 
-	return client.Eth.HeaderByHash(ctx, hash)
+	return client.Sila.HeaderByHash(ctx, hash)
 }
 
 // newHeadSeedQuery creates a query that gets all logs from the latest head.
@@ -282,7 +282,7 @@ func (fq *filterQuery) checkLastBlockHash(client *client) bool {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*30)
 	defer cancel()
 
-	header, err := client.Eth.HeaderByNumber(ctx, big.NewInt(fq.ToBlock))
+	header, err := client.Sila.HeaderByNumber(ctx, big.NewInt(fq.ToBlock))
 	if err != nil {
 		fmt.Println("Cound not fetch last block hash of query  number:", fq.ToBlock, "error:", err)
 		fq.lastBlockHash = common.Hash{}
@@ -321,7 +321,7 @@ func (fq *filterQuery) getResultsFromReceipts(client *client) ([]types.Log, erro
 
 	var results []types.Log
 	for blockNumber := fq.FromBlock; blockNumber <= fq.ToBlock; blockNumber++ {
-		receipts, err := client.Eth.BlockReceipts(ctx, rpc.BlockNumberOrHashWithNumber(rpc.BlockNumber(blockNumber)))
+		receipts, err := client.Sila.BlockReceipts(ctx, rpc.BlockNumberOrHashWithNumber(rpc.BlockNumber(blockNumber)))
 		if err != nil {
 			return nil, err
 		}

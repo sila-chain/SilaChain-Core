@@ -363,7 +363,7 @@ func mustGetFinalizedBlock(client *client) int64 {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
 	defer cancel()
 
-	header, err := client.Eth.HeaderByNumber(ctx, big.NewInt(int64(rpc.FinalizedBlockNumber)))
+	header, err := client.Sila.HeaderByNumber(ctx, big.NewInt(int64(rpc.FinalizedBlockNumber)))
 	if err != nil {
 		exit(fmt.Errorf("could not fetch finalized header (error: %v)", err))
 	}
