@@ -61,11 +61,11 @@ func newTestBackend(t *testing.T) (*node.Node, []*types.Block, []common.Hash) {
 	if err != nil {
 		t.Fatalf("can't create new node: %v", err)
 	}
-	// Create Ethereum Service
+	// Create SilaChain service
 	config := &ethconfig.Config{Genesis: genesis, RPCGasCap: 1000000}
 	ethservice, err := eth.New(n, config)
 	if err != nil {
-		t.Fatalf("can't create new ethereum service: %v", err)
+		t.Fatalf("can't create new SilaChain service: %v", err)
 	}
 	n.RegisterAPIs(tracers.APIs(ethservice.APIBackend))
 
@@ -119,7 +119,7 @@ func generateTestChain() (*core.Genesis, []*types.Block, []common.Hash) {
 	return genesis, blocks, txHashes
 }
 
-func TestGethClient(t *testing.T) {
+func TestSilaClientExtensions(t *testing.T) {
 	backend, _, txHashes := newTestBackend(t)
 	client := backend.Attach()
 	defer backend.Close()
