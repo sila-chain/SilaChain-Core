@@ -586,12 +586,13 @@ func (n *Node) RegisterAPIs(apis []rpc.API) {
 // getAPIs return two sets of APIs, both the ones that do not require
 // authentication, and the complete set
 func (n *Node) getAPIs() (unauthenticated, all []rpc.API) {
-	for _, api := range n.rpcAPIs {
+	all = filterLegacyCompatibilityAPIs(n.rpcAPIs)
+	for _, api := range all {
 		if !api.Authenticated {
 			unauthenticated = append(unauthenticated, api)
 		}
 	}
-	return unauthenticated, n.rpcAPIs
+	return unauthenticated, all
 }
 
 // RegisterHandler mounts a handler on the given path on the canonical HTTP server.
