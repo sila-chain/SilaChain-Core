@@ -157,7 +157,7 @@ func (ec *Client) PeerCount(ctx context.Context) (uint64, error) {
 // BlockReceipts returns the receipts of a given block number or hash.
 func (ec *Client) BlockReceipts(ctx context.Context, blockNrOrHash rpc.BlockNumberOrHash) ([]*types.Receipt, error) {
 	var r []*types.Receipt
-	err := ec.c.CallContext(ctx, &r, "eth_getBlockReceipts", blockNrOrHash)
+	err := ec.c.CallContext(ctx, &r, ec.rpcMethod("eth_getBlockReceipts"), blockNrOrHash)
 	if err == nil && r == nil {
 		return nil, ethereum.NotFound
 	}
@@ -218,7 +218,7 @@ func (ec *Client) getBlock(ctx context.Context, method string, args ...interface
 		reqs := make([]rpc.BatchElem, len(body.UncleHashes))
 		for i := range reqs {
 			reqs[i] = rpc.BatchElem{
-				Method: "eth_getUncleByBlockHashAndIndex",
+				Method: ec.rpcMethod("eth_getUncleByBlockHashAndIndex"),
 				Args:   []interface{}{body.Hash, hexutil.EncodeUint64(uint64(i))},
 				Result: &uncles[i],
 			}
