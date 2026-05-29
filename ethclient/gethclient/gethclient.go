@@ -410,8 +410,8 @@ func toCallArg(msg ethereum.CallMsg) interface{} {
 	return arg
 }
 
-// OverrideAccount is an alias for ethereum.OverrideAccount.
+// OverrideAccount is the Sila-compatible account override type.
 type OverrideAccount = ethereum.OverrideAccount
 
-// BlockOverrides is an alias for ethereum.BlockOverrides.
+// BlockOverrides is the Sila-compatible block override type.
 type BlockOverrides = ethereum.BlockOverrides
