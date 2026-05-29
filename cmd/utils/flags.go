@@ -696,7 +696,8 @@ var (
 
 	// Logging and debug settings
 	SilaStatsURLFlag = &cli.StringFlag{
-		Name:     "ethstats",
+		Name:     "silastats",
+		Aliases:  []string{"ethstats"},
 		Usage:    "Reporting URL of a Sila stats service (nodename:secret@host:port)",
 		Category: flags.MetricsCategory,
 	}
