@@ -444,14 +444,14 @@ func (ec *Client) NetworkID(ctx context.Context) (*big.Int, error) {
 // The block number can be nil, in which case the balance is taken from the latest known block.
 func (ec *Client) BalanceAt(ctx context.Context, account common.Address, blockNumber *big.Int) (*big.Int, error) {
 	var result hexutil.Big
-	err := ec.c.CallContext(ctx, &result, "eth_getBalance", account, toBlockNumArg(blockNumber))
+	err := ec.c.CallContext(ctx, &result, ec.rpcMethod("eth_getBalance"), account, toBlockNumArg(blockNumber))
 	return (*big.Int)(&result), err
 }
 
 // BalanceAtHash returns the wei balance of the given account.
 func (ec *Client) BalanceAtHash(ctx context.Context, account common.Address, blockHash common.Hash) (*big.Int, error) {
 	var result hexutil.Big
-	err := ec.c.CallContext(ctx, &result, "eth_getBalance", account, rpc.BlockNumberOrHashWithHash(blockHash, false))
+	err := ec.c.CallContext(ctx, &result, ec.rpcMethod("eth_getBalance"), account, rpc.BlockNumberOrHashWithHash(blockHash, false))
 	return (*big.Int)(&result), err
 }
 
@@ -459,14 +459,14 @@ func (ec *Client) BalanceAtHash(ctx context.Context, account common.Address, blo
 // The block number can be nil, in which case the value is taken from the latest known block.
 func (ec *Client) StorageAt(ctx context.Context, account common.Address, key common.Hash, blockNumber *big.Int) ([]byte, error) {
 	var result hexutil.Bytes
-	err := ec.c.CallContext(ctx, &result, "eth_getStorageAt", account, key, toBlockNumArg(blockNumber))
+	err := ec.c.CallContext(ctx, &result, ec.rpcMethod("eth_getStorageAt"), account, key, toBlockNumArg(blockNumber))
 	return result, err
 }
 
 // StorageAtHash returns the value of key in the contract storage of the given account.
 func (ec *Client) StorageAtHash(ctx context.Context, account common.Address, key common.Hash, blockHash common.Hash) ([]byte, error) {
 	var result hexutil.Bytes
-	err := ec.c.CallContext(ctx, &result, "eth_getStorageAt", account, key, rpc.BlockNumberOrHashWithHash(blockHash, false))
+	err := ec.c.CallContext(ctx, &result, ec.rpcMethod("eth_getStorageAt"), account, key, rpc.BlockNumberOrHashWithHash(blockHash, false))
 	return result, err
 }
 
@@ -474,14 +474,14 @@ func (ec *Client) StorageAtHash(ctx context.Context, account common.Address, key
 // The block number can be nil, in which case the code is taken from the latest known block.
 func (ec *Client) CodeAt(ctx context.Context, account common.Address, blockNumber *big.Int) ([]byte, error) {
 	var result hexutil.Bytes
-	err := ec.c.CallContext(ctx, &result, "eth_getCode", account, toBlockNumArg(blockNumber))
+	err := ec.c.CallContext(ctx, &result, ec.rpcMethod("eth_getCode"), account, toBlockNumArg(blockNumber))
 	return result, err
 }
 
 // CodeAtHash returns the contract code of the given account.
 func (ec *Client) CodeAtHash(ctx context.Context, account common.Address, blockHash common.Hash) ([]byte, error) {
 	var result hexutil.Bytes
-	err := ec.c.CallContext(ctx, &result, "eth_getCode", account, rpc.BlockNumberOrHashWithHash(blockHash, false))
+	err := ec.c.CallContext(ctx, &result, ec.rpcMethod("eth_getCode"), account, rpc.BlockNumberOrHashWithHash(blockHash, false))
 	return result, err
 }
 
@@ -489,14 +489,14 @@ func (ec *Client) CodeAtHash(ctx context.Context, account common.Address, blockH
 // The block number can be nil, in which case the nonce is taken from the latest known block.
 func (ec *Client) NonceAt(ctx context.Context, account common.Address, blockNumber *big.Int) (uint64, error) {
 	var result hexutil.Uint64
-	err := ec.c.CallContext(ctx, &result, "eth_getTransactionCount", account, toBlockNumArg(blockNumber))
+	err := ec.c.CallContext(ctx, &result, ec.rpcMethod("eth_getTransactionCount"), account, toBlockNumArg(blockNumber))
 	return uint64(result), err
 }
 
 // NonceAtHash returns the account nonce of the given account.
 func (ec *Client) NonceAtHash(ctx context.Context, account common.Address, blockHash common.Hash) (uint64, error) {
 	var result hexutil.Uint64
-	err := ec.c.CallContext(ctx, &result, "eth_getTransactionCount", account, rpc.BlockNumberOrHashWithHash(blockHash, false))
+	err := ec.c.CallContext(ctx, &result, ec.rpcMethod("eth_getTransactionCount"), account, rpc.BlockNumberOrHashWithHash(blockHash, false))
 	return uint64(result), err
 }
 
@@ -562,21 +562,21 @@ func toFilterArg(q ethereum.FilterQuery) (interface{}, error) {
 // PendingBalanceAt returns the wei balance of the given account in the pending state.
 func (ec *Client) PendingBalanceAt(ctx context.Context, account common.Address) (*big.Int, error) {
 	var result hexutil.Big
-	err := ec.c.CallContext(ctx, &result, "eth_getBalance", account, "pending")
+	err := ec.c.CallContext(ctx, &result, ec.rpcMethod("eth_getBalance"), account, "pending")
 	return (*big.Int)(&result), err
 }
 
 // PendingStorageAt returns the value of key in the contract storage of the given account in the pending state.
 func (ec *Client) PendingStorageAt(ctx context.Context, account common.Address, key common.Hash) ([]byte, error) {
 	var result hexutil.Bytes
-	err := ec.c.CallContext(ctx, &result, "eth_getStorageAt", account, key, "pending")
+	err := ec.c.CallContext(ctx, &result, ec.rpcMethod("eth_getStorageAt"), account, key, "pending")
 	return result, err
 }
 
 // PendingCodeAt returns the contract code of the given account in the pending state.
 func (ec *Client) PendingCodeAt(ctx context.Context, account common.Address) ([]byte, error) {
 	var result hexutil.Bytes
-	err := ec.c.CallContext(ctx, &result, "eth_getCode", account, "pending")
+	err := ec.c.CallContext(ctx, &result, ec.rpcMethod("eth_getCode"), account, "pending")
 	return result, err
 }
 
@@ -584,7 +584,7 @@ func (ec *Client) PendingCodeAt(ctx context.Context, account common.Address) ([]
 // This is the nonce that should be used for the next transaction.
 func (ec *Client) PendingNonceAt(ctx context.Context, account common.Address) (uint64, error) {
 	var result hexutil.Uint64
-	err := ec.c.CallContext(ctx, &result, "eth_getTransactionCount", account, "pending")
+	err := ec.c.CallContext(ctx, &result, ec.rpcMethod("eth_getTransactionCount"), account, "pending")
 	return uint64(result), err
 }
 
