@@ -133,7 +133,7 @@ var (
 		utils.VMWitnessStatsFlag,
 		utils.VMStatelessSelfValidationFlag,
 		utils.NetworkIdFlag,
-		utils.EthStatsURLFlag,
+		utils.SilaStatsURLFlag,
 		utils.GpoBlocksFlag,
 		utils.GpoPercentileFlag,
 		utils.GpoMaxGasPriceFlag,

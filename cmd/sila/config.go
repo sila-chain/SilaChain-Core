@@ -80,8 +80,8 @@ func makeConfigNode(ctx *cli.Context) (*node.Node, silaConfig) {
 	}
 
 	utils.SetEthConfig(ctx, stack, &cfg.sila)
-	if ctx.IsSet(utils.EthStatsURLFlag.Name) {
-		cfg.Ethstats.URL = ctx.String(utils.EthStatsURLFlag.Name)
+	if ctx.IsSet(utils.SilaStatsURLFlag.Name) {
+		cfg.Ethstats.URL = ctx.String(utils.SilaStatsURLFlag.Name)
 	}
 	ApplyMetricConfig(ctx, &cfg)
 
