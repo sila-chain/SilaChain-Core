@@ -54,10 +54,11 @@ type wsConfig struct {
 }
 
 type rpcEndpointConfig struct {
-	jwtSecret              []byte // optional JWT secret
-	batchItemLimit         int
-	batchResponseSizeLimit int
-	httpBodyLimit          int
+	jwtSecret                 []byte // optional JWT secret
+	batchItemLimit            int
+	batchResponseSizeLimit    int
+	httpBodyLimit             int
+	legacyEngineCompatibility bool
 }
 
 type rpcHandler struct {
