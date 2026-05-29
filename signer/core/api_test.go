@@ -30,7 +30,7 @@ import (
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/common/hexutil"
 	"github.com/sila-org/sila/core/types"
-	"github.com/sila-org/sila/internal/ethapi"
+	"github.com/sila-org/sila/internal/silaapi"
 	"github.com/sila-org/sila/rlp"
 	"github.com/sila-org/sila/signer/core"
 	"github.com/sila-org/sila/signer/core/apitypes"
@@ -49,9 +49,9 @@ func (ui *headlessUi) OnInputRequired(info core.UserInputRequest) (core.UserInpu
 	return core.UserInputResponse{Text: input}, nil
 }
 
-func (ui *headlessUi) OnSignerStartup(info core.StartupInfo)        {}
-func (ui *headlessUi) RegisterUIServer(api *core.UIServerAPI)       {}
-func (ui *headlessUi) OnApprovedTx(tx ethapi.SignTransactionResult) {}
+func (ui *headlessUi) OnSignerStartup(info core.StartupInfo)         {}
+func (ui *headlessUi) RegisterUIServer(api *core.UIServerAPI)        {}
+func (ui *headlessUi) OnApprovedTx(tx silaapi.SignTransactionResult) {}
 
 func (ui *headlessUi) ApproveTx(request *core.SignTxRequest) (core.SignTxResponse, error) {
 	switch <-ui.approveCh {
@@ -238,7 +238,7 @@ func TestSignTx(t *testing.T) {
 	t.Parallel()
 	var (
 		list      []common.Address
-		res, res2 *ethapi.SignTransactionResult
+		res, res2 *silaapi.SignTransactionResult
 		err       error
 	)
 
