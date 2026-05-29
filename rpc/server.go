@@ -31,6 +31,8 @@ import (
 const MetadataApi = "rpc"
 const SilaEngineApi = "silaEngine"
 
+var exposeLegacyEngineCompatibilityAlias = true
+
 // CodecOption specifies which type of messages a codec supports.
 //
 // Deprecated: this option is no longer honored by Server.
@@ -110,7 +112,7 @@ func (s *Server) RegisterName(name string, receiver interface{}) error {
 		return err
 	}
 
-	if name == "silaEngine" {
+	if name == "silaEngine" && exposeLegacyEngineCompatibilityAlias {
 		// Keep the legacy engine namespace as an internal compatibility alias for
 		// consensus clients while rpc_modules exposes only silaEngine.
 		if err := s.services.registerName("engine", receiver); err != nil {
