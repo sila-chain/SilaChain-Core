@@ -38,10 +38,10 @@ import (
 	"github.com/sila-org/sila/core/vm"
 	"github.com/sila-org/sila/eth/tracers/logger"
 	"github.com/sila-org/sila/ethdb"
-	"github.com/sila-org/sila/internal/ethapi"
 	"github.com/sila-org/sila/internal/ethapi/override"
 	"github.com/sila-org/sila/internal/silaapi/chainctx"
 	silaerrors "github.com/sila-org/sila/internal/silaapi/errors"
+	"github.com/sila-org/sila/internal/silaapi/txargs"
 	"github.com/sila-org/sila/log"
 	"github.com/sila-org/sila/params"
 	"github.com/sila-org/sila/rlp"
@@ -892,7 +892,7 @@ func (api *API) TraceTransaction(ctx context.Context, hash common.Hash, config *
 // after executing the specified block. However, if a transaction index is provided,
 // the trace will be conducted on the state after executing the specified transaction
 // within the specified block.
-func (api *API) TraceCall(ctx context.Context, args ethapi.TransactionArgs, blockNrOrHash rpc.BlockNumberOrHash, config *TraceCallConfig) (interface{}, error) {
+func (api *API) TraceCall(ctx context.Context, args txargs.TransactionArgs, blockNrOrHash rpc.BlockNumberOrHash, config *TraceCallConfig) (interface{}, error) {
 	// Try to retrieve the specified block
 	var (
 		err         error
