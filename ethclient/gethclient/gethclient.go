@@ -37,7 +37,7 @@ import (
 
 // Client is a wrapper around rpc.Client that implements SilaChain-specific functionality.
 //
-// If you want to use the standardized Ethereum RPC functionality, use ethclient.Client instead.
+// If you want to use the standardized legacy-compatible RPC functionality, use ethclient.Client instead.
 type Client struct {
 	c *rpc.Client
 }
