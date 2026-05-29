@@ -24,8 +24,8 @@ import (
 	"strings"
 
 	"github.com/dop251/goja"
-	"github.com/sila-org/sila/internal/ethapi"
 	"github.com/sila-org/sila/internal/jsre/deps"
+	"github.com/sila-org/sila/internal/silaapi"
 	"github.com/sila-org/sila/log"
 	"github.com/sila-org/sila/signer/core"
 	"github.com/sila-org/sila/signer/storage"
@@ -227,7 +227,7 @@ func (r *rulesetUI) OnSignerStartup(info core.StartupInfo) {
 	}
 }
 
-func (r *rulesetUI) OnApprovedTx(tx ethapi.SignTransactionResult) {
+func (r *rulesetUI) OnApprovedTx(tx silaapi.SignTransactionResult) {
 	jsonTx, err := json.Marshal(tx)
 	if err != nil {
 		log.Warn("failed marshalling transaction", "tx", tx)
