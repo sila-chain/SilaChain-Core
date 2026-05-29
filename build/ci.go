@@ -137,7 +137,7 @@ var (
 		},
 		{
 			BinaryName:  "evm",
-			Description: "Developer utility version of the EVM (Ethereum Virtual Machine) that is capable of running bytecode snippets within a configurable environment and execution mode.",
+			Description: "Developer utility version of the Sila EVM that is capable of running bytecode snippets within a configurable environment and execution mode.",
 		},
 		{
 			BinaryName:  "sila",
@@ -149,7 +149,7 @@ var (
 		},
 		{
 			BinaryName:  "clef",
-			Description: "Ethereum account management tool.",
+			Description: "Sila account management tool.",
 		},
 	}
 
@@ -887,7 +887,7 @@ func doDebianSource(cmdline []string) {
 	var (
 		cachedir = flag.String("cachedir", "./build/cache", `Filesystem path to cache the downloaded Go bundles at`)
 		signer   = flag.String("signer", "", `Signing key name, also used as package author`)
-		upload   = flag.String("upload", "", `Where to upload the source package (usually "ethereum/ethereum")`)
+		upload   = flag.String("upload", "", `Where to upload the source package (usually "sila-org/sila")`)
 		sshUser  = flag.String("sftp-user", "", `Username for SFTP upload (usually "sila-ci")`)
 		workdir  = flag.String("workdir", "", `Output directory for packages (uses temp dir if unset)`)
 		now      = time.Now()
