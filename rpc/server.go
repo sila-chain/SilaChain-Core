@@ -31,8 +31,6 @@ import (
 const MetadataApi = "rpc"
 const SilaEngineApi = "silaEngine"
 
-var exposeLegacyEngineCompatibilityAlias = true
-
 // CodecOption specifies which type of messages a codec supports.
 //
 // Deprecated: this option is no longer honored by Server.
@@ -51,24 +49,26 @@ type Server struct {
 	services serviceRegistry
 	idgen    func() ID
 
-	mutex              sync.Mutex
-	codecs             map[ServerCodec]struct{}
-	run                atomic.Bool
-	batchItemLimit     int
-	batchResponseLimit int
-	httpBodyLimit      int
-	wsReadLimit        int64
-	tracerProvider     trace.TracerProvider
+	mutex                                sync.Mutex
+	codecs                               map[ServerCodec]struct{}
+	run                                  atomic.Bool
+	batchItemLimit                       int
+	batchResponseLimit                   int
+	httpBodyLimit                        int
+	wsReadLimit                          int64
+	tracerProvider                       trace.TracerProvider
+	exposeLegacyEngineCompatibilityAlias bool
 }
 
 // NewServer creates a new server instance with no registered handlers.
 func NewServer() *Server {
 	server := &Server{
-		idgen:          randomIDGenerator(),
-		codecs:         make(map[ServerCodec]struct{}),
-		httpBodyLimit:  defaultBodyLimit,
-		wsReadLimit:    wsDefaultReadLimit,
-		tracerProvider: nil,
+		idgen:                                randomIDGenerator(),
+		codecs:                               make(map[ServerCodec]struct{}),
+		httpBodyLimit:                        defaultBodyLimit,
+		wsReadLimit:                          wsDefaultReadLimit,
+		tracerProvider:                       nil,
+		exposeLegacyEngineCompatibilityAlias: true,
 	}
 	server.run.Store(true)
 	// Register the default service providing meta information about the RPC service such
@@ -106,7 +106,7 @@ func (s *Server) SetWebsocketReadLimit(limit int64) {
 // SetLegacyEngineCompatibilityAlias controls whether registering silaEngine also
 // registers the legacy engine namespace compatibility alias.
 func (s *Server) SetLegacyEngineCompatibilityAlias(enabled bool) {
-	exposeLegacyEngineCompatibilityAlias = enabled
+	s.exposeLegacyEngineCompatibilityAlias = enabled
 }
 
 // RegisterName creates a service for the given receiver type under the given name. When no
@@ -118,7 +118,7 @@ func (s *Server) RegisterName(name string, receiver interface{}) error {
 		return err
 	}
 
-	if name == "silaEngine" && exposeLegacyEngineCompatibilityAlias {
+	if name == "silaEngine" && s.exposeLegacyEngineCompatibilityAlias {
 		// Keep the legacy engine namespace as an internal compatibility alias for
 		// consensus clients while rpc_modules exposes only silaEngine.
 		if err := s.services.registerName("engine", receiver); err != nil {
