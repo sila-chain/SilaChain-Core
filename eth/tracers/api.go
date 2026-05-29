@@ -41,6 +41,7 @@ import (
 	"github.com/sila-org/sila/internal/ethapi"
 	"github.com/sila-org/sila/internal/ethapi/override"
 	"github.com/sila-org/sila/internal/silaapi/chainctx"
+	silaerrors "github.com/sila-org/sila/internal/silaapi/errors"
 	"github.com/sila-org/sila/log"
 	"github.com/sila-org/sila/params"
 	"github.com/sila-org/sila/rlp"
@@ -852,7 +853,7 @@ func (api *API) TraceTransaction(ctx context.Context, hash common.Hash, config *
 	if !found {
 		// Warn in case tx indexer is not done.
 		if !api.backend.TxIndexDone() {
-			return nil, ethapi.NewTxIndexingError()
+			return nil, silaerrors.NewTxIndexingError()
 		}
 		// Only mined txes are supported
 		return nil, errTxNotFound
