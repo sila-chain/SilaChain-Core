@@ -62,7 +62,7 @@ var (
 	LegacyWhitelistFlag = &cli.StringFlag{
 		Name:     "whitelist",
 		Hidden:   true,
-		Usage:    "Comma separated block number-to-hash mappings to enforce (<number>=<hash>) (deprecated in favor of --eth.requiredblocks)",
+		Usage:    "Comma separated block number-to-hash mappings to enforce (<number>=<hash>) (deprecated in favor of --sila.requiredblocks)",
 		Category: flags.DeprecatedCategory,
 	}
 	// Deprecated July 2023
