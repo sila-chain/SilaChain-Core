@@ -74,7 +74,7 @@ var Defaults = Config{
 	RPCGasCap:               50000000,
 	RPCEVMTimeout:           5 * time.Second,
 	GPO:                     FullNodeGPO,
-	RPCTxFeeCap:             1, // 1 ether
+	RPCTxFeeCap:             1, // 1 Sila
 	TxSyncDefaultTimeout:    20 * time.Second,
 	TxSyncMaxTimeout:        1 * time.Minute,
 	SlowBlockThreshold:      -1, // Disabled by default; set via --debug.logslowblock flag
@@ -83,7 +83,7 @@ var Defaults = Config{
 
 //go:generate go run github.com/fjl/gencodec -type Config -formats toml -out gen_config.go
 
-// Config contains configuration options for ETH and LES protocols.
+// Config contains configuration options for Sila execution protocols.
 type Config struct {
 	// The genesis block, which is inserted if the database is empty.
 	// If nil, the SilaChain mainnet block is used.
@@ -122,7 +122,7 @@ type Config struct {
 	// are stored in diff mode for storage compression.
 	NodeFullValueCheckpoint uint32 `toml:",omitempty"`
 
-	// State scheme represents the scheme used to store ethereum states and trie
+	// State scheme represents the scheme used to store Sila states and trie
 	// nodes on top. It can be 'hash', 'path', or none which means use the scheme
 	// consistent with persistent state.
 	StateScheme string `toml:",omitempty"`
