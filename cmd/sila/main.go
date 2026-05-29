@@ -364,7 +364,7 @@ func DefaultNodeConfig() node.Config {
 }
 
 // SilaAPIBackend is the Sila execution API backend exposed by cmd/sila.
-type SilaAPIBackend = sila.EthAPIBackend
+type SilaAPIBackend = sila.SilaAPIBackend
 
 // RegisterExecutionService registers the Sila execution service.
 func RegisterExecutionService(stack *node.Node, cfg *ethconfig.Config) (*SilaAPIBackend, *sila.SilaChain) {
