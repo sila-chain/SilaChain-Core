@@ -19,7 +19,7 @@ package flags
 import "github.com/urfave/cli/v2"
 
 const (
-	EthCategory        = "ETHEREUM"
+	EthCategory        = "SILA"
 	BeaconCategory     = "BEACON CHAIN"
 	DevCategory        = "DEVELOPER CHAIN"
 	StateCategory      = "STATE HISTORY MANAGEMENT"
