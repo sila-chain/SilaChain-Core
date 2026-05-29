@@ -27,7 +27,7 @@ import (
 
 	"github.com/sila-org/sila/common/hexutil"
 	"github.com/sila-org/sila/console/prompt"
-	"github.com/sila-org/sila/internal/ethapi"
+	"github.com/sila-org/sila/internal/silaapi"
 	"github.com/sila-org/sila/log"
 )
 
@@ -240,7 +240,7 @@ func (ui *CommandlineUI) ShowInfo(message string) {
 	fmt.Printf("## Info \n%s\n", message)
 }
 
-func (ui *CommandlineUI) OnApprovedTx(tx ethapi.SignTransactionResult) {
+func (ui *CommandlineUI) OnApprovedTx(tx silaapi.SignTransactionResult) {
 	fmt.Printf("Transaction signed:\n ")
 	if jsn, err := json.MarshalIndent(tx.Tx, "  ", "  "); err != nil {
 		fmt.Printf("WARN: marshalling error %v\n", err)

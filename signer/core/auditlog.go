@@ -24,7 +24,7 @@ import (
 
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/common/hexutil"
-	"github.com/sila-org/sila/internal/ethapi"
+	"github.com/sila-org/sila/internal/silaapi"
 	"github.com/sila-org/sila/log"
 	"github.com/sila-org/sila/signer/core/apitypes"
 )
@@ -46,7 +46,7 @@ func (l *AuditLogger) New(ctx context.Context) (common.Address, error) {
 	return l.api.New(ctx)
 }
 
-func (l *AuditLogger) SignTransaction(ctx context.Context, args apitypes.SendTxArgs, methodSelector *string) (*ethapi.SignTransactionResult, error) {
+func (l *AuditLogger) SignTransaction(ctx context.Context, args apitypes.SendTxArgs, methodSelector *string) (*silaapi.SignTransactionResult, error) {
 	sel := "<nil>"
 	if methodSelector != nil {
 		sel = *methodSelector

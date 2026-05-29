@@ -19,7 +19,7 @@ package core
 import (
 	"context"
 
-	"github.com/sila-org/sila/internal/ethapi"
+	"github.com/sila-org/sila/internal/silaapi"
 	"github.com/sila-org/sila/log"
 	"github.com/sila-org/sila/rpc"
 )
@@ -97,7 +97,7 @@ func (ui *StdIOUI) ShowInfo(message string) {
 		log.Info("Error calling 'ui_showInfo'", "exc", err.Error(), "msg", message)
 	}
 }
-func (ui *StdIOUI) OnApprovedTx(tx ethapi.SignTransactionResult) {
+func (ui *StdIOUI) OnApprovedTx(tx silaapi.SignTransactionResult) {
 	err := ui.notify("ui_onApprovedTx", tx)
 	if err != nil {
 		log.Info("Error calling 'ui_onApprovedTx'", "exc", err.Error(), "tx", tx)
