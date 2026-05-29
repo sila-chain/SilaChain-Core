@@ -2218,7 +2218,7 @@ func SetDNSDiscoveryDefaults(cfg *ethconfig.Config, genesis common.Hash) {
 }
 
 // SilaAPIBackend is the Sila execution API backend used by cmd/utils.
-type SilaAPIBackend = eth.EthAPIBackend
+type SilaAPIBackend = eth.SilaAPIBackend
 
 // SilaExecutionBackend is the Sila execution backend used by cmd/utils.
 type SilaExecutionBackend = eth.SilaChain
