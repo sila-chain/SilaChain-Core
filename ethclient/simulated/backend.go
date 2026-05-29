@@ -35,7 +35,7 @@ import (
 	"github.com/sila-org/sila/rpc"
 )
 
-// Client exposes the methods provided by the legacy Ethereum-compatible RPC client.
+// Client exposes the methods provided by the SilaChain RPC client.
 type Client interface {
 	ethereum.BlockNumberReader
 	ethereum.ChainReader
