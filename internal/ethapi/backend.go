@@ -19,6 +19,7 @@ package ethapi
 
 import (
 	"context"
+	"github.com/sila-org/sila/internal/silaapi"
 	"github.com/sila-org/sila/internal/silaapi/addrlock"
 	"math/big"
 	"time"
@@ -143,11 +144,11 @@ func GetAPIs(apiBackend Backend) []rpc.API {
 		},
 		{
 			Namespace: "sila",
-			Service:   NewSilaAccountAPI(apiBackend.AccountManager()),
+			Service:   silaapi.NewSilaAccountAPI(apiBackend.AccountManager()),
 		},
 		{
 			Namespace: "eth",
-			Service:   NewSilaAccountAPI(apiBackend.AccountManager()),
+			Service:   silaapi.NewSilaAccountAPI(apiBackend.AccountManager()),
 		},
 	}
 }
