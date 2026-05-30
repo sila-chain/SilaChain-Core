@@ -28,6 +28,7 @@ const maxGetStorageSlots = 1024
 type BlockChainBackend interface {
 	ChainConfig() *params.ChainConfig
 	HeaderByNumber(ctx context.Context, number rpc.BlockNumber) (*types.Header, error)
+	HeaderByHash(ctx context.Context, hash common.Hash) (*types.Header, error)
 	BlockByNumber(ctx context.Context, number rpc.BlockNumber) (*types.Block, error)
 	BlockByHash(ctx context.Context, hash common.Hash) (*types.Block, error)
 	StateAndHeaderByNumberOrHash(ctx context.Context, blockNrOrHash rpc.BlockNumberOrHash) (*state.StateDB, *types.Header, error)
@@ -191,4 +192,28 @@ func RPCMarshalHeader(head *types.Header) map[string]interface{} {
 		result["slotNumber"] = hexutil.Uint64(*head.SlotNumber)
 	}
 	return result
+}
+
+// GetHeaderByNumber returns the requested canonical block header.
+func GetHeaderByNumber(ctx context.Context, b BlockChainBackend, number rpc.BlockNumber) (map[string]interface{}, error) {
+	header, err := b.HeaderByNumber(ctx, number)
+	if header != nil && err == nil {
+		response := RPCMarshalHeader(header)
+		if number == rpc.PendingBlockNumber {
+			for _, field := range []string{"hash", "nonce", "miner"} {
+				response[field] = nil
+			}
+		}
+		return response, err
+	}
+	return nil, err
+}
+
+// GetHeaderByHash returns the requested header by hash.
+func GetHeaderByHash(ctx context.Context, b BlockChainBackend, hash common.Hash) map[string]interface{} {
+	header, _ := b.HeaderByHash(ctx, hash)
+	if header != nil {
+		return RPCMarshalHeader(header)
+	}
+	return nil
 }
