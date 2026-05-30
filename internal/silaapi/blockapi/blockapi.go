@@ -32,6 +32,7 @@ type BlockChainBackend interface {
 	BlockByNumber(ctx context.Context, number rpc.BlockNumber) (*types.Block, error)
 	BlockByHash(ctx context.Context, hash common.Hash) (*types.Block, error)
 	BlockByNumberOrHash(ctx context.Context, blockNrOrHash rpc.BlockNumberOrHash) (*types.Block, error)
+	GetReceipts(ctx context.Context, blockHash common.Hash) (types.Receipts, error)
 	StateAndHeaderByNumberOrHash(ctx context.Context, blockNrOrHash rpc.BlockNumberOrHash) (*state.StateDB, *types.Header, error)
 	Pending() (*types.Block, types.Receipts, *state.StateDB)
 }
