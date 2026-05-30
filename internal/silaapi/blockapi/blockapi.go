@@ -5,6 +5,9 @@ package blockapi
 
 import (
 	"context"
+	"encoding/hex"
+	"errors"
+	"strings"
 
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/common/hexutil"
@@ -53,4 +56,22 @@ func GetCode(ctx context.Context, b BlockChainBackend, address common.Address, b
 	}
 	code := state.GetCode(address)
 	return code, state.Error()
+}
+
+// DecodeStorageKey parses a hex-encoded 32-byte storage key.
+func DecodeStorageKey(s string) (h common.Hash, inputLength int, err error) {
+	if strings.HasPrefix(s, "0x") || strings.HasPrefix(s, "0X") {
+		s = s[2:]
+	}
+	if (len(s) & 1) > 0 {
+		s = "0" + s
+	}
+	if len(s) > 64 {
+		return common.Hash{}, len(s) / 2, errors.New("storage key too long (want at most 32 bytes)")
+	}
+	b, err := hex.DecodeString(s)
+	if err != nil {
+		return common.Hash{}, 0, errors.New("invalid hex in storage key")
+	}
+	return common.BytesToHash(b), len(b), nil
 }
