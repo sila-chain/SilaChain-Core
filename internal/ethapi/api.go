@@ -98,14 +98,7 @@ func (api *SilaAPI) MaxPriorityFeePerGas(ctx context.Context) (*hexutil.Big, err
 	return (*hexutil.Big)(tipcap), err
 }
 
-type feeHistoryResult struct {
-	OldestBlock      *hexutil.Big     `json:"oldestBlock"`
-	Reward           [][]*hexutil.Big `json:"reward,omitempty"`
-	BaseFee          []*hexutil.Big   `json:"baseFeePerGas,omitempty"`
-	GasUsedRatio     []float64        `json:"gasUsedRatio"`
-	BlobBaseFee      []*hexutil.Big   `json:"baseFeePerBlobGas,omitempty"`
-	BlobGasUsedRatio []float64        `json:"blobGasUsedRatio,omitempty"`
-}
+type feeHistoryResult = silaapi.FeeHistoryResult
 
 // FeeHistory returns the fee market history.
 func (api *SilaAPI) FeeHistory(ctx context.Context, blockCount math.HexOrDecimal64, lastBlock rpc.BlockNumber, rewardPercentiles []float64) (*feeHistoryResult, error) {
