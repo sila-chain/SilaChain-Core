@@ -28,6 +28,8 @@ const maxGetStorageSlots = 1024
 type BlockChainBackend interface {
 	ChainConfig() *params.ChainConfig
 	HeaderByNumber(ctx context.Context, number rpc.BlockNumber) (*types.Header, error)
+	BlockByNumber(ctx context.Context, number rpc.BlockNumber) (*types.Block, error)
+	BlockByHash(ctx context.Context, hash common.Hash) (*types.Block, error)
 	StateAndHeaderByNumberOrHash(ctx context.Context, blockNrOrHash rpc.BlockNumberOrHash) (*state.StateDB, *types.Header, error)
 }
 
@@ -125,4 +127,24 @@ func GetStorageValues(ctx context.Context, b BlockChainBackend, requests map[com
 		result[addr] = vals
 	}
 	return result, nil
+}
+
+// GetUncleCountByBlockNumber returns number of uncles in the block for the given block number.
+func GetUncleCountByBlockNumber(ctx context.Context, b BlockChainBackend, blockNr rpc.BlockNumber) (*hexutil.Uint, error) {
+	block, err := b.BlockByNumber(ctx, blockNr)
+	if block != nil {
+		n := hexutil.Uint(len(block.Uncles()))
+		return &n, nil
+	}
+	return nil, err
+}
+
+// GetUncleCountByBlockHash returns number of uncles in the block for the given block hash.
+func GetUncleCountByBlockHash(ctx context.Context, b BlockChainBackend, blockHash common.Hash) (*hexutil.Uint, error) {
+	block, err := b.BlockByHash(ctx, blockHash)
+	if block != nil {
+		n := hexutil.Uint(len(block.Uncles()))
+		return &n, nil
+	}
+	return nil, err
 }
