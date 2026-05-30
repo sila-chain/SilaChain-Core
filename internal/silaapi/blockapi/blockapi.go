@@ -231,7 +231,7 @@ func ReceiptsByBlockNumberOrHash(ctx context.Context, b BlockChainBackend, block
 	if blockNr, ok := blockNrOrHash.Number(); ok && blockNr == rpc.PendingBlockNumber {
 		block, receipts, _ = b.Pending()
 		if block == nil {
-			return nil, nil, nil
+			return nil, nil, errors.New("pending receipts is not available")
 		}
 	} else {
 		block, err = b.BlockByNumberOrHash(ctx, blockNrOrHash)
