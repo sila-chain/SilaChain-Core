@@ -6,6 +6,7 @@ package silaapi
 import (
 	"context"
 	"github.com/sila-org/sila/common/math"
+	"github.com/sila-org/sila/params"
 	"math/big"
 
 	ethereum "github.com/sila-org/sila"
@@ -146,4 +147,22 @@ func Syncing(ctx context.Context, b SilaAPIBackend) (interface{}, error) {
 		"stateIndexRemaining":    hexutil.Uint64(progress.StateIndexRemaining),
 		"trienodeIndexRemaining": hexutil.Uint64(progress.TrienodeIndexRemaining),
 	}, nil
+}
+
+// TxPoolBackend is the minimal backend required by TxPoolAPI.
+type TxPoolBackend interface {
+	CurrentHeader() *types.Header
+	ChainConfig() *params.ChainConfig
+	Stats() (pending int, queued int)
+	TxPoolContent() (map[common.Address][]*types.Transaction, map[common.Address][]*types.Transaction)
+	TxPoolContentFrom(addr common.Address) ([]*types.Transaction, []*types.Transaction)
+}
+
+// TxPoolStatus returns the number of pending and queued transactions in the pool.
+func TxPoolStatus(b TxPoolBackend) map[string]hexutil.Uint {
+	pending, queue := b.Stats()
+	return map[string]hexutil.Uint{
+		"pending": hexutil.Uint(pending),
+		"queued":  hexutil.Uint(queue),
+	}
 }

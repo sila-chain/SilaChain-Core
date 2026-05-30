@@ -168,11 +168,7 @@ func (api *TxPoolAPI) ContentFrom(addr common.Address) map[string]map[string]*RP
 
 // Status returns the number of pending and queued transaction in the pool.
 func (api *TxPoolAPI) Status() map[string]hexutil.Uint {
-	pending, queue := api.b.Stats()
-	return map[string]hexutil.Uint{
-		"pending": hexutil.Uint(pending),
-		"queued":  hexutil.Uint(queue),
-	}
+	return silaapi.TxPoolStatus(api.b)
 }
 
 // Inspect retrieves the content of the transaction pool and flattens it into an
