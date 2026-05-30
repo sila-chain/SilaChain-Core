@@ -21,6 +21,7 @@ import (
 	"encoding/hex"
 	"errors"
 	"fmt"
+	ethereum "github.com/sila-org/sila"
 	"github.com/sila-org/sila/internal/silaapi"
 	"github.com/sila-org/sila/internal/silaapi/addrlock"
 	ethapierrors "github.com/sila-org/sila/internal/silaapi/errors"
@@ -68,12 +69,20 @@ var errBlobTxNotSupported = errors.New("signing blob transactions not supported"
 var errSubClosed = errors.New("chain subscription closed")
 
 // SilaAPI provides an API to access SilaChain related information.
+type SilaAPIBackend interface {
+	SyncProgress(ctx context.Context) ethereum.SyncProgress
+	SuggestGasTipCap(ctx context.Context) (*big.Int, error)
+	FeeHistory(ctx context.Context, blockCount uint64, lastBlock rpc.BlockNumber, rewardPercentiles []float64) (*big.Int, [][]*big.Int, []*big.Int, []float64, []*big.Int, []float64, error)
+	BlobBaseFee(ctx context.Context) *big.Int
+	CurrentHeader() *types.Header
+}
+
 type SilaAPI struct {
-	b Backend
+	b SilaAPIBackend
 }
 
 // NewSilaAPI creates a new SilaChain protocol API.
-func NewSilaAPI(b Backend) *SilaAPI {
+func NewSilaAPI(b SilaAPIBackend) *SilaAPI {
 	return &SilaAPI{b}
 }
 
