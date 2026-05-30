@@ -1837,11 +1837,8 @@ func (api *TransactionAPI) Sign(addr common.Address, data hexutil.Bytes) (hexuti
 	return signature, err
 }
 
-// SignTransactionResult represents a RLP encoded signed transaction.
-type SignTransactionResult struct {
-	Raw hexutil.Bytes      `json:"raw"`
-	Tx  *types.Transaction `json:"tx"`
-}
+// SignTransactionResult is retained as a compatibility alias for the Sila sign transaction result.
+type SignTransactionResult = silaapi.SignTransactionResult
 
 // SignTransaction will sign the given transaction with the from account.
 // The node needs to have the private key of the account corresponding with
