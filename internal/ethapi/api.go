@@ -174,36 +174,7 @@ func (api *TxPoolAPI) Status() map[string]hexutil.Uint {
 // Inspect retrieves the content of the transaction pool and flattens it into an
 // easily inspectable list.
 func (api *TxPoolAPI) Inspect() map[string]map[string]map[string]string {
-	pending, queue := api.b.TxPoolContent()
-	content := map[string]map[string]map[string]string{
-		"pending": make(map[string]map[string]string, len(pending)),
-		"queued":  make(map[string]map[string]string, len(queue)),
-	}
-
-	// Define a formatter to flatten a transaction into a string
-	format := func(tx *types.Transaction) string {
-		if to := tx.To(); to != nil {
-			return fmt.Sprintf("%s: %v wei + %v gas × %v wei", tx.To().Hex(), tx.Value(), tx.Gas(), tx.GasPrice())
-		}
-		return fmt.Sprintf("contract creation: %v wei + %v gas × %v wei", tx.Value(), tx.Gas(), tx.GasPrice())
-	}
-	// Flatten the pending transactions
-	for account, txs := range pending {
-		dump := make(map[string]string, len(txs))
-		for _, tx := range txs {
-			dump[fmt.Sprintf("%d", tx.Nonce())] = format(tx)
-		}
-		content["pending"][account.Hex()] = dump
-	}
-	// Flatten the queued transactions
-	for account, txs := range queue {
-		dump := make(map[string]string, len(txs))
-		for _, tx := range txs {
-			dump[fmt.Sprintf("%d", tx.Nonce())] = format(tx)
-		}
-		content["queued"][account.Hex()] = dump
-	}
-	return content
+	return silaapi.TxPoolInspect(api.b)
 }
 
 // SilaAccountAPI is retained as a compatibility alias for the Sila account API.

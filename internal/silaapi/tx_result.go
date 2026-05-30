@@ -5,6 +5,7 @@ package silaapi
 
 import (
 	"context"
+	"fmt"
 	"github.com/sila-org/sila/common/math"
 	"github.com/sila-org/sila/params"
 	"math/big"
@@ -165,4 +166,34 @@ func TxPoolStatus(b TxPoolBackend) map[string]hexutil.Uint {
 		"pending": hexutil.Uint(pending),
 		"queued":  hexutil.Uint(queue),
 	}
+}
+
+// TxPoolInspect retrieves the content of the transaction pool and flattens it into an easily inspectable list.
+func TxPoolInspect(b TxPoolBackend) map[string]map[string]map[string]string {
+	pending, queue := b.TxPoolContent()
+	content := map[string]map[string]map[string]string{
+		"pending": make(map[string]map[string]string, len(pending)),
+		"queued":  make(map[string]map[string]string, len(queue)),
+	}
+	format := func(tx *types.Transaction) string {
+		if to := tx.To(); to != nil {
+			return fmt.Sprintf("%s: %v wei + %v gas × %v wei", tx.To().Hex(), tx.Value(), tx.Gas(), tx.GasPrice())
+		}
+		return fmt.Sprintf("contract creation: %v wei + %v gas × %v wei", tx.Value(), tx.Gas(), tx.GasPrice())
+	}
+	for account, txs := range pending {
+		dump := make(map[string]string, len(txs))
+		for _, tx := range txs {
+			dump[fmt.Sprintf("%d", tx.Nonce())] = format(tx)
+		}
+		content["pending"][account.Hex()] = dump
+	}
+	for account, txs := range queue {
+		dump := make(map[string]string, len(txs))
+		for _, tx := range txs {
+			dump[fmt.Sprintf("%d", tx.Nonce())] = format(tx)
+		}
+		content["queued"][account.Hex()] = dump
+	}
+	return content
 }
