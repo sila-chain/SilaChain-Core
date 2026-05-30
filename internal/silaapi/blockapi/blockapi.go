@@ -148,3 +148,47 @@ func GetUncleCountByBlockHash(ctx context.Context, b BlockChainBackend, blockHas
 	}
 	return nil, err
 }
+
+// RPCMarshalHeader converts the given header to the RPC output.
+func RPCMarshalHeader(head *types.Header) map[string]interface{} {
+	result := map[string]interface{}{
+		"number":           (*hexutil.Big)(head.Number),
+		"hash":             head.Hash(),
+		"parentHash":       head.ParentHash,
+		"nonce":            head.Nonce,
+		"mixHash":          head.MixDigest,
+		"sha3Uncles":       head.UncleHash,
+		"logsBloom":        head.Bloom,
+		"stateRoot":        head.Root,
+		"miner":            head.Coinbase,
+		"difficulty":       (*hexutil.Big)(head.Difficulty),
+		"extraData":        hexutil.Bytes(head.Extra),
+		"gasLimit":         hexutil.Uint64(head.GasLimit),
+		"gasUsed":          hexutil.Uint64(head.GasUsed),
+		"timestamp":        hexutil.Uint64(head.Time),
+		"transactionsRoot": head.TxHash,
+		"receiptsRoot":     head.ReceiptHash,
+	}
+	if head.BaseFee != nil {
+		result["baseFeePerGas"] = (*hexutil.Big)(head.BaseFee)
+	}
+	if head.WithdrawalsHash != nil {
+		result["withdrawalsRoot"] = head.WithdrawalsHash
+	}
+	if head.BlobGasUsed != nil {
+		result["blobGasUsed"] = hexutil.Uint64(*head.BlobGasUsed)
+	}
+	if head.ExcessBlobGas != nil {
+		result["excessBlobGas"] = hexutil.Uint64(*head.ExcessBlobGas)
+	}
+	if head.ParentBeaconRoot != nil {
+		result["parentBeaconBlockRoot"] = head.ParentBeaconRoot
+	}
+	if head.RequestsHash != nil {
+		result["requestsHash"] = head.RequestsHash
+	}
+	if head.SlotNumber != nil {
+		result["slotNumber"] = hexutil.Uint64(*head.SlotNumber)
+	}
+	return result
+}
