@@ -220,3 +220,28 @@ func GetHeaderByHash(ctx context.Context, b BlockChainBackend, hash common.Hash)
 	}
 	return nil
 }
+
+// ReceiptsByBlockNumberOrHash returns the block and receipts for the given block hash, number, or tag.
+func ReceiptsByBlockNumberOrHash(ctx context.Context, b BlockChainBackend, blockNrOrHash rpc.BlockNumberOrHash) (*types.Block, types.Receipts, error) {
+	var (
+		err      error
+		block    *types.Block
+		receipts types.Receipts
+	)
+	if blockNr, ok := blockNrOrHash.Number(); ok && blockNr == rpc.PendingBlockNumber {
+		block, receipts, _ = b.Pending()
+		if block == nil {
+			return nil, nil, nil
+		}
+	} else {
+		block, err = b.BlockByNumberOrHash(ctx, blockNrOrHash)
+		if block == nil || err != nil {
+			return nil, nil, err
+		}
+		receipts, err = b.GetReceipts(ctx, block.Hash())
+		if err != nil {
+			return nil, nil, err
+		}
+	}
+	return block, receipts, nil
+}
