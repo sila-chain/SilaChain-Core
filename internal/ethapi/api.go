@@ -21,6 +21,7 @@ import (
 	"encoding/hex"
 	"errors"
 	"fmt"
+	"github.com/sila-org/sila/internal/silaapi"
 	"github.com/sila-org/sila/internal/silaapi/addrlock"
 	ethapierrors "github.com/sila-org/sila/internal/silaapi/errors"
 	gomath "math"
@@ -283,20 +284,11 @@ func (api *TxPoolAPI) Inspect() map[string]map[string]map[string]string {
 	return content
 }
 
-// SilaAccountAPI provides an API to access accounts managed by this node.
-type SilaAccountAPI struct {
-	am *accounts.Manager
-}
+// SilaAccountAPI is retained as a compatibility alias for the Sila account API.
+type SilaAccountAPI = silaapi.SilaAccountAPI
 
 // NewSilaAccountAPI creates a new SilaChain account API.
-func NewSilaAccountAPI(am *accounts.Manager) *SilaAccountAPI {
-	return &SilaAccountAPI{am: am}
-}
-
-// Accounts returns the collection of accounts this node manages.
-func (api *SilaAccountAPI) Accounts() []common.Address {
-	return api.am.Accounts()
-}
+var NewSilaAccountAPI = silaapi.NewSilaAccountAPI
 
 // BlockChainAPI provides an API to access SilaChain blockchain data.
 type BlockChainAPI struct {
