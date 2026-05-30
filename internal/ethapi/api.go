@@ -100,39 +100,7 @@ type feeHistoryResult = silaapi.FeeHistoryResult
 
 // FeeHistory returns the fee market history.
 func (api *SilaAPI) FeeHistory(ctx context.Context, blockCount math.HexOrDecimal64, lastBlock rpc.BlockNumber, rewardPercentiles []float64) (*feeHistoryResult, error) {
-	oldest, reward, baseFee, gasUsed, blobBaseFee, blobGasUsed, err := api.b.FeeHistory(ctx, uint64(blockCount), lastBlock, rewardPercentiles)
-	if err != nil {
-		return nil, err
-	}
-	results := &feeHistoryResult{
-		OldestBlock:  (*hexutil.Big)(oldest),
-		GasUsedRatio: gasUsed,
-	}
-	if reward != nil {
-		results.Reward = make([][]*hexutil.Big, len(reward))
-		for i, w := range reward {
-			results.Reward[i] = make([]*hexutil.Big, len(w))
-			for j, v := range w {
-				results.Reward[i][j] = (*hexutil.Big)(v)
-			}
-		}
-	}
-	if baseFee != nil {
-		results.BaseFee = make([]*hexutil.Big, len(baseFee))
-		for i, v := range baseFee {
-			results.BaseFee[i] = (*hexutil.Big)(v)
-		}
-	}
-	if blobBaseFee != nil {
-		results.BlobBaseFee = make([]*hexutil.Big, len(blobBaseFee))
-		for i, v := range blobBaseFee {
-			results.BlobBaseFee[i] = (*hexutil.Big)(v)
-		}
-	}
-	if blobGasUsed != nil {
-		results.BlobGasUsedRatio = blobGasUsed
-	}
-	return results, nil
+	return silaapi.FeeHistory(ctx, api.b, blockCount, lastBlock, rewardPercentiles)
 }
 
 // BlobBaseFee returns the base fee for blob gas at the current head.

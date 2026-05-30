@@ -5,6 +5,7 @@ package silaapi
 
 import (
 	"context"
+	"github.com/sila-org/sila/common/math"
 	"math/big"
 
 	ethereum "github.com/sila-org/sila"
@@ -74,4 +75,41 @@ func MaxPriorityFeePerGas(ctx context.Context, b SilaAPIBackend) (*hexutil.Big, 
 		return nil, err
 	}
 	return (*hexutil.Big)(tipcap), err
+}
+
+// FeeHistory returns the fee market history.
+func FeeHistory(ctx context.Context, b SilaAPIBackend, blockCount math.HexOrDecimal64, lastBlock rpc.BlockNumber, rewardPercentiles []float64) (*FeeHistoryResult, error) {
+	oldest, reward, baseFee, gasUsed, blobBaseFee, blobGasUsed, err := b.FeeHistory(ctx, uint64(blockCount), lastBlock, rewardPercentiles)
+	if err != nil {
+		return nil, err
+	}
+	results := &FeeHistoryResult{
+		OldestBlock:  (*hexutil.Big)(oldest),
+		GasUsedRatio: gasUsed,
+	}
+	if reward != nil {
+		results.Reward = make([][]*hexutil.Big, len(reward))
+		for i, w := range reward {
+			results.Reward[i] = make([]*hexutil.Big, len(w))
+			for j, v := range w {
+				results.Reward[i][j] = (*hexutil.Big)(v)
+			}
+		}
+	}
+	if baseFee != nil {
+		results.BaseFee = make([]*hexutil.Big, len(baseFee))
+		for i, v := range baseFee {
+			results.BaseFee[i] = (*hexutil.Big)(v)
+		}
+	}
+	if blobBaseFee != nil {
+		results.BlobBaseFee = make([]*hexutil.Big, len(blobBaseFee))
+		for i, v := range blobBaseFee {
+			results.BlobBaseFee[i] = (*hexutil.Big)(v)
+		}
+	}
+	if blobGasUsed != nil {
+		results.BlobGasUsedRatio = blobGasUsed
+	}
+	return results, nil
 }
