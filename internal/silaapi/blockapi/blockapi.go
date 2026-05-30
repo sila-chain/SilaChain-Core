@@ -7,6 +7,7 @@ import (
 	"context"
 	"encoding/hex"
 	"errors"
+	"fmt"
 	"strings"
 
 	"github.com/sila-org/sila/common"
@@ -14,11 +15,14 @@ import (
 	"github.com/sila-org/sila/core/state"
 	"github.com/sila-org/sila/core/types"
 	ethapi "github.com/sila-org/sila/internal/ethapi"
+	ethapierrors "github.com/sila-org/sila/internal/silaapi/errors"
 	"github.com/sila-org/sila/params"
 	"github.com/sila-org/sila/rpc"
 )
 
 var RPCMarshalBlock = ethapi.RPCMarshalBlock
+
+const maxGetStorageSlots = 1024
 
 // BlockChainBackend is the minimal backend required by Sila blockchain helpers.
 type BlockChainBackend interface {
@@ -88,4 +92,37 @@ func GetStorageAt(ctx context.Context, b BlockChainBackend, address common.Addre
 	}
 	res := state.GetState(address, key)
 	return res[:], state.Error()
+}
+
+// GetStorageValues returns multiple storage slot values for multiple accounts at the given block.
+func GetStorageValues(ctx context.Context, b BlockChainBackend, requests map[common.Address][]common.Hash, blockNrOrHash rpc.BlockNumberOrHash) (map[common.Address][]hexutil.Bytes, error) {
+	var totalSlots int
+	for _, keys := range requests {
+		totalSlots += len(keys)
+		if totalSlots > maxGetStorageSlots {
+			return nil, &ethapierrors.ClientLimitExceededError{Message: fmt.Sprintf("too many slots (max %d)", maxGetStorageSlots)}
+		}
+	}
+	if totalSlots == 0 {
+		return nil, &ethapierrors.InvalidParamsError{Message: "empty request"}
+	}
+
+	state, _, err := b.StateAndHeaderByNumberOrHash(ctx, blockNrOrHash)
+	if state == nil || err != nil {
+		return nil, err
+	}
+
+	result := make(map[common.Address][]hexutil.Bytes, len(requests))
+	for addr, keys := range requests {
+		vals := make([]hexutil.Bytes, len(keys))
+		for i, key := range keys {
+			v := state.GetState(addr, key)
+			vals[i] = v[:]
+		}
+		if err := state.Error(); err != nil {
+			return nil, err
+		}
+		result[addr] = vals
+	}
+	return result, nil
 }
