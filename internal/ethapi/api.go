@@ -93,11 +93,7 @@ func (api *SilaAPI) GasPrice(ctx context.Context) (*hexutil.Big, error) {
 
 // MaxPriorityFeePerGas returns a suggestion for a gas tip cap for dynamic fee transactions.
 func (api *SilaAPI) MaxPriorityFeePerGas(ctx context.Context) (*hexutil.Big, error) {
-	tipcap, err := api.b.SuggestGasTipCap(ctx)
-	if err != nil {
-		return nil, err
-	}
-	return (*hexutil.Big)(tipcap), err
+	return silaapi.MaxPriorityFeePerGas(ctx, api.b)
 }
 
 type feeHistoryResult = silaapi.FeeHistoryResult

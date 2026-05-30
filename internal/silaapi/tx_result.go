@@ -66,3 +66,12 @@ func GasPrice(ctx context.Context, b SilaAPIBackend) (*hexutil.Big, error) {
 	}
 	return (*hexutil.Big)(tipcap), err
 }
+
+// MaxPriorityFeePerGas returns a suggestion for a gas tip cap for dynamic fee transactions.
+func MaxPriorityFeePerGas(ctx context.Context, b SilaAPIBackend) (*hexutil.Big, error) {
+	tipcap, err := b.SuggestGasTipCap(ctx)
+	if err != nil {
+		return nil, err
+	}
+	return (*hexutil.Big)(tipcap), err
+}
