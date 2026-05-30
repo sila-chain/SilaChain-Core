@@ -44,3 +44,13 @@ func GetBalance(ctx context.Context, b BlockChainBackend, address common.Address
 	balance := state.GetBalance(address).ToBig()
 	return (*hexutil.Big)(balance), state.Error()
 }
+
+// GetCode returns the code stored at the given address in the state for the given block number or hash.
+func GetCode(ctx context.Context, b BlockChainBackend, address common.Address, blockNrOrHash rpc.BlockNumberOrHash) (hexutil.Bytes, error) {
+	state, _, err := b.StateAndHeaderByNumberOrHash(ctx, blockNrOrHash)
+	if state == nil || err != nil {
+		return nil, err
+	}
+	code := state.GetCode(address)
+	return code, state.Error()
+}
