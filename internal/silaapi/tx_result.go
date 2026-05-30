@@ -113,3 +113,8 @@ func FeeHistory(ctx context.Context, b SilaAPIBackend, blockCount math.HexOrDeci
 	}
 	return results, nil
 }
+
+// BlobBaseFee returns the base fee for blob gas at the current head.
+func BlobBaseFee(ctx context.Context, b SilaAPIBackend) *hexutil.Big {
+	return (*hexutil.Big)(b.BlobBaseFee(ctx))
+}
