@@ -4,10 +4,15 @@
 package silaapi
 
 import (
+	"context"
+	"math/big"
+
+	ethereum "github.com/sila-org/sila"
 	"github.com/sila-org/sila/accounts"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/common/hexutil"
 	"github.com/sila-org/sila/core/types"
+	"github.com/sila-org/sila/rpc"
 )
 
 // SignTransactionResult represents a RLP encoded signed transaction.
@@ -39,4 +44,25 @@ type FeeHistoryResult struct {
 	GasUsedRatio     []float64        `json:"gasUsedRatio"`
 	BlobBaseFee      []*hexutil.Big   `json:"baseFeePerBlobGas,omitempty"`
 	BlobGasUsedRatio []float64        `json:"blobGasUsedRatio,omitempty"`
+}
+
+// SilaAPIBackend is the minimal backend required by SilaAPI helpers.
+type SilaAPIBackend interface {
+	SyncProgress(ctx context.Context) ethereum.SyncProgress
+	SuggestGasTipCap(ctx context.Context) (*big.Int, error)
+	FeeHistory(ctx context.Context, blockCount uint64, lastBlock rpc.BlockNumber, rewardPercentiles []float64) (*big.Int, [][]*big.Int, []*big.Int, []float64, []*big.Int, []float64, error)
+	BlobBaseFee(ctx context.Context) *big.Int
+	CurrentHeader() *types.Header
+}
+
+// GasPrice returns a suggestion for a gas price for legacy transactions.
+func GasPrice(ctx context.Context, b SilaAPIBackend) (*hexutil.Big, error) {
+	tipcap, err := b.SuggestGasTipCap(ctx)
+	if err != nil {
+		return nil, err
+	}
+	if head := b.CurrentHeader(); head.BaseFee != nil {
+		tipcap.Add(tipcap, head.BaseFee)
+	}
+	return (*hexutil.Big)(tipcap), err
 }
