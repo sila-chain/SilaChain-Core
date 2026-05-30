@@ -31,7 +31,9 @@ type BlockChainBackend interface {
 	HeaderByHash(ctx context.Context, hash common.Hash) (*types.Header, error)
 	BlockByNumber(ctx context.Context, number rpc.BlockNumber) (*types.Block, error)
 	BlockByHash(ctx context.Context, hash common.Hash) (*types.Block, error)
+	BlockByNumberOrHash(ctx context.Context, blockNrOrHash rpc.BlockNumberOrHash) (*types.Block, error)
 	StateAndHeaderByNumberOrHash(ctx context.Context, blockNrOrHash rpc.BlockNumberOrHash) (*state.StateDB, *types.Header, error)
+	Pending() (*types.Block, types.Receipts, *state.StateDB)
 }
 
 // ChainId returns the replay-protection chain id for the current SilaChain config.
