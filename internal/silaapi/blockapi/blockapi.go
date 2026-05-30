@@ -75,3 +75,17 @@ func DecodeStorageKey(s string) (h common.Hash, inputLength int, err error) {
 	}
 	return common.BytesToHash(b), len(b), nil
 }
+
+// GetStorageAt returns the storage from the state at the given address, key and block number or hash.
+func GetStorageAt(ctx context.Context, b BlockChainBackend, address common.Address, hexKey string, blockNrOrHash rpc.BlockNumberOrHash) (hexutil.Bytes, error) {
+	state, _, err := b.StateAndHeaderByNumberOrHash(ctx, blockNrOrHash)
+	if state == nil || err != nil {
+		return nil, err
+	}
+	key, _, err := DecodeStorageKey(hexKey)
+	if err != nil {
+		return nil, err
+	}
+	res := state.GetState(address, key)
+	return res[:], state.Error()
+}
