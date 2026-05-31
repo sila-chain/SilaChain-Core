@@ -557,7 +557,7 @@ func (api *BlockChainAPI) GetBlockReceipts(ctx context.Context, blockNrOrHash rp
 
 	result := make([]map[string]interface{}, len(receipts))
 	for i, receipt := range receipts {
-		result[i] = MarshalReceipt(receipt, block.Hash(), block.NumberU64(), signer, txs[i], i)
+		result[i] = rpctx.MarshalReceipt(receipt, block.Hash(), block.NumberU64(), signer, txs[i], i)
 	}
 	return result, nil
 }
@@ -1364,49 +1364,12 @@ func (api *TransactionAPI) GetTransactionReceipt(ctx context.Context, hash commo
 		return nil, err
 	}
 	// Derive the sender.
-	return MarshalReceipt(receipt, blockHash, blockNumber, api.signer, tx, int(index)), nil
+	return rpctx.MarshalReceipt(receipt, blockHash, blockNumber, api.signer, tx, int(index)), nil
 }
 
 // MarshalReceipt marshals a transaction receipt into a JSON object.
 func MarshalReceipt(receipt *types.Receipt, blockHash common.Hash, blockNumber uint64, signer types.Signer, tx *types.Transaction, txIndex int) map[string]interface{} {
-	from, _ := types.Sender(signer, tx)
-
-	fields := map[string]interface{}{
-		"blockHash":         blockHash,
-		"blockNumber":       hexutil.Uint64(blockNumber),
-		"transactionHash":   tx.Hash(),
-		"transactionIndex":  hexutil.Uint64(txIndex),
-		"from":              from,
-		"to":                tx.To(),
-		"gasUsed":           hexutil.Uint64(receipt.GasUsed),
-		"cumulativeGasUsed": hexutil.Uint64(receipt.CumulativeGasUsed),
-		"contractAddress":   nil,
-		"logs":              receipt.Logs,
-		"logsBloom":         receipt.Bloom,
-		"type":              hexutil.Uint(tx.Type()),
-		"effectiveGasPrice": (*hexutil.Big)(receipt.EffectiveGasPrice),
-	}
-
-	// Assign receipt status or post state.
-	if len(receipt.PostState) > 0 {
-		fields["root"] = hexutil.Bytes(receipt.PostState)
-	} else {
-		fields["status"] = hexutil.Uint(receipt.Status)
-	}
-	if receipt.Logs == nil {
-		fields["logs"] = []*types.Log{}
-	}
-
-	if tx.Type() == types.BlobTxType {
-		fields["blobGasUsed"] = hexutil.Uint64(receipt.BlobGasUsed)
-		fields["blobGasPrice"] = (*hexutil.Big)(receipt.BlobGasPrice)
-	}
-
-	// If the ContractAddress is 20 0x0 bytes, assume it is not a contract creation
-	if receipt.ContractAddress != (common.Address{}) {
-		fields["contractAddress"] = receipt.ContractAddress
-	}
-	return fields
+	return rpctx.MarshalReceipt(receipt, blockHash, blockNumber, signer, tx, txIndex)
 }
 
 // sign is a helper function that signs a transaction with the private key of the given address.
@@ -1623,7 +1586,7 @@ func (api *TransactionAPI) SendRawTransactionSync(ctx context.Context, input hex
 				if rs[i].TxHash == hash {
 					if rs[i].BlockNumber != nil && rs[i].BlockHash != (common.Hash{}) {
 						signer := types.LatestSigner(api.b.ChainConfig())
-						return MarshalReceipt(
+						return rpctx.MarshalReceipt(
 							rs[i],
 							rs[i].BlockHash,
 							rs[i].BlockNumber.Uint64(),
