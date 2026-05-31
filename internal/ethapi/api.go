@@ -100,7 +100,7 @@ func (api *SilaAPI) MaxPriorityFeePerGas(ctx context.Context) (*hexutil.Big, err
 type feeHistoryResult = silaapi.FeeHistoryResult
 
 // FeeHistory returns the fee market history.
-func (api *SilaAPI) FeeHistory(ctx context.Context, blockCount math.HexOrDecimal64, lastBlock rpc.BlockNumber, rewardPercentiles []float64) (*feeHistoryResult, error) {
+func (api *SilaAPI) FeeHistory(ctx context.Context, blockCount math.HexOrDecimal64, lastBlock rpc.BlockNumber, rewardPercentiles []float64) (*silaapi.FeeHistoryResult, error) {
 	return silaapi.FeeHistory(ctx, api.b, blockCount, lastBlock, rewardPercentiles)
 }
 
