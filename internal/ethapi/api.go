@@ -18,7 +18,6 @@ package ethapi
 
 import (
 	"context"
-	"encoding/hex"
 	"errors"
 	"fmt"
 	ethereum "github.com/sila-org/sila"
@@ -28,7 +27,6 @@ import (
 	ethapierrors "github.com/sila-org/sila/internal/silaapi/errors"
 	gomath "math"
 	"math/big"
-	"strings"
 	"time"
 
 	"github.com/davecgh/go-spew/spew"
@@ -46,6 +44,7 @@ import (
 	"github.com/sila-org/sila/eth/gasestimator"
 	"github.com/sila-org/sila/eth/tracers/logger"
 	"github.com/sila-org/sila/internal/silaapi/override"
+	"github.com/sila-org/sila/internal/silaapi/proofapi"
 	"github.com/sila-org/sila/internal/silaapi/rpctx"
 	"github.com/sila-org/sila/internal/silaapi/txapi"
 	"github.com/sila-org/sila/log"
@@ -216,34 +215,9 @@ func (api *BlockChainAPI) GetBalance(ctx context.Context, address common.Address
 }
 
 // AccountResult structs for GetProof
-type AccountResult struct {
-	Address      common.Address  `json:"address"`
-	AccountProof []string        `json:"accountProof"`
-	Balance      *hexutil.Big    `json:"balance"`
-	CodeHash     common.Hash     `json:"codeHash"`
-	Nonce        hexutil.Uint64  `json:"nonce"`
-	StorageHash  common.Hash     `json:"storageHash"`
-	StorageProof []StorageResult `json:"storageProof"`
-}
-
-type StorageResult struct {
-	Key   string       `json:"key"`
-	Value *hexutil.Big `json:"value"`
-	Proof []string     `json:"proof"`
-}
-
-// proofList implements ethdb.KeyValueWriter and collects the proofs as
-// hex-strings for delivery to rpc-caller.
-type proofList []string
-
-func (n *proofList) Put(key []byte, value []byte) error {
-	*n = append(*n, hexutil.Encode(value))
-	return nil
-}
-
-func (n *proofList) Delete(key []byte) error {
-	panic("not supported")
-}
+type AccountResult = proofapi.AccountResult
+type StorageResult = proofapi.StorageResult
+type proofList = proofapi.ProofList
 
 // GetProof returns the Merkle-proof for a given account and optionally some storage keys.
 func (api *BlockChainAPI) GetProof(ctx context.Context, address common.Address, storageKeys []string, blockNrOrHash rpc.BlockNumberOrHash) (*AccountResult, error) {
@@ -327,24 +301,8 @@ func (api *BlockChainAPI) GetProof(ctx context.Context, address common.Address, 
 	}, statedb.Error()
 }
 
-// decodeStorageKey parses a hex-encoded 32-byte hash.
-// For legacy compatibility reasons, we parse these keys leniently,
-// with the 0x prefix being optional.
-func decodeStorageKey(s string) (h common.Hash, inputLength int, err error) {
-	if strings.HasPrefix(s, "0x") || strings.HasPrefix(s, "0X") {
-		s = s[2:]
-	}
-	if (len(s) & 1) > 0 {
-		s = "0" + s
-	}
-	if len(s) > 64 {
-		return common.Hash{}, len(s) / 2, errors.New("storage key too long (want at most 32 bytes)")
-	}
-	b, err := hex.DecodeString(s)
-	if err != nil {
-		return common.Hash{}, 0, errors.New("invalid hex in storage key")
-	}
-	return common.BytesToHash(b), len(b), nil
+func decodeStorageKey(s string) (common.Hash, int, error) {
+	return proofapi.DecodeStorageKey(s)
 }
 
 // GetHeaderByNumber returns the requested canonical block header.
