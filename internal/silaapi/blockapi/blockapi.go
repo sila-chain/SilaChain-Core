@@ -15,6 +15,7 @@ import (
 	"github.com/sila-org/sila/core/state"
 	"github.com/sila-org/sila/core/types"
 	ethapierrors "github.com/sila-org/sila/internal/silaapi/errors"
+	"github.com/sila-org/sila/internal/silaapi/rpctx"
 	"github.com/sila-org/sila/params"
 	"github.com/sila-org/sila/rpc"
 )
@@ -49,6 +50,25 @@ func RPCMarshalBlock(block *types.Block, inclTx bool, fullTx bool, config *param
 	return RPCMarshalBlockWithTransactions(block, inclTx, func(idx int, tx *types.Transaction) interface{} {
 		return tx.Hash()
 	})
+}
+
+// NewRPCTransactionFromBlockIndex returns a transaction that will serialize to the RPC representation.
+func NewRPCTransactionFromBlockIndex(block *types.Block, index uint64, config *params.ChainConfig) *rpctx.RPCTransaction {
+	txs := block.Transactions()
+	if index >= uint64(len(txs)) {
+		return nil
+	}
+	return rpctx.NewRPCTransaction(txs[index], block.Hash(), block.NumberU64(), block.Time(), index, block.BaseFee(), config)
+}
+
+// NewRPCRawTransactionFromBlockIndex returns the bytes of a transaction given a block and a transaction index.
+func NewRPCRawTransactionFromBlockIndex(block *types.Block, index uint64) hexutil.Bytes {
+	txs := block.Transactions()
+	if index >= uint64(len(txs)) {
+		return nil
+	}
+	blob, _ := txs[index].MarshalBinary()
+	return blob
 }
 
 const maxGetStorageSlots = 1024
