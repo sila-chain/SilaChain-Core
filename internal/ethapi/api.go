@@ -37,7 +37,6 @@ import (
 	"github.com/sila-org/sila/common/hexutil"
 	"github.com/sila-org/sila/common/math"
 	"github.com/sila-org/sila/consensus"
-	"github.com/sila-org/sila/consensus/misc/eip1559"
 	"github.com/sila-org/sila/core"
 	"github.com/sila-org/sila/core/forkid"
 	"github.com/sila-org/sila/core/state"
@@ -1013,19 +1012,9 @@ func effectiveGasPrice(tx *types.Transaction, baseFee *big.Int) *big.Int {
 	return fee
 }
 
-// NewRPCPendingTransaction returns a pending transaction that will serialize to the RPC representation
+// NewRPCPendingTransaction returns a pending transaction that will serialize to the RPC representation.
 func NewRPCPendingTransaction(tx *types.Transaction, current *types.Header, config *params.ChainConfig) *RPCTransaction {
-	var (
-		baseFee     *big.Int
-		blockNumber = uint64(0)
-		blockTime   = uint64(0)
-	)
-	if current != nil {
-		baseFee = eip1559.CalcBaseFee(config, current)
-		blockNumber = current.Number.Uint64()
-		blockTime = current.Time
-	}
-	return newRPCTransaction(tx, common.Hash{}, blockNumber, blockTime, 0, baseFee, config)
+	return rpctx.NewRPCPendingTransaction(tx, current, config)
 }
 
 // accessListResult returns an optional accesslist
