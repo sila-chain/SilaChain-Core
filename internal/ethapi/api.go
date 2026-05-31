@@ -24,6 +24,7 @@ import (
 	ethereum "github.com/sila-org/sila"
 	"github.com/sila-org/sila/internal/silaapi"
 	"github.com/sila-org/sila/internal/silaapi/addrlock"
+	"github.com/sila-org/sila/internal/silaapi/blockapi"
 	ethapierrors "github.com/sila-org/sila/internal/silaapi/errors"
 	gomath "math"
 	"math/big"
