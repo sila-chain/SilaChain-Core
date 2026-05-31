@@ -899,11 +899,6 @@ func RPCMarshalBlock(block *types.Block, inclTx bool, fullTx bool, config *param
 // RPCTransaction represents a transaction that will serialize to the RPC representation of a transaction.
 type RPCTransaction = rpctx.RPCTransaction
 
-// NewRPCPendingTransaction returns a pending transaction that will serialize to the RPC representation.
-func NewRPCPendingTransaction(tx *types.Transaction, current *types.Header, config *params.ChainConfig) *RPCTransaction {
-	return rpctx.NewRPCPendingTransaction(tx, current, config)
-}
-
 // accessListResult returns an optional accesslist
 // It's the result of the `debug_createAccessList` RPC call.
 // It contains an error if the transaction itself failed.
