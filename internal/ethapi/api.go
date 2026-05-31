@@ -47,6 +47,7 @@ import (
 	"github.com/sila-org/sila/eth/gasestimator"
 	"github.com/sila-org/sila/eth/tracers/logger"
 	"github.com/sila-org/sila/internal/silaapi/override"
+	"github.com/sila-org/sila/internal/silaapi/rpctx"
 	"github.com/sila-org/sila/log"
 	"github.com/sila-org/sila/p2p"
 	"github.com/sila-org/sila/params"
@@ -904,33 +905,8 @@ func RPCMarshalBlock(block *types.Block, inclTx bool, fullTx bool, config *param
 	return blockapi.RPCMarshalBlockWithTransactions(block, inclTx, formatTx)
 }
 
-// RPCTransaction represents a transaction that will serialize to the RPC representation of a transaction
-type RPCTransaction struct {
-	BlockHash           *common.Hash                 `json:"blockHash"`
-	BlockNumber         *hexutil.Big                 `json:"blockNumber"`
-	BlockTimestamp      *hexutil.Uint64              `json:"blockTimestamp"`
-	From                common.Address               `json:"from"`
-	Gas                 hexutil.Uint64               `json:"gas"`
-	GasPrice            *hexutil.Big                 `json:"gasPrice"`
-	GasFeeCap           *hexutil.Big                 `json:"maxFeePerGas,omitempty"`
-	GasTipCap           *hexutil.Big                 `json:"maxPriorityFeePerGas,omitempty"`
-	MaxFeePerBlobGas    *hexutil.Big                 `json:"maxFeePerBlobGas,omitempty"`
-	Hash                common.Hash                  `json:"hash"`
-	Input               hexutil.Bytes                `json:"input"`
-	Nonce               hexutil.Uint64               `json:"nonce"`
-	To                  *common.Address              `json:"to"`
-	TransactionIndex    *hexutil.Uint64              `json:"transactionIndex"`
-	Value               *hexutil.Big                 `json:"value"`
-	Type                hexutil.Uint64               `json:"type"`
-	Accesses            *types.AccessList            `json:"accessList,omitempty"`
-	ChainID             *hexutil.Big                 `json:"chainId,omitempty"`
-	BlobVersionedHashes []common.Hash                `json:"blobVersionedHashes,omitempty"`
-	AuthorizationList   []types.SetCodeAuthorization `json:"authorizationList,omitempty"`
-	V                   *hexutil.Big                 `json:"v"`
-	R                   *hexutil.Big                 `json:"r"`
-	S                   *hexutil.Big                 `json:"s"`
-	YParity             *hexutil.Uint64              `json:"yParity,omitempty"`
-}
+// RPCTransaction represents a transaction that will serialize to the RPC representation of a transaction.
+type RPCTransaction = rpctx.RPCTransaction
 
 // newRPCTransaction returns a transaction that will serialize to the RPC
 // representation, with the given location metadata set (if available).
