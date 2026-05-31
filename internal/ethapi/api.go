@@ -899,12 +899,6 @@ func RPCMarshalBlock(block *types.Block, inclTx bool, fullTx bool, config *param
 // RPCTransaction represents a transaction that will serialize to the RPC representation of a transaction.
 type RPCTransaction = rpctx.RPCTransaction
 
-// newRPCTransaction returns a transaction that will serialize to the RPC
-// representation, with the given location metadata set (if available).
-func newRPCTransaction(tx *types.Transaction, blockHash common.Hash, blockNumber uint64, blockTime uint64, index uint64, baseFee *big.Int, config *params.ChainConfig) *RPCTransaction {
-	return rpctx.NewRPCTransaction(tx, blockHash, blockNumber, blockTime, index, baseFee, config)
-}
-
 // NewRPCPendingTransaction returns a pending transaction that will serialize to the RPC representation.
 func NewRPCPendingTransaction(tx *types.Transaction, current *types.Header, config *params.ChainConfig) *RPCTransaction {
 	return rpctx.NewRPCPendingTransaction(tx, current, config)
