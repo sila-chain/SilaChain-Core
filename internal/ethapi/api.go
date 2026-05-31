@@ -24,6 +24,7 @@ import (
 	ethereum "github.com/sila-org/sila"
 	"github.com/sila-org/sila/internal/silaapi"
 	"github.com/sila-org/sila/internal/silaapi/addrlock"
+	"github.com/sila-org/sila/internal/silaapi/blockapi"
 	ethapierrors "github.com/sila-org/sila/internal/silaapi/errors"
 	gomath "math"
 	"math/big"
@@ -892,35 +893,15 @@ func RPCMarshalHeader(head *types.Header) map[string]interface{} {
 // returned. When fullTx is true the returned block contains full transaction details, otherwise it will only contain
 // transaction hashes.
 func RPCMarshalBlock(block *types.Block, inclTx bool, fullTx bool, config *params.ChainConfig) map[string]interface{} {
-	fields := RPCMarshalHeader(block.Header())
-	fields["size"] = hexutil.Uint64(block.Size())
-
-	if inclTx {
-		formatTx := func(idx int, tx *types.Transaction) interface{} {
-			return tx.Hash()
-		}
-		if fullTx {
-			formatTx = func(idx int, tx *types.Transaction) interface{} {
-				return newRPCTransactionFromBlockIndex(block, uint64(idx), config)
-			}
-		}
-		txs := block.Transactions()
-		transactions := make([]interface{}, len(txs))
-		for i, tx := range txs {
-			transactions[i] = formatTx(i, tx)
-		}
-		fields["transactions"] = transactions
+	formatTx := func(idx int, tx *types.Transaction) interface{} {
+		return tx.Hash()
 	}
-	uncles := block.Uncles()
-	uncleHashes := make([]common.Hash, len(uncles))
-	for i, uncle := range uncles {
-		uncleHashes[i] = uncle.Hash()
+	if fullTx {
+		formatTx = func(idx int, tx *types.Transaction) interface{} {
+			return newRPCTransactionFromBlockIndex(block, uint64(idx), config)
+		}
 	}
-	fields["uncles"] = uncleHashes
-	if block.Withdrawals() != nil {
-		fields["withdrawals"] = block.Withdrawals()
-	}
-	return fields
+	return blockapi.RPCMarshalBlockWithTransactions(block, inclTx, formatTx)
 }
 
 // RPCTransaction represents a transaction that will serialize to the RPC representation of a transaction

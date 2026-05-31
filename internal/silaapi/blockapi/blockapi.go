@@ -19,8 +19,8 @@ import (
 	"github.com/sila-org/sila/rpc"
 )
 
-// RPCMarshalBlock converts the given block to the RPC output with transaction hashes only.
-func RPCMarshalBlock(block *types.Block, inclTx bool, fullTx bool, config *params.ChainConfig) map[string]interface{} {
+// RPCMarshalBlockWithTransactions converts the given block to the RPC output using the supplied transaction formatter.
+func RPCMarshalBlockWithTransactions(block *types.Block, inclTx bool, formatTx func(int, *types.Transaction) interface{}) map[string]interface{} {
 	fields := RPCMarshalHeader(block.Header())
 	fields["size"] = hexutil.Uint64(block.Size())
 
@@ -28,7 +28,7 @@ func RPCMarshalBlock(block *types.Block, inclTx bool, fullTx bool, config *param
 		txs := block.Transactions()
 		transactions := make([]interface{}, len(txs))
 		for i, tx := range txs {
-			transactions[i] = tx.Hash()
+			transactions[i] = formatTx(i, tx)
 		}
 		fields["transactions"] = transactions
 	}
@@ -42,6 +42,13 @@ func RPCMarshalBlock(block *types.Block, inclTx bool, fullTx bool, config *param
 		fields["withdrawals"] = block.Withdrawals()
 	}
 	return fields
+}
+
+// RPCMarshalBlock converts the given block to the RPC output with transaction hashes only.
+func RPCMarshalBlock(block *types.Block, inclTx bool, fullTx bool, config *params.ChainConfig) map[string]interface{} {
+	return RPCMarshalBlockWithTransactions(block, inclTx, func(idx int, tx *types.Transaction) interface{} {
+		return tx.Hash()
+	})
 }
 
 const maxGetStorageSlots = 1024
