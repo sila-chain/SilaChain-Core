@@ -57,6 +57,7 @@ import (
 	"github.com/sila-org/sila/event"
 	"github.com/sila-org/sila/internal/blocktest"
 	"github.com/sila-org/sila/internal/silaapi/override"
+	"github.com/sila-org/sila/internal/silaapi/rpctx"
 	"github.com/sila-org/sila/params"
 	"github.com/sila-org/sila/rpc"
 	"github.com/stretchr/testify/require"
@@ -84,7 +85,7 @@ func testTransactionMarshal(t *testing.T, tests []txData, config *params.ChainCo
 		}
 
 		// rpcTransaction
-		rpcTx := newRPCTransaction(tx, common.Hash{}, 0, 0, 0, nil, config)
+		rpcTx := rpctx.NewRPCTransaction(tx, common.Hash{}, 0, 0, 0, nil, config)
 		if data, err := json.Marshal(rpcTx); err != nil {
 			t.Fatalf("test %d: marshalling failed; %v", i, err)
 		} else if err = tx2.UnmarshalJSON(data); err != nil {
