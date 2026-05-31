@@ -176,12 +176,6 @@ func (api *TxPoolAPI) Inspect() map[string]map[string]map[string]string {
 	return silaapi.TxPoolInspect(api.b)
 }
 
-// SilaAccountAPI is retained as a compatibility alias for the Sila account API.
-type SilaAccountAPI = silaapi.SilaAccountAPI
-
-// NewSilaAccountAPI creates a new SilaChain account API.
-var NewSilaAccountAPI = silaapi.NewSilaAccountAPI
-
 // BlockChainAPI provides an API to access SilaChain blockchain data.
 type BlockChainAPI struct {
 	b Backend
