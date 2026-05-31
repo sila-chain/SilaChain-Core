@@ -893,15 +893,7 @@ func RPCMarshalHeader(head *types.Header) map[string]interface{} {
 // returned. When fullTx is true the returned block contains full transaction details, otherwise it will only contain
 // transaction hashes.
 func RPCMarshalBlock(block *types.Block, inclTx bool, fullTx bool, config *params.ChainConfig) map[string]interface{} {
-	formatTx := func(idx int, tx *types.Transaction) interface{} {
-		return tx.Hash()
-	}
-	if fullTx {
-		formatTx = func(idx int, tx *types.Transaction) interface{} {
-			return blockapi.NewRPCTransactionFromBlockIndex(block, uint64(idx), config)
-		}
-	}
-	return blockapi.RPCMarshalBlockWithTransactions(block, inclTx, formatTx)
+	return blockapi.RPCMarshalBlock(block, inclTx, fullTx, config)
 }
 
 // RPCTransaction represents a transaction that will serialize to the RPC representation of a transaction.
