@@ -128,7 +128,7 @@ func NewTxPoolAPI(b Backend) *TxPoolAPI {
 func flattenTxs(txs types.Transactions, header *types.Header, cfg *params.ChainConfig) map[string]*RPCTransaction {
 	dump := make(map[string]*RPCTransaction, len(txs))
 	for _, tx := range txs {
-		dump[fmt.Sprintf("%d", tx.Nonce())] = NewRPCPendingTransaction(tx, header, cfg)
+		dump[fmt.Sprintf("%d", tx.Nonce())] = rpctx.NewRPCPendingTransaction(tx, header, cfg)
 	}
 	return dump
 }
@@ -1201,7 +1201,7 @@ func (api *TransactionAPI) GetTransactionByHash(ctx context.Context, hash common
 	if !found {
 		// No finalized transaction, try to retrieve it from the pool
 		if tx := api.b.GetPoolTransaction(hash); tx != nil {
-			return NewRPCPendingTransaction(tx, api.b.CurrentHeader(), api.b.ChainConfig()), nil
+			return rpctx.NewRPCPendingTransaction(tx, api.b.CurrentHeader(), api.b.ChainConfig()), nil
 		}
 		// If also not in the pool there is a chance the tx indexer is still in progress.
 		if !api.b.TxIndexDone() {
@@ -1585,7 +1585,7 @@ func (api *TransactionAPI) PendingTransactions() ([]*RPCTransaction, error) {
 	for _, tx := range pending {
 		from, _ := types.Sender(api.signer, tx)
 		if _, exists := accounts[from]; exists {
-			transactions = append(transactions, NewRPCPendingTransaction(tx, curHeader, api.b.ChainConfig()))
+			transactions = append(transactions, rpctx.NewRPCPendingTransaction(tx, curHeader, api.b.ChainConfig()))
 		}
 	}
 	return transactions, nil
