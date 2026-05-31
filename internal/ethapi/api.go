@@ -47,6 +47,7 @@ import (
 	"github.com/sila-org/sila/eth/tracers/logger"
 	"github.com/sila-org/sila/internal/silaapi/override"
 	"github.com/sila-org/sila/internal/silaapi/rpctx"
+	"github.com/sila-org/sila/internal/silaapi/txapi"
 	"github.com/sila-org/sila/log"
 	"github.com/sila-org/sila/p2p"
 	"github.com/sila-org/sila/params"
@@ -1176,62 +1177,17 @@ func (api *TransactionAPI) GetTransactionCount(ctx context.Context, address comm
 
 // GetTransactionByHash returns the transaction for the given hash
 func (api *TransactionAPI) GetTransactionByHash(ctx context.Context, hash common.Hash) (*RPCTransaction, error) {
-	// Try to return an already finalized transaction
-	found, tx, blockHash, blockNumber, index := api.b.GetCanonicalTransaction(hash)
-	if !found {
-		// No finalized transaction, try to retrieve it from the pool
-		if tx := api.b.GetPoolTransaction(hash); tx != nil {
-			return rpctx.NewRPCPendingTransaction(tx, api.b.CurrentHeader(), api.b.ChainConfig()), nil
-		}
-		// If also not in the pool there is a chance the tx indexer is still in progress.
-		if !api.b.TxIndexDone() {
-			return nil, ethapierrors.NewTxIndexingError()
-		}
-		// If the transaction is not found in the pool and the indexer is done, return nil
-		return nil, nil
-	}
-	header, err := api.b.HeaderByHash(ctx, blockHash)
-	if err != nil {
-		return nil, err
-	}
-	return rpctx.NewRPCTransaction(tx, blockHash, blockNumber, header.Time, index, header.BaseFee, api.b.ChainConfig()), nil
+	return txapi.GetTransactionByHash(ctx, api.b, hash)
 }
 
 // GetRawTransactionByHash returns the bytes of the transaction for the given hash.
 func (api *TransactionAPI) GetRawTransactionByHash(ctx context.Context, hash common.Hash) (hexutil.Bytes, error) {
-	// Retrieve a finalized transaction, or a pooled otherwise
-	found, tx, _, _, _ := api.b.GetCanonicalTransaction(hash)
-	if !found {
-		if tx = api.b.GetPoolTransaction(hash); tx != nil {
-			return tx.MarshalBinary()
-		}
-		// If also not in the pool there is a chance the tx indexer is still in progress.
-		if !api.b.TxIndexDone() {
-			return nil, ethapierrors.NewTxIndexingError()
-		}
-		// If the transaction is not found in the pool and the indexer is done, return nil
-		return nil, nil
-	}
-	return tx.MarshalBinary()
+	return txapi.GetRawTransactionByHash(api.b, hash)
 }
 
 // GetTransactionReceipt returns the transaction receipt for the given transaction hash.
 func (api *TransactionAPI) GetTransactionReceipt(ctx context.Context, hash common.Hash) (map[string]interface{}, error) {
-	found, tx, blockHash, blockNumber, index := api.b.GetCanonicalTransaction(hash)
-	if !found {
-		// Make sure indexer is done.
-		if !api.b.TxIndexDone() {
-			return nil, ethapierrors.NewTxIndexingError()
-		}
-		// No such tx.
-		return nil, nil
-	}
-	receipt, err := api.b.GetCanonicalReceipt(tx, blockHash, blockNumber, index)
-	if err != nil {
-		return nil, err
-	}
-	// Derive the sender.
-	return rpctx.MarshalReceipt(receipt, blockHash, blockNumber, api.signer, tx, int(index)), nil
+	return txapi.GetTransactionReceipt(api.b, api.signer, hash)
 }
 
 // sign is a helper function that signs a transaction with the private key of the given address.
@@ -1542,25 +1498,7 @@ func (api *TransactionAPI) SignTransaction(ctx context.Context, args Transaction
 // PendingTransactions returns the transactions that are in the transaction pool
 // and have a from address that is one of the accounts this node manages.
 func (api *TransactionAPI) PendingTransactions() ([]*RPCTransaction, error) {
-	pending, err := api.b.GetPoolTransactions()
-	if err != nil {
-		return nil, err
-	}
-	accounts := make(map[common.Address]struct{})
-	for _, wallet := range api.b.AccountManager().Wallets() {
-		for _, account := range wallet.Accounts() {
-			accounts[account.Address] = struct{}{}
-		}
-	}
-	curHeader := api.b.CurrentHeader()
-	transactions := make([]*RPCTransaction, 0, len(pending))
-	for _, tx := range pending {
-		from, _ := types.Sender(api.signer, tx)
-		if _, exists := accounts[from]; exists {
-			transactions = append(transactions, rpctx.NewRPCPendingTransaction(tx, curHeader, api.b.ChainConfig()))
-		}
-	}
-	return transactions, nil
+	return txapi.PendingTransactions(api.b, api.signer)
 }
 
 // Resend accepts an existing transaction and a new gas price and limit. It will remove
