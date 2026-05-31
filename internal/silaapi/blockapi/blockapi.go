@@ -45,11 +45,17 @@ func RPCMarshalBlockWithTransactions(block *types.Block, inclTx bool, formatTx f
 	return fields
 }
 
-// RPCMarshalBlock converts the given block to the RPC output with transaction hashes only.
+// RPCMarshalBlock converts the given block to the RPC output.
 func RPCMarshalBlock(block *types.Block, inclTx bool, fullTx bool, config *params.ChainConfig) map[string]interface{} {
-	return RPCMarshalBlockWithTransactions(block, inclTx, func(idx int, tx *types.Transaction) interface{} {
+	formatTx := func(idx int, tx *types.Transaction) interface{} {
 		return tx.Hash()
-	})
+	}
+	if fullTx {
+		formatTx = func(idx int, tx *types.Transaction) interface{} {
+			return NewRPCTransactionFromBlockIndex(block, uint64(idx), config)
+		}
+	}
+	return RPCMarshalBlockWithTransactions(block, inclTx, formatTx)
 }
 
 // NewRPCTransactionFromBlockIndex returns a transaction that will serialize to the RPC representation.
