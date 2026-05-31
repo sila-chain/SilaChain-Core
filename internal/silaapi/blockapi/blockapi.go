@@ -14,13 +14,35 @@ import (
 	"github.com/sila-org/sila/common/hexutil"
 	"github.com/sila-org/sila/core/state"
 	"github.com/sila-org/sila/core/types"
-	ethapi "github.com/sila-org/sila/internal/ethapi"
 	ethapierrors "github.com/sila-org/sila/internal/silaapi/errors"
 	"github.com/sila-org/sila/params"
 	"github.com/sila-org/sila/rpc"
 )
 
-var RPCMarshalBlock = ethapi.RPCMarshalBlock
+// RPCMarshalBlock converts the given block to the RPC output with transaction hashes only.
+func RPCMarshalBlock(block *types.Block, inclTx bool, fullTx bool, config *params.ChainConfig) map[string]interface{} {
+	fields := RPCMarshalHeader(block.Header())
+	fields["size"] = hexutil.Uint64(block.Size())
+
+	if inclTx {
+		txs := block.Transactions()
+		transactions := make([]interface{}, len(txs))
+		for i, tx := range txs {
+			transactions[i] = tx.Hash()
+		}
+		fields["transactions"] = transactions
+	}
+	uncles := block.Uncles()
+	uncleHashes := make([]common.Hash, len(uncles))
+	for i, uncle := range uncles {
+		uncleHashes[i] = uncle.Hash()
+	}
+	fields["uncles"] = uncleHashes
+	if block.Withdrawals() != nil {
+		fields["withdrawals"] = block.Withdrawals()
+	}
+	return fields
+}
 
 const maxGetStorageSlots = 1024
 
