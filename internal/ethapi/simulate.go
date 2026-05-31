@@ -35,6 +35,7 @@ import (
 	"github.com/sila-org/sila/core/state"
 	"github.com/sila-org/sila/core/types"
 	"github.com/sila-org/sila/core/vm"
+	"github.com/sila-org/sila/internal/silaapi/blockapi"
 	"github.com/sila-org/sila/internal/silaapi/override"
 	"github.com/sila-org/sila/params"
 	"github.com/sila-org/sila/rpc"
@@ -94,7 +95,7 @@ type simBlockResult struct {
 }
 
 func (r *simBlockResult) MarshalJSON() ([]byte, error) {
-	blockData := RPCMarshalBlock(r.Block, true, r.fullTx, r.chainConfig)
+	blockData := blockapi.RPCMarshalBlock(r.Block, true, r.fullTx, r.chainConfig)
 	blockData["calls"] = r.Calls
 	// Set tx sender if user requested full tx objects.
 	if r.fullTx {
