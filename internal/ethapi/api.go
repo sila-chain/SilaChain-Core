@@ -1326,7 +1326,7 @@ func (api *TransactionAPI) SendTransaction(ctx context.Context, args Transaction
 // FillTransaction fills the defaults (nonce, gas, gasPrice or 1559 fields)
 // on a given unsigned transaction, and returns it to the caller for further
 // processing (signing + broadcast).
-func (api *TransactionAPI) FillTransaction(ctx context.Context, args TransactionArgs) (*SignTransactionResult, error) {
+func (api *TransactionAPI) FillTransaction(ctx context.Context, args TransactionArgs) (*silaapi.SignTransactionResult, error) {
 	// Set some sanity defaults and terminate on failure
 	config := sidecarConfig{
 		blobSidecarAllowed: true,
@@ -1341,7 +1341,7 @@ func (api *TransactionAPI) FillTransaction(ctx context.Context, args Transaction
 	if err != nil {
 		return nil, err
 	}
-	return &SignTransactionResult{data, tx}, nil
+	return &silaapi.SignTransactionResult{Raw: data, Tx: tx}, nil
 }
 
 func (api *TransactionAPI) currentBlobSidecarVersion() byte {
@@ -1503,7 +1503,7 @@ type SignTransactionResult = silaapi.SignTransactionResult
 // SignTransaction will sign the given transaction with the from account.
 // The node needs to have the private key of the account corresponding with
 // the given from address and it needs to be unlocked.
-func (api *TransactionAPI) SignTransaction(ctx context.Context, args TransactionArgs) (*SignTransactionResult, error) {
+func (api *TransactionAPI) SignTransaction(ctx context.Context, args TransactionArgs) (*silaapi.SignTransactionResult, error) {
 	if args.Gas == nil {
 		return nil, errors.New("gas not specified")
 	}
@@ -1547,7 +1547,7 @@ func (api *TransactionAPI) SignTransaction(ctx context.Context, args Transaction
 	if err != nil {
 		return nil, err
 	}
-	return &SignTransactionResult{data, signed}, nil
+	return &silaapi.SignTransactionResult{Raw: data, Tx: signed}, nil
 }
 
 // PendingTransactions returns the transactions that are in the transaction pool
