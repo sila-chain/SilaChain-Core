@@ -1249,11 +1249,6 @@ func (api *TransactionAPI) GetTransactionReceipt(ctx context.Context, hash commo
 	return rpctx.MarshalReceipt(receipt, blockHash, blockNumber, api.signer, tx, int(index)), nil
 }
 
-// MarshalReceipt marshals a transaction receipt into a JSON object.
-func MarshalReceipt(receipt *types.Receipt, blockHash common.Hash, blockNumber uint64, signer types.Signer, tx *types.Transaction, txIndex int) map[string]interface{} {
-	return rpctx.MarshalReceipt(receipt, blockHash, blockNumber, signer, tx, txIndex)
-}
-
 // sign is a helper function that signs a transaction with the private key of the given address.
 func (api *TransactionAPI) sign(addr common.Address, tx *types.Transaction) (*types.Transaction, error) {
 	// Look up the wallet containing the requested signer
