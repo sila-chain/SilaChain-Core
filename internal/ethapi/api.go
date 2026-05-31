@@ -889,13 +889,6 @@ func RPCMarshalHeader(head *types.Header) map[string]interface{} {
 	return result
 }
 
-// RPCMarshalBlock converts the given block to the RPC output which depends on fullTx. If inclTx is true transactions are
-// returned. When fullTx is true the returned block contains full transaction details, otherwise it will only contain
-// transaction hashes.
-func RPCMarshalBlock(block *types.Block, inclTx bool, fullTx bool, config *params.ChainConfig) map[string]interface{} {
-	return blockapi.RPCMarshalBlock(block, inclTx, fullTx, config)
-}
-
 // RPCTransaction represents a transaction that will serialize to the RPC representation of a transaction.
 type RPCTransaction = rpctx.RPCTransaction
 
