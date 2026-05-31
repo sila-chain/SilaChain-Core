@@ -56,6 +56,7 @@ import (
 	"github.com/sila-org/sila/ethdb"
 	"github.com/sila-org/sila/event"
 	"github.com/sila-org/sila/internal/blocktest"
+	"github.com/sila-org/sila/internal/silaapi/blockapi"
 	"github.com/sila-org/sila/internal/silaapi/override"
 	"github.com/sila-org/sila/internal/silaapi/rpctx"
 	"github.com/sila-org/sila/params"
@@ -3277,7 +3278,7 @@ func TestRPCMarshalBlock(t *testing.T) {
 	}
 
 	for i, tc := range testSuite {
-		resp := RPCMarshalBlock(block, tc.inclTx, tc.fullTx, params.MainnetChainConfig)
+		resp := blockapi.RPCMarshalBlock(block, tc.inclTx, tc.fullTx, params.MainnetChainConfig)
 		out, err := json.Marshal(resp)
 		if err != nil {
 			t.Errorf("test %d: json marshal error: %v", i, err)
