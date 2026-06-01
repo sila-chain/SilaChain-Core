@@ -24,6 +24,7 @@ import (
 	"github.com/sila-org/sila/internal/silaapi"
 	"github.com/sila-org/sila/internal/silaapi/addrlock"
 	"github.com/sila-org/sila/internal/silaapi/blockapi"
+	"github.com/sila-org/sila/internal/silaapi/chainctx"
 	ethapierrors "github.com/sila-org/sila/internal/silaapi/errors"
 	gomath "math"
 	"math/big"
@@ -34,7 +35,6 @@ import (
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/common/hexutil"
 	"github.com/sila-org/sila/common/math"
-	"github.com/sila-org/sila/consensus"
 	"github.com/sila-org/sila/core"
 	"github.com/sila-org/sila/core/forkid"
 	"github.com/sila-org/sila/core/state"
@@ -432,59 +432,12 @@ func (api *BlockChainAPI) GetBlockReceipts(ctx context.Context, blockNrOrHash rp
 	return result, nil
 }
 
-// ChainContextBackend provides methods required to implement ChainContext.
-type ChainContextBackend interface {
-	Engine() consensus.Engine
-	HeaderByNumber(context.Context, rpc.BlockNumber) (*types.Header, error)
-	HeaderByHash(context.Context, common.Hash) (*types.Header, error)
-	CurrentHeader() *types.Header
-	ChainConfig() *params.ChainConfig
-}
+type ChainContextBackend = chainctx.Backend
+type ChainContext = chainctx.ChainContext
 
-// ChainContext is an implementation of core.ChainContext. It's main use-case
-// is instantiating a vm.BlockContext without having access to the BlockChain object.
-type ChainContext struct {
-	b   ChainContextBackend
-	ctx context.Context
-}
-
-// NewChainContext creates a new ChainContext object.
 func NewChainContext(ctx context.Context, backend ChainContextBackend) *ChainContext {
-	return &ChainContext{ctx: ctx, b: backend}
+	return chainctx.NewChainContext(ctx, backend)
 }
-
-func (context *ChainContext) Engine() consensus.Engine {
-	return context.b.Engine()
-}
-
-func (context *ChainContext) GetHeader(hash common.Hash, number uint64) *types.Header {
-	// This method is called to get the hash for a block number when executing the BLOCKHASH
-	// opcode. Hence no need to search for non-canonical blocks.
-	header, err := context.b.HeaderByNumber(context.ctx, rpc.BlockNumber(number))
-	if err != nil || header.Hash() != hash {
-		return nil
-	}
-	return header
-}
-
-func (context *ChainContext) Config() *params.ChainConfig {
-	return context.b.ChainConfig()
-}
-
-func (context *ChainContext) CurrentHeader() *types.Header {
-	return context.b.CurrentHeader()
-}
-
-func (context *ChainContext) GetHeaderByNumber(number uint64) *types.Header {
-	header, _ := context.b.HeaderByNumber(context.ctx, rpc.BlockNumber(number))
-	return header
-}
-
-func (context *ChainContext) GetHeaderByHash(hash common.Hash) *types.Header {
-	header, _ := context.b.HeaderByHash(context.ctx, hash)
-	return header
-}
-
 func doCall(ctx context.Context, b Backend, args TransactionArgs, state *state.StateDB, header *types.Header, overrides *override.StateOverride, blockOverrides *override.BlockOverrides, timeout time.Duration, globalGasCap uint64) (*core.ExecutionResult, error) {
 	blockCtx := core.NewEVMBlockContext(header, NewChainContext(ctx, b), nil)
 	if blockOverrides != nil {
