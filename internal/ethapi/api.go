@@ -26,6 +26,7 @@ import (
 	"github.com/sila-org/sila/internal/silaapi/blockapi"
 	"github.com/sila-org/sila/internal/silaapi/chainctx"
 	ethapierrors "github.com/sila-org/sila/internal/silaapi/errors"
+	"github.com/sila-org/sila/internal/silaapi/evmexec"
 	gomath "math"
 	"math/big"
 	"time"
@@ -493,34 +494,13 @@ func applyMessage(ctx context.Context, b Backend, args TransactionArgs, state *s
 	if precompiles != nil {
 		evm.SetPrecompiles(precompiles)
 	}
-	res, err := applyMessageWithEVM(ctx, evm, msg, timeout, gp)
+	res, err := evmexec.ApplyMessageWithEVM(ctx, evm, msg, timeout, gp)
 	// If an internal state error occurred, let that have precedence. Otherwise,
 	// a "trie root missing" type of error will masquerade as e.g. "insufficient gas"
 	if err := state.Error(); err != nil {
 		return nil, err
 	}
 	return res, err
-}
-
-func applyMessageWithEVM(ctx context.Context, evm *vm.EVM, msg *core.Message, timeout time.Duration, gp *core.GasPool) (*core.ExecutionResult, error) {
-	// Wait for the context to be done and cancel the evm. Even if the
-	// EVM has finished, cancelling may be done (repeatedly)
-	go func() {
-		<-ctx.Done()
-		evm.Cancel()
-	}()
-
-	// Execute the message.
-	result, err := core.ApplyMessage(evm, msg, gp)
-
-	// If the timer caused an abort, return an appropriate error message
-	if evm.Cancelled() {
-		return nil, fmt.Errorf("execution aborted (timeout = %v)", timeout)
-	}
-	if err != nil {
-		return result, fmt.Errorf("err: %w (supplied gas %d)", err, msg.GasLimit)
-	}
-	return result, nil
 }
 
 func DoCall(ctx context.Context, b Backend, args TransactionArgs, blockNrOrHash rpc.BlockNumberOrHash, overrides *override.StateOverride, blockOverrides *override.BlockOverrides, timeout time.Duration, globalGasCap uint64) (*core.ExecutionResult, error) {

@@ -36,6 +36,7 @@ import (
 	"github.com/sila-org/sila/core/types"
 	"github.com/sila-org/sila/core/vm"
 	"github.com/sila-org/sila/internal/silaapi/blockapi"
+	"github.com/sila-org/sila/internal/silaapi/evmexec"
 	"github.com/sila-org/sila/internal/silaapi/override"
 	"github.com/sila-org/sila/params"
 	"github.com/sila-org/sila/rpc"
@@ -355,7 +356,7 @@ func (sim *simulator) processBlock(ctx context.Context, block *simBlock, header,
 		// EoA check is always skipped, even in validation mode.
 		sim.state.SetTxContext(txHash, i)
 		msg := call.ToMessage(header.BaseFee, !sim.validate)
-		result, err := applyMessageWithEVM(ctx, evm, msg, timeout, gp)
+		result, err := evmexec.ApplyMessageWithEVM(ctx, evm, msg, timeout, gp)
 		if err != nil {
 			txErr := txValidationError(err)
 			return nil, nil, nil, txErr
