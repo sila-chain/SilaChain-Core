@@ -48,6 +48,7 @@ import (
 	"github.com/sila-org/sila/internal/silaapi/proofapi"
 	"github.com/sila-org/sila/internal/silaapi/rpctx"
 	"github.com/sila-org/sila/internal/silaapi/txapi"
+	"github.com/sila-org/sila/internal/silaapi/txfee"
 	"github.com/sila-org/sila/log"
 	"github.com/sila-org/sila/p2p"
 	"github.com/sila-org/sila/params"
@@ -1017,7 +1018,7 @@ func (api *TransactionAPI) sign(addr common.Address, tx *types.Transaction) (*ty
 func SubmitTransaction(ctx context.Context, b Backend, tx *types.Transaction) (common.Hash, error) {
 	// If the transaction fee cap is already specified, ensure the
 	// fee of the given transaction is _reasonable_.
-	if err := checkTxFee(tx.GasPrice(), tx.Gas(), b.RPCTxFeeCap()); err != nil {
+	if err := txfee.CheckTxFee(tx.GasPrice(), tx.Gas(), b.RPCTxFeeCap()); err != nil {
 		return common.Hash{}, err
 	}
 	if !b.UnprotectedAllowed() && !tx.Protected() {
@@ -1285,7 +1286,7 @@ func (api *TransactionAPI) SignTransaction(ctx context.Context, args Transaction
 	}
 	// Before actually sign the transaction, ensure the transaction fee is reasonable.
 	tx := args.ToTransaction(types.DynamicFeeTxType)
-	if err := checkTxFee(tx.GasPrice(), tx.Gas(), api.b.RPCTxFeeCap()); err != nil {
+	if err := txfee.CheckTxFee(tx.GasPrice(), tx.Gas(), api.b.RPCTxFeeCap()); err != nil {
 		return nil, err
 	}
 	signed, err := api.sign(args.from(), tx)
@@ -1333,7 +1334,7 @@ func (api *TransactionAPI) Resend(ctx context.Context, sendArgs TransactionArgs,
 	if gasLimit != nil {
 		gas = uint64(*gasLimit)
 	}
-	if err := checkTxFee(price, gas, api.b.RPCTxFeeCap()); err != nil {
+	if err := txfee.CheckTxFee(price, gas, api.b.RPCTxFeeCap()); err != nil {
 		return common.Hash{}, err
 	}
 	// Iterate the pending list for replacement
@@ -1531,19 +1532,4 @@ func (api *NetAPI) PeerCount() hexutil.Uint {
 // Version returns the current legacy-compatible network protocol version.
 func (api *NetAPI) Version() string {
 	return fmt.Sprintf("%d", api.networkVersion)
-}
-
-// checkTxFee is an internal function used to check whether the fee of
-// the given transaction is _reasonable_(under the cap).
-func checkTxFee(gasPrice *big.Int, gas uint64, cap float64) error {
-	// Short circuit if there is no cap for transaction fee at all.
-	if cap == 0 {
-		return nil
-	}
-	feeEth := new(big.Float).Quo(new(big.Float).SetInt(new(big.Int).Mul(gasPrice, new(big.Int).SetUint64(gas))), new(big.Float).SetInt(big.NewInt(params.Ether)))
-	feeFloat, _ := feeEth.Float64()
-	if feeFloat > cap {
-		return fmt.Errorf("tx fee (%.2f Sila) exceeds the configured cap (%.2f Sila)", feeFloat, cap)
-	}
-	return nil
 }
