@@ -1,12 +1,16 @@
 package proofapi
 
 import (
+	"context"
 	"encoding/hex"
 	"errors"
 	"strings"
 
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/common/hexutil"
+	"github.com/sila-org/sila/core/state"
+	"github.com/sila-org/sila/core/types"
+	"github.com/sila-org/sila/rpc"
 )
 
 // AccountResult structs for GetProof
@@ -57,4 +61,8 @@ func DecodeStorageKey(s string) (h common.Hash, inputLength int, err error) {
 		return common.Hash{}, 0, errors.New("invalid hex in storage key")
 	}
 	return common.BytesToHash(b), len(b), nil
+}
+
+type Backend interface {
+	StateAndHeaderByNumberOrHash(ctx context.Context, blockNrOrHash rpc.BlockNumberOrHash) (*state.StateDB, *types.Header, error)
 }
