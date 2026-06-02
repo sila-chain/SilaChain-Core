@@ -53,16 +53,16 @@ type TransactionArgs struct {
 	AuthorizationList []types.SetCodeAuthorization `json:"authorizationList"`
 }
 
-// from retrieves the transaction sender address.
-func (args *TransactionArgs) from() common.Address {
+// FromAddr retrieves the transaction sender address.
+func (args *TransactionArgs) FromAddr() common.Address {
 	if args.From == nil {
 		return common.Address{}
 	}
 	return *args.From
 }
 
-// data retrieves the transaction calldata. Input field is preferred.
-func (args *TransactionArgs) data() []byte {
+// DataBytes retrieves the transaction calldata. Input field is preferred.
+func (args *TransactionArgs) DataBytes() []byte {
 	if args.Input != nil {
 		return *args.Input
 	}
@@ -70,16 +70,6 @@ func (args *TransactionArgs) data() []byte {
 		return *args.Data
 	}
 	return nil
-}
-
-// FromAddr retrieves the transaction sender address.
-func (args *TransactionArgs) FromAddr() common.Address {
-	return args.from()
-}
-
-// DataBytes retrieves the transaction calldata. Input field is preferred.
-func (args *TransactionArgs) DataBytes() []byte {
-	return args.data()
 }
 
 // CallDefaults sanitizes the transaction arguments, often filling in zero values,
