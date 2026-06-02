@@ -816,7 +816,7 @@ func AccessList(ctx context.Context, b Backend, blockNrOrHash rpc.BlockNumberOrH
 	}
 
 	// Ensure any missing fields are filled, extract the recipient and input data
-	if err = args.setFeeDefaults(ctx, b, header); err != nil {
+	if err = setFeeDefaults(&args, ctx, b, header); err != nil {
 		return nil, 0, nil, err
 	}
 	if args.Nonce == nil {
@@ -1076,7 +1076,7 @@ func (api *TransactionAPI) SendTransaction(ctx context.Context, args Transaction
 	}
 
 	// Set some sanity defaults and terminate on failure
-	if err := args.setDefaults(ctx, api.b, sidecarConfig{}); err != nil {
+	if err := setDefaults(&args, ctx, api.b, sidecarConfig{}); err != nil {
 		return common.Hash{}, err
 	}
 	// Assemble the transaction and sign with the wallet
@@ -1098,7 +1098,7 @@ func (api *TransactionAPI) FillTransaction(ctx context.Context, args Transaction
 		blobSidecarAllowed: true,
 		blobSidecarVersion: api.currentBlobSidecarVersion(),
 	}
-	if err := args.setDefaults(ctx, api.b, config); err != nil {
+	if err := setDefaults(&args, ctx, api.b, config); err != nil {
 		return nil, err
 	}
 	// Assemble the transaction and obtain rlp
@@ -1288,7 +1288,7 @@ func (api *TransactionAPI) SignTransaction(ctx context.Context, args Transaction
 		blobSidecarAllowed: true,
 		blobSidecarVersion: sidecarVersion,
 	}
-	if err := args.setDefaults(ctx, api.b, config); err != nil {
+	if err := setDefaults(&args, ctx, api.b, config); err != nil {
 		return nil, err
 	}
 	// Before actually sign the transaction, ensure the transaction fee is reasonable.
@@ -1327,7 +1327,7 @@ func (api *TransactionAPI) Resend(ctx context.Context, sendArgs TransactionArgs,
 	if sendArgs.Nonce == nil {
 		return common.Hash{}, errors.New("missing transaction nonce in transaction spec")
 	}
-	if err := sendArgs.setDefaults(ctx, api.b, sidecarConfig{}); err != nil {
+	if err := setDefaults(&sendArgs, ctx, api.b, sidecarConfig{}); err != nil {
 		return common.Hash{}, err
 	}
 	matchTx := sendArgs.ToTransaction(types.DynamicFeeTxType)
