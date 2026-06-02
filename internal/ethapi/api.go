@@ -820,7 +820,7 @@ func AccessList(ctx context.Context, b Backend, blockNrOrHash rpc.BlockNumberOrH
 		return nil, 0, nil, err
 	}
 	if args.Nonce == nil {
-		nonce := hexutil.Uint64(db.GetNonce(args.from()))
+		nonce := hexutil.Uint64(db.GetNonce(args.FromAddr()))
 		args.Nonce = &nonce
 	}
 	blockCtx := core.NewEVMBlockContext(header, NewChainContext(ctx, b), nil)
@@ -832,14 +832,14 @@ func AccessList(ctx context.Context, b Backend, blockNrOrHash rpc.BlockNumberOrH
 	if args.To != nil {
 		to = *args.To
 	} else {
-		to = crypto.CreateAddress(args.from(), uint64(*args.Nonce))
+		to = crypto.CreateAddress(args.FromAddr(), uint64(*args.Nonce))
 	}
 	isPostMerge := header.Difficulty.Sign() == 0
 	// Retrieve the precompiles since they don't need to be added to the access list
 	precompiles := vm.ActivePrecompiles(b.ChainConfig().Rules(header.Number, isPostMerge, header.Time))
 
 	// addressesToExclude contains sender, receiver, precompiles and valid authorizations
-	addressesToExclude := map[common.Address]struct{}{args.from(): {}, to: {}}
+	addressesToExclude := map[common.Address]struct{}{args.FromAddr(): {}, to: {}}
 	for _, addr := range precompiles {
 		addressesToExclude[addr] = struct{}{}
 	}
@@ -1058,7 +1058,7 @@ func SubmitTransaction(ctx context.Context, b Backend, tx *types.Transaction) (c
 // This API is not capable for submitting blob transaction with sidecar.
 func (api *TransactionAPI) SendTransaction(ctx context.Context, args TransactionArgs) (common.Hash, error) {
 	// Look up the wallet containing the requested signer
-	account := accounts.Account{Address: args.from()}
+	account := accounts.Account{Address: args.FromAddr()}
 
 	wallet, err := api.b.AccountManager().Find(account)
 	if err != nil {
@@ -1068,8 +1068,8 @@ func (api *TransactionAPI) SendTransaction(ctx context.Context, args Transaction
 	if args.Nonce == nil {
 		// Hold the mutex around signing to prevent concurrent assignment of
 		// the same nonce to multiple accounts.
-		api.nonceLock.LockAddr(args.from())
-		defer api.nonceLock.UnlockAddr(args.from())
+		api.nonceLock.LockAddr(args.FromAddr())
+		defer api.nonceLock.UnlockAddr(args.FromAddr())
 	}
 	if args.IsEIP4844() {
 		return common.Hash{}, errBlobTxNotSupported
@@ -1296,7 +1296,7 @@ func (api *TransactionAPI) SignTransaction(ctx context.Context, args Transaction
 	if err := txfee.CheckTxFee(tx.GasPrice(), tx.Gas(), api.b.RPCTxFeeCap()); err != nil {
 		return nil, err
 	}
-	signed, err := api.sign(args.from(), tx)
+	signed, err := api.sign(args.FromAddr(), tx)
 	if err != nil {
 		return nil, err
 	}
@@ -1352,7 +1352,7 @@ func (api *TransactionAPI) Resend(ctx context.Context, sendArgs TransactionArgs,
 	for _, p := range pending {
 		wantSigHash := api.signer.Hash(matchTx)
 		pFrom, err := types.Sender(api.signer, p)
-		if err == nil && pFrom == sendArgs.from() && api.signer.Hash(p) == wantSigHash {
+		if err == nil && pFrom == sendArgs.FromAddr() && api.signer.Hash(p) == wantSigHash {
 			// Match. Re-sign and send the transaction.
 			if gasPrice != nil && (*big.Int)(gasPrice).Sign() != 0 {
 				sendArgs.GasPrice = gasPrice
@@ -1360,7 +1360,7 @@ func (api *TransactionAPI) Resend(ctx context.Context, sendArgs TransactionArgs,
 			if gasLimit != nil && *gasLimit != 0 {
 				sendArgs.Gas = gasLimit
 			}
-			signedTx, err := api.sign(sendArgs.from(), sendArgs.ToTransaction(types.DynamicFeeTxType))
+			signedTx, err := api.sign(sendArgs.FromAddr(), sendArgs.ToTransaction(types.DynamicFeeTxType))
 			if err != nil {
 				return common.Hash{}, err
 			}

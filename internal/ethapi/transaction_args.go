@@ -91,6 +91,16 @@ func (args *TransactionArgs) data() []byte {
 	return nil
 }
 
+// FromAddr retrieves the transaction sender address.
+func (args *TransactionArgs) FromAddr() common.Address {
+	return args.from()
+}
+
+// DataBytes retrieves the transaction calldata. Input field is preferred.
+func (args *TransactionArgs) DataBytes() []byte {
+	return args.data()
+}
+
 // sidecarConfig defines the options for deriving missing fields of transactions.
 type sidecarConfig struct {
 	// This configures whether blobs are allowed to be passed and
@@ -112,7 +122,7 @@ func setDefaults(args *TransactionArgs, ctx context.Context, b Backend, config s
 		args.Value = new(hexutil.Big)
 	}
 	if args.Nonce == nil {
-		nonce, err := b.GetPoolNonce(ctx, args.from())
+		nonce, err := b.GetPoolNonce(ctx, args.FromAddr())
 		if err != nil {
 			return err
 		}
@@ -135,7 +145,7 @@ func setDefaults(args *TransactionArgs, ctx context.Context, b Backend, config s
 		if args.BlobHashes != nil {
 			return errors.New(`missing "to" in blob transaction`)
 		}
-		if len(args.data()) == 0 {
+		if len(args.DataBytes()) == 0 {
 			return errors.New(`contract creation without any data provided`)
 		}
 	}
@@ -143,7 +153,7 @@ func setDefaults(args *TransactionArgs, ctx context.Context, b Backend, config s
 	if args.Gas == nil {
 		// These fields are immutable during the estimation, safe to
 		// pass the pointer directly.
-		data := args.data()
+		data := args.DataBytes()
 		callArgs := TransactionArgs{
 			From:                 args.From,
 			To:                   args.To,
@@ -478,7 +488,7 @@ func (args *TransactionArgs) ToMessage(baseFee *big.Int, skipNonceCheck bool) *c
 		accessList = *args.AccessList
 	}
 	return &core.Message{
-		From:                  args.from(),
+		From:                  args.FromAddr(),
 		To:                    args.To,
 		Value:                 (*big.Int)(args.Value),
 		Nonce:                 uint64(*args.Nonce),
@@ -486,7 +496,7 @@ func (args *TransactionArgs) ToMessage(baseFee *big.Int, skipNonceCheck bool) *c
 		GasPrice:              gasPrice,
 		GasFeeCap:             gasFeeCap,
 		GasTipCap:             gasTipCap,
-		Data:                  args.data(),
+		Data:                  args.DataBytes(),
 		AccessList:            accessList,
 		BlobGasFeeCap:         (*big.Int)(args.BlobFeeCap),
 		BlobHashes:            args.BlobHashes,
@@ -533,7 +543,7 @@ func (args *TransactionArgs) ToTransaction(defaultType int) *types.Transaction {
 			GasFeeCap:  uint256.MustFromBig((*big.Int)(args.MaxFeePerGas)),
 			GasTipCap:  uint256.MustFromBig((*big.Int)(args.MaxPriorityFeePerGas)),
 			Value:      uint256.MustFromBig((*big.Int)(args.Value)),
-			Data:       args.data(),
+			Data:       args.DataBytes(),
 			AccessList: al,
 			AuthList:   authList,
 		}
@@ -551,7 +561,7 @@ func (args *TransactionArgs) ToTransaction(defaultType int) *types.Transaction {
 			GasFeeCap:  uint256.MustFromBig((*big.Int)(args.MaxFeePerGas)),
 			GasTipCap:  uint256.MustFromBig((*big.Int)(args.MaxPriorityFeePerGas)),
 			Value:      uint256.MustFromBig((*big.Int)(args.Value)),
-			Data:       args.data(),
+			Data:       args.DataBytes(),
 			AccessList: al,
 			BlobHashes: args.BlobHashes,
 			BlobFeeCap: uint256.MustFromBig((*big.Int)(args.BlobFeeCap)),
@@ -577,7 +587,7 @@ func (args *TransactionArgs) ToTransaction(defaultType int) *types.Transaction {
 			GasFeeCap:  (*big.Int)(args.MaxFeePerGas),
 			GasTipCap:  (*big.Int)(args.MaxPriorityFeePerGas),
 			Value:      (*big.Int)(args.Value),
-			Data:       args.data(),
+			Data:       args.DataBytes(),
 			AccessList: al,
 		}
 
@@ -589,7 +599,7 @@ func (args *TransactionArgs) ToTransaction(defaultType int) *types.Transaction {
 			Gas:        uint64(*args.Gas),
 			GasPrice:   (*big.Int)(args.GasPrice),
 			Value:      (*big.Int)(args.Value),
-			Data:       args.data(),
+			Data:       args.DataBytes(),
 			AccessList: *args.AccessList,
 		}
 
@@ -600,7 +610,7 @@ func (args *TransactionArgs) ToTransaction(defaultType int) *types.Transaction {
 			Gas:      uint64(*args.Gas),
 			GasPrice: (*big.Int)(args.GasPrice),
 			Value:    (*big.Int)(args.Value),
-			Data:     args.data(),
+			Data:     args.DataBytes(),
 		}
 	}
 	return types.NewTx(data)

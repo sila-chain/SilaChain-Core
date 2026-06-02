@@ -350,7 +350,7 @@ func (sim *simulator) processBlock(ctx context.Context, block *simBlock, header,
 			txHash = tx.Hash()
 		)
 		txes[i] = tx
-		senders[txHash] = call.from()
+		senders[txHash] = call.FromAddr()
 		tracer.reset(txHash, uint(i))
 
 		// EoA check is always skipped, even in validation mode.
@@ -452,7 +452,7 @@ func repairLogs(calls []simCallResult, hash common.Hash) {
 
 func (sim *simulator) sanitizeCall(call *TransactionArgs, state vm.StateDB, header *types.Header, gp *core.GasPool) (bool, error) {
 	if call.Nonce == nil {
-		nonce := state.GetNonce(call.from())
+		nonce := state.GetNonce(call.FromAddr())
 		call.Nonce = (*hexutil.Uint64)(&nonce)
 	}
 	// Let the call run wild unless explicitly specified.
