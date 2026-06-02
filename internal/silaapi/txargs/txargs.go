@@ -305,15 +305,3 @@ func (args *TransactionArgs) ToTransaction(defaultType int) *types.Transaction {
 func (args *TransactionArgs) IsEIP4844() bool {
 	return args.BlobHashes != nil || args.BlobFeeCap != nil
 }
-
-func CallDefaults(args *TransactionArgs, globalGasCap uint64, baseFee *big.Int, chainID *big.Int) error {
-	return args.CallDefaults(globalGasCap, baseFee, chainID)
-}
-
-func ToMessage(args *TransactionArgs, baseFee *big.Int, skipNonceCheck bool) *core.Message {
-	return args.ToMessage(baseFee, skipNonceCheck)
-}
-
-func ToTransaction(args *TransactionArgs, defaultType int) *types.Transaction {
-	return args.ToTransaction(defaultType)
-}

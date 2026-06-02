@@ -957,12 +957,12 @@ func (api *API) TraceCall(ctx context.Context, args txargs.TransactionArgs, bloc
 	}
 
 	// Execute the trace.
-	if err := txargs.CallDefaults(&args, api.backend.RPCGasCap(), blockContext.BaseFee, api.backend.ChainConfig().ChainID); err != nil {
+	if err := args.CallDefaults(api.backend.RPCGasCap(), blockContext.BaseFee, api.backend.ChainConfig().ChainID); err != nil {
 		return nil, err
 	}
 	var (
-		msg         = txargs.ToMessage(&args, blockContext.BaseFee, true)
-		tx          = txargs.ToTransaction(&args, types.DynamicFeeTxType)
+		msg         = args.ToMessage(blockContext.BaseFee, true)
+		tx          = args.ToTransaction(types.DynamicFeeTxType)
 		traceConfig *TraceConfig
 	)
 	// Lower the basefee to 0 to avoid breaking EVM
