@@ -962,7 +962,7 @@ func (api *API) TraceCall(ctx context.Context, args txargs.TransactionArgs, bloc
 	}
 	var (
 		msg         = txargs.ToMessage(&args, blockContext.BaseFee, true)
-		tx          = args.ToTransaction(types.DynamicFeeTxType)
+		tx          = txargs.ToTransaction(&args, types.DynamicFeeTxType)
 		traceConfig *TraceConfig
 	)
 	// Lower the basefee to 0 to avoid breaking EVM

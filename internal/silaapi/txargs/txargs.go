@@ -7,6 +7,7 @@ import (
 	"math/big"
 
 	"github.com/sila-org/sila/core"
+	"github.com/sila-org/sila/core/types"
 	ethapi "github.com/sila-org/sila/internal/ethapi"
 )
 
@@ -18,4 +19,8 @@ func CallDefaults(args *TransactionArgs, globalGasCap uint64, baseFee *big.Int, 
 
 func ToMessage(args *TransactionArgs, baseFee *big.Int, skipNonceCheck bool) *core.Message {
 	return args.ToMessage(baseFee, skipNonceCheck)
+}
+
+func ToTransaction(args *TransactionArgs, defaultType int) *types.Transaction {
+	return args.ToTransaction(defaultType)
 }
