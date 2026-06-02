@@ -3,6 +3,25 @@
 
 package registry
 
-import ethapi "github.com/sila-org/sila/internal/ethapi"
+import (
+	"github.com/sila-org/sila/internal/ethapi"
+	"github.com/sila-org/sila/internal/silaapi"
+	"github.com/sila-org/sila/internal/silaapi/addrlock"
+	"github.com/sila-org/sila/rpc"
+)
 
-var GetAPIs = ethapi.GetAPIs
+func GetAPIs(apiBackend ethapi.Backend) []rpc.API {
+	nonceLock := new(addrlock.AddrLocker)
+	return []rpc.API{
+		{Namespace: "sila", Service: ethapi.NewSilaAPI(apiBackend)},
+		{Namespace: "eth", Service: ethapi.NewSilaAPI(apiBackend)},
+		{Namespace: "sila", Service: ethapi.NewBlockChainAPI(apiBackend)},
+		{Namespace: "eth", Service: ethapi.NewBlockChainAPI(apiBackend)},
+		{Namespace: "sila", Service: ethapi.NewTransactionAPI(apiBackend, nonceLock)},
+		{Namespace: "eth", Service: ethapi.NewTransactionAPI(apiBackend, nonceLock)},
+		{Namespace: "txpool", Service: ethapi.NewTxPoolAPI(apiBackend)},
+		{Namespace: "debug", Service: ethapi.NewDebugAPI(apiBackend)},
+		{Namespace: "sila", Service: silaapi.NewSilaAccountAPI(apiBackend.AccountManager())},
+		{Namespace: "eth", Service: silaapi.NewSilaAccountAPI(apiBackend.AccountManager())},
+	}
+}

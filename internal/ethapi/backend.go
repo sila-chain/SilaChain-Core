@@ -19,8 +19,6 @@ package ethapi
 
 import (
 	"context"
-	"github.com/sila-org/sila/internal/silaapi"
-	"github.com/sila-org/sila/internal/silaapi/addrlock"
 	"math/big"
 	"time"
 
@@ -103,52 +101,4 @@ type Backend interface {
 
 	CurrentView() *filtermaps.ChainView
 	NewMatcherBackend() filtermaps.MatcherBackend
-}
-
-func GetAPIs(apiBackend Backend) []rpc.API {
-	// Sila namespaces are registered first. Legacy eth namespaces are retained
-	// only for JSON-RPC compatibility with existing tooling.
-	nonceLock := new(addrlock.AddrLocker)
-	return []rpc.API{
-		{
-			Namespace: "sila",
-			Service:   NewSilaAPI(apiBackend),
-		},
-		{
-			Namespace: "eth",
-			Service:   NewSilaAPI(apiBackend),
-		},
-		{
-			Namespace: "sila",
-			Service:   NewBlockChainAPI(apiBackend),
-		},
-		{
-			Namespace: "eth",
-			Service:   NewBlockChainAPI(apiBackend),
-		},
-		{
-			Namespace: "sila",
-			Service:   NewTransactionAPI(apiBackend, nonceLock),
-		},
-		{
-			Namespace: "eth",
-			Service:   NewTransactionAPI(apiBackend, nonceLock),
-		},
-		{
-			Namespace: "txpool",
-			Service:   NewTxPoolAPI(apiBackend),
-		},
-		{
-			Namespace: "debug",
-			Service:   NewDebugAPI(apiBackend),
-		},
-		{
-			Namespace: "sila",
-			Service:   silaapi.NewSilaAccountAPI(apiBackend.AccountManager()),
-		},
-		{
-			Namespace: "eth",
-			Service:   silaapi.NewSilaAccountAPI(apiBackend.AccountManager()),
-		},
-	}
 }
