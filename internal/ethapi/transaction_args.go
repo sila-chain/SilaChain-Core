@@ -111,12 +111,6 @@ func transactionArgsData(args *TransactionArgs) []byte {
 }
 
 // sidecarConfig defines the options for deriving missing fields of transactions.
-type txArgsBackend interface {
-	CurrentHeader() *types.Header
-	ChainConfig() *params.ChainConfig
-	SuggestGasTipCap(ctx context.Context) (*big.Int, error)
-}
-
 type sidecarConfig struct {
 	// This configures whether blobs are allowed to be passed and
 	// the associated sidecar version should be attached.
@@ -125,7 +119,7 @@ type sidecarConfig struct {
 }
 
 // setDefaults fills in default values for unspecified tx fields.
-func (args *TransactionArgs) setDefaults(ctx context.Context, b txArgsBackend, config sidecarConfig) error {
+func (args *TransactionArgs) setDefaults(ctx context.Context, b Backend, config sidecarConfig) error {
 	if err := args.setBlobTxSidecar(ctx, config); err != nil {
 		return err
 	}
@@ -205,7 +199,7 @@ func (args *TransactionArgs) setDefaults(ctx context.Context, b txArgsBackend, c
 }
 
 // setFeeDefaults fills in default fee values for unspecified tx fields.
-func (args *TransactionArgs) setFeeDefaults(ctx context.Context, b txArgsBackend, head *types.Header) error {
+func (args *TransactionArgs) setFeeDefaults(ctx context.Context, b Backend, head *types.Header) error {
 	// Sanity check the EIP-4844 fee parameters.
 	if args.BlobFeeCap != nil && args.BlobFeeCap.ToInt().Sign() == 0 {
 		return errors.New("maxFeePerBlobGas, if specified, must be non-zero")
@@ -277,7 +271,7 @@ func (args *TransactionArgs) setCancunFeeDefaults(config *params.ChainConfig, he
 }
 
 // setLondonFeeDefaults fills in reasonable default fee values for unspecified fields.
-func (args *TransactionArgs) setLondonFeeDefaults(ctx context.Context, head *types.Header, b txArgsBackend) error {
+func (args *TransactionArgs) setLondonFeeDefaults(ctx context.Context, head *types.Header, b Backend) error {
 	// Set maxPriorityFeePerGas if it is missing.
 	if args.MaxPriorityFeePerGas == nil {
 		tip, err := b.SuggestGasTipCap(ctx)
