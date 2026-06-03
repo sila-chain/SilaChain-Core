@@ -70,68 +70,11 @@ func NewSilaAPI(b SilaAPIBackend) *SilaAPI {
 	return silaapi.NewSilaAPI(b)
 }
 
-// TxPoolAPI offers and API for the transaction pool. It only operates on data that is non-confidential.
-type TxPoolAPI struct {
-	b Backend
-}
+type TxPoolAPI = silaapi.TxPoolAPI
 
 // NewTxPoolAPI creates a new tx pool service that gives information about the transaction pool.
 func NewTxPoolAPI(b Backend) *TxPoolAPI {
-	return &TxPoolAPI{b}
-}
-
-// flattenTxs builds the RPC transaction map keyed by nonce for a set of pool txs.
-func flattenTxs(txs types.Transactions, header *types.Header, cfg *params.ChainConfig) map[string]*RPCTransaction {
-	dump := make(map[string]*RPCTransaction, len(txs))
-	for _, tx := range txs {
-		dump[fmt.Sprintf("%d", tx.Nonce())] = rpctx.NewRPCPendingTransaction(tx, header, cfg)
-	}
-	return dump
-}
-
-// Content returns the transactions contained within the transaction pool.
-func (api *TxPoolAPI) Content() map[string]map[string]map[string]*RPCTransaction {
-	pending, queue := api.b.TxPoolContent()
-	content := map[string]map[string]map[string]*RPCTransaction{
-		"pending": make(map[string]map[string]*RPCTransaction, len(pending)),
-		"queued":  make(map[string]map[string]*RPCTransaction, len(queue)),
-	}
-	curHeader := api.b.CurrentHeader()
-	// Flatten the pending transactions
-	for account, txs := range pending {
-		content["pending"][account.Hex()] = flattenTxs(txs, curHeader, api.b.ChainConfig())
-	}
-	// Flatten the queued transactions
-	for account, txs := range queue {
-		content["queued"][account.Hex()] = flattenTxs(txs, curHeader, api.b.ChainConfig())
-	}
-	return content
-}
-
-// ContentFrom returns the transactions contained within the transaction pool.
-func (api *TxPoolAPI) ContentFrom(addr common.Address) map[string]map[string]*RPCTransaction {
-	content := make(map[string]map[string]*RPCTransaction, 2)
-	pending, queue := api.b.TxPoolContentFrom(addr)
-	curHeader := api.b.CurrentHeader()
-
-	// Build the pending transactions
-	content["pending"] = flattenTxs(pending, curHeader, api.b.ChainConfig())
-
-	// Build the queued transactions
-	content["queued"] = flattenTxs(queue, curHeader, api.b.ChainConfig())
-
-	return content
-}
-
-// Status returns the number of pending and queued transaction in the pool.
-func (api *TxPoolAPI) Status() map[string]hexutil.Uint {
-	return silaapi.TxPoolStatus(api.b)
-}
-
-// Inspect retrieves the content of the transaction pool and flattens it into an
-// easily inspectable list.
-func (api *TxPoolAPI) Inspect() map[string]map[string]map[string]string {
-	return silaapi.TxPoolInspect(api.b)
+	return silaapi.NewTxPoolAPI(b)
 }
 
 // BlockChainAPI provides an API to access SilaChain blockchain data.

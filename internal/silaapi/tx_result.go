@@ -15,6 +15,7 @@ import (
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/common/hexutil"
 	"github.com/sila-org/sila/core/types"
+	"github.com/sila-org/sila/internal/silaapi/rpctx"
 	"github.com/sila-org/sila/rpc"
 )
 
@@ -182,6 +183,66 @@ func Syncing(ctx context.Context, b SilaAPIBackend) (interface{}, error) {
 		"stateIndexRemaining":    hexutil.Uint64(progress.StateIndexRemaining),
 		"trienodeIndexRemaining": hexutil.Uint64(progress.TrienodeIndexRemaining),
 	}, nil
+}
+
+type RPCTransaction = rpctx.RPCTransaction
+
+type TxPoolAPI struct {
+	b TxPoolBackend
+}
+
+// NewTxPoolAPI creates a new tx pool service that gives information about the transaction pool.
+func NewTxPoolAPI(b TxPoolBackend) *TxPoolAPI {
+	return &TxPoolAPI{b}
+}
+
+// flattenTxs builds the RPC transaction map keyed by nonce for a set of pool txs.
+func flattenTxs(txs types.Transactions, header *types.Header, cfg *params.ChainConfig) map[string]*RPCTransaction {
+	dump := make(map[string]*RPCTransaction, len(txs))
+	for _, tx := range txs {
+		dump[fmt.Sprintf("%d", tx.Nonce())] = rpctx.NewRPCPendingTransaction(tx, header, cfg)
+	}
+	return dump
+}
+
+// Content returns the transactions contained within the transaction pool.
+func (api *TxPoolAPI) Content() map[string]map[string]map[string]*RPCTransaction {
+	pending, queue := api.b.TxPoolContent()
+	content := map[string]map[string]map[string]*RPCTransaction{
+		"pending": make(map[string]map[string]*RPCTransaction, len(pending)),
+		"queued":  make(map[string]map[string]*RPCTransaction, len(queue)),
+	}
+	curHeader := api.b.CurrentHeader()
+	for account, txs := range pending {
+		content["pending"][account.Hex()] = flattenTxs(txs, curHeader, api.b.ChainConfig())
+	}
+	for account, txs := range queue {
+		content["queued"][account.Hex()] = flattenTxs(txs, curHeader, api.b.ChainConfig())
+	}
+	return content
+}
+
+// ContentFrom returns the transactions contained within the transaction pool.
+func (api *TxPoolAPI) ContentFrom(addr common.Address) map[string]map[string]*RPCTransaction {
+	content := make(map[string]map[string]*RPCTransaction, 2)
+	pending, queue := api.b.TxPoolContentFrom(addr)
+	curHeader := api.b.CurrentHeader()
+
+	content["pending"] = flattenTxs(pending, curHeader, api.b.ChainConfig())
+	content["queued"] = flattenTxs(queue, curHeader, api.b.ChainConfig())
+
+	return content
+}
+
+// Status returns the number of pending and queued transaction in the pool.
+func (api *TxPoolAPI) Status() map[string]hexutil.Uint {
+	return TxPoolStatus(api.b)
+}
+
+// Inspect retrieves the content of the transaction pool and flattens it into an
+// easily inspectable list.
+func (api *TxPoolAPI) Inspect() map[string]map[string]map[string]string {
+	return TxPoolInspect(api.b)
 }
 
 // TxPoolBackend is the minimal backend required by TxPoolAPI.
