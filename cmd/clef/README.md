@@ -898,7 +898,7 @@ A UI should conform to the following rules.
 * A UI MUST NOT load any external resources that were not embedded/part of the UI package.
   * For example, not load icons, stylesheets from the internet
   * Not load files from the filesystem, unless they reside in the same local directory (e.g. config files)
-* A Graphical UI MUST show the blocky-identicon for ethereum addresses.
+* A Graphical UI MUST show the blocky-identicon for Sila addresses.
 * A UI MUST warn display appropriate warning if the destination-account is formatted with invalid checksum.
 * A UI MUST NOT open any ports or services
   * The signer opens the public port
@@ -919,4 +919,4 @@ There are a couple of implementation for a UI. We'll try to keep this list up to
 | QtSigner| https://github.com/holiman/qtsigner/ | Python3/QT-based| :+1:| :+1:| :+1:| :+1:| :+1:| :x: |  :+1: (partially)|
 | GtkSigner| https://github.com/holiman/gtksigner | Python3/GTK-based| :+1:| :x:| :x:| :+1:| :+1:| :x: |  :x: |
 | Frame | https://github.com/floating/frame/commits/go-signer | Electron-based| :x:| :x:| :x:| :x:| ?| :x: |  :x: |
-| Clef UI| https://github.com/ethereum/clef-ui | Golang/QT-based| :+1:| :+1:| :x:| :+1:| :+1:| :x: |  :+1: (approve tx only)|
+| Clef UI| https://github.com/medo202225/SilaChain-Core/tree/main/cmd/clef | Golang/QT-based| :+1:| :+1:| :x:| :+1:| :+1:| :x: |  :+1: (approve tx only)|

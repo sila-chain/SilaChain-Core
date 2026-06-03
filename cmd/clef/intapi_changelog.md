@@ -46,7 +46,7 @@ If `clef` requires a password, the `OnInputRequired` will be used to collect it.
 
 ### 5.0.0
 
-Changed the namespace format to adhere to the legacy ethereum format: `name_methodName`. Changes:
+Changed the namespace format to adhere to the legacy-compatible RPC format: `name_methodName`. Changes:
 
 * `ApproveTx` -> `ui_approveTx`
 * `ApproveSignData` -> `ui_approveSignData`
