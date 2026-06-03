@@ -188,6 +188,34 @@ func GetStorageValues(ctx context.Context, b BlockChainBackend, requests map[com
 	return result, nil
 }
 
+// GetUncleByBlockNumberAndIndex returns the uncle block for the given block number and index.
+func GetUncleByBlockNumberAndIndex(ctx context.Context, b BlockChainBackend, blockNr rpc.BlockNumber, index hexutil.Uint) (map[string]interface{}, error) {
+	block, err := b.BlockByNumber(ctx, blockNr)
+	if block != nil {
+		uncles := block.Uncles()
+		if index >= hexutil.Uint(len(uncles)) {
+			return nil, nil
+		}
+		block = types.NewBlockWithHeader(uncles[index])
+		return RPCMarshalBlock(block, false, false, b.ChainConfig()), nil
+	}
+	return nil, err
+}
+
+// GetUncleByBlockHashAndIndex returns the uncle block for the given block hash and index.
+func GetUncleByBlockHashAndIndex(ctx context.Context, b BlockChainBackend, blockHash common.Hash, index hexutil.Uint) (map[string]interface{}, error) {
+	block, err := b.BlockByHash(ctx, blockHash)
+	if block != nil {
+		uncles := block.Uncles()
+		if index >= hexutil.Uint(len(uncles)) {
+			return nil, nil
+		}
+		block = types.NewBlockWithHeader(uncles[index])
+		return RPCMarshalBlock(block, false, false, b.ChainConfig()), nil
+	}
+	return nil, err
+}
+
 // GetUncleCountByBlockNumber returns number of uncles in the block for the given block number.
 func GetUncleCountByBlockNumber(ctx context.Context, b BlockChainBackend, blockNr rpc.BlockNumber) (*hexutil.Uint, error) {
 	block, err := b.BlockByNumber(ctx, blockNr)
