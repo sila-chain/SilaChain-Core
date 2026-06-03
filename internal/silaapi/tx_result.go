@@ -15,6 +15,7 @@ import (
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/common/hexutil"
 	"github.com/sila-org/sila/core/types"
+	"github.com/sila-org/sila/ethdb"
 	"github.com/sila-org/sila/internal/silaapi/rpctx"
 	"github.com/sila-org/sila/rpc"
 )
@@ -246,6 +247,19 @@ func (api *TxPoolAPI) Inspect() map[string]map[string]map[string]string {
 }
 
 // TxPoolBackend is the minimal backend required by TxPoolAPI.
+type DebugBackend interface {
+	SetHead(number uint64)
+	HeaderByHash(ctx context.Context, hash common.Hash) (*types.Header, error)
+	CurrentHeader() *types.Header
+	BlockByNumber(ctx context.Context, number rpc.BlockNumber) (*types.Block, error)
+	BlockByHash(ctx context.Context, hash common.Hash) (*types.Block, error)
+	BlockByNumberOrHash(ctx context.Context, blockNrOrHash rpc.BlockNumberOrHash) (*types.Block, error)
+	GetReceipts(ctx context.Context, hash common.Hash) (types.Receipts, error)
+	GetCanonicalTransaction(tx *types.Transaction, blockHash common.Hash, blockNumber, blockIndex uint64) (bool, *types.Transaction, common.Hash, uint64, uint64)
+	GetPoolTransaction(txHash common.Hash) *types.Transaction
+	TxIndexDone() bool
+	ChainDb() ethdb.Database
+}
 type TxPoolBackend interface {
 	CurrentHeader() *types.Header
 	ChainConfig() *params.ChainConfig
