@@ -20,16 +20,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/sila-org/sila/internal/silaapi"
-	"github.com/sila-org/sila/internal/silaapi/addrlock"
-	"github.com/sila-org/sila/internal/silaapi/blockapi"
-	"github.com/sila-org/sila/internal/silaapi/callapi"
-	"github.com/sila-org/sila/internal/silaapi/chainctx"
-	ethapierrors "github.com/sila-org/sila/internal/silaapi/errors"
-	"math/big"
-	"time"
-
-	"github.com/davecgh/go-spew/spew"
 	"github.com/sila-org/sila/accounts"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/common/hexutil"
@@ -39,6 +29,12 @@ import (
 	"github.com/sila-org/sila/core/vm"
 	"github.com/sila-org/sila/crypto"
 	"github.com/sila-org/sila/eth/tracers/logger"
+	"github.com/sila-org/sila/internal/silaapi"
+	"github.com/sila-org/sila/internal/silaapi/addrlock"
+	"github.com/sila-org/sila/internal/silaapi/blockapi"
+	"github.com/sila-org/sila/internal/silaapi/callapi"
+	"github.com/sila-org/sila/internal/silaapi/chainctx"
+	ethapierrors "github.com/sila-org/sila/internal/silaapi/errors"
 	"github.com/sila-org/sila/internal/silaapi/override"
 	"github.com/sila-org/sila/internal/silaapi/proofapi"
 	"github.com/sila-org/sila/internal/silaapi/rpctx"
@@ -47,8 +43,9 @@ import (
 	"github.com/sila-org/sila/log"
 	"github.com/sila-org/sila/p2p"
 	"github.com/sila-org/sila/params"
-	"github.com/sila-org/sila/rlp"
 	"github.com/sila-org/sila/rpc"
+	"math/big"
+	"time"
 )
 
 // estimateGasErrorRatio is the amount of overestimation eth_estimateGas is
@@ -1133,146 +1130,14 @@ func (api *TransactionAPI) Resend(ctx context.Context, sendArgs TransactionArgs,
 	return common.Hash{}, fmt.Errorf("transaction %#x not found", matchTx.Hash())
 }
 
-// DebugAPI is the collection of SilaChain APIs exposed over the debugging
-// namespace.
 type DebugAPI struct {
 	b Backend
+	*silaapi.DebugAPI
 }
 
 // NewDebugAPI creates a new instance of DebugAPI.
 func NewDebugAPI(b Backend) *DebugAPI {
-	return &DebugAPI{b: b}
-}
-
-// GetRawHeader retrieves the RLP encoding for a single header.
-func (api *DebugAPI) GetRawHeader(ctx context.Context, blockNrOrHash rpc.BlockNumberOrHash) (hexutil.Bytes, error) {
-	var hash common.Hash
-	if h, ok := blockNrOrHash.Hash(); ok {
-		hash = h
-	} else {
-		block, err := api.b.BlockByNumberOrHash(ctx, blockNrOrHash)
-		if block == nil || err != nil {
-			return nil, err
-		}
-		hash = block.Hash()
-	}
-	header, _ := api.b.HeaderByHash(ctx, hash)
-	if header == nil {
-		return nil, fmt.Errorf("header #%d not found", hash)
-	}
-	return rlp.EncodeToBytes(header)
-}
-
-// GetRawBlock retrieves the RLP encoded for a single block.
-func (api *DebugAPI) GetRawBlock(ctx context.Context, blockNrOrHash rpc.BlockNumberOrHash) (hexutil.Bytes, error) {
-	var hash common.Hash
-	if h, ok := blockNrOrHash.Hash(); ok {
-		hash = h
-	} else {
-		block, err := api.b.BlockByNumberOrHash(ctx, blockNrOrHash)
-		if block == nil || err != nil {
-			return nil, err
-		}
-		hash = block.Hash()
-	}
-	block, _ := api.b.BlockByHash(ctx, hash)
-	if block == nil {
-		return nil, fmt.Errorf("block #%d not found", hash)
-	}
-	return rlp.EncodeToBytes(block)
-}
-
-// GetRawReceipts retrieves the binary-encoded receipts of a single block.
-func (api *DebugAPI) GetRawReceipts(ctx context.Context, blockNrOrHash rpc.BlockNumberOrHash) ([]hexutil.Bytes, error) {
-	var hash common.Hash
-	if h, ok := blockNrOrHash.Hash(); ok {
-		hash = h
-	} else {
-		block, err := api.b.BlockByNumberOrHash(ctx, blockNrOrHash)
-		if block == nil || err != nil {
-			return nil, err
-		}
-		hash = block.Hash()
-	}
-	receipts, err := api.b.GetReceipts(ctx, hash)
-	if err != nil {
-		return nil, err
-	}
-	result := make([]hexutil.Bytes, len(receipts))
-	for i, receipt := range receipts {
-		b, err := receipt.MarshalBinary()
-		if err != nil {
-			return nil, err
-		}
-		result[i] = b
-	}
-	return result, nil
-}
-
-// GetRawTransaction returns the bytes of the transaction for the given hash.
-func (api *DebugAPI) GetRawTransaction(ctx context.Context, hash common.Hash) (hexutil.Bytes, error) {
-	// Retrieve a finalized transaction, or a pooled otherwise
-	found, tx, _, _, _ := api.b.GetCanonicalTransaction(hash)
-	if !found {
-		if tx = api.b.GetPoolTransaction(hash); tx != nil {
-			return tx.MarshalBinary()
-		}
-		// If also not in the pool there is a chance the tx indexer is still in progress.
-		if !api.b.TxIndexDone() {
-			return nil, ethapierrors.NewTxIndexingError()
-		}
-		// Transaction is not found in the pool and the indexer is done.
-		return nil, nil
-	}
-	return tx.MarshalBinary()
-}
-
-// PrintBlock retrieves a block and returns its pretty printed form.
-func (api *DebugAPI) PrintBlock(ctx context.Context, number uint64) (string, error) {
-	block, _ := api.b.BlockByNumber(ctx, rpc.BlockNumber(number))
-	if block == nil {
-		return "", fmt.Errorf("block #%d not found", number)
-	}
-	return spew.Sdump(block), nil
-}
-
-// ChaindbProperty returns leveldb properties of the key-value database.
-func (api *DebugAPI) ChaindbProperty() (string, error) {
-	return api.b.ChainDb().Stat()
-}
-
-// ChaindbCompact flattens the entire key-value database into a single level,
-// removing all unused slots and merging all keys.
-func (api *DebugAPI) ChaindbCompact() error {
-	cstart := time.Now()
-	for b := 0; b <= 255; b++ {
-		var (
-			start = []byte{byte(b)}
-			end   = []byte{byte(b + 1)}
-		)
-		if b == 255 {
-			end = nil
-		}
-		log.Info("Compacting database", "range", fmt.Sprintf("%#X-%#X", start, end), "elapsed", common.PrettyDuration(time.Since(cstart)))
-		if err := api.b.ChainDb().Compact(start, end); err != nil {
-			log.Error("Database compaction failed", "err", err)
-			return err
-		}
-	}
-	return nil
-}
-
-// SetHead rewinds the head of the blockchain to a previous block.
-func (api *DebugAPI) SetHead(number hexutil.Uint64) error {
-	header := api.b.CurrentHeader()
-	if header == nil {
-		return errors.New("current header is not available")
-	}
-	if header.Number.Uint64() <= uint64(number) {
-		return errors.New("not allowed to rewind to a future block")
-	}
-	api.b.SetHead(uint64(number))
-	return nil
+	return &DebugAPI{b: b, DebugAPI: silaapi.NewDebugAPI(b)}
 }
 
 // NetAPI offers network related RPC methods
