@@ -20,7 +20,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	ethereum "github.com/sila-org/sila"
 	"github.com/sila-org/sila/internal/silaapi"
 	"github.com/sila-org/sila/internal/silaapi/addrlock"
 	"github.com/sila-org/sila/internal/silaapi/blockapi"
@@ -34,7 +33,6 @@ import (
 	"github.com/sila-org/sila/accounts"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/common/hexutil"
-	"github.com/sila-org/sila/common/math"
 	"github.com/sila-org/sila/core"
 	"github.com/sila-org/sila/core/forkid"
 	"github.com/sila-org/sila/core/types"
@@ -64,47 +62,12 @@ const maxGetStorageSlots = 1024
 var errBlobTxNotSupported = errors.New("signing blob transactions not supported")
 var errSubClosed = errors.New("chain subscription closed")
 
-// SilaAPI provides an API to access SilaChain related information.
-type SilaAPIBackend interface {
-	SyncProgress(ctx context.Context) ethereum.SyncProgress
-	SuggestGasTipCap(ctx context.Context) (*big.Int, error)
-	FeeHistory(ctx context.Context, blockCount uint64, lastBlock rpc.BlockNumber, rewardPercentiles []float64) (*big.Int, [][]*big.Int, []*big.Int, []float64, []*big.Int, []float64, error)
-	BlobBaseFee(ctx context.Context) *big.Int
-	CurrentHeader() *types.Header
-}
-
-type SilaAPI struct {
-	b SilaAPIBackend
-}
+type SilaAPIBackend = silaapi.SilaAPIBackend
+type SilaAPI = silaapi.SilaAPI
 
 // NewSilaAPI creates a new SilaChain protocol API.
 func NewSilaAPI(b SilaAPIBackend) *SilaAPI {
-	return &SilaAPI{b}
-}
-
-// GasPrice returns a suggestion for a gas price for legacy transactions.
-func (api *SilaAPI) GasPrice(ctx context.Context) (*hexutil.Big, error) {
-	return silaapi.GasPrice(ctx, api.b)
-}
-
-// MaxPriorityFeePerGas returns a suggestion for a gas tip cap for dynamic fee transactions.
-func (api *SilaAPI) MaxPriorityFeePerGas(ctx context.Context) (*hexutil.Big, error) {
-	return silaapi.MaxPriorityFeePerGas(ctx, api.b)
-}
-
-// FeeHistory returns the fee market history.
-func (api *SilaAPI) FeeHistory(ctx context.Context, blockCount math.HexOrDecimal64, lastBlock rpc.BlockNumber, rewardPercentiles []float64) (*silaapi.FeeHistoryResult, error) {
-	return silaapi.FeeHistory(ctx, api.b, blockCount, lastBlock, rewardPercentiles)
-}
-
-// BlobBaseFee returns the base fee for blob gas at the current head.
-func (api *SilaAPI) BlobBaseFee(ctx context.Context) *hexutil.Big {
-	return silaapi.BlobBaseFee(ctx, api.b)
-}
-
-// Syncing returns false in case the node is currently not syncing with the network.
-func (api *SilaAPI) Syncing(ctx context.Context) (interface{}, error) {
-	return silaapi.Syncing(ctx, api.b)
+	return silaapi.NewSilaAPI(b)
 }
 
 // TxPoolAPI offers and API for the transaction pool. It only operates on data that is non-confidential.

@@ -58,6 +58,40 @@ type SilaAPIBackend interface {
 	CurrentHeader() *types.Header
 }
 
+type SilaAPI struct {
+	b SilaAPIBackend
+}
+
+// NewSilaAPI creates a new SilaChain protocol API.
+func NewSilaAPI(b SilaAPIBackend) *SilaAPI {
+	return &SilaAPI{b}
+}
+
+// GasPrice returns a suggestion for a gas price for legacy transactions.
+func (api *SilaAPI) GasPrice(ctx context.Context) (*hexutil.Big, error) {
+	return GasPrice(ctx, api.b)
+}
+
+// MaxPriorityFeePerGas returns a suggestion for a gas tip cap for dynamic fee transactions.
+func (api *SilaAPI) MaxPriorityFeePerGas(ctx context.Context) (*hexutil.Big, error) {
+	return MaxPriorityFeePerGas(ctx, api.b)
+}
+
+// FeeHistory returns the fee market history.
+func (api *SilaAPI) FeeHistory(ctx context.Context, blockCount math.HexOrDecimal64, lastBlock rpc.BlockNumber, rewardPercentiles []float64) (*FeeHistoryResult, error) {
+	return FeeHistory(ctx, api.b, blockCount, lastBlock, rewardPercentiles)
+}
+
+// BlobBaseFee returns the base fee for blob gas at the current head.
+func (api *SilaAPI) BlobBaseFee(ctx context.Context) *hexutil.Big {
+	return BlobBaseFee(ctx, api.b)
+}
+
+// Syncing returns false in case the node is currently not syncing with the network.
+func (api *SilaAPI) Syncing(ctx context.Context) (interface{}, error) {
+	return Syncing(ctx, api.b)
+}
+
 // GasPrice returns a suggestion for a gas price for legacy transactions.
 func GasPrice(ctx context.Context, b SilaAPIBackend) (*hexutil.Big, error) {
 	tipcap, err := b.SuggestGasTipCap(ctx)
