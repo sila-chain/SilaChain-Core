@@ -143,28 +143,13 @@ func (api *BlockChainAPI) GetHeaderByHash(ctx context.Context, hash common.Hash)
 //   - When fullTx is true all transactions in the block are returned, otherwise
 //     only the transaction hash is returned.
 func (api *BlockChainAPI) GetBlockByNumber(ctx context.Context, number rpc.BlockNumber, fullTx bool) (map[string]interface{}, error) {
-	block, err := api.b.BlockByNumber(ctx, number)
-	if block != nil && err == nil {
-		response := blockapi.RPCMarshalBlock(block, true, fullTx, api.b.ChainConfig())
-		if number == rpc.PendingBlockNumber {
-			// Pending blocks need to nil out a few fields
-			for _, field := range []string{"hash", "nonce", "miner"} {
-				response[field] = nil
-			}
-		}
-		return response, nil
-	}
-	return nil, err
+	return blockapi.GetBlockByNumber(ctx, api.b, number, fullTx)
 }
 
 // GetBlockByHash returns the requested block. When fullTx is true all transactions in the block are returned in full
 // detail, otherwise only the transaction hash is returned.
 func (api *BlockChainAPI) GetBlockByHash(ctx context.Context, hash common.Hash, fullTx bool) (map[string]interface{}, error) {
-	block, err := api.b.BlockByHash(ctx, hash)
-	if block != nil {
-		return blockapi.RPCMarshalBlock(block, true, fullTx, api.b.ChainConfig()), nil
-	}
-	return nil, err
+	return blockapi.GetBlockByHash(ctx, api.b, hash, fullTx)
 }
 
 // GetUncleByBlockNumberAndIndex returns the uncle block for the given block hash and index.
