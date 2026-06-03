@@ -328,6 +328,42 @@ func GetBlockByHash(ctx context.Context, b BlockChainBackend, hash common.Hash, 
 	return nil, err
 }
 
+// GetTransactionByBlockNumberAndIndex returns the transaction for the given block number and index.
+func GetTransactionByBlockNumberAndIndex(ctx context.Context, b BlockChainBackend, blockNr rpc.BlockNumber, index hexutil.Uint) (*rpctx.RPCTransaction, error) {
+	block, err := b.BlockByNumber(ctx, blockNr)
+	if block != nil {
+		return NewRPCTransactionFromBlockIndex(block, uint64(index), b.ChainConfig()), nil
+	}
+	return nil, err
+}
+
+// GetTransactionByBlockHashAndIndex returns the transaction for the given block hash and index.
+func GetTransactionByBlockHashAndIndex(ctx context.Context, b BlockChainBackend, blockHash common.Hash, index hexutil.Uint) (*rpctx.RPCTransaction, error) {
+	block, err := b.BlockByHash(ctx, blockHash)
+	if block != nil {
+		return NewRPCTransactionFromBlockIndex(block, uint64(index), b.ChainConfig()), nil
+	}
+	return nil, err
+}
+
+// GetRawTransactionByBlockNumberAndIndex returns the raw transaction for the given block number and index.
+func GetRawTransactionByBlockNumberAndIndex(ctx context.Context, b BlockChainBackend, blockNr rpc.BlockNumber, index hexutil.Uint) hexutil.Bytes {
+	block, _ := b.BlockByNumber(ctx, blockNr)
+	if block != nil {
+		return NewRPCRawTransactionFromBlockIndex(block, uint64(index))
+	}
+	return nil
+}
+
+// GetRawTransactionByBlockHashAndIndex returns the raw transaction for the given block hash and index.
+func GetRawTransactionByBlockHashAndIndex(ctx context.Context, b BlockChainBackend, blockHash common.Hash, index hexutil.Uint) hexutil.Bytes {
+	block, _ := b.BlockByHash(ctx, blockHash)
+	if block != nil {
+		return NewRPCRawTransactionFromBlockIndex(block, uint64(index))
+	}
+	return nil
+}
+
 // ReceiptsByBlockNumberOrHash returns the block and receipts for the given block hash, number, or tag.
 func ReceiptsByBlockNumberOrHash(ctx context.Context, b BlockChainBackend, blockNrOrHash rpc.BlockNumberOrHash) (*types.Block, types.Receipts, error) {
 	var (
