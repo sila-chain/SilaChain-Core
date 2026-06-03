@@ -127,27 +127,12 @@ func decodeStorageKey(s string) (common.Hash, int, error) {
 //   - When number is -3 the chain finalized header is returned.
 //   - When number is -4 the chain safe header is returned.
 func (api *BlockChainAPI) GetHeaderByNumber(ctx context.Context, number rpc.BlockNumber) (map[string]interface{}, error) {
-	header, err := api.b.HeaderByNumber(ctx, number)
-	if header != nil && err == nil {
-		response := RPCMarshalHeader(header)
-		if number == rpc.PendingBlockNumber {
-			// Pending header need to nil out a few fields
-			for _, field := range []string{"hash", "nonce", "miner"} {
-				response[field] = nil
-			}
-		}
-		return response, err
-	}
-	return nil, err
+	return blockapi.GetHeaderByNumber(ctx, api.b, number)
 }
 
 // GetHeaderByHash returns the requested header by hash.
 func (api *BlockChainAPI) GetHeaderByHash(ctx context.Context, hash common.Hash) map[string]interface{} {
-	header, _ := api.b.HeaderByHash(ctx, hash)
-	if header != nil {
-		return RPCMarshalHeader(header)
-	}
-	return nil
+	return blockapi.GetHeaderByHash(ctx, api.b, hash)
 }
 
 // GetBlockByNumber returns the requested canonical block.
