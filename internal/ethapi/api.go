@@ -214,22 +214,12 @@ func (api *BlockChainAPI) GetUncleByBlockHashAndIndex(ctx context.Context, block
 
 // GetUncleCountByBlockNumber returns number of uncles in the block for the given block number
 func (api *BlockChainAPI) GetUncleCountByBlockNumber(ctx context.Context, blockNr rpc.BlockNumber) (*hexutil.Uint, error) {
-	block, err := api.b.BlockByNumber(ctx, blockNr)
-	if block != nil {
-		n := hexutil.Uint(len(block.Uncles()))
-		return &n, nil
-	}
-	return nil, err
+	return blockapi.GetUncleCountByBlockNumber(ctx, api.b, blockNr)
 }
 
 // GetUncleCountByBlockHash returns number of uncles in the block for the given block hash
 func (api *BlockChainAPI) GetUncleCountByBlockHash(ctx context.Context, blockHash common.Hash) (*hexutil.Uint, error) {
-	block, err := api.b.BlockByHash(ctx, blockHash)
-	if block != nil {
-		n := hexutil.Uint(len(block.Uncles()))
-		return &n, nil
-	}
-	return nil, err
+	return blockapi.GetUncleCountByBlockHash(ctx, api.b, blockHash)
 }
 
 // GetCode returns the code stored at the given address in the state for the given block number.
