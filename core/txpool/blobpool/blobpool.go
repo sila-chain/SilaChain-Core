@@ -251,7 +251,7 @@ func newBlobTxMeta(id uint64, size uint64, storageSize uint32, tx *types.Transac
 //
 //   - Blobs can arrive via flashbots. Blocks might contain blob transactions we
 //     have never seen on the network. Since we cannot recover them from blocks
-//     either, the engine_newPayload needs to give them to us, and we cache them
+//     either, the silaEngine_newPayload needs to give them to us, and we cache them
 //     until finality to support reorgs without tx losses.
 //
 // Whilst some constraints above might sound overly aggressive, the general idea is
