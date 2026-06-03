@@ -153,7 +153,7 @@ func New(conf *Config) (*Node, error) {
 	// Configure RPC servers.
 	node.http = newHTTPServer(node.log, conf.HTTPTimeouts)
 	node.httpAuth = newHTTPServer(node.log, conf.HTTPTimeouts)
-	node.httpAuth.disableHTTP2 = true // Engine API does not need HTTP/2
+	node.httpAuth.disableHTTP2 = true // Sila Engine API does not need HTTP/2
 	node.ws = newHTTPServer(node.log, rpc.DefaultHTTPTimeouts)
 	node.wsAuth = newHTTPServer(node.log, rpc.DefaultHTTPTimeouts)
 	node.wsAuth.disableHTTP2 = true

@@ -334,7 +334,7 @@ type BlockChain struct {
 	chainHeadFeed    event.Feed
 	logsFeed         event.Feed
 	blockProcFeed    event.Feed
-	newPayloadFeed   event.Feed // Feed for engine API newPayload events
+	newPayloadFeed   event.Feed // Feed for Sila Engine API newPayload events
 	blockProcCounter int32
 	scope            event.SubscriptionScope
 	genesisBlock     *types.Block

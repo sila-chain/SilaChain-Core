@@ -1447,7 +1447,7 @@ func (p *BlobPool) GetMetadata(hash common.Hash) *txpool.TxMetadata {
 // C_versioned_hash] and blobpool has data for blobs A and C, but doesn't have
 // data for B, the response MUST be [A, null, C].
 //
-// This is a utility method for the engine API, enabling consensus clients to
+// This is a utility method for the Sila Engine API, enabling consensus clients to
 // retrieve blobs from the pools directly instead of the network.
 //
 // The version argument specifies the type of proofs to return, either the

@@ -852,7 +852,7 @@ func (d *Downloader) importBlockResults(results []*fetchResult) error {
 		if index < len(results) {
 			log.Debug("Downloaded item processing failed", "number", results[index].Header.Number, "hash", results[index].Header.Hash(), "err", err)
 
-			// In post-merge, notify the engine API of encountered bad chains
+			// In post-merge, notify the Sila Engine API of encountered bad chains
 			if d.badBlock != nil {
 				head, _, _, err := d.skeleton.Bounds()
 				if err != nil {

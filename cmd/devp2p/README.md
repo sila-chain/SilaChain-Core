@@ -123,7 +123,7 @@ with our test chain. The chain files are located in `./cmd/devp2p/internal/ethte
         --verbosity 5                  \
         --authrpc.jwtsecret jwt.secret
 
-Note that the tests also require access to the engine API.
+Note that the tests also require access to the Sila Engine API.
 The test suite can now be executed using the devp2p tool.
 
     devp2p rlpx eth-test \

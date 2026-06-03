@@ -376,7 +376,7 @@ func RegisterSyncOverrideService(stack *node.Node, silaBackend *sila.SilaChain, 
 	utils.RegisterSyncOverrideService(stack, silaBackend, target, exitWhenSynced)
 }
 
-// RegisterEngineAPI launches the engine API for interacting with an external consensus client.
+// RegisterEngineAPI launches the Sila Engine API for interacting with an external consensus client.
 func RegisterEngineAPI(stack *node.Node, silaBackend *sila.SilaChain) error {
 	return catalyst.Register(stack, silaBackend)
 }

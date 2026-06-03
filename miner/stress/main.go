@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with the SilaChain library. If not, see <http://www.gnu.org/licenses/>.
 
-// This file contains a miner stress test based on the Engine API flow.
+// This file contains a miner stress test based on the Sila Engine API flow.
 package main
 
 import (
@@ -52,7 +52,7 @@ func main() {
 		faucets[i], _ = crypto.GenerateKey()
 	}
 	// Create a post-merge network where blocks are built/inserted through
-	// engine API calls driven by a simulated beacon client.
+	// Sila Engine API calls driven by a simulated beacon client.
 	genesis := makeGenesis(faucets)
 
 	// Handle interrupts.
@@ -60,7 +60,7 @@ func main() {
 	signal.Notify(interruptCh, os.Interrupt)
 
 	// Start one node that accepts transactions and builds/inserts blocks via
-	// Engine API (through the simulated beacon driver).
+	// Sila Engine API (through the simulated beacon driver).
 	stack, backend, beacon, err := makeNode(genesis)
 	if err != nil {
 		panic(err)
@@ -118,7 +118,7 @@ func main() {
 		}
 		sent++
 
-		// Create and import blocks through the engine API path.
+		// Create and import blocks through the Sila Engine API path.
 		if sent%256 == 0 {
 			beacon.Commit()
 		}

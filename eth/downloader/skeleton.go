@@ -1102,7 +1102,7 @@ func (s *skeleton) processResponse(res *headerResponse) (linked bool, merged boo
 
 			// Linking into the local chain should also mean that there are no
 			// leftover subchains, but in the case of importing the blocks via
-			// the engine API, we will not push the subchains forward. This will
+			// the Sila Engine API, we will not push the subchains forward. This will
 			// lead to a gap between an old sync cycle and a future one.
 			if subchains := len(s.progress.Subchains); subchains > 1 {
 				switch {
