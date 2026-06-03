@@ -384,6 +384,25 @@ func GetRawTransactionByBlockHashAndIndex(ctx context.Context, b BlockChainBacke
 	return nil
 }
 
+// GetBlockReceipts returns the block receipts for the given block hash, number, or tag.
+func GetBlockReceipts(ctx context.Context, b BlockChainBackend, blockNrOrHash rpc.BlockNumberOrHash) ([]map[string]interface{}, error) {
+	block, receipts, err := ReceiptsByBlockNumberOrHash(ctx, b, blockNrOrHash)
+	if err != nil {
+		return nil, err
+	}
+	txs := block.Transactions()
+	if len(txs) != len(receipts) {
+		return nil, fmt.Errorf("receipts length mismatch: %d vs %d", len(txs), len(receipts))
+	}
+	signer := types.MakeSigner(b.ChainConfig(), block.Number(), block.Time())
+
+	result := make([]map[string]interface{}, len(receipts))
+	for i, receipt := range receipts {
+		result[i] = rpctx.MarshalReceipt(receipt, block.Hash(), block.NumberU64(), signer, txs[i], i)
+	}
+	return result, nil
+}
+
 // ReceiptsByBlockNumberOrHash returns the block and receipts for the given block hash, number, or tag.
 func ReceiptsByBlockNumberOrHash(ctx context.Context, b BlockChainBackend, blockNrOrHash rpc.BlockNumberOrHash) (*types.Block, types.Receipts, error) {
 	var (
