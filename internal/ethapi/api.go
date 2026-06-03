@@ -154,32 +154,12 @@ func (api *BlockChainAPI) GetBlockByHash(ctx context.Context, hash common.Hash, 
 
 // GetUncleByBlockNumberAndIndex returns the uncle block for the given block hash and index.
 func (api *BlockChainAPI) GetUncleByBlockNumberAndIndex(ctx context.Context, blockNr rpc.BlockNumber, index hexutil.Uint) (map[string]interface{}, error) {
-	block, err := api.b.BlockByNumber(ctx, blockNr)
-	if block != nil {
-		uncles := block.Uncles()
-		if index >= hexutil.Uint(len(uncles)) {
-			log.Debug("Requested uncle not found", "number", blockNr, "hash", block.Hash(), "index", index)
-			return nil, nil
-		}
-		block = types.NewBlockWithHeader(uncles[index])
-		return blockapi.RPCMarshalBlock(block, false, false, api.b.ChainConfig()), nil
-	}
-	return nil, err
+	return blockapi.GetUncleByBlockNumberAndIndex(ctx, api.b, blockNr, index)
 }
 
 // GetUncleByBlockHashAndIndex returns the uncle block for the given block hash and index.
 func (api *BlockChainAPI) GetUncleByBlockHashAndIndex(ctx context.Context, blockHash common.Hash, index hexutil.Uint) (map[string]interface{}, error) {
-	block, err := api.b.BlockByHash(ctx, blockHash)
-	if block != nil {
-		uncles := block.Uncles()
-		if index >= hexutil.Uint(len(uncles)) {
-			log.Debug("Requested uncle not found", "number", block.Number(), "hash", blockHash, "index", index)
-			return nil, nil
-		}
-		block = types.NewBlockWithHeader(uncles[index])
-		return blockapi.RPCMarshalBlock(block, false, false, api.b.ChainConfig()), nil
-	}
-	return nil, err
+	return blockapi.GetUncleByBlockHashAndIndex(ctx, api.b, blockHash, index)
 }
 
 // GetUncleCountByBlockNumber returns number of uncles in the block for the given block number
