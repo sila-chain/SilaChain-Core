@@ -25,7 +25,7 @@ import (
 	"math/big"
 	"time"
 
-	"github.com/sila-org/sila"
+	sila "github.com/sila-org/sila"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/common/hexutil"
 	"github.com/sila-org/sila/core/types"
@@ -159,7 +159,7 @@ func (ec *Client) BlockReceipts(ctx context.Context, blockNrOrHash rpc.BlockNumb
 	var r []*types.Receipt
 	err := ec.c.CallContext(ctx, &r, ec.rpcMethod("eth_getBlockReceipts"), blockNrOrHash)
 	if err == nil && r == nil {
-		return nil, ethereum.NotFound
+		return nil, sila.NotFound
 	}
 	return r, err
 }
@@ -185,7 +185,7 @@ func (ec *Client) getBlock(ctx context.Context, method string, args ...interface
 	}
 	// When the block is not found, the API returns JSON null.
 	if head == nil {
-		return nil, ethereum.NotFound
+		return nil, sila.NotFound
 	}
 
 	var body rpcBlock
@@ -257,7 +257,7 @@ func (ec *Client) HeaderByHash(ctx context.Context, hash common.Hash) (*types.He
 	var head *types.Header
 	err := ec.c.CallContext(ctx, &head, ec.rpcMethod("eth_getBlockByHash"), hash, false)
 	if err == nil && head == nil {
-		err = ethereum.NotFound
+		err = sila.NotFound
 	}
 	return head, err
 }
@@ -281,7 +281,7 @@ func (ec *Client) HeaderByNumber(ctx context.Context, number *big.Int) (*types.H
 	var head *types.Header
 	err := ec.c.CallContext(ctx, &head, ec.rpcMethod("eth_getBlockByNumber"), toBlockNumArg(number), false)
 	if err == nil && head == nil {
-		err = ethereum.NotFound
+		err = sila.NotFound
 	}
 	return head, err
 }
@@ -311,7 +311,7 @@ func (ec *Client) TransactionByHash(ctx context.Context, hash common.Hash) (tx *
 	if err != nil {
 		return nil, false, err
 	} else if json == nil {
-		return nil, false, ethereum.NotFound
+		return nil, false, sila.NotFound
 	} else if _, r, _ := json.tx.RawSignatureValues(); r == nil {
 		return nil, false, errors.New("server returned transaction without signature")
 	}
@@ -363,7 +363,7 @@ func (ec *Client) TransactionInBlock(ctx context.Context, blockHash common.Hash,
 		return nil, err
 	}
 	if json == nil {
-		return nil, ethereum.NotFound
+		return nil, sila.NotFound
 	} else if _, r, _ := json.tx.RawSignatureValues(); r == nil {
 		return nil, errors.New("server returned transaction without signature")
 	}
@@ -379,13 +379,13 @@ func (ec *Client) TransactionReceipt(ctx context.Context, txHash common.Hash) (*
 	var r *types.Receipt
 	err := ec.c.CallContext(ctx, &r, ec.rpcMethod("eth_getTransactionReceipt"), txHash)
 	if err == nil && r == nil {
-		return nil, ethereum.NotFound
+		return nil, sila.NotFound
 	}
 	return r, err
 }
 
 // SubscribeTransactionReceipts subscribes to notifications about transaction receipts.
-func (ec *Client) SubscribeTransactionReceipts(ctx context.Context, q *ethereum.TransactionReceiptsQuery, ch chan<- []*types.Receipt) (ethereum.Subscription, error) {
+func (ec *Client) SubscribeTransactionReceipts(ctx context.Context, q *sila.TransactionReceiptsQuery, ch chan<- []*types.Receipt) (sila.Subscription, error) {
 	sub, err := ec.c.EthSubscribe(ctx, ch, "transactionReceipts", q)
 	if err != nil {
 		return nil, err
@@ -395,7 +395,7 @@ func (ec *Client) SubscribeTransactionReceipts(ctx context.Context, q *ethereum.
 
 // SyncProgress retrieves the current progress of the sync algorithm. If there's
 // no sync currently running, it returns nil.
-func (ec *Client) SyncProgress(ctx context.Context) (*ethereum.SyncProgress, error) {
+func (ec *Client) SyncProgress(ctx context.Context) (*sila.SyncProgress, error) {
 	var raw json.RawMessage
 	if err := ec.c.CallContext(ctx, &raw, "eth_syncing"); err != nil {
 		return nil, err
@@ -414,7 +414,7 @@ func (ec *Client) SyncProgress(ctx context.Context) (*ethereum.SyncProgress, err
 
 // SubscribeNewHead subscribes to notifications about the current blockchain head
 // on the given channel.
-func (ec *Client) SubscribeNewHead(ctx context.Context, ch chan<- *types.Header) (ethereum.Subscription, error) {
+func (ec *Client) SubscribeNewHead(ctx context.Context, ch chan<- *types.Header) (sila.Subscription, error) {
 	sub, err := ec.c.EthSubscribe(ctx, ch, "newHeads")
 	if err != nil {
 		// Defensively prefer returning nil interface explicitly on error-path, instead
@@ -503,7 +503,7 @@ func (ec *Client) NonceAtHash(ctx context.Context, account common.Address, block
 // Filters
 
 // FilterLogs executes a filter query.
-func (ec *Client) FilterLogs(ctx context.Context, q ethereum.FilterQuery) ([]types.Log, error) {
+func (ec *Client) FilterLogs(ctx context.Context, q sila.FilterQuery) ([]types.Log, error) {
 	var result []types.Log
 	arg, err := toFilterArg(q)
 	if err != nil {
@@ -514,7 +514,7 @@ func (ec *Client) FilterLogs(ctx context.Context, q ethereum.FilterQuery) ([]typ
 }
 
 // SubscribeFilterLogs subscribes to the results of a streaming filter query.
-func (ec *Client) SubscribeFilterLogs(ctx context.Context, q ethereum.FilterQuery, ch chan<- types.Log) (ethereum.Subscription, error) {
+func (ec *Client) SubscribeFilterLogs(ctx context.Context, q sila.FilterQuery, ch chan<- types.Log) (sila.Subscription, error) {
 	arg, err := toFilterArg(q)
 	if err != nil {
 		return nil, err
@@ -529,7 +529,7 @@ func (ec *Client) SubscribeFilterLogs(ctx context.Context, q ethereum.FilterQuer
 	return sub, nil
 }
 
-func toFilterArg(q ethereum.FilterQuery) (interface{}, error) {
+func toFilterArg(q sila.FilterQuery) (interface{}, error) {
 	arg := map[string]interface{}{}
 	// Only include "address" when there are actual address filters.
 	// An empty slice is treated the same as nil (no filter), and omitting
@@ -603,7 +603,7 @@ func (ec *Client) PendingTransactionCount(ctx context.Context) (uint, error) {
 // blockNumber selects the block height at which the call runs. It can be nil, in which
 // case the code is taken from the latest known block. Note that state from very old
 // blocks might not be available.
-func (ec *Client) CallContract(ctx context.Context, msg ethereum.CallMsg, blockNumber *big.Int) ([]byte, error) {
+func (ec *Client) CallContract(ctx context.Context, msg sila.CallMsg, blockNumber *big.Int) ([]byte, error) {
 	var hex hexutil.Bytes
 	err := ec.c.CallContext(ctx, &hex, ec.rpcMethod("eth_call"), toCallArg(msg), toBlockNumArg(blockNumber))
 	if err != nil {
@@ -614,7 +614,7 @@ func (ec *Client) CallContract(ctx context.Context, msg ethereum.CallMsg, blockN
 
 // CallContractAtHash is almost the same as CallContract except that it selects
 // the block by block hash instead of block height.
-func (ec *Client) CallContractAtHash(ctx context.Context, msg ethereum.CallMsg, blockHash common.Hash) ([]byte, error) {
+func (ec *Client) CallContractAtHash(ctx context.Context, msg sila.CallMsg, blockHash common.Hash) ([]byte, error) {
 	var hex hexutil.Bytes
 	err := ec.c.CallContext(ctx, &hex, ec.rpcMethod("eth_call"), toCallArg(msg), rpc.BlockNumberOrHashWithHash(blockHash, false))
 	if err != nil {
@@ -625,7 +625,7 @@ func (ec *Client) CallContractAtHash(ctx context.Context, msg ethereum.CallMsg, 
 
 // PendingCallContract executes a message call transaction using the EVM.
 // The state seen by the contract call is the pending state.
-func (ec *Client) PendingCallContract(ctx context.Context, msg ethereum.CallMsg) ([]byte, error) {
+func (ec *Client) PendingCallContract(ctx context.Context, msg sila.CallMsg) ([]byte, error) {
 	var hex hexutil.Bytes
 	err := ec.c.CallContext(ctx, &hex, ec.rpcMethod("eth_call"), toCallArg(msg), "pending")
 	if err != nil {
@@ -671,7 +671,7 @@ type feeHistoryResultMarshaling struct {
 }
 
 // FeeHistory retrieves the fee market history.
-func (ec *Client) FeeHistory(ctx context.Context, blockCount uint64, lastBlock *big.Int, rewardPercentiles []float64) (*ethereum.FeeHistory, error) {
+func (ec *Client) FeeHistory(ctx context.Context, blockCount uint64, lastBlock *big.Int, rewardPercentiles []float64) (*sila.FeeHistory, error) {
 	var res feeHistoryResultMarshaling
 	if err := ec.c.CallContext(ctx, &res, ec.rpcMethod("eth_feeHistory"), hexutil.Uint(blockCount), toBlockNumArg(lastBlock), rewardPercentiles); err != nil {
 		return nil, err
@@ -687,7 +687,7 @@ func (ec *Client) FeeHistory(ctx context.Context, blockCount uint64, lastBlock *
 	for i, b := range res.BaseFee {
 		baseFee[i] = (*big.Int)(b)
 	}
-	return &ethereum.FeeHistory{
+	return &sila.FeeHistory{
 		OldestBlock:  (*big.Int)(res.OldestBlock),
 		Reward:       reward,
 		BaseFee:      baseFee,
@@ -703,7 +703,7 @@ func (ec *Client) FeeHistory(ctx context.Context, blockCount uint64, lastBlock *
 // Note that the state used by this method is implementation-defined by the remote RPC
 // server, but it's reasonable to assume that it will either be the pending or latest
 // state.
-func (ec *Client) EstimateGas(ctx context.Context, msg ethereum.CallMsg) (uint64, error) {
+func (ec *Client) EstimateGas(ctx context.Context, msg sila.CallMsg) (uint64, error) {
 	var hex hexutil.Uint64
 	err := ec.c.CallContext(ctx, &hex, ec.rpcMethod("eth_estimateGas"), toCallArg(msg))
 	if err != nil {
@@ -714,7 +714,7 @@ func (ec *Client) EstimateGas(ctx context.Context, msg ethereum.CallMsg) (uint64
 
 // EstimateGasAtBlock is almost the same as EstimateGas except that it selects the block height
 // instead of using the remote RPC's default state for gas estimation.
-func (ec *Client) EstimateGasAtBlock(ctx context.Context, msg ethereum.CallMsg, blockNumber *big.Int) (uint64, error) {
+func (ec *Client) EstimateGasAtBlock(ctx context.Context, msg sila.CallMsg, blockNumber *big.Int) (uint64, error) {
 	var hex hexutil.Uint64
 	err := ec.c.CallContext(ctx, &hex, ec.rpcMethod("eth_estimateGas"), toCallArg(msg), toBlockNumArg(blockNumber))
 	if err != nil {
@@ -725,7 +725,7 @@ func (ec *Client) EstimateGasAtBlock(ctx context.Context, msg ethereum.CallMsg, 
 
 // EstimateGasAtBlockHash is almost the same as EstimateGas except that it selects the block
 // hash instead of using the remote RPC's default state for gas estimation.
-func (ec *Client) EstimateGasAtBlockHash(ctx context.Context, msg ethereum.CallMsg, blockHash common.Hash) (uint64, error) {
+func (ec *Client) EstimateGasAtBlockHash(ctx context.Context, msg sila.CallMsg, blockHash common.Hash) (uint64, error) {
 	var hex hexutil.Uint64
 	err := ec.c.CallContext(ctx, &hex, ec.rpcMethod("eth_estimateGas"), toCallArg(msg), rpc.BlockNumberOrHashWithHash(blockHash, false))
 	if err != nil {
@@ -813,7 +813,7 @@ func toBlockNumArg(number *big.Int) string {
 	return fmt.Sprintf("<invalid %d>", number)
 }
 
-func toCallArg(msg ethereum.CallMsg) interface{} {
+func toCallArg(msg sila.CallMsg) interface{} {
 	arg := map[string]interface{}{
 		"from": msg.From,
 		"to":   msg.To,
@@ -878,11 +878,11 @@ type rpcProgress struct {
 	TrienodeIndexRemaining hexutil.Uint64
 }
 
-func (p *rpcProgress) toSyncProgress() *ethereum.SyncProgress {
+func (p *rpcProgress) toSyncProgress() *sila.SyncProgress {
 	if p == nil {
 		return nil
 	}
-	return &ethereum.SyncProgress{
+	return &sila.SyncProgress{
 		StartingBlock:          uint64(p.StartingBlock),
 		CurrentBlock:           uint64(p.CurrentBlock),
 		HighestBlock:           uint64(p.HighestBlock),
@@ -917,17 +917,17 @@ type SimulateOptions struct {
 
 // SimulateBlock represents a batch of calls to be simulated.
 type SimulateBlock struct {
-	BlockOverrides *ethereum.BlockOverrides                    `json:"blockOverrides,omitempty"`
-	StateOverrides map[common.Address]ethereum.OverrideAccount `json:"stateOverrides,omitempty"`
-	Calls          []ethereum.CallMsg                          `json:"calls"`
+	BlockOverrides *sila.BlockOverrides                    `json:"blockOverrides,omitempty"`
+	StateOverrides map[common.Address]sila.OverrideAccount `json:"stateOverrides,omitempty"`
+	Calls          []sila.CallMsg                          `json:"calls"`
 }
 
 // MarshalJSON implements json.Marshaler for SimulateBlock.
 func (s SimulateBlock) MarshalJSON() ([]byte, error) {
 	type Alias struct {
-		BlockOverrides *ethereum.BlockOverrides                    `json:"blockOverrides,omitempty"`
-		StateOverrides map[common.Address]ethereum.OverrideAccount `json:"stateOverrides,omitempty"`
-		Calls          []interface{}                               `json:"calls"`
+		BlockOverrides *sila.BlockOverrides                    `json:"blockOverrides,omitempty"`
+		StateOverrides map[common.Address]sila.OverrideAccount `json:"stateOverrides,omitempty"`
+		Calls          []interface{}                           `json:"calls"`
 	}
 	calls := make([]interface{}, len(s.Calls))
 	for i, call := range s.Calls {
