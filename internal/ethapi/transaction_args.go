@@ -29,6 +29,7 @@ import (
 	"github.com/sila-org/sila/consensus/misc/eip4844"
 	"github.com/sila-org/sila/core/types"
 	"github.com/sila-org/sila/crypto/kzg4844"
+	"github.com/sila-org/sila/internal/silaapi/callapi"
 	"github.com/sila-org/sila/internal/silaapi/txargs"
 	"github.com/sila-org/sila/log"
 	"github.com/sila-org/sila/params"
@@ -106,7 +107,7 @@ func setDefaults(args *TransactionArgs, ctx context.Context, b Backend, config s
 			AuthorizationList:    args.AuthorizationList,
 		}
 		latestBlockNr := rpc.BlockNumberOrHashWithNumber(rpc.LatestBlockNumber)
-		estimated, err := DoEstimateGas(ctx, b, callArgs, latestBlockNr, nil, nil, b.RPCGasCap())
+		estimated, err := callapi.DoEstimateGas(ctx, b, callArgs, latestBlockNr, nil, nil, b.RPCGasCap())
 		if err != nil {
 			return err
 		}

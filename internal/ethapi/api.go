@@ -455,7 +455,7 @@ func (api *BlockChainAPI) Call(ctx context.Context, args TransactionArgs, blockN
 		latest := rpc.BlockNumberOrHashWithNumber(rpc.LatestBlockNumber)
 		blockNrOrHash = &latest
 	}
-	result, err := DoCall(ctx, api.b, args, *blockNrOrHash, overrides, blockOverrides, api.b.RPCEVMTimeout(), api.b.RPCGasCap())
+	result, err := callapi.DoCall(ctx, api.b, args, *blockNrOrHash, overrides, blockOverrides, api.b.RPCEVMTimeout(), api.b.RPCGasCap())
 	if err != nil {
 		return nil, err
 	}
@@ -524,7 +524,7 @@ func (api *BlockChainAPI) EstimateGas(ctx context.Context, args TransactionArgs,
 	if blockNrOrHash != nil {
 		bNrOrHash = *blockNrOrHash
 	}
-	return DoEstimateGas(ctx, api.b, args, bNrOrHash, overrides, blockOverrides, api.b.RPCGasCap())
+	return callapi.DoEstimateGas(ctx, api.b, args, bNrOrHash, overrides, blockOverrides, api.b.RPCGasCap())
 }
 
 // RPCMarshalHeader converts the given header to the RPC output .
