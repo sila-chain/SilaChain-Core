@@ -430,7 +430,7 @@ func ReceiptsByBlockNumberOrHash(ctx context.Context, b BlockChainBackend, block
 	return block, receipts, nil
 }
 
-type ChainConfig struct {
+type Config struct {
 	ActivationTime  uint64                    `json:"activationTime"`
 	BlobSchedule    *params.BlobConfig        `json:"blobSchedule"`
 	ChainId         *hexutil.Big              `json:"chainId"`
@@ -440,18 +440,18 @@ type ChainConfig struct {
 }
 
 type ConfigResponse struct {
-	Current *ChainConfig `json:"current"`
-	Next    *ChainConfig `json:"next"`
-	Last    *ChainConfig `json:"last"`
+	Current *Config `json:"current"`
+	Next    *Config `json:"next"`
+	Last    *Config `json:"last"`
 }
 
 // Config implements the EIP-7910 eth_config method.
-func Config(ctx context.Context, b BlockChainBackend) (*ConfigResponse, error) {
+func Config(ctx context.Context, b Backend) (*ConfigResponse, error) {
 	genesis, err := b.HeaderByNumber(ctx, 0)
 	if err != nil {
 		return nil, fmt.Errorf("unable to load genesis: %w", err)
 	}
-	assemble := func(c *params.ChainConfig, ts *uint64) *ChainConfig {
+	assemble := func(c *params.ChainConfig, ts *uint64) *Config {
 		if ts == nil {
 			return nil
 		}
@@ -469,7 +469,7 @@ func Config(ctx context.Context, b BlockChainBackend) (*ConfigResponse, error) {
 			activationTime = 0
 		}
 		forkid := forkid.NewID(c, types.NewBlockWithHeader(genesis), ^uint64(0), t).Hash
-		return &ChainConfig{
+		return &Config{
 			ActivationTime:  activationTime,
 			BlobSchedule:    c.BlobConfig(c.LatestFork(t)),
 			ChainId:         (*hexutil.Big)(c.ChainID),
