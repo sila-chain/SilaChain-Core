@@ -387,7 +387,7 @@ func GetRawTransactionByBlockHashAndIndex(ctx context.Context, b BlockChainBacke
 // GetBlockReceipts returns the block receipts for the given block hash, number, or tag.
 func GetBlockReceipts(ctx context.Context, b BlockChainBackend, blockNrOrHash rpc.BlockNumberOrHash) ([]map[string]interface{}, error) {
 	block, receipts, err := ReceiptsByBlockNumberOrHash(ctx, b, blockNrOrHash)
-	if err != nil {
+	if block == nil || err != nil {
 		return nil, err
 	}
 	txs := block.Transactions()
