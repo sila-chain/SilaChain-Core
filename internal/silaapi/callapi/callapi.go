@@ -6,13 +6,27 @@ package callapi
 import (
 	"context"
 	"errors"
+	gomath "math"
+	"math/big"
+	"time"
+
 	"github.com/sila-org/sila/common"
+	"github.com/sila-org/sila/common/hexutil"
+	"github.com/sila-org/sila/core"
+	"github.com/sila-org/sila/core/state"
 	"github.com/sila-org/sila/core/types"
+	"github.com/sila-org/sila/core/vm"
 	"github.com/sila-org/sila/crypto"
-	ethapi "github.com/sila-org/sila/internal/ethapi"
+	"github.com/sila-org/sila/eth/gasestimator"
+	"github.com/sila-org/sila/internal/silaapi/chainctx"
+	silaapierrors "github.com/sila-org/sila/internal/silaapi/errors"
+	"github.com/sila-org/sila/internal/silaapi/evmexec"
+	"github.com/sila-org/sila/internal/silaapi/override"
+	"github.com/sila-org/sila/internal/silaapi/txargs"
 	"github.com/sila-org/sila/internal/silaapi/txfee"
 	"github.com/sila-org/sila/log"
 	"github.com/sila-org/sila/params"
+	"github.com/sila-org/sila/rpc"
 )
 
 type SubmitBackend interface {
@@ -23,8 +37,133 @@ type SubmitBackend interface {
 	ChainConfig() *params.ChainConfig
 }
 
-var DoCall = ethapi.DoCall
-var DoEstimateGas = ethapi.DoEstimateGas
+// estimateGasErrorRatio is the amount of overestimation eth_estimateGas is
+// allowed to produce in order to speed up calculations.
+const estimateGasErrorRatio = 0.015
+
+type TransactionArgs = txargs.TransactionArgs
+type ChainContextBackend = chainctx.Backend
+type ChainContext = chainctx.ChainContext
+
+type CallBackend interface {
+	chainctx.Backend
+	StateAndHeaderByNumberOrHash(ctx context.Context, blockNrOrHash rpc.BlockNumberOrHash) (*state.StateDB, *types.Header, error)
+	ChainConfig() *params.ChainConfig
+	GetEVM(ctx context.Context, state *state.StateDB, header *types.Header, vmConfig *vm.Config, blockCtx *vm.BlockContext) *vm.EVM
+}
+
+func NewChainContext(ctx context.Context, backend ChainContextBackend) *ChainContext {
+	return chainctx.NewChainContext(ctx, backend)
+}
+
+func doCall(ctx context.Context, b CallBackend, args TransactionArgs, state *state.StateDB, header *types.Header, overrides *override.StateOverride, blockOverrides *override.BlockOverrides, timeout time.Duration, globalGasCap uint64) (*core.ExecutionResult, error) {
+	blockCtx := core.NewEVMBlockContext(header, NewChainContext(ctx, b), nil)
+	if blockOverrides != nil {
+		if err := blockOverrides.Apply(&blockCtx); err != nil {
+			return nil, err
+		}
+		header = blockOverrides.MakeHeader(header)
+	}
+	rules := b.ChainConfig().Rules(blockCtx.BlockNumber, blockCtx.Random != nil, blockCtx.Time)
+	precompiles := vm.ActivePrecompiledContracts(rules)
+	if err := overrides.Apply(state, precompiles); err != nil {
+		return nil, err
+	}
+
+	var cancel context.CancelFunc
+	if timeout > 0 {
+		ctx, cancel = context.WithTimeout(ctx, timeout)
+	} else {
+		ctx, cancel = context.WithCancel(ctx)
+	}
+	defer cancel()
+
+	gp := core.NewGasPool(globalGasCap)
+	if globalGasCap == 0 {
+		gp = core.NewGasPool(gomath.MaxUint64)
+	}
+	return applyMessage(ctx, b, args, state, header, timeout, gp, &blockCtx, &vm.Config{NoBaseFee: true}, precompiles)
+}
+
+func applyMessage(ctx context.Context, b CallBackend, args TransactionArgs, state *state.StateDB, header *types.Header, timeout time.Duration, gp *core.GasPool, blockContext *vm.BlockContext, vmConfig *vm.Config, precompiles vm.PrecompiledContracts) (*core.ExecutionResult, error) {
+	if err := args.CallDefaults(gp.Gas(), blockContext.BaseFee, b.ChainConfig().ChainID); err != nil {
+		return nil, err
+	}
+	msg := args.ToMessage(header.BaseFee, true)
+	if msg.GasPrice.Sign() == 0 {
+		blockContext.BaseFee = new(big.Int)
+	}
+	if msg.BlobGasFeeCap != nil && msg.BlobGasFeeCap.BitLen() == 0 {
+		blockContext.BlobBaseFee = new(big.Int)
+	}
+	evm := b.GetEVM(ctx, state, header, vmConfig, blockContext)
+	defer evm.Release()
+	if precompiles != nil {
+		evm.SetPrecompiles(precompiles)
+	}
+	res, err := evmexec.ApplyMessageWithEVM(ctx, evm, msg, timeout, gp)
+	if err := state.Error(); err != nil {
+		return nil, err
+	}
+	return res, err
+}
+
+func DoCall(ctx context.Context, b CallBackend, args TransactionArgs, blockNrOrHash rpc.BlockNumberOrHash, overrides *override.StateOverride, blockOverrides *override.BlockOverrides, timeout time.Duration, globalGasCap uint64) (*core.ExecutionResult, error) {
+	defer func(start time.Time) { log.Debug("Executing EVM call finished", "runtime", time.Since(start)) }(time.Now())
+
+	state, header, err := b.StateAndHeaderByNumberOrHash(ctx, blockNrOrHash)
+	if state == nil || err != nil {
+		return nil, err
+	}
+	return doCall(ctx, b, args, state, header, overrides, blockOverrides, timeout, globalGasCap)
+}
+
+func DoEstimateGas(ctx context.Context, b CallBackend, args TransactionArgs, blockNrOrHash rpc.BlockNumberOrHash, overrides *override.StateOverride, blockOverrides *override.BlockOverrides, gasCap uint64) (hexutil.Uint64, error) {
+	state, header, err := b.StateAndHeaderByNumberOrHash(ctx, blockNrOrHash)
+	if state == nil || err != nil {
+		return 0, err
+	}
+	blockCtx := core.NewEVMBlockContext(header, NewChainContext(ctx, b), nil)
+	if blockOverrides != nil {
+		if err := blockOverrides.Apply(&blockCtx); err != nil {
+			return 0, err
+		}
+		header = blockOverrides.MakeHeader(header)
+	}
+	rules := b.ChainConfig().Rules(blockCtx.BlockNumber, blockCtx.Random != nil, blockCtx.Time)
+	precompiles := vm.ActivePrecompiledContracts(rules)
+	if err := overrides.Apply(state, precompiles); err != nil {
+		return 0, err
+	}
+	var blobBaseFee *big.Int
+	if blockOverrides != nil && blockOverrides.BlobBaseFee != nil {
+		blobBaseFee = blockOverrides.BlobBaseFee.ToInt()
+	}
+	opts := &gasestimator.Options{
+		Config:      b.ChainConfig(),
+		Chain:       NewChainContext(ctx, b),
+		Header:      header,
+		State:       state,
+		BlobBaseFee: blobBaseFee,
+		ErrorRatio:  estimateGasErrorRatio,
+	}
+	if args.Gas == nil {
+		args.Gas = new(hexutil.Uint64)
+	}
+	if err := args.CallDefaults(gasCap, header.BaseFee, b.ChainConfig().ChainID); err != nil {
+		return 0, err
+	}
+	call := args.ToMessage(header.BaseFee, true)
+
+	estimate, revert, err := gasestimator.Estimate(ctx, call, opts, gasCap)
+	if err != nil {
+		if errors.Is(err, vm.ErrExecutionReverted) {
+			return 0, silaapierrors.NewRevertError(revert)
+		}
+		return 0, err
+	}
+	return hexutil.Uint64(estimate), nil
+}
 
 // SubmitTransaction is a helper function that submits tx to txPool and logs a message.
 func SubmitTransaction(ctx context.Context, b SubmitBackend, tx *types.Transaction) (common.Hash, error) {
