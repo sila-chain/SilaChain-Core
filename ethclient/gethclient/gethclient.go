@@ -14,7 +14,9 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with the SilaChain library. If not, see <http://www.gnu.org/licenses/>.
 
-// Package gethclient provides an RPC client for SilaChain-specific APIs.
+// Package gethclient provides compatibility access to SilaChain-specific RPC extension APIs.
+//
+// New code should prefer github.com/sila-org/sila/ethclient/silaclient.
 package gethclient
 
 import (
@@ -38,6 +40,8 @@ import (
 // Client is a wrapper around rpc.Client that implements SilaChain-specific functionality.
 //
 // If you want to use the standardized Sila RPC functionality, use ethclient.SilaClient instead.
+//
+// For Sila RPC extensions in new code, prefer ethclient/silaclient.
 type Client struct {
 	c *rpc.Client
 }
