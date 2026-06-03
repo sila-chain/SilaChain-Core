@@ -36,6 +36,7 @@ import (
 	"github.com/sila-org/sila/core/types"
 	"github.com/sila-org/sila/core/vm"
 	"github.com/sila-org/sila/internal/silaapi/blockapi"
+	"github.com/sila-org/sila/internal/silaapi/chainctx"
 	"github.com/sila-org/sila/internal/silaapi/evmexec"
 	"github.com/sila-org/sila/internal/silaapi/override"
 	"github.com/sila-org/sila/params"
@@ -596,7 +597,7 @@ func (sim *simulator) makeHeaders(blocks []simBlock) ([]*types.Header, error) {
 }
 
 func (sim *simulator) newSimulatedChainContext(ctx context.Context, headers []*types.Header) *ChainContext {
-	return NewChainContext(ctx, &simBackend{
+	return chainctx.NewChainContext(ctx, &simBackend{
 		base:    sim.base,
 		b:       sim.b,
 		headers: headers,

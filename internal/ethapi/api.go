@@ -434,16 +434,6 @@ func (api *BlockChainAPI) GetBlockReceipts(ctx context.Context, blockNrOrHash rp
 type ChainContextBackend = chainctx.Backend
 type ChainContext = chainctx.ChainContext
 
-func NewChainContext(ctx context.Context, backend ChainContextBackend) *ChainContext {
-	return chainctx.NewChainContext(ctx, backend)
-}
-
-type CallBackend = callapi.CallBackend
-
-func DoCall(ctx context.Context, b CallBackend, args TransactionArgs, blockNrOrHash rpc.BlockNumberOrHash, overrides *override.StateOverride, blockOverrides *override.BlockOverrides, timeout time.Duration, globalGasCap uint64) (*core.ExecutionResult, error) {
-	return callapi.DoCall(ctx, b, args, blockNrOrHash, overrides, blockOverrides, timeout, globalGasCap)
-}
-
 // Call executes the given transaction on the state for the given block number.
 //
 // Additionally, the caller can specify a batch of contract for fields overriding.
@@ -507,10 +497,6 @@ func (api *BlockChainAPI) SimulateV1(ctx context.Context, opts simOpts, blockNrO
 		fullTx:         opts.ReturnFullTransactions,
 	}
 	return sim.execute(ctx, opts.BlockStateCalls)
-}
-
-func DoEstimateGas(ctx context.Context, b CallBackend, args TransactionArgs, blockNrOrHash rpc.BlockNumberOrHash, overrides *override.StateOverride, blockOverrides *override.BlockOverrides, gasCap uint64) (hexutil.Uint64, error) {
-	return callapi.DoEstimateGas(ctx, b, args, blockNrOrHash, overrides, blockOverrides, gasCap)
 }
 
 // EstimateGas returns the lowest possible gas limit that allows the transaction to run
@@ -694,7 +680,7 @@ func AccessList(ctx context.Context, b Backend, blockNrOrHash rpc.BlockNumberOrH
 		nonce := hexutil.Uint64(db.GetNonce(args.FromAddr()))
 		args.Nonce = &nonce
 	}
-	blockCtx := core.NewEVMBlockContext(header, NewChainContext(ctx, b), nil)
+	blockCtx := core.NewEVMBlockContext(header, chainctx.NewChainContext(ctx, b), nil)
 	if err = args.CallDefaults(b.RPCGasCap(), blockCtx.BaseFee, b.ChainConfig().ChainID); err != nil {
 		return nil, 0, nil, err
 	}
