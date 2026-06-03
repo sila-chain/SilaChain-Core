@@ -1,7 +1,7 @@
 ethkey
 ======
 
-ethkey is a simple command-line tool for working with Sila keyfiles using the legacy Ethereum-compatible keystore format.
+ethkey is a simple command-line tool for working with Sila keyfiles using the legacy-compatible keystore format.
 
 
 # Usage
