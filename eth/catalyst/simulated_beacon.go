@@ -214,7 +214,7 @@ func (c *SimulatedBeacon) sealBlock(withdrawals []*types.Withdrawal, timestamp u
 	}
 
 	// Create a server span for forkchoiceUpdated with payload attributes,
-	// simulating an incoming engine API request from a real consensus client.
+	// simulating an incoming Sila Engine API request from a real consensus client.
 	fcCtx, fcSpanEnd := telemetry.StartServerSpan(context.Background(), tracer, telemetry.RPCInfo{
 		System:  "jsonrpc",
 		Service: "silaEngine",

@@ -141,7 +141,7 @@ func NewConsensusAPI(eth *eth.SilaChain) *ConsensusAPI {
 }
 
 // SilaEngineAPI exposes the consensus API under SilaEngine method names while
-// sharing the same execution semantics as the compatibility engine API.
+// sharing the same execution semantics as the compatibility Sila Engine API.
 type SilaEngineAPI struct {
 	*ConsensusAPI
 }
@@ -1238,19 +1238,19 @@ func validateRequests(requests [][]byte) error {
 }
 
 // paramsErr is a helper function for creating an InvalidPayloadAttributes
-// Engine API error.
+// Sila Engine API error.
 func paramsErr(msg string) error {
 	return engine.InvalidParams.With(errors.New(msg))
 }
 
 // attributesErr is a helper function for creating an InvalidPayloadAttributes
-// Engine API error.
+// Sila Engine API error.
 func attributesErr(msg string) error {
 	return engine.InvalidPayloadAttributes.With(errors.New(msg))
 }
 
 // unsupportedForkErr is a helper function for creating an UnsupportedFork
-// Engine API error.
+// Sila Engine API error.
 func unsupportedForkErr(msg string) error {
 	return engine.UnsupportedFork.With(errors.New(msg))
 }

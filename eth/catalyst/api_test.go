@@ -1553,7 +1553,7 @@ func TestBlockToPayloadWithBlobs(t *testing.T) {
 	}
 }
 
-// This checks that beaconRoot is applied to the state from the engine API.
+// This checks that beaconRoot is applied to the state from the Sila Engine API.
 func TestParentBeaconBlockRoot(t *testing.T) {
 	//log.SetDefault(log.NewLogger(log.NewTerminalHandlerWithLevel(colorable.NewColorableStderr(), log.LevelTrace, true)))
 
