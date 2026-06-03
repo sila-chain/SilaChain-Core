@@ -552,36 +552,22 @@ func (api *TransactionAPI) GetBlockTransactionCountByHash(ctx context.Context, b
 
 // GetTransactionByBlockNumberAndIndex returns the transaction for the given block number and index.
 func (api *TransactionAPI) GetTransactionByBlockNumberAndIndex(ctx context.Context, blockNr rpc.BlockNumber, index hexutil.Uint) (*RPCTransaction, error) {
-	block, err := api.b.BlockByNumber(ctx, blockNr)
-	if block != nil {
-		return blockapi.NewRPCTransactionFromBlockIndex(block, uint64(index), api.b.ChainConfig()), nil
-	}
-	return nil, err
+	return blockapi.GetTransactionByBlockNumberAndIndex(ctx, api.b, blockNr, index)
 }
 
 // GetTransactionByBlockHashAndIndex returns the transaction for the given block hash and index.
 func (api *TransactionAPI) GetTransactionByBlockHashAndIndex(ctx context.Context, blockHash common.Hash, index hexutil.Uint) (*RPCTransaction, error) {
-	block, err := api.b.BlockByHash(ctx, blockHash)
-	if block != nil {
-		return blockapi.NewRPCTransactionFromBlockIndex(block, uint64(index), api.b.ChainConfig()), nil
-	}
-	return nil, err
+	return blockapi.GetTransactionByBlockHashAndIndex(ctx, api.b, blockHash, index)
 }
 
 // GetRawTransactionByBlockNumberAndIndex returns the bytes of the transaction for the given block number and index.
 func (api *TransactionAPI) GetRawTransactionByBlockNumberAndIndex(ctx context.Context, blockNr rpc.BlockNumber, index hexutil.Uint) hexutil.Bytes {
-	if block, _ := api.b.BlockByNumber(ctx, blockNr); block != nil {
-		return blockapi.NewRPCRawTransactionFromBlockIndex(block, uint64(index))
-	}
-	return nil
+	return blockapi.GetRawTransactionByBlockNumberAndIndex(ctx, api.b, blockNr, index)
 }
 
 // GetRawTransactionByBlockHashAndIndex returns the bytes of the transaction for the given block hash and index.
 func (api *TransactionAPI) GetRawTransactionByBlockHashAndIndex(ctx context.Context, blockHash common.Hash, index hexutil.Uint) hexutil.Bytes {
-	if block, _ := api.b.BlockByHash(ctx, blockHash); block != nil {
-		return blockapi.NewRPCRawTransactionFromBlockIndex(block, uint64(index))
-	}
-	return nil
+	return blockapi.GetRawTransactionByBlockHashAndIndex(ctx, api.b, blockHash, index)
 }
 
 // GetTransactionCount returns the number of transactions the given address has sent for the given block number
