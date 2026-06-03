@@ -92,13 +92,12 @@ func NewBlockChainAPI(b Backend) *BlockChainAPI {
 // wasn't synced up to a block where EIP-155 is enabled, but this behavior caused issues
 // in CL clients.
 func (api *BlockChainAPI) ChainId() *hexutil.Big {
-	return (*hexutil.Big)(api.b.ChainConfig().ChainID)
+	return blockapi.ChainId(api.b)
 }
 
 // BlockNumber returns the block number of the chain head.
 func (api *BlockChainAPI) BlockNumber() hexutil.Uint64 {
-	header, _ := api.b.HeaderByNumber(context.Background(), rpc.LatestBlockNumber) // latest header should always be available
-	return hexutil.Uint64(header.Number.Uint64())
+	return blockapi.BlockNumber(api.b)
 }
 
 // GetBalance returns the amount of wei for the given address in the state of the
