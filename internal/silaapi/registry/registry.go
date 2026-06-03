@@ -7,10 +7,11 @@ import (
 	"github.com/sila-org/sila/internal/ethapi"
 	"github.com/sila-org/sila/internal/silaapi"
 	"github.com/sila-org/sila/internal/silaapi/addrlock"
+	"github.com/sila-org/sila/internal/silaapi/backend"
 	"github.com/sila-org/sila/rpc"
 )
 
-func GetAPIs(apiBackend ethapi.Backend) []rpc.API {
+func GetAPIs(apiBackend backend.Backend) []rpc.API {
 	nonceLock := new(addrlock.AddrLocker)
 	return []rpc.API{
 		{Namespace: "sila", Service: silaapi.NewSilaAPI(apiBackend)},
