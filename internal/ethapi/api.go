@@ -104,12 +104,7 @@ func (api *BlockChainAPI) BlockNumber() hexutil.Uint64 {
 // given block number. The rpc.LatestBlockNumber and rpc.PendingBlockNumber meta
 // block numbers are also allowed.
 func (api *BlockChainAPI) GetBalance(ctx context.Context, address common.Address, blockNrOrHash rpc.BlockNumberOrHash) (*hexutil.Big, error) {
-	state, _, err := api.b.StateAndHeaderByNumberOrHash(ctx, blockNrOrHash)
-	if state == nil || err != nil {
-		return nil, err
-	}
-	b := state.GetBalance(address).ToBig()
-	return (*hexutil.Big)(b), state.Error()
+	return blockapi.GetBalance(ctx, api.b, address, blockNrOrHash)
 }
 
 // AccountResult structs for GetProof
@@ -239,63 +234,20 @@ func (api *BlockChainAPI) GetUncleCountByBlockHash(ctx context.Context, blockHas
 
 // GetCode returns the code stored at the given address in the state for the given block number.
 func (api *BlockChainAPI) GetCode(ctx context.Context, address common.Address, blockNrOrHash rpc.BlockNumberOrHash) (hexutil.Bytes, error) {
-	state, _, err := api.b.StateAndHeaderByNumberOrHash(ctx, blockNrOrHash)
-	if state == nil || err != nil {
-		return nil, err
-	}
-	code := state.GetCode(address)
-	return code, state.Error()
+	return blockapi.GetCode(ctx, api.b, address, blockNrOrHash)
 }
 
 // GetStorageAt returns the storage from the state at the given address, key and
 // block number. The rpc.LatestBlockNumber and rpc.PendingBlockNumber meta block
 // numbers are also allowed.
 func (api *BlockChainAPI) GetStorageAt(ctx context.Context, address common.Address, hexKey string, blockNrOrHash rpc.BlockNumberOrHash) (hexutil.Bytes, error) {
-	state, _, err := api.b.StateAndHeaderByNumberOrHash(ctx, blockNrOrHash)
-	if state == nil || err != nil {
-		return nil, err
-	}
-	key, _, err := decodeStorageKey(hexKey)
-	if err != nil {
-		return nil, &ethapierrors.InvalidParamsError{fmt.Sprintf("%v: %q", err, hexKey)}
-	}
-	res := state.GetState(address, key)
-	return res[:], state.Error()
+	return blockapi.GetStorageAt(ctx, api.b, address, hexKey, blockNrOrHash)
 }
 
 // GetStorageValues returns multiple storage slot values for multiple accounts
 // at the given block.
 func (api *BlockChainAPI) GetStorageValues(ctx context.Context, requests map[common.Address][]common.Hash, blockNrOrHash rpc.BlockNumberOrHash) (map[common.Address][]hexutil.Bytes, error) {
-	// Count total slots requested.
-	var totalSlots int
-	for _, keys := range requests {
-		totalSlots += len(keys)
-		if totalSlots > maxGetStorageSlots {
-			return nil, &ethapierrors.ClientLimitExceededError{Message: fmt.Sprintf("too many slots (max %d)", maxGetStorageSlots)}
-		}
-	}
-	if totalSlots == 0 {
-		return nil, &ethapierrors.InvalidParamsError{Message: "empty request"}
-	}
-
-	state, _, err := api.b.StateAndHeaderByNumberOrHash(ctx, blockNrOrHash)
-	if state == nil || err != nil {
-		return nil, err
-	}
-
-	result := make(map[common.Address][]hexutil.Bytes, len(requests))
-	for addr, keys := range requests {
-		vals := make([]hexutil.Bytes, len(keys))
-		for i, key := range keys {
-			v := state.GetState(addr, key)
-			vals[i] = v[:]
-		}
-		if err := state.Error(); err != nil {
-			return nil, err
-		}
-		result[addr] = vals
-	}
-	return result, nil
+	return blockapi.GetStorageValues(ctx, api.b, requests, blockNrOrHash)
 }
 
 // GetBlockReceipts returns the block receipts for the given block hash or number or tag.
