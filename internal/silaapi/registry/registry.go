@@ -13,8 +13,8 @@ import (
 func GetAPIs(apiBackend ethapi.Backend) []rpc.API {
 	nonceLock := new(addrlock.AddrLocker)
 	return []rpc.API{
-		{Namespace: "sila", Service: ethapi.NewSilaAPI(apiBackend)},
-		{Namespace: "eth", Service: ethapi.NewSilaAPI(apiBackend)},
+		{Namespace: "sila", Service: silaapi.NewSilaAPI(apiBackend)},
+		{Namespace: "eth", Service: silaapi.NewSilaAPI(apiBackend)},
 		{Namespace: "sila", Service: ethapi.NewBlockChainAPI(apiBackend)},
 		{Namespace: "eth", Service: ethapi.NewBlockChainAPI(apiBackend)},
 		{Namespace: "sila", Service: ethapi.NewTransactionAPI(apiBackend, nonceLock)},
