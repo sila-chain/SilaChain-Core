@@ -276,6 +276,30 @@ func GetHeaderByHash(ctx context.Context, b BlockChainBackend, hash common.Hash)
 	return nil
 }
 
+// GetBlockByNumber returns the requested canonical block.
+func GetBlockByNumber(ctx context.Context, b BlockChainBackend, number rpc.BlockNumber, fullTx bool) (map[string]interface{}, error) {
+	block, err := b.BlockByNumber(ctx, number)
+	if block != nil && err == nil {
+		response := RPCMarshalBlock(block, true, fullTx, b.ChainConfig())
+		if number == rpc.PendingBlockNumber {
+			for _, field := range []string{"hash", "nonce", "miner"} {
+				response[field] = nil
+			}
+		}
+		return response, nil
+	}
+	return nil, err
+}
+
+// GetBlockByHash returns the requested block.
+func GetBlockByHash(ctx context.Context, b BlockChainBackend, hash common.Hash, fullTx bool) (map[string]interface{}, error) {
+	block, err := b.BlockByHash(ctx, hash)
+	if block != nil {
+		return RPCMarshalBlock(block, true, fullTx, b.ChainConfig()), nil
+	}
+	return nil, err
+}
+
 // ReceiptsByBlockNumberOrHash returns the block and receipts for the given block hash, number, or tag.
 func ReceiptsByBlockNumberOrHash(ctx context.Context, b BlockChainBackend, blockNrOrHash rpc.BlockNumberOrHash) (*types.Block, types.Receipts, error) {
 	var (
