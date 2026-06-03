@@ -431,9 +431,6 @@ func (api *BlockChainAPI) GetBlockReceipts(ctx context.Context, blockNrOrHash rp
 	return result, nil
 }
 
-type ChainContextBackend = chainctx.Backend
-type ChainContext = chainctx.ChainContext
-
 // Call executes the given transaction on the state for the given block number.
 //
 // Additionally, the caller can specify a batch of contract for fields overriding.

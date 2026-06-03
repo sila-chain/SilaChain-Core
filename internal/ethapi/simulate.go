@@ -596,7 +596,7 @@ func (sim *simulator) makeHeaders(blocks []simBlock) ([]*types.Header, error) {
 	return res, nil
 }
 
-func (sim *simulator) newSimulatedChainContext(ctx context.Context, headers []*types.Header) *ChainContext {
+func (sim *simulator) newSimulatedChainContext(ctx context.Context, headers []*types.Header) *chainctx.ChainContext {
 	return chainctx.NewChainContext(ctx, &simBackend{
 		base:    sim.base,
 		b:       sim.b,
@@ -605,7 +605,7 @@ func (sim *simulator) newSimulatedChainContext(ctx context.Context, headers []*t
 }
 
 type simBackend struct {
-	b       ChainContextBackend
+	b       chainctx.Backend
 	base    *types.Header
 	headers []*types.Header
 }
