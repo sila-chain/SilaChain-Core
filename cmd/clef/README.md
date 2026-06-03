@@ -27,7 +27,7 @@ COMMANDS:
 
 GLOBAL OPTIONS:
    --loglevel value        log level to emit to the screen (default: 4)
-   --keystore value        Directory for the keystore (default: "$HOME/.ethereum/keystore")
+   --keystore value        Directory for the keystore (default: "$HOME/.sila/keystore")
    --configdir value       Directory for Clef configuration (default: "$HOME/.clef")
    --chainid value         Chain id to use for signing (1=mainnet, 17000=Holesky) (default: 1)
    --lightkdf              Reduce key-derivation RAM & CPU usage at some expense of KDF strength
@@ -150,7 +150,7 @@ All hex encoded values must be prefixed with `0x`.
 
 #### Create new password protected account
 
-The signer will generate a new private key, encrypt it according to [web3 keystore spec](https://ethereum.org/en/developers/docs/data-structures-and-encoding/web3-secret-storage/) and store it in the keystore directory.  
+The signer will generate a new private key, encrypt it according to the web3 keystore specification and store it in the keystore directory.  
 The client is responsible for creating a backup of the keystore. If the keystore is lost there is no method of retrieving lost accounts.
 
 #### Arguments
