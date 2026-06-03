@@ -400,12 +400,12 @@ var (
 	}
 	BlsyncApiFlag = &cli.StringFlag{
 		Name:     "blsync.engine.api",
-		Usage:    "Target EL engine API URL",
+		Usage:    "Target Sila Engine API URL",
 		Category: flags.BeaconCategory,
 	}
 	BlsyncJWTSecretFlag = &flags.DirectoryFlag{
 		Name:     "blsync.jwtsecret",
-		Usage:    "Path to a JWT secret to use for target engine API endpoint",
+		Usage:    "Path to a JWT secret to use for target Sila Engine API endpoint",
 		Category: flags.BeaconCategory,
 	}
 	// Transaction pool settings

@@ -53,13 +53,13 @@ var (
 	}
 	testNodeJWTFlag = &cli.StringFlag{
 		Name:     "jwtsecret",
-		Usage:    "JWT secret for the engine API of the test node (required)",
+		Usage:    "JWT secret for the Sila Engine API of the test node (required)",
 		Category: flags.TestingCategory,
 		Required: true,
 	}
 	testNodeEngineFlag = &cli.StringFlag{
 		Name:     "engineapi",
-		Usage:    "Engine API endpoint of the test node (required)",
+		Usage:    "Sila Engine API endpoint of the test node (required)",
 		Category: flags.TestingCategory,
 		Required: true,
 	}
