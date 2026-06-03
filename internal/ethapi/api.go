@@ -80,9 +80,14 @@ type BlockChainAPI struct {
 	b Backend
 }
 
+// NewSilaBlockChainAPI creates a new SilaChain blockchain API.
+func NewSilaBlockChainAPI(b Backend) *BlockChainAPI {
+	return &BlockChainAPI{b}
+}
+
 // NewBlockChainAPI creates a new SilaChain blockchain API.
 func NewBlockChainAPI(b Backend) *BlockChainAPI {
-	return &BlockChainAPI{b}
+	return NewSilaBlockChainAPI(b)
 }
 
 // ChainId is the replay-protection chain id for the current SilaChain config.
@@ -522,12 +527,17 @@ type TransactionAPI struct {
 	signer    types.Signer
 }
 
-// NewTransactionAPI creates a new RPC service with methods for interacting with transactions.
-func NewTransactionAPI(b Backend, nonceLock *addrlock.AddrLocker) *TransactionAPI {
+// NewSilaTransactionAPI creates a new RPC service with methods for interacting with transactions.
+func NewSilaTransactionAPI(b Backend, nonceLock *addrlock.AddrLocker) *TransactionAPI {
 	// The signer used by the API should always be the 'latest' known one because we expect
 	// signers to be backwards-compatible with old transactions.
 	signer := types.LatestSigner(b.ChainConfig())
 	return &TransactionAPI{b, nonceLock, signer}
+}
+
+// NewTransactionAPI creates a new RPC service with methods for interacting with transactions.
+func NewTransactionAPI(b Backend, nonceLock *addrlock.AddrLocker) *TransactionAPI {
+	return NewSilaTransactionAPI(b, nonceLock)
 }
 
 // GetBlockTransactionCountByNumber returns the number of transactions in the block with the given block number.
