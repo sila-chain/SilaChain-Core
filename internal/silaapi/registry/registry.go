@@ -19,8 +19,8 @@ func GetAPIs(apiBackend ethapi.Backend) []rpc.API {
 		{Namespace: "eth", Service: ethapi.NewBlockChainAPI(apiBackend)},
 		{Namespace: "sila", Service: ethapi.NewTransactionAPI(apiBackend, nonceLock)},
 		{Namespace: "eth", Service: ethapi.NewTransactionAPI(apiBackend, nonceLock)},
-		{Namespace: "txpool", Service: ethapi.NewTxPoolAPI(apiBackend)},
-		{Namespace: "debug", Service: ethapi.NewDebugAPI(apiBackend)},
+		{Namespace: "txpool", Service: silaapi.NewTxPoolAPI(apiBackend)},
+		{Namespace: "debug", Service: silaapi.NewDebugAPI(apiBackend)},
 		{Namespace: "sila", Service: silaapi.NewSilaAccountAPI(apiBackend.AccountManager())},
 		{Namespace: "eth", Service: silaapi.NewSilaAccountAPI(apiBackend.AccountManager())},
 	}
