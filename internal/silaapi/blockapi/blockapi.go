@@ -328,6 +328,26 @@ func GetBlockByHash(ctx context.Context, b BlockChainBackend, hash common.Hash, 
 	return nil, err
 }
 
+// GetBlockTransactionCountByNumber returns the number of transactions in the block with the given block number.
+func GetBlockTransactionCountByNumber(ctx context.Context, b BlockChainBackend, blockNr rpc.BlockNumber) (*hexutil.Uint, error) {
+	block, err := b.BlockByNumber(ctx, blockNr)
+	if block != nil {
+		n := hexutil.Uint(len(block.Transactions()))
+		return &n, nil
+	}
+	return nil, err
+}
+
+// GetBlockTransactionCountByHash returns the number of transactions in the block with the given hash.
+func GetBlockTransactionCountByHash(ctx context.Context, b BlockChainBackend, blockHash common.Hash) (*hexutil.Uint, error) {
+	block, err := b.BlockByHash(ctx, blockHash)
+	if block != nil {
+		n := hexutil.Uint(len(block.Transactions()))
+		return &n, nil
+	}
+	return nil, err
+}
+
 // GetTransactionByBlockNumberAndIndex returns the transaction for the given block number and index.
 func GetTransactionByBlockNumberAndIndex(ctx context.Context, b BlockChainBackend, blockNr rpc.BlockNumber, index hexutil.Uint) (*rpctx.RPCTransaction, error) {
 	block, err := b.BlockByNumber(ctx, blockNr)
