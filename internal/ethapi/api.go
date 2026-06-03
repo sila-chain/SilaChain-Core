@@ -35,6 +35,7 @@ import (
 	"github.com/sila-org/sila/internal/silaapi/callapi"
 	"github.com/sila-org/sila/internal/silaapi/chainctx"
 	ethapierrors "github.com/sila-org/sila/internal/silaapi/errors"
+	"github.com/sila-org/sila/internal/silaapi/netapi"
 	"github.com/sila-org/sila/internal/silaapi/override"
 	"github.com/sila-org/sila/internal/silaapi/proofapi"
 	"github.com/sila-org/sila/internal/silaapi/rpctx"
@@ -1140,28 +1141,9 @@ func NewDebugAPI(b Backend) *DebugAPI {
 	return &DebugAPI{b: b, DebugAPI: silaapi.NewDebugAPI(b)}
 }
 
-// NetAPI offers network related RPC methods
-type NetAPI struct {
-	net            *p2p.Server
-	networkVersion uint64
-}
+type NetAPI = netapi.NetAPI
 
 // NewNetAPI creates a new net API instance.
 func NewNetAPI(net *p2p.Server, networkVersion uint64) *NetAPI {
-	return &NetAPI{net, networkVersion}
-}
-
-// Listening returns an indication if the node is listening for network connections.
-func (api *NetAPI) Listening() bool {
-	return true // always listening
-}
-
-// PeerCount returns the number of connected peers
-func (api *NetAPI) PeerCount() hexutil.Uint {
-	return hexutil.Uint(api.net.PeerCount())
-}
-
-// Version returns the current legacy-compatible network protocol version.
-func (api *NetAPI) Version() string {
-	return fmt.Sprintf("%d", api.networkVersion)
+	return netapi.NewNetAPI(net, networkVersion)
 }
