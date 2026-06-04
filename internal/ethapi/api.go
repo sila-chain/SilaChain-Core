@@ -475,10 +475,6 @@ func (api *TransactionAPI) FillTransaction(ctx context.Context, args Transaction
 	return txapi.FillTransaction(ctx, api.b, args)
 }
 
-func (api *TransactionAPI) currentBlobSidecarVersion() byte {
-	return txapi.CurrentBlobSidecarVersion(api.b)
-}
-
 // SendRawTransaction will add the signed transaction to the transaction pool.
 // The sender is responsible for signing the transaction and using the correct nonce.
 func (api *TransactionAPI) SendRawTransaction(ctx context.Context, input hexutil.Bytes) (common.Hash, error) {
