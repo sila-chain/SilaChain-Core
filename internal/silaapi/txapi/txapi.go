@@ -13,14 +13,17 @@ import (
 	"github.com/sila-org/sila/internal/silaapi/txfee"
 	"github.com/sila-org/sila/log"
 	"math/big"
+	"time"
 
 	"github.com/sila-org/sila/accounts"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/common/hexutil"
 	"github.com/sila-org/sila/consensus"
+	"github.com/sila-org/sila/core"
 	"github.com/sila-org/sila/core/state"
 	"github.com/sila-org/sila/core/types"
 	"github.com/sila-org/sila/core/vm"
+	"github.com/sila-org/sila/event"
 	ethapierrors "github.com/sila-org/sila/internal/silaapi/errors"
 	"github.com/sila-org/sila/internal/silaapi/rpctx"
 	"github.com/sila-org/sila/params"
@@ -49,6 +52,9 @@ type Backend interface {
 	RPCGasCap() uint64
 	SuggestGasTipCap(context.Context) (*big.Int, error)
 	BlobBaseFee(context.Context) *big.Int
+	SubscribeChainEvent(chan<- core.ChainEvent) event.Subscription
+	RPCTxSyncDefaultTimeout() time.Duration
+	RPCTxSyncMaxTimeout() time.Duration
 }
 
 func GetTransactionCount(ctx context.Context, b Backend, address common.Address, blockNrOrHash rpc.BlockNumberOrHash) (*hexutil.Uint64, error) {
