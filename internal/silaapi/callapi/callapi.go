@@ -120,6 +120,13 @@ func DoCall(ctx context.Context, b CallBackend, args TransactionArgs, blockNrOrH
 	return doCall(ctx, b, args, state, header, overrides, blockOverrides, timeout, globalGasCap)
 }
 
+func EstimateGas(ctx context.Context, b CallBackend, args TransactionArgs, blockNrOrHash *rpc.BlockNumberOrHash, overrides *override.StateOverride, blockOverrides *override.BlockOverrides, gasCap uint64) (hexutil.Uint64, error) {
+	bNrOrHash := rpc.BlockNumberOrHashWithNumber(rpc.LatestBlockNumber)
+	if blockNrOrHash != nil {
+		bNrOrHash = *blockNrOrHash
+	}
+	return DoEstimateGas(ctx, b, args, bNrOrHash, overrides, blockOverrides, gasCap)
+}
 func DoEstimateGas(ctx context.Context, b CallBackend, args TransactionArgs, blockNrOrHash rpc.BlockNumberOrHash, overrides *override.StateOverride, blockOverrides *override.BlockOverrides, gasCap uint64) (hexutil.Uint64, error) {
 	state, header, err := b.StateAndHeaderByNumberOrHash(ctx, blockNrOrHash)
 	if state == nil || err != nil {

@@ -268,11 +268,7 @@ func (api *BlockChainAPI) SimulateV1(ctx context.Context, opts simOpts, blockNrO
 // configuration (if non-zero).
 // Note: Required blob gas is not computed in this method.
 func (api *BlockChainAPI) EstimateGas(ctx context.Context, args TransactionArgs, blockNrOrHash *rpc.BlockNumberOrHash, overrides *override.StateOverride, blockOverrides *override.BlockOverrides) (hexutil.Uint64, error) {
-	bNrOrHash := rpc.BlockNumberOrHashWithNumber(rpc.LatestBlockNumber)
-	if blockNrOrHash != nil {
-		bNrOrHash = *blockNrOrHash
-	}
-	return callapi.DoEstimateGas(ctx, api.b, args, bNrOrHash, overrides, blockOverrides, api.b.RPCGasCap())
+	return callapi.EstimateGas(ctx, api.b, args, blockNrOrHash, overrides, blockOverrides, api.b.RPCGasCap())
 }
 
 // RPCMarshalHeader converts the given header to the RPC output .
