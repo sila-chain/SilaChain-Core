@@ -485,3 +485,88 @@ func SignWithAccount(b Backend, addr common.Address, tx *types.Transaction) (*ty
 	}
 	return wallet.SignTx(account, tx, b.ChainConfig().ChainID)
 }
+
+func SendRawTransactionSync(ctx context.Context, b Backend, input hexutil.Bytes, timeoutMs *uint64, subClosedErr error, timeoutErr func(common.Hash, time.Duration) error) (map[string]interface{}, error) {
+	tx := new(types.Transaction)
+	if err := tx.UnmarshalBinary(input); err != nil {
+		return nil, err
+	}
+
+	if sc := tx.BlobTxSidecar(); sc != nil {
+		exp := CurrentBlobSidecarVersion(b)
+		if sc.Version == types.BlobSidecarVersion0 && exp == types.BlobSidecarVersion1 {
+			if err := sc.ToV1(); err != nil {
+				return nil, fmt.Errorf("blob sidecar conversion failed: %v", err)
+			}
+			tx = tx.WithBlobTxSidecar(sc)
+		}
+	}
+
+	ch := make(chan core.ChainEvent, 128)
+	sub := b.SubscribeChainEvent(ch)
+	defer sub.Unsubscribe()
+
+	hash, err := callapi.SubmitTransaction(ctx, b, tx)
+	if err != nil {
+		return nil, err
+	}
+
+	maxTimeout := b.RPCTxSyncMaxTimeout()
+	defaultTimeout := b.RPCTxSyncDefaultTimeout()
+	timeout := defaultTimeout
+	if timeoutMs != nil && *timeoutMs > 0 {
+		req := time.Duration(*timeoutMs) * time.Millisecond
+		if req > maxTimeout {
+			timeout = maxTimeout
+		} else {
+			timeout = req
+		}
+	}
+	receiptCtx, cancel := context.WithTimeout(ctx, timeout)
+	defer cancel()
+
+	if r, err := GetTransactionReceipt(b, types.LatestSigner(b.ChainConfig()), hash); err == nil && r != nil {
+		return r, nil
+	}
+
+	for {
+		select {
+		case <-receiptCtx.Done():
+			if errors.Is(receiptCtx.Err(), context.DeadlineExceeded) {
+				return nil, timeoutErr(hash, timeout)
+			}
+			return nil, receiptCtx.Err()
+
+		case err, ok := <-sub.Err():
+			if !ok {
+				return nil, subClosedErr
+			}
+			return nil, err
+
+		case ev, ok := <-ch:
+			if !ok {
+				return nil, subClosedErr
+			}
+			rs, txs := ev.Receipts, ev.Transactions
+			if len(rs) == 0 || len(rs) != len(txs) {
+				continue
+			}
+			for i := range rs {
+				if rs[i].TxHash == hash {
+					if rs[i].BlockNumber != nil && rs[i].BlockHash != (common.Hash{}) {
+						signer := types.LatestSigner(b.ChainConfig())
+						return rpctx.MarshalReceipt(
+							rs[i],
+							rs[i].BlockHash,
+							rs[i].BlockNumber.Uint64(),
+							signer,
+							txs[i],
+							int(rs[i].TransactionIndex),
+						), nil
+					}
+					return GetTransactionReceipt(b, types.LatestSigner(b.ChainConfig()), hash)
+				}
+			}
+		}
+	}
+}
