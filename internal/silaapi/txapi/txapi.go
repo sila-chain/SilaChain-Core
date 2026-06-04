@@ -183,6 +183,26 @@ func CurrentBlobSidecarVersion(b Backend) byte {
 	return types.BlobSidecarVersion0
 }
 
+func (api *TransactionAPI) SendTransaction(ctx context.Context, args txargs.TransactionArgs) (common.Hash, error) {
+	return SendTransaction(ctx, api.b, args)
+}
+
+func (api *TransactionAPI) FillTransaction(ctx context.Context, args txargs.TransactionArgs) (*silaapi.SignTransactionResult, error) {
+	return FillTransaction(ctx, api.b, args)
+}
+
+func (api *TransactionAPI) SendRawTransaction(ctx context.Context, input hexutil.Bytes) (common.Hash, error) {
+	return SendRawTransaction(ctx, api.b, input)
+}
+
+func (api *TransactionAPI) Sign(addr common.Address, data hexutil.Bytes) (hexutil.Bytes, error) {
+	return Sign(api.b, addr, data)
+}
+
+func (api *TransactionAPI) SignTransaction(ctx context.Context, args txargs.TransactionArgs) (*silaapi.SignTransactionResult, error) {
+	return SignTransaction(ctx, api.b, args)
+}
+
 // SendRawTransaction will add the signed transaction to the transaction pool.
 // The sender is responsible for signing the transaction and using the correct nonce.
 func SendRawTransaction(ctx context.Context, b Backend, input hexutil.Bytes) (common.Hash, error) {
