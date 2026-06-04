@@ -2,6 +2,8 @@ package txapi
 
 import (
 	"context"
+	"fmt"
+	"github.com/sila-org/sila/internal/silaapi/callapi"
 
 	"github.com/sila-org/sila/accounts"
 	"github.com/sila-org/sila/common"
@@ -115,4 +117,33 @@ func PendingTransactions(b Backend, signer types.Signer) ([]*rpctx.RPCTransactio
 		}
 	}
 	return transactions, nil
+}
+
+func CurrentBlobSidecarVersion(b Backend) byte {
+	h := b.CurrentHeader()
+	if b.ChainConfig().IsOsaka(h.Number, h.Time) {
+		return types.BlobSidecarVersion1
+	}
+	return types.BlobSidecarVersion0
+}
+
+// SendRawTransaction will add the signed transaction to the transaction pool.
+// The sender is responsible for signing the transaction and using the correct nonce.
+func SendRawTransaction(ctx context.Context, b Backend, input hexutil.Bytes) (common.Hash, error) {
+	tx := new(types.Transaction)
+	if err := tx.UnmarshalBinary(input); err != nil {
+		return common.Hash{}, err
+	}
+
+	if sc := tx.BlobTxSidecar(); sc != nil {
+		exp := CurrentBlobSidecarVersion(b)
+		if sc.Version == types.BlobSidecarVersion0 && exp == types.BlobSidecarVersion1 {
+			if err := sc.ToV1(); err != nil {
+				return common.Hash{}, fmt.Errorf("blob sidecar conversion failed: %v", err)
+			}
+			tx = tx.WithBlobTxSidecar(sc)
+		}
+	}
+
+	return callapi.SubmitTransaction(ctx, b, tx)
 }
