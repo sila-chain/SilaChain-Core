@@ -20,7 +20,11 @@ type Backend interface {
 	TxIndexDone() bool
 	HeaderByHash(context.Context, common.Hash) (*types.Header, error)
 	CurrentHeader() *types.Header
+	CurrentBlock() *types.Header
 	ChainConfig() *params.ChainConfig
+	RPCTxFeeCap() float64
+	UnprotectedAllowed() bool
+	SendTx(context.Context, *types.Transaction) error
 	GetCanonicalReceipt(*types.Transaction, common.Hash, uint64, uint64) (*types.Receipt, error)
 	GetPoolTransactions() (types.Transactions, error)
 	AccountManager() *accounts.Manager
