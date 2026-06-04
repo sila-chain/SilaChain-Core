@@ -572,37 +572,6 @@ func (api *TransactionAPI) sign(addr common.Address, tx *types.Transaction) (*ty
 	return wallet.SignTx(account, tx, api.b.ChainConfig().ChainID)
 }
 
-// SubmitTransaction is a helper function that submits tx to txPool and logs a message.
-func SubmitTransaction(ctx context.Context, b Backend, tx *types.Transaction) (common.Hash, error) {
-	// If the transaction fee cap is already specified, ensure the
-	// fee of the given transaction is _reasonable_.
-	if err := txfee.CheckTxFee(tx.GasPrice(), tx.Gas(), b.RPCTxFeeCap()); err != nil {
-		return common.Hash{}, err
-	}
-	if !b.UnprotectedAllowed() && !tx.Protected() {
-		// Ensure only eip155 signed transactions are submitted if EIP155Required is set.
-		return common.Hash{}, errors.New("only replay-protected (EIP-155) transactions allowed over RPC")
-	}
-	if err := b.SendTx(ctx, tx); err != nil {
-		return common.Hash{}, err
-	}
-	// Print a log with full tx details for manual investigations and interventions
-	head := b.CurrentBlock()
-	signer := types.MakeSigner(b.ChainConfig(), head.Number, head.Time)
-	from, err := types.Sender(signer, tx)
-	if err != nil {
-		return common.Hash{}, err
-	}
-
-	if tx.To() == nil {
-		addr := crypto.CreateAddress(from, tx.Nonce())
-		log.Info("Submitted contract creation", "hash", tx.Hash().Hex(), "from", from, "nonce", tx.Nonce(), "contract", addr.Hex(), "value", tx.Value())
-	} else {
-		log.Info("Submitted transaction", "hash", tx.Hash().Hex(), "from", from, "nonce", tx.Nonce(), "recipient", tx.To(), "value", tx.Value())
-	}
-	return tx.Hash(), nil
-}
-
 // SendTransaction creates a transaction for the given argument, sign it and submit it to the
 // transaction pool.
 //
@@ -637,7 +606,7 @@ func (api *TransactionAPI) SendTransaction(ctx context.Context, args Transaction
 	if err != nil {
 		return common.Hash{}, err
 	}
-	return SubmitTransaction(ctx, api.b, signed)
+	return callapi.SubmitTransaction(ctx, api.b, signed)
 }
 
 // FillTransaction fills the defaults (nonce, gas, gasPrice or 1559 fields)
@@ -689,7 +658,7 @@ func (api *TransactionAPI) SendRawTransaction(ctx context.Context, input hexutil
 		}
 	}
 
-	return SubmitTransaction(ctx, api.b, tx)
+	return callapi.SubmitTransaction(ctx, api.b, tx)
 }
 
 // SendRawTransactionSync will add the signed transaction to the transaction pool
@@ -716,7 +685,7 @@ func (api *TransactionAPI) SendRawTransactionSync(ctx context.Context, input hex
 	sub := api.b.SubscribeChainEvent(ch)
 	defer sub.Unsubscribe()
 
-	hash, err := SubmitTransaction(ctx, api.b, tx)
+	hash, err := callapi.SubmitTransaction(ctx, api.b, tx)
 	if err != nil {
 		return nil, err
 	}
