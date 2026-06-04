@@ -18,6 +18,7 @@ import (
 	"github.com/sila-org/sila/core/vm"
 	"github.com/sila-org/sila/crypto"
 	"github.com/sila-org/sila/eth/gasestimator"
+	"github.com/sila-org/sila/eth/tracers/logger"
 	"github.com/sila-org/sila/internal/silaapi/chainctx"
 	silaapierrors "github.com/sila-org/sila/internal/silaapi/errors"
 	"github.com/sila-org/sila/internal/silaapi/evmexec"
@@ -194,4 +195,100 @@ func SubmitTransaction(ctx context.Context, b SubmitBackend, tx *types.Transacti
 		log.Info("Submitted transaction", "hash", tx.Hash().Hex(), "from", from, "nonce", tx.Nonce(), "recipient", tx.To(), "value", tx.Value())
 	}
 	return tx.Hash(), nil
+}
+
+type AccessListBackend interface {
+	CallBackend
+	txfee.FeeBackend
+	RPCGasCap() uint64
+}
+
+// AccessList creates an access list for the given transaction.
+// If the accesslist creation fails an error is returned.
+// If the transaction itself fails, an vmErr is returned.
+func AccessList(ctx context.Context, b AccessListBackend, blockNrOrHash rpc.BlockNumberOrHash, args TransactionArgs, stateOverrides *override.StateOverride) (acl types.AccessList, gasUsed uint64, vmErr error, err error) {
+	db, header, err := b.StateAndHeaderByNumberOrHash(ctx, blockNrOrHash)
+	if db == nil || err != nil {
+		return nil, 0, nil, err
+	}
+	if stateOverrides != nil {
+		if err := stateOverrides.Apply(db, nil); err != nil {
+			return nil, 0, nil, err
+		}
+	}
+	if err = txfee.SetFeeDefaults(&args, ctx, b, header); err != nil {
+		return nil, 0, nil, err
+	}
+	if args.Nonce == nil {
+		nonce := hexutil.Uint64(db.GetNonce(args.FromAddr()))
+		args.Nonce = &nonce
+	}
+	blockCtx := core.NewEVMBlockContext(header, NewChainContext(ctx, b), nil)
+	if err = args.CallDefaults(b.RPCGasCap(), blockCtx.BaseFee, b.ChainConfig().ChainID); err != nil {
+		return nil, 0, nil, err
+	}
+
+	var to common.Address
+	if args.To != nil {
+		to = *args.To
+	} else {
+		to = crypto.CreateAddress(args.FromAddr(), uint64(*args.Nonce))
+	}
+	isPostMerge := header.Difficulty.Sign() == 0
+	precompiles := vm.ActivePrecompiles(b.ChainConfig().Rules(header.Number, isPostMerge, header.Time))
+
+	addressesToExclude := map[common.Address]struct{}{args.FromAddr(): {}, to: {}}
+	for _, addr := range precompiles {
+		addressesToExclude[addr] = struct{}{}
+	}
+
+	maxAuthorizations := uint64(*args.Gas) / params.CallNewAccountGas
+	if uint64(len(args.AuthorizationList)) > maxAuthorizations {
+		return nil, 0, nil, errors.New("insufficient gas to process all authorizations")
+	}
+
+	for _, auth := range args.AuthorizationList {
+		if (!auth.ChainID.IsZero() && auth.ChainID.CmpBig(b.ChainConfig().ChainID) != 0) || auth.Nonce+1 < auth.Nonce {
+			continue
+		}
+		if authority, err := auth.Authority(); err == nil {
+			addressesToExclude[authority] = struct{}{}
+		}
+	}
+
+	prevTracer := logger.NewAccessListTracer(nil, addressesToExclude)
+	if args.AccessList != nil {
+		prevTracer = logger.NewAccessListTracer(*args.AccessList, addressesToExclude)
+	}
+	for {
+		if err := ctx.Err(); err != nil {
+			return nil, 0, nil, err
+		}
+		accessList := prevTracer.AccessList()
+		log.Trace("Creating access list", "input", accessList)
+
+		statedb := db.Copy()
+		args.AccessList = &accessList
+		msg := args.ToMessage(header.BaseFee, true)
+
+		tracer := logger.NewAccessListTracer(accessList, addressesToExclude)
+		config := vm.Config{Tracer: tracer.Hooks(), NoBaseFee: true}
+		evm := b.GetEVM(ctx, statedb, header, &config, nil)
+
+		if msg.GasPrice.Sign() == 0 {
+			evm.Context.BaseFee = new(big.Int)
+		}
+		if msg.BlobGasFeeCap != nil && msg.BlobGasFeeCap.BitLen() == 0 {
+			evm.Context.BlobBaseFee = new(big.Int)
+		}
+		res, err := core.ApplyMessage(evm, msg, nil)
+		evm.Release()
+		if err != nil {
+			return nil, 0, nil, fmt.Errorf("failed to apply transaction: %v err: %v", args.ToTransaction(types.LegacyTxType).Hash(), err)
+		}
+		if tracer.Equal(prevTracer) {
+			return accessList, res.UsedGas, res.Err, nil
+		}
+		prevTracer = tracer
+	}
 }
