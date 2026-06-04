@@ -23,7 +23,7 @@ import (
 	"github.com/sila-org/sila/accounts"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/common/hexutil"
-	"github.com/sila-org/sila/core"
+
 	"github.com/sila-org/sila/core/forkid"
 	"github.com/sila-org/sila/core/types"
 	"github.com/sila-org/sila/core/vm"
