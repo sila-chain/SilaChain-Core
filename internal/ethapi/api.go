@@ -405,14 +405,7 @@ func NewTransactionAPI(b Backend, nonceLock *addrlock.AddrLocker) *TransactionAP
 //
 // This API is not capable for submitting blob transaction with sidecar.
 func (api *TransactionAPI) SendTransaction(ctx context.Context, args TransactionArgs) (common.Hash, error) {
-	if args.Nonce == nil {
-		api.NonceLock().LockAddr(args.FromAddr())
-		defer api.NonceLock().UnlockAddr(args.FromAddr())
-	}
-	if args.IsEIP4844() {
-		return common.Hash{}, errBlobTxNotSupported
-	}
-	return txapi.SendTransaction(ctx, api.Backend(), args)
+	return api.SendTransactionWithBlobError(ctx, args, errBlobTxNotSupported)
 }
 
 // SendRawTransactionSync will add the signed transaction to the transaction pool

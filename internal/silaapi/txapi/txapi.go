@@ -222,6 +222,17 @@ func CurrentBlobSidecarVersion(b Backend) byte {
 }
 
 func (api *TransactionAPI) SendTransaction(ctx context.Context, args txargs.TransactionArgs) (common.Hash, error) {
+	return api.SendTransactionWithBlobError(ctx, args, errors.New("signing blob transactions not supported"))
+}
+
+func (api *TransactionAPI) SendTransactionWithBlobError(ctx context.Context, args txargs.TransactionArgs, blobTxErr error) (common.Hash, error) {
+	if args.Nonce == nil {
+		api.nonceLock.LockAddr(args.FromAddr())
+		defer api.nonceLock.UnlockAddr(args.FromAddr())
+	}
+	if args.IsEIP4844() {
+		return common.Hash{}, blobTxErr
+	}
 	return SendTransaction(ctx, api.b, args)
 }
 
