@@ -20,7 +20,9 @@ type Backend interface {
 	GetCanonicalTransaction(common.Hash) (bool, *types.Transaction, common.Hash, uint64, uint64)
 	GetPoolTransaction(common.Hash) *types.Transaction
 	TxIndexDone() bool
+	HeaderByNumber(context.Context, rpc.BlockNumber) (*types.Header, error)
 	HeaderByHash(context.Context, common.Hash) (*types.Header, error)
+	Engine() consensus.Engine
 	CurrentHeader() *types.Header
 	CurrentBlock() *types.Header
 	ChainConfig() *params.ChainConfig
@@ -32,6 +34,10 @@ type Backend interface {
 	AccountManager() *accounts.Manager
 	GetPoolNonce(context.Context, common.Address) (uint64, error)
 	StateAndHeaderByNumberOrHash(context.Context, rpc.BlockNumberOrHash) (*state.StateDB, *types.Header, error)
+	GetEVM(context.Context, *state.StateDB, *types.Header, *vm.Config, *vm.BlockContext) *vm.EVM
+	RPCGasCap() uint64
+	SuggestGasTipCap(context.Context) (*big.Int, error)
+	BlobBaseFee(context.Context) *big.Int
 }
 
 func GetTransactionCount(ctx context.Context, b Backend, address common.Address, blockNrOrHash rpc.BlockNumberOrHash) (*hexutil.Uint64, error) {
