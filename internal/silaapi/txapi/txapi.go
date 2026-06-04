@@ -470,3 +470,12 @@ func SendTransaction(ctx context.Context, b Backend, args txargs.TransactionArgs
 	}
 	return callapi.SubmitTransaction(ctx, b, signed)
 }
+
+func SignWithAccount(b Backend, addr common.Address, tx *types.Transaction) (*types.Transaction, error) {
+	account := accounts.Account{Address: addr}
+	wallet, err := b.AccountManager().Find(account)
+	if err != nil {
+		return nil, err
+	}
+	return wallet.SignTx(account, tx, b.ChainConfig().ChainID)
+}

@@ -455,15 +455,7 @@ func (api *TransactionAPI) GetTransactionReceipt(ctx context.Context, hash commo
 
 // sign is a helper function that signs a transaction with the private key of the given address.
 func (api *TransactionAPI) sign(addr common.Address, tx *types.Transaction) (*types.Transaction, error) {
-	// Look up the wallet containing the requested signer
-	account := accounts.Account{Address: addr}
-
-	wallet, err := api.b.AccountManager().Find(account)
-	if err != nil {
-		return nil, err
-	}
-	// Request the wallet to sign the transaction
-	return wallet.SignTx(account, tx, api.b.ChainConfig().ChainID)
+	return txapi.SignWithAccount(api.b, addr, tx)
 }
 
 // SendTransaction creates a transaction for the given argument, sign it and submit it to the
