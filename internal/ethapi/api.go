@@ -411,7 +411,7 @@ func (api *TransactionAPI) SendTransaction(ctx context.Context, args Transaction
 // SendRawTransactionSync will add the signed transaction to the transaction pool
 // and wait until the transaction has been included in a block and return the receipt, or the timeout.
 func (api *TransactionAPI) SendRawTransactionSync(ctx context.Context, input hexutil.Bytes, timeoutMs *uint64) (map[string]interface{}, error) {
-	return txapi.SendRawTransactionSync(ctx, api.Backend(), input, timeoutMs, errSubClosed, func(hash common.Hash, timeout time.Duration) error {
+	return api.SendRawTransactionSyncWithErrors(ctx, input, timeoutMs, errSubClosed, func(hash common.Hash, timeout time.Duration) error {
 		return &txSyncTimeoutError{
 			msg:  fmt.Sprintf("The transaction was added to the transaction pool but wasn't processed in %v", timeout),
 			hash: hash,

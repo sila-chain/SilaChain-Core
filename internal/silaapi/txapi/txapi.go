@@ -587,7 +587,13 @@ func (api *TransactionAPI) Resend(ctx context.Context, sendArgs txargs.Transacti
 	return Resend(ctx, api.b, api.signer, sendArgs, gasPrice, gasLimit)
 }
 
-func (api *TransactionAPI) SendRawTransactionSync(ctx context.Context, input hexutil.Bytes, timeoutMs *uint64, subClosedErr error, timeoutErr func(common.Hash, time.Duration) error) (map[string]interface{}, error) {
+func (api *TransactionAPI) SendRawTransactionSync(ctx context.Context, input hexutil.Bytes, timeoutMs *uint64) (map[string]interface{}, error) {
+	return api.SendRawTransactionSyncWithErrors(ctx, input, timeoutMs, errors.New("chain subscription closed"), func(hash common.Hash, timeout time.Duration) error {
+		return fmt.Errorf("the transaction was added to the transaction pool but wasn't processed in %v: %s", timeout, hash)
+	})
+}
+
+func (api *TransactionAPI) SendRawTransactionSyncWithErrors(ctx context.Context, input hexutil.Bytes, timeoutMs *uint64, subClosedErr error, timeoutErr func(common.Hash, time.Duration) error) (map[string]interface{}, error) {
 	return SendRawTransactionSync(ctx, api.b, input, timeoutMs, subClosedErr, timeoutErr)
 }
 
