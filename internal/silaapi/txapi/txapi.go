@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"github.com/sila-org/sila/crypto/kzg4844"
 	"github.com/sila-org/sila/internal/silaapi"
+	"github.com/sila-org/sila/internal/silaapi/addrlock"
 	"github.com/sila-org/sila/internal/silaapi/callapi"
 	"github.com/sila-org/sila/internal/silaapi/txargs"
 	"github.com/sila-org/sila/internal/silaapi/txfee"
@@ -29,6 +30,20 @@ import (
 	"github.com/sila-org/sila/params"
 	"github.com/sila-org/sila/rpc"
 )
+
+type TransactionAPI struct {
+	b         Backend
+	nonceLock *addrlock.AddrLocker
+	signer    types.Signer
+}
+
+// NewTransactionAPI creates a new RPC service with methods for interacting with transactions.
+func NewTransactionAPI(b Backend, nonceLock *addrlock.AddrLocker) *TransactionAPI {
+	// The signer used by the API should always be the 'latest' known one because we expect
+	// signers to be backwards-compatible with old transactions.
+	signer := types.LatestSigner(b.ChainConfig())
+	return &TransactionAPI{b, nonceLock, signer}
+}
 
 type Backend interface {
 	GetCanonicalTransaction(common.Hash) (bool, *types.Transaction, common.Hash, uint64, uint64)
