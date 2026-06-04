@@ -9,6 +9,7 @@ import (
 	"github.com/sila-org/sila/crypto/kzg4844"
 	"github.com/sila-org/sila/internal/silaapi"
 	"github.com/sila-org/sila/internal/silaapi/addrlock"
+	"github.com/sila-org/sila/internal/silaapi/blockapi"
 	"github.com/sila-org/sila/internal/silaapi/callapi"
 	"github.com/sila-org/sila/internal/silaapi/txargs"
 	"github.com/sila-org/sila/internal/silaapi/txfee"
@@ -45,7 +46,20 @@ func NewTransactionAPI(b Backend, nonceLock *addrlock.AddrLocker) *TransactionAP
 	return &TransactionAPI{b, nonceLock, signer}
 }
 
+func (api *TransactionAPI) Backend() Backend {
+	return api.b
+}
+
+func (api *TransactionAPI) Signer() types.Signer {
+	return api.signer
+}
+
+func (api *TransactionAPI) NonceLock() *addrlock.AddrLocker {
+	return api.nonceLock
+}
+
 type Backend interface {
+	blockapi.BlockChainBackend
 	GetCanonicalTransaction(common.Hash) (bool, *types.Transaction, common.Hash, uint64, uint64)
 	GetPoolTransaction(common.Hash) *types.Transaction
 	TxIndexDone() bool
@@ -70,6 +84,30 @@ type Backend interface {
 	SubscribeChainEvent(chan<- core.ChainEvent) event.Subscription
 	RPCTxSyncDefaultTimeout() time.Duration
 	RPCTxSyncMaxTimeout() time.Duration
+}
+
+func (api *TransactionAPI) GetBlockTransactionCountByNumber(ctx context.Context, blockNr rpc.BlockNumber) (*hexutil.Uint, error) {
+	return blockapi.GetBlockTransactionCountByNumber(ctx, api.b, blockNr)
+}
+
+func (api *TransactionAPI) GetBlockTransactionCountByHash(ctx context.Context, blockHash common.Hash) (*hexutil.Uint, error) {
+	return blockapi.GetBlockTransactionCountByHash(ctx, api.b, blockHash)
+}
+
+func (api *TransactionAPI) GetTransactionByBlockNumberAndIndex(ctx context.Context, blockNr rpc.BlockNumber, index hexutil.Uint) (*rpctx.RPCTransaction, error) {
+	return blockapi.GetTransactionByBlockNumberAndIndex(ctx, api.b, blockNr, index)
+}
+
+func (api *TransactionAPI) GetTransactionByBlockHashAndIndex(ctx context.Context, blockHash common.Hash, index hexutil.Uint) (*rpctx.RPCTransaction, error) {
+	return blockapi.GetTransactionByBlockHashAndIndex(ctx, api.b, blockHash, index)
+}
+
+func (api *TransactionAPI) GetRawTransactionByBlockNumberAndIndex(ctx context.Context, blockNr rpc.BlockNumber, index hexutil.Uint) hexutil.Bytes {
+	return blockapi.GetRawTransactionByBlockNumberAndIndex(ctx, api.b, blockNr, index)
+}
+
+func (api *TransactionAPI) GetRawTransactionByBlockHashAndIndex(ctx context.Context, blockHash common.Hash, index hexutil.Uint) hexutil.Bytes {
+	return blockapi.GetRawTransactionByBlockHashAndIndex(ctx, api.b, blockHash, index)
 }
 
 func (api *TransactionAPI) GetTransactionCount(ctx context.Context, address common.Address, blockNrOrHash rpc.BlockNumberOrHash) (*hexutil.Uint64, error) {

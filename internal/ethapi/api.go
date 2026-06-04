@@ -385,17 +385,14 @@ func AccessList(ctx context.Context, b Backend, blockNrOrHash rpc.BlockNumberOrH
 
 // TransactionAPI exposes methods for reading and creating transaction data.
 type TransactionAPI struct {
-	b         Backend
-	nonceLock *addrlock.AddrLocker
-	signer    types.Signer
+	*txapi.TransactionAPI
 }
 
 // NewSilaTransactionAPI creates a new RPC service with methods for interacting with transactions.
 func NewSilaTransactionAPI(b Backend, nonceLock *addrlock.AddrLocker) *TransactionAPI {
-	// The signer used by the API should always be the 'latest' known one because we expect
-	// signers to be backwards-compatible with old transactions.
-	signer := types.LatestSigner(b.ChainConfig())
-	return &TransactionAPI{b, nonceLock, signer}
+	return &TransactionAPI{
+		TransactionAPI: txapi.NewTransactionAPI(b, nonceLock),
+	}
 }
 
 // NewTransactionAPI creates a new RPC service with methods for interacting with transactions.
@@ -403,54 +400,24 @@ func NewTransactionAPI(b Backend, nonceLock *addrlock.AddrLocker) *TransactionAP
 	return NewSilaTransactionAPI(b, nonceLock)
 }
 
-// GetBlockTransactionCountByNumber returns the number of transactions in the block with the given block number.
-func (api *TransactionAPI) GetBlockTransactionCountByNumber(ctx context.Context, blockNr rpc.BlockNumber) (*hexutil.Uint, error) {
-	return blockapi.GetBlockTransactionCountByNumber(ctx, api.b, blockNr)
-}
-
-// GetBlockTransactionCountByHash returns the number of transactions in the block with the given hash.
-func (api *TransactionAPI) GetBlockTransactionCountByHash(ctx context.Context, blockHash common.Hash) (*hexutil.Uint, error) {
-	return blockapi.GetBlockTransactionCountByHash(ctx, api.b, blockHash)
-}
-
-// GetTransactionByBlockNumberAndIndex returns the transaction for the given block number and index.
-func (api *TransactionAPI) GetTransactionByBlockNumberAndIndex(ctx context.Context, blockNr rpc.BlockNumber, index hexutil.Uint) (*RPCTransaction, error) {
-	return blockapi.GetTransactionByBlockNumberAndIndex(ctx, api.b, blockNr, index)
-}
-
-// GetTransactionByBlockHashAndIndex returns the transaction for the given block hash and index.
-func (api *TransactionAPI) GetTransactionByBlockHashAndIndex(ctx context.Context, blockHash common.Hash, index hexutil.Uint) (*RPCTransaction, error) {
-	return blockapi.GetTransactionByBlockHashAndIndex(ctx, api.b, blockHash, index)
-}
-
-// GetRawTransactionByBlockNumberAndIndex returns the bytes of the transaction for the given block number and index.
-func (api *TransactionAPI) GetRawTransactionByBlockNumberAndIndex(ctx context.Context, blockNr rpc.BlockNumber, index hexutil.Uint) hexutil.Bytes {
-	return blockapi.GetRawTransactionByBlockNumberAndIndex(ctx, api.b, blockNr, index)
-}
-
-// GetRawTransactionByBlockHashAndIndex returns the bytes of the transaction for the given block hash and index.
-func (api *TransactionAPI) GetRawTransactionByBlockHashAndIndex(ctx context.Context, blockHash common.Hash, index hexutil.Uint) hexutil.Bytes {
-	return blockapi.GetRawTransactionByBlockHashAndIndex(ctx, api.b, blockHash, index)
-}
-
 // GetTransactionCount returns the number of transactions the given address has sent for the given block number
 func (api *TransactionAPI) GetTransactionCount(ctx context.Context, address common.Address, blockNrOrHash rpc.BlockNumberOrHash) (*hexutil.Uint64, error) {
-	return txapi.GetTransactionCount(ctx, api.b, address, blockNrOrHash)
+	return txapi.GetTransactionCount(ctx, api.Backend(), address, blockNrOrHash)
 }
 
 // GetTransactionByHash returns the transaction for the given hash
 func (api *TransactionAPI) GetTransactionByHash(ctx context.Context, hash common.Hash) (*RPCTransaction, error) {
-	return txapi.GetTransactionByHash(ctx, api.b, hash)
+	return txapi.GetTransactionByHash(ctx, api.Backend(), hash)
 }
 
 // GetRawTransactionByHash returns the bytes of the transaction for the given hash.
 func (api *TransactionAPI) GetRawTransactionByHash(ctx context.Context, hash common.Hash) (hexutil.Bytes, error) {
-	return txapi.GetRawTransactionByHash(api.b, hash)
+	return txapi.GetRawTransactionByHash(api.Backend(), hash)
 }
 
 // GetTransactionReceipt returns the transaction receipt for the given transaction hash.
 func (api *TransactionAPI) GetTransactionReceipt(ctx context.Context, hash common.Hash) (map[string]interface{}, error) {
-	return txapi.GetTransactionReceipt(api.b, api.signer, hash)
+	return txapi.GetTransactionReceipt(api.Backend(), api.Signer(), hash)
 }
 
 // SendTransaction creates a transaction for the given argument, sign it and submit it to the
@@ -459,32 +426,32 @@ func (api *TransactionAPI) GetTransactionReceipt(ctx context.Context, hash commo
 // This API is not capable for submitting blob transaction with sidecar.
 func (api *TransactionAPI) SendTransaction(ctx context.Context, args TransactionArgs) (common.Hash, error) {
 	if args.Nonce == nil {
-		api.nonceLock.LockAddr(args.FromAddr())
-		defer api.nonceLock.UnlockAddr(args.FromAddr())
+		api.NonceLock().LockAddr(args.FromAddr())
+		defer api.NonceLock().UnlockAddr(args.FromAddr())
 	}
 	if args.IsEIP4844() {
 		return common.Hash{}, errBlobTxNotSupported
 	}
-	return txapi.SendTransaction(ctx, api.b, args)
+	return txapi.SendTransaction(ctx, api.Backend(), args)
 }
 
 // FillTransaction fills the defaults (nonce, gas, gasPrice or 1559 fields)
 // on a given unsigned transaction, and returns it to the caller for further
 // processing (signing + broadcast).
 func (api *TransactionAPI) FillTransaction(ctx context.Context, args TransactionArgs) (*silaapi.SignTransactionResult, error) {
-	return txapi.FillTransaction(ctx, api.b, args)
+	return txapi.FillTransaction(ctx, api.Backend(), args)
 }
 
 // SendRawTransaction will add the signed transaction to the transaction pool.
 // The sender is responsible for signing the transaction and using the correct nonce.
 func (api *TransactionAPI) SendRawTransaction(ctx context.Context, input hexutil.Bytes) (common.Hash, error) {
-	return txapi.SendRawTransaction(ctx, api.b, input)
+	return txapi.SendRawTransaction(ctx, api.Backend(), input)
 }
 
 // SendRawTransactionSync will add the signed transaction to the transaction pool
 // and wait until the transaction has been included in a block and return the receipt, or the timeout.
 func (api *TransactionAPI) SendRawTransactionSync(ctx context.Context, input hexutil.Bytes, timeoutMs *uint64) (map[string]interface{}, error) {
-	return txapi.SendRawTransactionSync(ctx, api.b, input, timeoutMs, errSubClosed, func(hash common.Hash, timeout time.Duration) error {
+	return txapi.SendRawTransactionSync(ctx, api.Backend(), input, timeoutMs, errSubClosed, func(hash common.Hash, timeout time.Duration) error {
 		return &txSyncTimeoutError{
 			msg:  fmt.Sprintf("The transaction was added to the transaction pool but wasn't processed in %v", timeout),
 			hash: hash,
@@ -502,20 +469,20 @@ func (api *TransactionAPI) SendRawTransactionSync(ctx context.Context, input hex
 //
 // JSON-RPC eth_sign
 func (api *TransactionAPI) Sign(addr common.Address, data hexutil.Bytes) (hexutil.Bytes, error) {
-	return txapi.Sign(api.b, addr, data)
+	return txapi.Sign(api.Backend(), addr, data)
 }
 
 // SignTransaction will sign the given transaction with the from account.
 // The node needs to have the private key of the account corresponding with
 // the given from address and it needs to be unlocked.
 func (api *TransactionAPI) SignTransaction(ctx context.Context, args TransactionArgs) (*silaapi.SignTransactionResult, error) {
-	return txapi.SignTransaction(ctx, api.b, args)
+	return txapi.SignTransaction(ctx, api.Backend(), args)
 }
 
 // PendingTransactions returns the transactions that are in the transaction pool
 // and have a from address that is one of the accounts this node manages.
 func (api *TransactionAPI) PendingTransactions() ([]*RPCTransaction, error) {
-	return txapi.PendingTransactions(api.b, api.signer)
+	return txapi.PendingTransactions(api.Backend(), api.Signer())
 }
 
 // Resend accepts an existing transaction and a new gas price and limit. It will remove
@@ -523,7 +490,7 @@ func (api *TransactionAPI) PendingTransactions() ([]*RPCTransaction, error) {
 //
 // This API is not capable for submitting blob transaction with sidecar.
 func (api *TransactionAPI) Resend(ctx context.Context, sendArgs TransactionArgs, gasPrice *hexutil.Big, gasLimit *hexutil.Uint64) (common.Hash, error) {
-	return txapi.Resend(ctx, api.b, api.signer, sendArgs, gasPrice, gasLimit)
+	return txapi.Resend(ctx, api.Backend(), api.Signer(), sendArgs, gasPrice, gasLimit)
 }
 
 type DebugAPI struct {

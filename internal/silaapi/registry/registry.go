@@ -8,6 +8,7 @@ import (
 	"github.com/sila-org/sila/internal/silaapi"
 	"github.com/sila-org/sila/internal/silaapi/addrlock"
 	"github.com/sila-org/sila/internal/silaapi/backend"
+	"github.com/sila-org/sila/internal/silaapi/txapi"
 	"github.com/sila-org/sila/rpc"
 )
 
@@ -16,7 +17,7 @@ func NewSilaBlockChainAPI(apiBackend backend.Backend) interface{} {
 }
 
 func NewSilaTransactionAPI(apiBackend backend.Backend, nonceLock *addrlock.AddrLocker) interface{} {
-	return ethapi.NewSilaTransactionAPI(apiBackend, nonceLock)
+	return txapi.NewTransactionAPI(apiBackend, nonceLock)
 }
 
 func GetAPIs(apiBackend backend.Backend) []rpc.API {
