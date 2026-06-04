@@ -449,3 +449,24 @@ func FillTransaction(ctx context.Context, b Backend, args txargs.TransactionArgs
 	}
 	return &silaapi.SignTransactionResult{Raw: data, Tx: tx}, nil
 }
+
+func SendTransaction(ctx context.Context, b Backend, args txargs.TransactionArgs) (common.Hash, error) {
+	account := accounts.Account{Address: args.FromAddr()}
+
+	wallet, err := b.AccountManager().Find(account)
+	if err != nil {
+		return common.Hash{}, err
+	}
+	if args.IsEIP4844() {
+		return common.Hash{}, errors.New("signing blob transactions not supported")
+	}
+	if err := SetDefaults(&args, ctx, b, SidecarConfig{}); err != nil {
+		return common.Hash{}, err
+	}
+	tx := args.ToTransaction(types.DynamicFeeTxType)
+	signed, err := wallet.SignTx(account, tx, b.ChainConfig().ChainID)
+	if err != nil {
+		return common.Hash{}, err
+	}
+	return callapi.SubmitTransaction(ctx, b, signed)
+}

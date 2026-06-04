@@ -471,36 +471,11 @@ func (api *TransactionAPI) sign(addr common.Address, tx *types.Transaction) (*ty
 //
 // This API is not capable for submitting blob transaction with sidecar.
 func (api *TransactionAPI) SendTransaction(ctx context.Context, args TransactionArgs) (common.Hash, error) {
-	// Look up the wallet containing the requested signer
-	account := accounts.Account{Address: args.FromAddr()}
-
-	wallet, err := api.b.AccountManager().Find(account)
-	if err != nil {
-		return common.Hash{}, err
-	}
-
 	if args.Nonce == nil {
-		// Hold the mutex around signing to prevent concurrent assignment of
-		// the same nonce to multiple accounts.
 		api.nonceLock.LockAddr(args.FromAddr())
 		defer api.nonceLock.UnlockAddr(args.FromAddr())
 	}
-	if args.IsEIP4844() {
-		return common.Hash{}, errBlobTxNotSupported
-	}
-
-	// Set some sanity defaults and terminate on failure
-	if err := setDefaults(&args, ctx, api.b, sidecarConfig{}); err != nil {
-		return common.Hash{}, err
-	}
-	// Assemble the transaction and sign with the wallet
-	tx := args.ToTransaction(types.DynamicFeeTxType)
-
-	signed, err := wallet.SignTx(account, tx, api.b.ChainConfig().ChainID)
-	if err != nil {
-		return common.Hash{}, err
-	}
-	return callapi.SubmitTransaction(ctx, api.b, signed)
+	return txapi.SendTransaction(ctx, api.b, args)
 }
 
 // FillTransaction fills the defaults (nonce, gas, gasPrice or 1559 fields)
