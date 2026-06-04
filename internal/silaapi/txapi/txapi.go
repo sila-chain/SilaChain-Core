@@ -92,6 +92,20 @@ func GetTransactionCount(ctx context.Context, b Backend, address common.Address,
 	return (*hexutil.Uint64)(&nonce), state.Error()
 }
 
+func (api *TransactionAPI) GetTransactionByHash(ctx context.Context, hash common.Hash) (*rpctx.RPCTransaction, error) {
+	return GetTransactionByHash(ctx, api.b, hash)
+}
+
+// GetRawTransactionByHash returns the bytes of the transaction for the given hash.
+func (api *TransactionAPI) GetRawTransactionByHash(ctx context.Context, hash common.Hash) (hexutil.Bytes, error) {
+	return GetRawTransactionByHash(api.b, hash)
+}
+
+// GetTransactionReceipt returns the transaction receipt for the given transaction hash.
+func (api *TransactionAPI) GetTransactionReceipt(ctx context.Context, hash common.Hash) (map[string]interface{}, error) {
+	return GetTransactionReceipt(api.b, api.signer, hash)
+}
+
 func GetTransactionByHash(ctx context.Context, b Backend, hash common.Hash) (*rpctx.RPCTransaction, error) {
 	found, tx, blockHash, blockNumber, index := b.GetCanonicalTransaction(hash)
 	if !found {
