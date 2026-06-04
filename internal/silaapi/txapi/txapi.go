@@ -530,6 +530,18 @@ func SendTransaction(ctx context.Context, b Backend, args txargs.TransactionArgs
 	return callapi.SubmitTransaction(ctx, b, signed)
 }
 
+func (api *TransactionAPI) PendingTransactions() ([]*rpctx.RPCTransaction, error) {
+	return PendingTransactions(api.b, api.signer)
+}
+
+func (api *TransactionAPI) Resend(ctx context.Context, sendArgs txargs.TransactionArgs, gasPrice *hexutil.Big, gasLimit *hexutil.Uint64) (common.Hash, error) {
+	return Resend(ctx, api.b, api.signer, sendArgs, gasPrice, gasLimit)
+}
+
+func (api *TransactionAPI) SendRawTransactionSync(ctx context.Context, input hexutil.Bytes, timeoutMs *uint64, subClosedErr error, timeoutErr func(common.Hash, time.Duration) error) (map[string]interface{}, error) {
+	return SendRawTransactionSync(ctx, api.b, input, timeoutMs, subClosedErr, timeoutErr)
+}
+
 func SignWithAccount(b Backend, addr common.Address, tx *types.Transaction) (*types.Transaction, error) {
 	account := accounts.Account{Address: addr}
 	wallet, err := b.AccountManager().Find(account)
