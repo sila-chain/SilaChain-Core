@@ -1,9 +1,16 @@
 package txapi
 
 import (
+	"bytes"
 	"context"
+	"crypto/sha256"
+	"errors"
 	"fmt"
+	"github.com/sila-org/sila/crypto/kzg4844"
 	"github.com/sila-org/sila/internal/silaapi/callapi"
+	"github.com/sila-org/sila/internal/silaapi/txargs"
+	"github.com/sila-org/sila/internal/silaapi/txfee"
+	"github.com/sila-org/sila/log"
 	"math/big"
 
 	"github.com/sila-org/sila/accounts"
@@ -155,4 +162,178 @@ func SendRawTransaction(ctx context.Context, b Backend, input hexutil.Bytes) (co
 	}
 
 	return callapi.SubmitTransaction(ctx, b, tx)
+}
+
+type SidecarConfig struct {
+	BlobSidecarAllowed bool
+	BlobSidecarVersion byte
+}
+
+// SetDefaults fills in default values for unspecified tx fields.
+func SetDefaults(args *txargs.TransactionArgs, ctx context.Context, b Backend, config SidecarConfig) error {
+	if err := SetBlobTxSidecar(args, ctx, config); err != nil {
+		return err
+	}
+	if err := txfee.SetFeeDefaults(args, ctx, b, b.CurrentHeader()); err != nil {
+		return err
+	}
+
+	if args.Value == nil {
+		args.Value = new(hexutil.Big)
+	}
+	if args.Nonce == nil {
+		nonce, err := b.GetPoolNonce(ctx, args.FromAddr())
+		if err != nil {
+			return err
+		}
+		args.Nonce = (*hexutil.Uint64)(&nonce)
+	}
+	if args.Data != nil && args.Input != nil && !bytes.Equal(*args.Data, *args.Input) {
+		return errors.New(`both "data" and "input" are set and not equal. Please use "input" to pass transaction call data`)
+	}
+
+	if args.BlobHashes != nil && len(args.BlobHashes) == 0 {
+		return errors.New("need at least 1 blob for a blob transaction")
+	}
+	if args.BlobHashes != nil && len(args.BlobHashes) > params.BlobTxMaxBlobs {
+		return fmt.Errorf("too many blobs in transaction (have=%d, max=%d)", len(args.BlobHashes), params.BlobTxMaxBlobs)
+	}
+
+	if args.To == nil {
+		if args.BlobHashes != nil {
+			return errors.New(`missing "to" in blob transaction`)
+		}
+		if len(args.DataBytes()) == 0 {
+			return errors.New(`contract creation without any data provided`)
+		}
+	}
+
+	if args.Gas == nil {
+		data := args.DataBytes()
+		callArgs := txargs.TransactionArgs{
+			From:                 args.From,
+			To:                   args.To,
+			GasPrice:             args.GasPrice,
+			MaxFeePerGas:         args.MaxFeePerGas,
+			MaxPriorityFeePerGas: args.MaxPriorityFeePerGas,
+			Value:                args.Value,
+			Data:                 (*hexutil.Bytes)(&data),
+			AccessList:           args.AccessList,
+			BlobFeeCap:           args.BlobFeeCap,
+			BlobHashes:           args.BlobHashes,
+			AuthorizationList:    args.AuthorizationList,
+		}
+		latestBlockNr := rpc.BlockNumberOrHashWithNumber(rpc.LatestBlockNumber)
+		estimated, err := callapi.DoEstimateGas(ctx, b, callArgs, latestBlockNr, nil, nil, b.RPCGasCap())
+		if err != nil {
+			return err
+		}
+		args.Gas = &estimated
+		log.Trace("Estimated gas usage automatically", "gas", args.Gas)
+	}
+
+	want := b.ChainConfig().ChainID
+	if args.ChainID != nil {
+		if have := (*big.Int)(args.ChainID); have.Cmp(want) != 0 {
+			return fmt.Errorf("chainId does not match node's (have=%v, want=%v)", have, want)
+		}
+	} else {
+		args.ChainID = (*hexutil.Big)(want)
+	}
+	return nil
+}
+
+// SetBlobTxSidecar adds the blob tx sidecar.
+func SetBlobTxSidecar(args *txargs.TransactionArgs, ctx context.Context, config SidecarConfig) error {
+	if args.Blobs == nil {
+		return nil
+	}
+	if !config.BlobSidecarAllowed {
+		return errors.New(`"blobs" is not supported for this RPC method`)
+	}
+	if args.Commitments == nil && args.Proofs != nil {
+		return errors.New(`blob proofs provided while commitments were not`)
+	} else if args.Commitments != nil && args.Proofs == nil {
+		return errors.New(`blob commitments provided while proofs were not`)
+	}
+
+	n := len(args.Blobs)
+	if args.BlobHashes != nil && len(args.BlobHashes) != n {
+		return fmt.Errorf("number of blobs and hashes mismatch (have=%d, want=%d)", len(args.BlobHashes), n)
+	}
+	if args.Commitments != nil && len(args.Commitments) != n {
+		return fmt.Errorf("number of blobs and commitments mismatch (have=%d, want=%d)", len(args.Commitments), n)
+	}
+
+	proofLen := n
+	if config.BlobSidecarVersion == types.BlobSidecarVersion1 {
+		proofLen = n * kzg4844.CellProofsPerBlob
+	}
+	if args.Proofs != nil && len(args.Proofs) != proofLen {
+		if len(args.Proofs) != n {
+			return fmt.Errorf("number of blobs and proofs mismatch (have=%d, want=%d)", len(args.Proofs), proofLen)
+		}
+		log.Debug("Unset legacy commitments and proofs", "blobs", n, "proofs", len(args.Proofs))
+		args.Commitments, args.Proofs = nil, nil
+	}
+
+	if args.Commitments == nil {
+		var (
+			commitments = make([]kzg4844.Commitment, n)
+			proofs      = make([]kzg4844.Proof, 0, proofLen)
+		)
+		for i := range args.Blobs {
+			c, err := kzg4844.BlobToCommitment(&args.Blobs[i])
+			if err != nil {
+				return fmt.Errorf("blobs[%d]: error computing commitment: %v", i, err)
+			}
+			commitments[i] = c
+
+			switch config.BlobSidecarVersion {
+			case types.BlobSidecarVersion0:
+				p, err := kzg4844.ComputeBlobProof(&args.Blobs[i], c)
+				if err != nil {
+					return fmt.Errorf("blobs[%d]: error computing proof: %v", i, err)
+				}
+				proofs = append(proofs, p)
+			case types.BlobSidecarVersion1:
+				ps, err := kzg4844.ComputeCellProofs(&args.Blobs[i])
+				if err != nil {
+					return fmt.Errorf("blobs[%d]: error computing proof: %v", i, err)
+				}
+				proofs = append(proofs, ps...)
+			}
+		}
+		args.Commitments = commitments
+		args.Proofs = proofs
+	} else {
+		switch config.BlobSidecarVersion {
+		case types.BlobSidecarVersion0:
+			for i := range args.Blobs {
+				if err := kzg4844.VerifyBlobProof(&args.Blobs[i], args.Commitments[i], args.Proofs[i]); err != nil {
+					return fmt.Errorf("failed to verify blob proof: %v", err)
+				}
+			}
+		case types.BlobSidecarVersion1:
+			if err := kzg4844.VerifyCellProofs(args.Blobs, args.Commitments, args.Proofs); err != nil {
+				return fmt.Errorf("failed to verify blob proof: %v", err)
+			}
+		}
+	}
+
+	hashes := make([]common.Hash, n)
+	hasher := sha256.New()
+	for i, c := range args.Commitments {
+		hashes[i] = kzg4844.CalcBlobHashV1(hasher, &c)
+	}
+	if args.BlobHashes != nil {
+		for i, h := range hashes {
+			if h != args.BlobHashes[i] {
+				return fmt.Errorf("blob hash verification failed (have=%s, want=%s)", args.BlobHashes[i], h)
+			}
+		}
+	} else {
+		args.BlobHashes = hashes
+	}
+	return nil
 }
