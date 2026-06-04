@@ -283,32 +283,13 @@ func RPCMarshalHeader(head *types.Header) map[string]interface{} {
 // RPCTransaction represents a transaction that will serialize to the RPC representation of a transaction.
 type RPCTransaction = rpctx.RPCTransaction
 
-// accessListResult returns an optional accesslist
-// It's the result of the `debug_createAccessList` RPC call.
-// It contains an error if the transaction itself failed.
-type accessListResult struct {
-	Accesslist *types.AccessList `json:"accessList"`
-	Error      string            `json:"error,omitempty"`
-	GasUsed    hexutil.Uint64    `json:"gasUsed"`
-}
+type accessListResult = callapi.AccessListResult
 
 // CreateAccessList creates an EIP-2930 type AccessList for the given transaction.
 // Reexec and BlockNrOrHash can be specified to create the accessList on top of a certain state.
 // StateOverrides can be used to create the accessList while taking into account state changes from previous transactions.
 func (api *BlockChainAPI) CreateAccessList(ctx context.Context, args TransactionArgs, blockNrOrHash *rpc.BlockNumberOrHash, stateOverrides *override.StateOverride) (*accessListResult, error) {
-	bNrOrHash := rpc.BlockNumberOrHashWithNumber(rpc.LatestBlockNumber)
-	if blockNrOrHash != nil {
-		bNrOrHash = *blockNrOrHash
-	}
-	acl, gasUsed, vmerr, err := AccessList(ctx, api.b, bNrOrHash, args, stateOverrides)
-	if err != nil {
-		return nil, err
-	}
-	result := &accessListResult{Accesslist: &acl, GasUsed: hexutil.Uint64(gasUsed)}
-	if vmerr != nil {
-		result.Error = vmerr.Error()
-	}
-	return result, nil
+	return callapi.CreateAccessList(ctx, api.b, args, blockNrOrHash, stateOverrides)
 }
 
 type config struct {
