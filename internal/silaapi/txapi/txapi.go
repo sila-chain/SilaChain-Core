@@ -570,3 +570,16 @@ func SendRawTransactionSync(ctx context.Context, b Backend, input hexutil.Bytes,
 		}
 	}
 }
+
+func Sign(b Backend, addr common.Address, data hexutil.Bytes) (hexutil.Bytes, error) {
+	account := accounts.Account{Address: addr}
+	wallet, err := b.AccountManager().Find(account)
+	if err != nil {
+		return nil, err
+	}
+	signature, err := wallet.SignText(account, data)
+	if err == nil {
+		signature[64] += 27
+	}
+	return signature, err
+}

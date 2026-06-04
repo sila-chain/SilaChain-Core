@@ -502,19 +502,7 @@ func (api *TransactionAPI) SendRawTransactionSync(ctx context.Context, input hex
 //
 // JSON-RPC eth_sign
 func (api *TransactionAPI) Sign(addr common.Address, data hexutil.Bytes) (hexutil.Bytes, error) {
-	// Look up the wallet containing the requested signer
-	account := accounts.Account{Address: addr}
-
-	wallet, err := api.b.AccountManager().Find(account)
-	if err != nil {
-		return nil, err
-	}
-	// Sign the requested hash with the wallet
-	signature, err := wallet.SignText(account, data)
-	if err == nil {
-		signature[64] += 27 // Transform V from 0/1 to 27/28 according to the yellow paper
-	}
-	return signature, err
+	return txapi.Sign(api.b, addr, data)
 }
 
 // SignTransaction will sign the given transaction with the from account.
