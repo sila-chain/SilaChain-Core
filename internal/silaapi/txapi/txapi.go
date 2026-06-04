@@ -7,6 +7,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/sila-org/sila/crypto/kzg4844"
+	"github.com/sila-org/sila/internal/silaapi"
 	"github.com/sila-org/sila/internal/silaapi/callapi"
 	"github.com/sila-org/sila/internal/silaapi/txargs"
 	"github.com/sila-org/sila/internal/silaapi/txfee"
@@ -336,4 +337,46 @@ func SetBlobTxSidecar(args *txargs.TransactionArgs, ctx context.Context, config 
 		args.BlobHashes = hashes
 	}
 	return nil
+}
+
+func SignTransaction(ctx context.Context, b Backend, args txargs.TransactionArgs) (*silaapi.SignTransactionResult, error) {
+	if args.Gas == nil {
+		return nil, errors.New("gas not specified")
+	}
+	if args.GasPrice == nil && (args.MaxPriorityFeePerGas == nil || args.MaxFeePerGas == nil) {
+		return nil, errors.New("missing gasPrice or maxFeePerGas/maxPriorityFeePerGas")
+	}
+	if args.Nonce == nil {
+		return nil, errors.New("nonce not specified")
+	}
+	sidecarVersion := CurrentBlobSidecarVersion(b)
+	config := SidecarConfig{
+		BlobSidecarAllowed: true,
+		BlobSidecarVersion: sidecarVersion,
+	}
+	if err := SetDefaults(&args, ctx, b, config); err != nil {
+		return nil, err
+	}
+	tx := args.ToTransaction(types.DynamicFeeTxType)
+	if err := txfee.CheckTxFee(tx.GasPrice(), tx.Gas(), b.RPCTxFeeCap()); err != nil {
+		return nil, err
+	}
+
+	account := accounts.Account{Address: args.FromAddr()}
+	wallet, err := b.AccountManager().Find(account)
+	if err != nil {
+		return nil, err
+	}
+	signed, err := wallet.SignTx(account, tx, b.ChainConfig().ChainID)
+	if err != nil {
+		return nil, err
+	}
+	if args.IsEIP4844() {
+		signed = signed.WithBlobTxSidecar(types.NewBlobTxSidecar(sidecarVersion, args.Blobs, args.Commitments, args.Proofs))
+	}
+	data, err := signed.MarshalBinary()
+	if err != nil {
+		return nil, err
+	}
+	return &silaapi.SignTransactionResult{Raw: data, Tx: signed}, nil
 }

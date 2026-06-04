@@ -660,50 +660,7 @@ func (api *TransactionAPI) Sign(addr common.Address, data hexutil.Bytes) (hexuti
 // The node needs to have the private key of the account corresponding with
 // the given from address and it needs to be unlocked.
 func (api *TransactionAPI) SignTransaction(ctx context.Context, args TransactionArgs) (*silaapi.SignTransactionResult, error) {
-	if args.Gas == nil {
-		return nil, errors.New("gas not specified")
-	}
-	if args.GasPrice == nil && (args.MaxPriorityFeePerGas == nil || args.MaxFeePerGas == nil) {
-		return nil, errors.New("missing gasPrice or maxFeePerGas/maxPriorityFeePerGas")
-	}
-	if args.Nonce == nil {
-		return nil, errors.New("nonce not specified")
-	}
-	sidecarVersion := types.BlobSidecarVersion0
-	if len(args.Blobs) > 0 {
-		h := api.b.CurrentHeader()
-		if api.b.ChainConfig().IsOsaka(h.Number, h.Time) {
-			sidecarVersion = types.BlobSidecarVersion1
-		}
-	}
-
-	config := sidecarConfig{
-		blobSidecarAllowed: true,
-		blobSidecarVersion: sidecarVersion,
-	}
-	if err := setDefaults(&args, ctx, api.b, config); err != nil {
-		return nil, err
-	}
-	// Before actually sign the transaction, ensure the transaction fee is reasonable.
-	tx := args.ToTransaction(types.DynamicFeeTxType)
-	if err := txfee.CheckTxFee(tx.GasPrice(), tx.Gas(), api.b.RPCTxFeeCap()); err != nil {
-		return nil, err
-	}
-	signed, err := api.sign(args.FromAddr(), tx)
-	if err != nil {
-		return nil, err
-	}
-	// If the transaction-to-sign was a blob transaction, then the signed one
-	// no longer retains the blobs, only the blob hashes. In this step, we need
-	// to put back the blob(s).
-	if args.IsEIP4844() {
-		signed = signed.WithBlobTxSidecar(types.NewBlobTxSidecar(sidecarVersion, args.Blobs, args.Commitments, args.Proofs))
-	}
-	data, err := signed.MarshalBinary()
-	if err != nil {
-		return nil, err
-	}
-	return &silaapi.SignTransactionResult{Raw: data, Tx: signed}, nil
+	return txapi.SignTransaction(ctx, api.b, args)
 }
 
 // PendingTransactions returns the transactions that are in the transaction pool
