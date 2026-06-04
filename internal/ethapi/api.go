@@ -475,6 +475,9 @@ func (api *TransactionAPI) SendTransaction(ctx context.Context, args Transaction
 		api.nonceLock.LockAddr(args.FromAddr())
 		defer api.nonceLock.UnlockAddr(args.FromAddr())
 	}
+	if args.IsEIP4844() {
+		return common.Hash{}, errBlobTxNotSupported
+	}
 	return txapi.SendTransaction(ctx, api.b, args)
 }
 
