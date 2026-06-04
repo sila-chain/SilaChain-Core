@@ -20,7 +20,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/sila-org/sila/accounts"
+
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/common/hexutil"
 
