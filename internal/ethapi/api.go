@@ -525,34 +525,13 @@ func (api *TransactionAPI) FillTransaction(ctx context.Context, args Transaction
 }
 
 func (api *TransactionAPI) currentBlobSidecarVersion() byte {
-	h := api.b.CurrentHeader()
-	if api.b.ChainConfig().IsOsaka(h.Number, h.Time) {
-		return types.BlobSidecarVersion1
-	}
-	return types.BlobSidecarVersion0
+	return txapi.CurrentBlobSidecarVersion(api.b)
 }
 
 // SendRawTransaction will add the signed transaction to the transaction pool.
 // The sender is responsible for signing the transaction and using the correct nonce.
 func (api *TransactionAPI) SendRawTransaction(ctx context.Context, input hexutil.Bytes) (common.Hash, error) {
-	tx := new(types.Transaction)
-	if err := tx.UnmarshalBinary(input); err != nil {
-		return common.Hash{}, err
-	}
-
-	// Convert legacy blob transaction proofs.
-	// TODO: remove in a future SilaChain release
-	if sc := tx.BlobTxSidecar(); sc != nil {
-		exp := api.currentBlobSidecarVersion()
-		if sc.Version == types.BlobSidecarVersion0 && exp == types.BlobSidecarVersion1 {
-			if err := sc.ToV1(); err != nil {
-				return common.Hash{}, fmt.Errorf("blob sidecar conversion failed: %v", err)
-			}
-			tx = tx.WithBlobTxSidecar(sc)
-		}
-	}
-
-	return callapi.SubmitTransaction(ctx, api.b, tx)
+	return txapi.SendRawTransaction(ctx, api.b, input)
 }
 
 // SendRawTransactionSync will add the signed transaction to the transaction pool
