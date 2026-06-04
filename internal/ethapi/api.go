@@ -674,53 +674,7 @@ func (api *TransactionAPI) PendingTransactions() ([]*RPCTransaction, error) {
 //
 // This API is not capable for submitting blob transaction with sidecar.
 func (api *TransactionAPI) Resend(ctx context.Context, sendArgs TransactionArgs, gasPrice *hexutil.Big, gasLimit *hexutil.Uint64) (common.Hash, error) {
-	if sendArgs.Nonce == nil {
-		return common.Hash{}, errors.New("missing transaction nonce in transaction spec")
-	}
-	if err := setDefaults(&sendArgs, ctx, api.b, sidecarConfig{}); err != nil {
-		return common.Hash{}, err
-	}
-	matchTx := sendArgs.ToTransaction(types.DynamicFeeTxType)
-
-	// Before replacing the old transaction, ensure the _new_ transaction fee is reasonable.
-	price := matchTx.GasPrice()
-	if gasPrice != nil {
-		price = gasPrice.ToInt()
-	}
-	gas := matchTx.Gas()
-	if gasLimit != nil {
-		gas = uint64(*gasLimit)
-	}
-	if err := txfee.CheckTxFee(price, gas, api.b.RPCTxFeeCap()); err != nil {
-		return common.Hash{}, err
-	}
-	// Iterate the pending list for replacement
-	pending, err := api.b.GetPoolTransactions()
-	if err != nil {
-		return common.Hash{}, err
-	}
-	for _, p := range pending {
-		wantSigHash := api.signer.Hash(matchTx)
-		pFrom, err := types.Sender(api.signer, p)
-		if err == nil && pFrom == sendArgs.FromAddr() && api.signer.Hash(p) == wantSigHash {
-			// Match. Re-sign and send the transaction.
-			if gasPrice != nil && (*big.Int)(gasPrice).Sign() != 0 {
-				sendArgs.GasPrice = gasPrice
-			}
-			if gasLimit != nil && *gasLimit != 0 {
-				sendArgs.Gas = gasLimit
-			}
-			signedTx, err := api.sign(sendArgs.FromAddr(), sendArgs.ToTransaction(types.DynamicFeeTxType))
-			if err != nil {
-				return common.Hash{}, err
-			}
-			if err = api.b.SendTx(ctx, signedTx); err != nil {
-				return common.Hash{}, err
-			}
-			return signedTx.Hash(), nil
-		}
-	}
-	return common.Hash{}, fmt.Errorf("transaction %#x not found", matchTx.Hash())
+	return txapi.Resend(ctx, api.b, api.signer, sendArgs, gasPrice, gasLimit)
 }
 
 type DebugAPI struct {

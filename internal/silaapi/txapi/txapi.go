@@ -380,3 +380,56 @@ func SignTransaction(ctx context.Context, b Backend, args txargs.TransactionArgs
 	}
 	return &silaapi.SignTransactionResult{Raw: data, Tx: signed}, nil
 }
+
+func Resend(ctx context.Context, b Backend, signer types.Signer, sendArgs txargs.TransactionArgs, gasPrice *hexutil.Big, gasLimit *hexutil.Uint64) (common.Hash, error) {
+	if sendArgs.Nonce == nil {
+		return common.Hash{}, errors.New("missing transaction nonce in transaction spec")
+	}
+	if err := SetDefaults(&sendArgs, ctx, b, SidecarConfig{}); err != nil {
+		return common.Hash{}, err
+	}
+	matchTx := sendArgs.ToTransaction(types.DynamicFeeTxType)
+
+	price := matchTx.GasPrice()
+	if gasPrice != nil {
+		price = gasPrice.ToInt()
+	}
+	gas := matchTx.Gas()
+	if gasLimit != nil {
+		gas = uint64(*gasLimit)
+	}
+	if err := txfee.CheckTxFee(price, gas, b.RPCTxFeeCap()); err != nil {
+		return common.Hash{}, err
+	}
+	pending, err := b.GetPoolTransactions()
+	if err != nil {
+		return common.Hash{}, err
+	}
+	for _, p := range pending {
+		wantSigHash := signer.Hash(matchTx)
+		pFrom, err := types.Sender(signer, p)
+		if err == nil && pFrom == sendArgs.FromAddr() && signer.Hash(p) == wantSigHash {
+			if gasPrice != nil && (*big.Int)(gasPrice).Sign() != 0 {
+				sendArgs.GasPrice = gasPrice
+			}
+			if gasLimit != nil && *gasLimit != 0 {
+				sendArgs.Gas = gasLimit
+			}
+			tx := sendArgs.ToTransaction(types.DynamicFeeTxType)
+			account := accounts.Account{Address: sendArgs.FromAddr()}
+			wallet, err := b.AccountManager().Find(account)
+			if err != nil {
+				return common.Hash{}, err
+			}
+			signedTx, err := wallet.SignTx(account, tx, b.ChainConfig().ChainID)
+			if err != nil {
+				return common.Hash{}, err
+			}
+			if err = b.SendTx(ctx, signedTx); err != nil {
+				return common.Hash{}, err
+			}
+			return signedTx.Hash(), nil
+		}
+	}
+	return common.Hash{}, fmt.Errorf("transaction %#x not found", matchTx.Hash())
+}
