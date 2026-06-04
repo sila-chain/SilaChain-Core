@@ -37,11 +37,11 @@ import (
 	"github.com/sila-org/sila/internal/silaapi/proofapi"
 	"github.com/sila-org/sila/internal/silaapi/rpctx"
 	"github.com/sila-org/sila/internal/silaapi/txapi"
-	"github.com/sila-org/sila/internal/silaapi/txfee"
+
 	"github.com/sila-org/sila/p2p"
 	"github.com/sila-org/sila/params"
 	"github.com/sila-org/sila/rpc"
-	"math/big"
+
 	"time"
 )
 
