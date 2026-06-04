@@ -17,24 +17,12 @@
 package ethapi
 
 import (
-	"bytes"
 	"context"
-	"crypto/sha256"
-	"errors"
-	"fmt"
-	"math/big"
 
-	"github.com/sila-org/sila/common"
-	"github.com/sila-org/sila/common/hexutil"
 	"github.com/sila-org/sila/core/types"
-	"github.com/sila-org/sila/crypto/kzg4844"
-	"github.com/sila-org/sila/internal/silaapi/callapi"
 	"github.com/sila-org/sila/internal/silaapi/txapi"
 	"github.com/sila-org/sila/internal/silaapi/txargs"
 	"github.com/sila-org/sila/internal/silaapi/txfee"
-	"github.com/sila-org/sila/log"
-	"github.com/sila-org/sila/params"
-	"github.com/sila-org/sila/rpc"
 )
 
 // TransactionArgs represents the arguments to construct a new transaction
