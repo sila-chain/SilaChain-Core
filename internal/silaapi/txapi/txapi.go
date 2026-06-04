@@ -72,6 +72,10 @@ type Backend interface {
 	RPCTxSyncMaxTimeout() time.Duration
 }
 
+func (api *TransactionAPI) GetTransactionCount(ctx context.Context, address common.Address, blockNrOrHash rpc.BlockNumberOrHash) (*hexutil.Uint64, error) {
+	return GetTransactionCount(ctx, api.b, address, blockNrOrHash)
+}
+
 func GetTransactionCount(ctx context.Context, b Backend, address common.Address, blockNrOrHash rpc.BlockNumberOrHash) (*hexutil.Uint64, error) {
 	if blockNr, ok := blockNrOrHash.Number(); ok && blockNr == rpc.PendingBlockNumber {
 		nonce, err := b.GetPoolNonce(ctx, address)
