@@ -426,19 +426,6 @@ func (api *TransactionAPI) SendRawTransactionSync(ctx context.Context, input hex
 	})
 }
 
-// Sign calculates an ECDSA signature using the legacy Ethereum signed-message prefix for compatibility:
-// keccak256("\x19Ethereum Signed Message:\n" + len(message) + message).
-//
-// Note, the produced signature conforms to the secp256k1 curve R, S and V values,
-// where the V value will be 27 or 28 for legacy reasons.
-//
-// The account associated with addr must be unlocked.
-//
-// JSON-RPC eth_sign
-func (api *TransactionAPI) Sign(addr common.Address, data hexutil.Bytes) (hexutil.Bytes, error) {
-	return txapi.Sign(api.Backend(), addr, data)
-}
-
 type DebugAPI struct {
 	b Backend
 	*silaapi.DebugAPI
