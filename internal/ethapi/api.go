@@ -453,11 +453,6 @@ func (api *TransactionAPI) GetTransactionReceipt(ctx context.Context, hash commo
 	return txapi.GetTransactionReceipt(api.b, api.signer, hash)
 }
 
-// sign is a helper function that signs a transaction with the private key of the given address.
-func (api *TransactionAPI) sign(addr common.Address, tx *types.Transaction) (*types.Transaction, error) {
-	return txapi.SignWithAccount(api.b, addr, tx)
-}
-
 // SendTransaction creates a transaction for the given argument, sign it and submit it to the
 // transaction pool.
 //
