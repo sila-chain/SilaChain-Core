@@ -507,21 +507,7 @@ func (api *TransactionAPI) SendTransaction(ctx context.Context, args Transaction
 // on a given unsigned transaction, and returns it to the caller for further
 // processing (signing + broadcast).
 func (api *TransactionAPI) FillTransaction(ctx context.Context, args TransactionArgs) (*silaapi.SignTransactionResult, error) {
-	// Set some sanity defaults and terminate on failure
-	config := sidecarConfig{
-		blobSidecarAllowed: true,
-		blobSidecarVersion: api.currentBlobSidecarVersion(),
-	}
-	if err := setDefaults(&args, ctx, api.b, config); err != nil {
-		return nil, err
-	}
-	// Assemble the transaction and obtain rlp
-	tx := args.ToTransaction(types.DynamicFeeTxType)
-	data, err := tx.MarshalBinary()
-	if err != nil {
-		return nil, err
-	}
-	return &silaapi.SignTransactionResult{Raw: data, Tx: tx}, nil
+	return txapi.FillTransaction(ctx, api.b, args)
 }
 
 func (api *TransactionAPI) currentBlobSidecarVersion() byte {

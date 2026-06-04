@@ -433,3 +433,19 @@ func Resend(ctx context.Context, b Backend, signer types.Signer, sendArgs txargs
 	}
 	return common.Hash{}, fmt.Errorf("transaction %#x not found", matchTx.Hash())
 }
+
+func FillTransaction(ctx context.Context, b Backend, args txargs.TransactionArgs) (*silaapi.SignTransactionResult, error) {
+	config := SidecarConfig{
+		BlobSidecarAllowed: true,
+		BlobSidecarVersion: CurrentBlobSidecarVersion(b),
+	}
+	if err := SetDefaults(&args, ctx, b, config); err != nil {
+		return nil, err
+	}
+	tx := args.ToTransaction(types.DynamicFeeTxType)
+	data, err := tx.MarshalBinary()
+	if err != nil {
+		return nil, err
+	}
+	return &silaapi.SignTransactionResult{Raw: data, Tx: tx}, nil
+}
