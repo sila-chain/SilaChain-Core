@@ -26,7 +26,6 @@ import (
 
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/common/hexutil"
-	"github.com/sila-org/sila/consensus/misc/eip4844"
 	"github.com/sila-org/sila/core/types"
 	"github.com/sila-org/sila/crypto/kzg4844"
 	"github.com/sila-org/sila/internal/silaapi/callapi"
