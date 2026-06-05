@@ -4,7 +4,9 @@
 package errors
 
 import (
+	"errors"
 	"fmt"
+	"github.com/sila-org/sila/core"
 
 	"github.com/sila-org/sila/accounts/abi"
 	"github.com/sila-org/sila/common"
@@ -102,6 +104,40 @@ func (e *TxIndexingError) ErrorCode() int {
 // ErrorData returns the hex encoded revert reason.
 func (e *TxIndexingError) ErrorData() interface{} {
 	return "transaction indexing is in progress"
+}
+
+func TxValidationError(err error) *InvalidTxError {
+	if err == nil {
+		return nil
+	}
+	switch {
+	case errors.Is(err, core.ErrNonceTooHigh):
+		return &InvalidTxError{Message: err.Error(), Code: -38011}
+	case errors.Is(err, core.ErrNonceTooLow):
+		return &InvalidTxError{Message: err.Error(), Code: -38010}
+	case errors.Is(err, core.ErrSenderNoEOA):
+		return &InvalidTxError{Message: err.Error(), Code: -38024}
+	case errors.Is(err, core.ErrFeeCapVeryHigh):
+		return &InvalidTxError{Message: err.Error(), Code: -32602}
+	case errors.Is(err, core.ErrTipVeryHigh):
+		return &InvalidTxError{Message: err.Error(), Code: -32602}
+	case errors.Is(err, core.ErrTipAboveFeeCap):
+		return &InvalidTxError{Message: err.Error(), Code: -32602}
+	case errors.Is(err, core.ErrFeeCapTooLow):
+		return &InvalidTxError{Message: err.Error(), Code: -32602}
+	case errors.Is(err, core.ErrInsufficientFunds):
+		return &InvalidTxError{Message: err.Error(), Code: -38014}
+	case errors.Is(err, core.ErrIntrinsicGas):
+		return &InvalidTxError{Message: err.Error(), Code: -38013}
+	case errors.Is(err, core.ErrInsufficientFundsForTransfer):
+		return &InvalidTxError{Message: err.Error(), Code: -38014}
+	case errors.Is(err, vm.ErrMaxInitCodeSizeExceeded):
+		return &InvalidTxError{Message: err.Error(), Code: -38025}
+	}
+	return &InvalidTxError{
+		Message: err.Error(),
+		Code:    -32603,
+	}
 }
 
 type TxSyncTimeoutError struct {

@@ -17,9 +17,6 @@
 package ethapi
 
 import (
-	"errors"
-	"github.com/sila-org/sila/core"
-	"github.com/sila-org/sila/core/vm"
 	ethapierrors "github.com/sila-org/sila/internal/silaapi/errors"
 )
 
@@ -52,35 +49,5 @@ const (
 )
 
 func txValidationError(err error) *ethapierrors.InvalidTxError {
-	if err == nil {
-		return nil
-	}
-	switch {
-	case errors.Is(err, core.ErrNonceTooHigh):
-		return &ethapierrors.InvalidTxError{Message: err.Error(), Code: errCodeNonceTooHigh}
-	case errors.Is(err, core.ErrNonceTooLow):
-		return &ethapierrors.InvalidTxError{Message: err.Error(), Code: errCodeNonceTooLow}
-	case errors.Is(err, core.ErrSenderNoEOA):
-		return &ethapierrors.InvalidTxError{Message: err.Error(), Code: errCodeSenderIsNotEOA}
-	case errors.Is(err, core.ErrFeeCapVeryHigh):
-		return &ethapierrors.InvalidTxError{Message: err.Error(), Code: errCodeInvalidParams}
-	case errors.Is(err, core.ErrTipVeryHigh):
-		return &ethapierrors.InvalidTxError{Message: err.Error(), Code: errCodeInvalidParams}
-	case errors.Is(err, core.ErrTipAboveFeeCap):
-		return &ethapierrors.InvalidTxError{Message: err.Error(), Code: errCodeInvalidParams}
-	case errors.Is(err, core.ErrFeeCapTooLow):
-		return &ethapierrors.InvalidTxError{Message: err.Error(), Code: errCodeInvalidParams}
-	case errors.Is(err, core.ErrInsufficientFunds):
-		return &ethapierrors.InvalidTxError{Message: err.Error(), Code: errCodeInsufficientFunds}
-	case errors.Is(err, core.ErrIntrinsicGas):
-		return &ethapierrors.InvalidTxError{Message: err.Error(), Code: errCodeIntrinsicGas}
-	case errors.Is(err, core.ErrInsufficientFundsForTransfer):
-		return &ethapierrors.InvalidTxError{Message: err.Error(), Code: errCodeInsufficientFunds}
-	case errors.Is(err, vm.ErrMaxInitCodeSizeExceeded):
-		return &ethapierrors.InvalidTxError{Message: err.Error(), Code: errCodeMaxInitCodeSizeExceeded}
-	}
-	return &ethapierrors.InvalidTxError{
-		Message: err.Error(),
-		Code:    errCodeInternalError,
-	}
+	return ethapierrors.TxValidationError(err)
 }
