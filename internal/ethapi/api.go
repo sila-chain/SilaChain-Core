@@ -19,7 +19,6 @@ package ethapi
 import (
 	"context"
 	"errors"
-	"fmt"
 
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/common/hexutil"
@@ -28,7 +27,6 @@ import (
 	"github.com/sila-org/sila/internal/silaapi/addrlock"
 	"github.com/sila-org/sila/internal/silaapi/blockapi"
 	"github.com/sila-org/sila/internal/silaapi/callapi"
-	ethapierrors "github.com/sila-org/sila/internal/silaapi/errors"
 	"github.com/sila-org/sila/internal/silaapi/netapi"
 	"github.com/sila-org/sila/internal/silaapi/override"
 	"github.com/sila-org/sila/internal/silaapi/proofapi"
@@ -37,8 +35,6 @@ import (
 
 	"github.com/sila-org/sila/p2p"
 	"github.com/sila-org/sila/rpc"
-
-	"time"
 )
 
 // estimateGasErrorRatio is the amount of overestimation eth_estimateGas is
@@ -262,17 +258,6 @@ func NewTransactionAPI(b Backend, nonceLock *addrlock.AddrLocker) *TransactionAP
 // This API is not capable for submitting blob transaction with sidecar.
 func (api *TransactionAPI) SendTransaction(ctx context.Context, args TransactionArgs) (common.Hash, error) {
 	return api.SendTransactionWithBlobError(ctx, args, errBlobTxNotSupported)
-}
-
-// SendRawTransactionSync will add the signed transaction to the transaction pool
-// and wait until the transaction has been included in a block and return the receipt, or the timeout.
-func (api *TransactionAPI) SendRawTransactionSync(ctx context.Context, input hexutil.Bytes, timeoutMs *uint64) (map[string]interface{}, error) {
-	return api.SendRawTransactionSyncWithErrors(ctx, input, timeoutMs, errors.New("chain subscription closed"), func(hash common.Hash, timeout time.Duration) error {
-		return &ethapierrors.TxSyncTimeoutError{
-			Message: fmt.Sprintf("The transaction was added to the transaction pool but wasn't processed in %v", timeout),
-			Hash:    hash,
-		}
-	})
 }
 
 type DebugAPI struct {
