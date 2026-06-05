@@ -203,18 +203,7 @@ func (api *BlockChainAPI) GetBlockReceipts(ctx context.Context, blockNrOrHash rp
 // Note, this function doesn't make and changes in the state/blockchain and is
 // useful to execute and retrieve values.
 func (api *BlockChainAPI) Call(ctx context.Context, args TransactionArgs, blockNrOrHash *rpc.BlockNumberOrHash, overrides *override.StateOverride, blockOverrides *override.BlockOverrides) (hexutil.Bytes, error) {
-	if blockNrOrHash == nil {
-		latest := rpc.BlockNumberOrHashWithNumber(rpc.LatestBlockNumber)
-		blockNrOrHash = &latest
-	}
-	result, err := callapi.DoCall(ctx, api.b, args, *blockNrOrHash, overrides, blockOverrides, api.b.RPCEVMTimeout(), api.b.RPCGasCap())
-	if err != nil {
-		return nil, err
-	}
-	if errors.Is(result.Err, vm.ErrExecutionReverted) {
-		return nil, ethapierrors.NewRevertError(result.Revert())
-	}
-	return result.Return(), result.Err
+	return callapi.Call(ctx, api.b, args, blockNrOrHash, overrides, blockOverrides, api.b.RPCEVMTimeout(), api.b.RPCGasCap())
 }
 
 // SimulateV1 executes series of transactions on top of a base state.

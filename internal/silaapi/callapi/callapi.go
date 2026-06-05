@@ -110,6 +110,20 @@ func applyMessage(ctx context.Context, b CallBackend, args TransactionArgs, stat
 	return res, err
 }
 
+func Call(ctx context.Context, b CallBackend, args TransactionArgs, blockNrOrHash *rpc.BlockNumberOrHash, overrides *override.StateOverride, blockOverrides *override.BlockOverrides, timeout time.Duration, globalGasCap uint64) (hexutil.Bytes, error) {
+	if blockNrOrHash == nil {
+		latest := rpc.BlockNumberOrHashWithNumber(rpc.LatestBlockNumber)
+		blockNrOrHash = &latest
+	}
+	result, err := DoCall(ctx, b, args, *blockNrOrHash, overrides, blockOverrides, timeout, globalGasCap)
+	if err != nil {
+		return nil, err
+	}
+	if errors.Is(result.Err, vm.ErrExecutionReverted) {
+		return nil, silaapierrors.NewRevertError(result.Revert())
+	}
+	return result.Return(), result.Err
+}
 func DoCall(ctx context.Context, b CallBackend, args TransactionArgs, blockNrOrHash rpc.BlockNumberOrHash, overrides *override.StateOverride, blockOverrides *override.BlockOverrides, timeout time.Duration, globalGasCap uint64) (*core.ExecutionResult, error) {
 	defer func(start time.Time) { log.Debug("Executing EVM call finished", "runtime", time.Since(start)) }(time.Now())
 
