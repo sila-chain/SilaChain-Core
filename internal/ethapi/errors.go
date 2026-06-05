@@ -25,12 +25,6 @@ func NewTxIndexingError() *ethapierrors.TxIndexingError {
 	return ethapierrors.NewTxIndexingError()
 }
 
-type callError struct {
-	Message string `json:"message"`
-	Code    int    `json:"code"`
-	Data    string `json:"data,omitempty"`
-}
-
 const (
 	errCodeNonceTooHigh            = -38011
 	errCodeNonceTooLow             = -38010
@@ -44,6 +38,5 @@ const (
 	errCodeClientLimitExceeded     = -38026
 	errCodeInternalError           = -32603
 	errCodeInvalidParams           = -32602
-	errCodeVMError                 = -32015
 	errCodeTxSyncTimeout           = 4
 )

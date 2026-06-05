@@ -98,6 +98,14 @@ func (api *BlockChainAPI) SimulateV1(ctx context.Context, opts simOpts, blockNrO
 }
 
 // simBlock is a batch of calls to be simulated sequentially.
+type callError struct {
+	Message string `json:"message"`
+	Code    int    `json:"code"`
+	Data    string `json:"data,omitempty"`
+}
+
+const errCodeVMError = -32015
+
 type simBlock struct {
 	BlockOverrides *override.BlockOverrides
 	StateOverrides *override.StateOverride
