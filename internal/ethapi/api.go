@@ -28,7 +28,6 @@ import (
 	"github.com/sila-org/sila/internal/silaapi/addrlock"
 	"github.com/sila-org/sila/internal/silaapi/blockapi"
 	"github.com/sila-org/sila/internal/silaapi/callapi"
-	ethapierrors "github.com/sila-org/sila/internal/silaapi/errors"
 	"github.com/sila-org/sila/internal/silaapi/netapi"
 	"github.com/sila-org/sila/internal/silaapi/override"
 	"github.com/sila-org/sila/internal/silaapi/proofapi"
@@ -205,43 +204,6 @@ func (api *BlockChainAPI) Call(ctx context.Context, args TransactionArgs, blockN
 //
 // Note, this function doesn't make any changes in the state/blockchain and is
 // useful to execute and retrieve values.
-func (api *BlockChainAPI) SimulateV1(ctx context.Context, opts simOpts, blockNrOrHash *rpc.BlockNumberOrHash) ([]*simBlockResult, error) {
-	if len(opts.BlockStateCalls) == 0 {
-		return nil, &ethapierrors.InvalidParamsError{Message: "empty input"}
-	} else if len(opts.BlockStateCalls) > maxSimulateBlocks {
-		return nil, &ethapierrors.ClientLimitExceededError{Message: "too many blocks"}
-	}
-	var totalCalls int
-	for _, block := range opts.BlockStateCalls {
-		if len(block.Calls) > maxSimulateCallsPerBlock {
-			return nil, &ethapierrors.ClientLimitExceededError{Message: fmt.Sprintf("too many calls in block: %d > %d", len(block.Calls), maxSimulateCallsPerBlock)}
-		}
-		totalCalls += len(block.Calls)
-		if totalCalls > maxSimulateTotalCalls {
-			return nil, &ethapierrors.ClientLimitExceededError{Message: fmt.Sprintf("too many calls: %d > %d", totalCalls, maxSimulateTotalCalls)}
-		}
-	}
-	if blockNrOrHash == nil {
-		n := rpc.BlockNumberOrHashWithNumber(rpc.LatestBlockNumber)
-		blockNrOrHash = &n
-	}
-	state, base, err := api.b.StateAndHeaderByNumberOrHash(ctx, *blockNrOrHash)
-	if state == nil || err != nil {
-		return nil, err
-	}
-	sim := &simulator{
-		b:              api.b,
-		state:          state,
-		base:           base,
-		chainConfig:    api.b.ChainConfig(),
-		budget:         newGasBudget(api.b.RPCGasCap()),
-		traceTransfers: opts.TraceTransfers,
-		validate:       opts.Validation,
-		fullTx:         opts.ReturnFullTransactions,
-	}
-	return sim.execute(ctx, opts.BlockStateCalls)
-}
-
 // EstimateGas returns the lowest possible gas limit that allows the transaction to run
 // successfully at block `blockNrOrHash`, or the latest block if `blockNrOrHash` is unspecified. It
 // returns error if the transaction would revert or if there are unexpected failures. The returned
