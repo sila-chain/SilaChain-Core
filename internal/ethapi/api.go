@@ -232,16 +232,11 @@ func (api *BlockChainAPI) Config(ctx context.Context) (*configResponse, error) {
 	return blockapi.GetConfig(ctx, api.b)
 }
 
-// TransactionAPI exposes methods for reading and creating transaction data.
-type TransactionAPI struct {
-	*txapi.TransactionAPI
-}
+type TransactionAPI = txapi.TransactionAPI
 
 // NewSilaTransactionAPI creates a new RPC service with methods for interacting with transactions.
 func NewSilaTransactionAPI(b Backend, nonceLock *addrlock.AddrLocker) *TransactionAPI {
-	return &TransactionAPI{
-		TransactionAPI: txapi.NewTransactionAPI(b, nonceLock),
-	}
+	return txapi.NewTransactionAPI(b, nonceLock)
 }
 
 // NewTransactionAPI creates a new RPC service with methods for interacting with transactions.
