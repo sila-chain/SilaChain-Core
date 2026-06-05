@@ -50,7 +50,6 @@ const estimateGasErrorRatio = 0.015
 const maxGetStorageSlots = 1024
 
 var errBlobTxNotSupported = errors.New("signing blob transactions not supported")
-var errSubClosed = errors.New("chain subscription closed")
 
 type SilaAPIBackend = silaapi.SilaAPIBackend
 type SilaAPI = silaapi.SilaAPI
@@ -268,7 +267,7 @@ func (api *TransactionAPI) SendTransaction(ctx context.Context, args Transaction
 // SendRawTransactionSync will add the signed transaction to the transaction pool
 // and wait until the transaction has been included in a block and return the receipt, or the timeout.
 func (api *TransactionAPI) SendRawTransactionSync(ctx context.Context, input hexutil.Bytes, timeoutMs *uint64) (map[string]interface{}, error) {
-	return api.SendRawTransactionSyncWithErrors(ctx, input, timeoutMs, errSubClosed, func(hash common.Hash, timeout time.Duration) error {
+	return api.SendRawTransactionSyncWithErrors(ctx, input, timeoutMs, errors.New("chain subscription closed"), func(hash common.Hash, timeout time.Duration) error {
 		return &ethapierrors.TxSyncTimeoutError{
 			Message: fmt.Sprintf("The transaction was added to the transaction pool but wasn't processed in %v", timeout),
 			Hash:    hash,
