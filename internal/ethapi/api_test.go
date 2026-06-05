@@ -2781,8 +2781,8 @@ func TestSendBlobTransaction(t *testing.T) {
 	_, err = api.SendTransaction(context.Background(), argsFromTransaction(res.Tx, b.acc.Address))
 	if err == nil {
 		t.Errorf("sending tx should have failed")
-	} else if !errors.Is(err, errBlobTxNotSupported) {
-		t.Errorf("unexpected error. Have %v, want %v\n", err, errBlobTxNotSupported)
+	} else if err.Error() != "signing blob transactions not supported" {
+		t.Errorf("unexpected error. Have %v, want %v\n", err, "signing blob transactions not supported")
 	}
 }
 

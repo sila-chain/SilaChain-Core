@@ -18,7 +18,6 @@ package ethapi
 
 import (
 	"context"
-	"errors"
 
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/common/hexutil"
@@ -44,8 +43,6 @@ const estimateGasErrorRatio = 0.015
 // maxGetStorageSlots is the maximum total number of storage slots that can
 // be requested in a single eth_getStorageValues call.
 const maxGetStorageSlots = 1024
-
-var errBlobTxNotSupported = errors.New("signing blob transactions not supported")
 
 type SilaAPIBackend = silaapi.SilaAPIBackend
 type SilaAPI = silaapi.SilaAPI
@@ -250,14 +247,6 @@ func NewSilaTransactionAPI(b Backend, nonceLock *addrlock.AddrLocker) *Transacti
 // NewTransactionAPI creates a new RPC service with methods for interacting with transactions.
 func NewTransactionAPI(b Backend, nonceLock *addrlock.AddrLocker) *TransactionAPI {
 	return NewSilaTransactionAPI(b, nonceLock)
-}
-
-// SendTransaction creates a transaction for the given argument, sign it and submit it to the
-// transaction pool.
-//
-// This API is not capable for submitting blob transaction with sidecar.
-func (api *TransactionAPI) SendTransaction(ctx context.Context, args TransactionArgs) (common.Hash, error) {
-	return api.SendTransactionWithBlobError(ctx, args, errBlobTxNotSupported)
 }
 
 type DebugAPI struct {
