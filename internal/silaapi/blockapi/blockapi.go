@@ -22,6 +22,14 @@ import (
 	"github.com/sila-org/sila/rpc"
 )
 
+type BlockChainAPI struct {
+	b BlockChainBackend
+}
+
+func NewBlockChainAPI(b BlockChainBackend) *BlockChainAPI {
+	return &BlockChainAPI{b: b}
+}
+
 // RPCMarshalBlockWithTransactions converts the given block to the RPC output using the supplied transaction formatter.
 func RPCMarshalBlockWithTransactions(block *types.Block, inclTx bool, formatTx func(int, *types.Transaction) interface{}) map[string]interface{} {
 	fields := RPCMarshalHeader(block.Header())
