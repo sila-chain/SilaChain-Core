@@ -16,15 +16,6 @@
 
 package ethapi
 
-import (
-	ethapierrors "github.com/sila-org/sila/internal/silaapi/errors"
-)
-
-// NewTxIndexingError creates a TxIndexingError instance.
-func NewTxIndexingError() *ethapierrors.TxIndexingError {
-	return ethapierrors.NewTxIndexingError()
-}
-
 const (
 	errCodeNonceTooHigh            = -38011
 	errCodeNonceTooLow             = -38010
