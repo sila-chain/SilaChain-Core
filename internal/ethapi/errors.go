@@ -18,17 +18,10 @@ package ethapi
 
 import (
 	"errors"
-
-	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/core"
 	"github.com/sila-org/sila/core/vm"
 	ethapierrors "github.com/sila-org/sila/internal/silaapi/errors"
 )
-
-type txSyncTimeoutError struct {
-	msg  string
-	hash common.Hash
-}
 
 // NewTxIndexingError creates a TxIndexingError instance.
 func NewTxIndexingError() *ethapierrors.TxIndexingError {
@@ -90,16 +83,4 @@ func txValidationError(err error) *ethapierrors.InvalidTxError {
 		Message: err.Error(),
 		Code:    errCodeInternalError,
 	}
-}
-
-func (e *txSyncTimeoutError) Error() string {
-	return e.msg
-}
-
-func (e *txSyncTimeoutError) ErrorCode() int {
-	return errCodeTxSyncTimeout
-}
-
-func (e *txSyncTimeoutError) ErrorData() interface{} {
-	return e.hash.Hex()
 }

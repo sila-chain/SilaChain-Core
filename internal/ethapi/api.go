@@ -28,6 +28,7 @@ import (
 	"github.com/sila-org/sila/internal/silaapi/addrlock"
 	"github.com/sila-org/sila/internal/silaapi/blockapi"
 	"github.com/sila-org/sila/internal/silaapi/callapi"
+	ethapierrors "github.com/sila-org/sila/internal/silaapi/errors"
 	"github.com/sila-org/sila/internal/silaapi/netapi"
 	"github.com/sila-org/sila/internal/silaapi/override"
 	"github.com/sila-org/sila/internal/silaapi/proofapi"
@@ -268,9 +269,9 @@ func (api *TransactionAPI) SendTransaction(ctx context.Context, args Transaction
 // and wait until the transaction has been included in a block and return the receipt, or the timeout.
 func (api *TransactionAPI) SendRawTransactionSync(ctx context.Context, input hexutil.Bytes, timeoutMs *uint64) (map[string]interface{}, error) {
 	return api.SendRawTransactionSyncWithErrors(ctx, input, timeoutMs, errSubClosed, func(hash common.Hash, timeout time.Duration) error {
-		return &txSyncTimeoutError{
-			msg:  fmt.Sprintf("The transaction was added to the transaction pool but wasn't processed in %v", timeout),
-			hash: hash,
+		return &ethapierrors.TxSyncTimeoutError{
+			Message: fmt.Sprintf("The transaction was added to the transaction pool but wasn't processed in %v", timeout),
+			Hash:    hash,
 		}
 	})
 }
