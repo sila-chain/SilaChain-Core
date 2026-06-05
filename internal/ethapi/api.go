@@ -23,14 +23,12 @@ import (
 	"github.com/sila-org/sila/common/hexutil"
 	"github.com/sila-org/sila/core/types"
 	"github.com/sila-org/sila/internal/silaapi"
-	"github.com/sila-org/sila/internal/silaapi/addrlock"
 	"github.com/sila-org/sila/internal/silaapi/blockapi"
 	"github.com/sila-org/sila/internal/silaapi/callapi"
 	"github.com/sila-org/sila/internal/silaapi/netapi"
 	"github.com/sila-org/sila/internal/silaapi/override"
 	"github.com/sila-org/sila/internal/silaapi/proofapi"
 	"github.com/sila-org/sila/internal/silaapi/rpctx"
-	"github.com/sila-org/sila/internal/silaapi/txapi"
 
 	"github.com/sila-org/sila/p2p"
 	"github.com/sila-org/sila/rpc"
@@ -230,18 +228,6 @@ type configResponse = blockapi.ChainConfigResponse
 // Config implements the EIP-7910 eth_config method.
 func (api *BlockChainAPI) Config(ctx context.Context) (*configResponse, error) {
 	return blockapi.GetConfig(ctx, api.b)
-}
-
-type TransactionAPI = txapi.TransactionAPI
-
-// NewSilaTransactionAPI creates a new RPC service with methods for interacting with transactions.
-func NewSilaTransactionAPI(b Backend, nonceLock *addrlock.AddrLocker) *TransactionAPI {
-	return txapi.NewTransactionAPI(b, nonceLock)
-}
-
-// NewTransactionAPI creates a new RPC service with methods for interacting with transactions.
-func NewTransactionAPI(b Backend, nonceLock *addrlock.AddrLocker) *TransactionAPI {
-	return NewSilaTransactionAPI(b, nonceLock)
 }
 
 type DebugAPI struct {
