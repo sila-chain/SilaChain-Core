@@ -56,9 +56,11 @@ import (
 	"github.com/sila-org/sila/ethdb"
 	"github.com/sila-org/sila/event"
 	"github.com/sila-org/sila/internal/blocktest"
+	"github.com/sila-org/sila/internal/silaapi"
 	"github.com/sila-org/sila/internal/silaapi/blockapi"
 	"github.com/sila-org/sila/internal/silaapi/override"
 	"github.com/sila-org/sila/internal/silaapi/rpctx"
+	"github.com/sila-org/sila/internal/silaapi/txapi"
 	"github.com/sila-org/sila/params"
 	"github.com/sila-org/sila/rpc"
 	"github.com/stretchr/testify/require"
@@ -2698,7 +2700,7 @@ func TestSignTransaction(t *testing.T) {
 	b := newTestBackend(t, 1, genesis, beacon.New(ethash.NewFaker()), func(i int, b *core.BlockGen) {
 		b.SetPoS()
 	})
-	api := NewTransactionAPI(b, nil)
+	api := txapi.NewTransactionAPI(b, nil)
 	res, err := api.FillTransaction(context.Background(), TransactionArgs{
 		From:  &b.acc.Address,
 		To:    &to,
@@ -2736,7 +2738,7 @@ func TestSignBlobTransaction(t *testing.T) {
 	b := newTestBackend(t, 1, genesis, beacon.New(ethash.NewFaker()), func(i int, b *core.BlockGen) {
 		b.SetPoS()
 	})
-	api := NewTransactionAPI(b, nil)
+	api := txapi.NewTransactionAPI(b, nil)
 	res, err := api.FillTransaction(context.Background(), TransactionArgs{
 		From:       &b.acc.Address,
 		To:         &to,
@@ -2767,7 +2769,7 @@ func TestSendBlobTransaction(t *testing.T) {
 	b := newTestBackend(t, 1, genesis, beacon.New(ethash.NewFaker()), func(i int, b *core.BlockGen) {
 		b.SetPoS()
 	})
-	api := NewTransactionAPI(b, nil)
+	api := txapi.NewTransactionAPI(b, nil)
 	res, err := api.FillTransaction(context.Background(), TransactionArgs{
 		From:       &b.acc.Address,
 		To:         &to,
@@ -2839,7 +2841,7 @@ func testFillBlobTransaction(t *testing.T, osaka bool) {
 	b := newTestBackend(t, 1, genesis, beacon.New(ethash.NewFaker()), func(i int, b *core.BlockGen) {
 		b.SetPoS()
 	})
-	api := NewTransactionAPI(b, nil)
+	api := txapi.NewTransactionAPI(b, nil)
 	type result struct {
 		Hashes  []common.Hash
 		Sidecar *types.BlobTxSidecar
@@ -3621,7 +3623,7 @@ func TestRPCGetTransactionReceipt(t *testing.T) {
 
 	var (
 		backend, txHashes = setupReceiptBackend(t, 6)
-		api               = NewTransactionAPI(backend, new(addrlock.AddrLocker))
+		api               = txapi.NewTransactionAPI(backend, new(addrlock.AddrLocker))
 	)
 
 	var testSuite = []struct {
@@ -4023,7 +4025,10 @@ func (b *testBackend) RPCTxSyncMaxTimeout() time.Duration {
 func (b *backendMock) RPCTxSyncDefaultTimeout() time.Duration { return 2 * time.Second }
 func (b *backendMock) RPCTxSyncMaxTimeout() time.Duration     { return 5 * time.Minute }
 
-func makeSignedRaw(t *testing.T, api *TransactionAPI, from, to common.Address, value *big.Int) (hexutil.Bytes, *types.Transaction) {
+func makeSignedRaw(t *testing.T, api interface {
+	FillTransaction(context.Context, TransactionArgs) (*silaapi.SignTransactionResult, error)
+	SignTransaction(context.Context, TransactionArgs) (*silaapi.SignTransactionResult, error)
+}, from, to common.Address, value *big.Int) (hexutil.Bytes, *types.Transaction) {
 	t.Helper()
 
 	fillRes, err := api.FillTransaction(context.Background(), TransactionArgs{
@@ -4042,7 +4047,10 @@ func makeSignedRaw(t *testing.T, api *TransactionAPI, from, to common.Address, v
 }
 
 // makeSelfSignedRaw is a convenience for a 0-ETH self-transfer.
-func makeSelfSignedRaw(t *testing.T, api *TransactionAPI, addr common.Address) (hexutil.Bytes, *types.Transaction) {
+func makeSelfSignedRaw(t *testing.T, api interface {
+	FillTransaction(context.Context, TransactionArgs) (*silaapi.SignTransactionResult, error)
+	SignTransaction(context.Context, TransactionArgs) (*silaapi.SignTransactionResult, error)
+}, addr common.Address) (hexutil.Bytes, *types.Transaction) {
 	return makeSignedRaw(t, api, addr, addr, big.NewInt(0))
 }
 
@@ -4055,7 +4063,7 @@ func TestSendRawTransactionSync_Success(t *testing.T) {
 	b := newTestBackend(t, 0, genesis, ethash.NewFaker(), nil)
 	b.autoMine = true // immediately “mines” the tx in-memory
 
-	api := NewTransactionAPI(b, new(addrlock.AddrLocker))
+	api := txapi.NewTransactionAPI(b, new(addrlock.AddrLocker))
 
 	raw, _ := makeSelfSignedRaw(t, api, b.acc.Address)
 
@@ -4081,7 +4089,7 @@ func TestSendRawTransactionSync_Timeout(t *testing.T) {
 	b := newTestBackend(t, 0, genesis, ethash.NewFaker(), nil)
 	b.autoMine = false // don't mine, should time out
 
-	api := NewTransactionAPI(b, new(addrlock.AddrLocker))
+	api := txapi.NewTransactionAPI(b, new(addrlock.AddrLocker))
 
 	raw, _ := makeSelfSignedRaw(t, api, b.acc.Address)
 
