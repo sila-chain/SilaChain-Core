@@ -11,6 +11,7 @@ import (
 	"github.com/sila-org/sila/internal/silaapi/addrlock"
 	"github.com/sila-org/sila/internal/silaapi/blockapi"
 	"github.com/sila-org/sila/internal/silaapi/callapi"
+	silaapierrors "github.com/sila-org/sila/internal/silaapi/errors"
 	"github.com/sila-org/sila/internal/silaapi/txargs"
 	"github.com/sila-org/sila/internal/silaapi/txfee"
 	"github.com/sila-org/sila/log"
@@ -589,7 +590,10 @@ func (api *TransactionAPI) Resend(ctx context.Context, sendArgs txargs.Transacti
 
 func (api *TransactionAPI) SendRawTransactionSync(ctx context.Context, input hexutil.Bytes, timeoutMs *uint64) (map[string]interface{}, error) {
 	return api.SendRawTransactionSyncWithErrors(ctx, input, timeoutMs, errors.New("chain subscription closed"), func(hash common.Hash, timeout time.Duration) error {
-		return fmt.Errorf("the transaction was added to the transaction pool but wasn't processed in %v: %s", timeout, hash)
+		return &silaapierrors.TxSyncTimeoutError{
+			Message: fmt.Sprintf("the transaction was added to the transaction pool but wasn't processed in %v", timeout),
+			Hash:    hash,
+		}
 	})
 }
 
