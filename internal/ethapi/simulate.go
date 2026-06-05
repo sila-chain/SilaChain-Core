@@ -396,7 +396,7 @@ func (sim *simulator) processBlock(ctx context.Context, block *simBlock, header,
 		msg := call.ToMessage(header.BaseFee, !sim.validate)
 		result, err := evmexec.ApplyMessageWithEVM(ctx, evm, msg, timeout, gp)
 		if err != nil {
-			txErr := txValidationError(err)
+			txErr := ethapierrors.TxValidationError(err)
 			return nil, nil, nil, txErr
 		}
 		// Update the state with pending changes.

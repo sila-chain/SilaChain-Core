@@ -47,7 +47,3 @@ const (
 	errCodeVMError                 = -32015
 	errCodeTxSyncTimeout           = 4
 )
-
-func txValidationError(err error) *ethapierrors.InvalidTxError {
-	return ethapierrors.TxValidationError(err)
-}
