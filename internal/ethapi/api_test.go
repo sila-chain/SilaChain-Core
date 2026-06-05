@@ -1602,7 +1602,7 @@ func TestSimulateV1(t *testing.T) {
 				}},
 			}},
 			want:      nil,
-			expectErr: &ethapierrors.InvalidTxError{Message: fmt.Sprintf("err: insufficient funds for gas * price + value: address %s have 0 want 1000 (supplied gas 4712388)", randomAccounts[0].addr.String()), Code: errCodeInsufficientFunds},
+			expectErr: &ethapierrors.InvalidTxError{Message: fmt.Sprintf("err: insufficient funds for gas * price + value: address %s have 0 want 1000 (supplied gas 4712388)", randomAccounts[0].addr.String()), Code: -38014},
 		}, {
 			// EVM error
 			name: "evm-error",
@@ -2068,7 +2068,7 @@ func TestSimulateV1(t *testing.T) {
 			}},
 			validation: &validation,
 			want:       nil,
-			expectErr:  &ethapierrors.InvalidTxError{Message: fmt.Sprintf("err: nonce too high: address %s, tx: 2 state: 0 (supplied gas 4712388)", accounts[2].addr), Code: errCodeNonceTooHigh},
+			expectErr:  &ethapierrors.InvalidTxError{Message: fmt.Sprintf("err: nonce too high: address %s, tx: 2 state: 0 (supplied gas 4712388)", accounts[2].addr), Code: -38011},
 		},
 		// Contract sends tx in validation mode.
 		{
@@ -4110,8 +4110,8 @@ func TestSendRawTransactionSync_Timeout(t *testing.T) {
 	if !errors.As(err, &de) {
 		t.Fatalf("expected data error with code/data, got %T %v", err, err)
 	}
-	if de.ErrorCode() != errCodeTxSyncTimeout {
-		t.Fatalf("expected code %d, got %d", errCodeTxSyncTimeout, de.ErrorCode())
+	if de.ErrorCode() != 4 {
+		t.Fatalf("expected code %d, got %d", 4, de.ErrorCode())
 	}
 	tx := new(types.Transaction)
 	if e := tx.UnmarshalBinary(raw); e != nil {
