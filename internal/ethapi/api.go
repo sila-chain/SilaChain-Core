@@ -118,10 +118,6 @@ func (api *BlockChainAPI) GetProof(ctx context.Context, address common.Address, 
 	return proofapi.GetProof(ctx, api.b, address, storageKeys, blockNrOrHash)
 }
 
-func decodeStorageKey(s string) (common.Hash, int, error) {
-	return proofapi.DecodeStorageKey(s)
-}
-
 // GetHeaderByNumber returns the requested canonical block header.
 //   - When number is -1 the chain pending header is returned.
 //   - When number is -2 the chain latest header is returned.
@@ -340,13 +336,6 @@ func (api *BlockChainAPI) Config(ctx context.Context) (*configResponse, error) {
 		resp.Last = nil
 	}
 	return &resp, nil
-}
-
-// AccessList creates an access list for the given transaction.
-// If the accesslist creation fails an error is returned.
-// If the transaction itself fails, an vmErr is returned.
-func AccessList(ctx context.Context, b Backend, blockNrOrHash rpc.BlockNumberOrHash, args TransactionArgs, stateOverrides *override.StateOverride) (acl types.AccessList, gasUsed uint64, vmErr error, err error) {
-	return callapi.AccessList(ctx, b, blockNrOrHash, args, stateOverrides)
 }
 
 // TransactionAPI exposes methods for reading and creating transaction data.
