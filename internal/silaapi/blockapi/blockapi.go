@@ -12,8 +12,10 @@ import (
 
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/common/hexutil"
+	"github.com/sila-org/sila/core/forkid"
 	"github.com/sila-org/sila/core/state"
 	"github.com/sila-org/sila/core/types"
+	"github.com/sila-org/sila/core/vm"
 	ethapierrors "github.com/sila-org/sila/internal/silaapi/errors"
 	"github.com/sila-org/sila/internal/silaapi/rpctx"
 	"github.com/sila-org/sila/params"
@@ -90,6 +92,65 @@ type BlockChainBackend interface {
 	GetReceipts(ctx context.Context, blockHash common.Hash) (types.Receipts, error)
 	StateAndHeaderByNumberOrHash(ctx context.Context, blockNrOrHash rpc.BlockNumberOrHash) (*state.StateDB, *types.Header, error)
 	Pending() (*types.Block, types.Receipts, *state.StateDB)
+	CurrentHeader() *types.Header
+}
+
+type ChainConfigInfo struct {
+	ActivationTime  uint64                    `json:"activationTime"`
+	BlobSchedule    *params.BlobConfig        `json:"blobSchedule"`
+	ChainId         *hexutil.Big              `json:"chainId"`
+	ForkId          hexutil.Bytes             `json:"forkId"`
+	Precompiles     map[string]common.Address `json:"precompiles"`
+	SystemContracts map[string]common.Address `json:"systemContracts"`
+}
+
+type ChainConfigResponse struct {
+	Current *ChainConfigInfo `json:"current"`
+	Next    *ChainConfigInfo `json:"next"`
+	Last    *ChainConfigInfo `json:"last"`
+}
+
+func GetConfig(ctx context.Context, b BlockChainBackend) (*ChainConfigResponse, error) {
+	genesis, err := b.HeaderByNumber(ctx, 0)
+	if err != nil {
+		return nil, fmt.Errorf("unable to load genesis: %w", err)
+	}
+	assemble := func(c *params.ChainConfig, ts *uint64) *ChainConfigInfo {
+		if ts == nil {
+			return nil
+		}
+		t := *ts
+
+		rules := c.Rules(c.LondonBlock, true, t)
+		precompiles := make(map[string]common.Address)
+		for addr, c := range vm.ActivePrecompiledContracts(rules) {
+			precompiles[c.Name()] = addr
+		}
+		activationTime := t
+		if genesis.Time >= t {
+			activationTime = 0
+		}
+		forkid := forkid.NewID(c, types.NewBlockWithHeader(genesis), ^uint64(0), t).Hash
+		return &ChainConfigInfo{
+			ActivationTime:  activationTime,
+			BlobSchedule:    c.BlobConfig(c.LatestFork(t)),
+			ChainId:         (*hexutil.Big)(c.ChainID),
+			ForkId:          forkid[:],
+			Precompiles:     precompiles,
+			SystemContracts: c.ActiveSystemContracts(t),
+		}
+	}
+	c := b.ChainConfig()
+	t := b.CurrentHeader().Time
+	resp := ChainConfigResponse{
+		Next:    assemble(c, c.Timestamp(c.LatestFork(t)+1)),
+		Current: assemble(c, c.Timestamp(c.LatestFork(t))),
+		Last:    assemble(c, c.Timestamp(c.LatestFork(^uint64(0)))),
+	}
+	if resp.Next == nil {
+		resp.Last = nil
+	}
+	return &resp, nil
 }
 
 // ChainId returns the replay-protection chain id for the current SilaChain config.

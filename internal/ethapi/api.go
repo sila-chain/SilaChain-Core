@@ -23,10 +23,7 @@ import (
 
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/common/hexutil"
-
-	"github.com/sila-org/sila/core/forkid"
 	"github.com/sila-org/sila/core/types"
-	"github.com/sila-org/sila/core/vm"
 	"github.com/sila-org/sila/internal/silaapi"
 	"github.com/sila-org/sila/internal/silaapi/addrlock"
 	"github.com/sila-org/sila/internal/silaapi/blockapi"
@@ -39,7 +36,6 @@ import (
 	"github.com/sila-org/sila/internal/silaapi/txapi"
 
 	"github.com/sila-org/sila/p2p"
-	"github.com/sila-org/sila/params"
 	"github.com/sila-org/sila/rpc"
 
 	"time"
@@ -273,69 +269,12 @@ func (api *BlockChainAPI) CreateAccessList(ctx context.Context, args Transaction
 	return callapi.CreateAccessList(ctx, api.b, args, blockNrOrHash, stateOverrides)
 }
 
-type config struct {
-	ActivationTime  uint64                    `json:"activationTime"`
-	BlobSchedule    *params.BlobConfig        `json:"blobSchedule"`
-	ChainId         *hexutil.Big              `json:"chainId"`
-	ForkId          hexutil.Bytes             `json:"forkId"`
-	Precompiles     map[string]common.Address `json:"precompiles"`
-	SystemContracts map[string]common.Address `json:"systemContracts"`
-}
-
-type configResponse struct {
-	Current *config `json:"current"`
-	Next    *config `json:"next"`
-	Last    *config `json:"last"`
-}
+type config = blockapi.ChainConfigInfo
+type configResponse = blockapi.ChainConfigResponse
 
 // Config implements the EIP-7910 eth_config method.
 func (api *BlockChainAPI) Config(ctx context.Context) (*configResponse, error) {
-	genesis, err := api.b.HeaderByNumber(ctx, 0)
-	if err != nil {
-		return nil, fmt.Errorf("unable to load genesis: %w", err)
-	}
-	assemble := func(c *params.ChainConfig, ts *uint64) *config {
-		if ts == nil {
-			return nil
-		}
-		t := *ts
-
-		var (
-			rules       = c.Rules(c.LondonBlock, true, t)
-			precompiles = make(map[string]common.Address)
-		)
-		for addr, c := range vm.ActivePrecompiledContracts(rules) {
-			precompiles[c.Name()] = addr
-		}
-		// Activation time is required. If a fork is activated at genesis the value 0 is used
-		activationTime := t
-		if genesis.Time >= t {
-			activationTime = 0
-		}
-		forkid := forkid.NewID(c, types.NewBlockWithHeader(genesis), ^uint64(0), t).Hash
-		return &config{
-			ActivationTime:  activationTime,
-			BlobSchedule:    c.BlobConfig(c.LatestFork(t)),
-			ChainId:         (*hexutil.Big)(c.ChainID),
-			ForkId:          forkid[:],
-			Precompiles:     precompiles,
-			SystemContracts: c.ActiveSystemContracts(t),
-		}
-	}
-	var (
-		c = api.b.ChainConfig()
-		t = api.b.CurrentHeader().Time
-	)
-	resp := configResponse{
-		Next:    assemble(c, c.Timestamp(c.LatestFork(t)+1)),
-		Current: assemble(c, c.Timestamp(c.LatestFork(t))),
-		Last:    assemble(c, c.Timestamp(c.LatestFork(^uint64(0)))),
-	}
-	// Nil out last if no future-fork is configured.
-	if resp.Next == nil {
-		resp.Last = nil
-	}
-	return &resp, nil
+	return blockapi.GetConfig(ctx, api.b)
 }
 
 // TransactionAPI exposes methods for reading and creating transaction data.
