@@ -90,6 +90,10 @@ func (api *BlockChainAPI) GetUncleCountByBlockHash(ctx context.Context, blockHas
 	return GetUncleCountByBlockHash(ctx, api.b, blockHash)
 }
 
+func (api *BlockChainAPI) Config(ctx context.Context) (*ChainConfigResponse, error) {
+	return GetConfig(ctx, api.b)
+}
+
 // RPCMarshalBlockWithTransactions converts the given block to the RPC output using the supplied transaction formatter.
 func RPCMarshalBlockWithTransactions(block *types.Block, inclTx bool, formatTx func(int, *types.Transaction) interface{}) map[string]interface{} {
 	fields := RPCMarshalHeader(block.Header())
