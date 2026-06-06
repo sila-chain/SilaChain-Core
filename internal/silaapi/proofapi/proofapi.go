@@ -72,6 +72,18 @@ type Backend interface {
 	StateAndHeaderByNumberOrHash(ctx context.Context, blockNrOrHash rpc.BlockNumberOrHash) (*state.StateDB, *types.Header, error)
 }
 
+type API struct {
+	b Backend
+}
+
+func NewAPI(b Backend) *API {
+	return &API{b: b}
+}
+
+func (api *API) GetProof(ctx context.Context, address common.Address, storageKeys []string, blockNrOrHash rpc.BlockNumberOrHash) (*AccountResult, error) {
+	return GetProof(ctx, api.b, address, storageKeys, blockNrOrHash)
+}
+
 // GetProof returns the Merkle-proof for a given account and optionally some storage keys.
 func GetProof(ctx context.Context, b Backend, address common.Address, storageKeys []string, blockNrOrHash rpc.BlockNumberOrHash) (*AccountResult, error) {
 	if len(storageKeys) > maxGetProofKeys {

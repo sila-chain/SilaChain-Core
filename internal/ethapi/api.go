@@ -62,6 +62,7 @@ type BlockChainAPI struct {
 	b Backend
 	*blockapi.BlockChainAPI
 	*callapi.API
+	ProofAPI *proofapi.API
 }
 
 // NewSilaBlockChainAPI creates a new SilaChain blockchain API.
@@ -70,6 +71,7 @@ func NewSilaBlockChainAPI(b Backend) *BlockChainAPI {
 		b:             b,
 		BlockChainAPI: blockapi.NewBlockChainAPI(b),
 		API:           callapi.NewAPI(b),
+		ProofAPI:      proofapi.NewAPI(b),
 	}
 }
 
