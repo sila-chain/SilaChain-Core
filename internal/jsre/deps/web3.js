@@ -2601,7 +2601,7 @@ var properties = function () {
         }),
         new Property({
             name: 'version.network',
-            getter: 'net_version',
+            getter: 'silaNet_version',
             inputFormatter: utils.toDecimal
         }),
         new Property({
