@@ -30,6 +30,14 @@ func NewBlockChainAPI(b BlockChainBackend) *BlockChainAPI {
 	return &BlockChainAPI{b: b}
 }
 
+func (api *BlockChainAPI) ChainId() *hexutil.Big {
+	return ChainId(api.b)
+}
+
+func (api *BlockChainAPI) BlockNumber() hexutil.Uint64 {
+	return BlockNumber(api.b)
+}
+
 // RPCMarshalBlockWithTransactions converts the given block to the RPC output using the supplied transaction formatter.
 func RPCMarshalBlockWithTransactions(block *types.Block, inclTx bool, formatTx func(int, *types.Transaction) interface{}) map[string]interface{} {
 	fields := RPCMarshalHeader(block.Header())
