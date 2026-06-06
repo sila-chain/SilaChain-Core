@@ -71,7 +71,7 @@ func DialSilaContext(ctx context.Context, rawurl string) (*SilaClient, error) {
 
 // NewClient creates a client that uses the given RPC client.
 func NewClient(c *rpc.Client) *Client {
-	return &Client{c: c, namespace: "eth"}
+	return NewSilaClient(c)
 }
 
 // NewSilaClient creates a Sila client that uses the given RPC client.
@@ -397,7 +397,7 @@ func (ec *Client) SubscribeTransactionReceipts(ctx context.Context, q *sila.Tran
 // no sync currently running, it returns nil.
 func (ec *Client) SyncProgress(ctx context.Context) (*sila.SyncProgress, error) {
 	var raw json.RawMessage
-	if err := ec.c.CallContext(ctx, &raw, "eth_syncing"); err != nil {
+	if err := ec.c.CallContext(ctx, &raw, ec.rpcMethod("eth_syncing")); err != nil {
 		return nil, err
 	}
 	// Handle the possible response types
@@ -431,11 +431,11 @@ func (ec *Client) SubscribeNewHead(ctx context.Context, ch chan<- *types.Header)
 func (ec *Client) NetworkID(ctx context.Context) (*big.Int, error) {
 	version := new(big.Int)
 	var ver string
-	if err := ec.c.CallContext(ctx, &ver, "net_version"); err != nil {
+	if err := ec.c.CallContext(ctx, &ver, "silaNet_version"); err != nil {
 		return nil, err
 	}
 	if _, ok := version.SetString(ver, 0); !ok {
-		return nil, fmt.Errorf("invalid net_version result %q", ver)
+		return nil, fmt.Errorf("invalid silaNet_version result %q", ver)
 	}
 	return version, nil
 }
@@ -509,7 +509,7 @@ func (ec *Client) FilterLogs(ctx context.Context, q sila.FilterQuery) ([]types.L
 	if err != nil {
 		return nil, err
 	}
-	err = ec.c.CallContext(ctx, &result, "eth_getLogs", arg)
+	err = ec.c.CallContext(ctx, &result, ec.rpcMethod("eth_getLogs"), arg)
 	return result, err
 }
 
@@ -775,7 +775,7 @@ func (ec *Client) SendRawTransactionSync(
 		}
 	}
 	var receipt types.Receipt
-	if err := ec.c.CallContext(ctx, &receipt, "eth_sendRawTransactionSync", hexutil.Bytes(rawTx), ms); err != nil {
+	if err := ec.c.CallContext(ctx, &receipt, ec.rpcMethod("eth_sendRawTransactionSync"), hexutil.Bytes(rawTx), ms); err != nil {
 		return nil, err
 	}
 	return &receipt, nil
@@ -991,6 +991,6 @@ type simulateBlockResultMarshaling struct {
 // SimulateV1 executes transactions on top of a base state.
 func (ec *Client) SimulateV1(ctx context.Context, opts SimulateOptions, blockNrOrHash *rpc.BlockNumberOrHash) ([]SimulateBlockResult, error) {
 	var result []SimulateBlockResult
-	err := ec.c.CallContext(ctx, &result, "eth_simulateV1", opts, blockNrOrHash)
+	err := ec.c.CallContext(ctx, &result, ec.rpcMethod("eth_simulateV1"), opts, blockNrOrHash)
 	return result, err
 }

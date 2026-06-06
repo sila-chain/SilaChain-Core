@@ -45,8 +45,8 @@ func TestNewSilaClient(t *testing.T) {
 
 func TestSilaClientRPCMethodNamespace(t *testing.T) {
 	legacyClient := NewClient(nil)
-	if got := legacyClient.rpcMethod("eth_chainId"); got != "eth_chainId" {
-		t.Fatalf("legacy client method = %q, want eth_chainId", got)
+	if got := legacyClient.rpcMethod("eth_chainId"); got != "sila_chainId" {
+		t.Fatalf("client method = %q, want sila_chainId", got)
 	}
 
 	silaClient := NewSilaClient(nil)
