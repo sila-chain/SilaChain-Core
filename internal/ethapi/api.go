@@ -137,17 +137,6 @@ func (api *BlockChainAPI) GetUncleCountByBlockHash(ctx context.Context, blockHas
 	return blockapi.GetUncleCountByBlockHash(ctx, api.b, blockHash)
 }
 
-// GetStorageValues returns multiple storage slot values for multiple accounts
-// at the given block.
-func (api *BlockChainAPI) GetStorageValues(ctx context.Context, requests map[common.Address][]common.Hash, blockNrOrHash rpc.BlockNumberOrHash) (map[common.Address][]hexutil.Bytes, error) {
-	return blockapi.GetStorageValues(ctx, api.b, requests, blockNrOrHash)
-}
-
-// GetBlockReceipts returns the block receipts for the given block hash or number or tag.
-func (api *BlockChainAPI) GetBlockReceipts(ctx context.Context, blockNrOrHash rpc.BlockNumberOrHash) ([]map[string]interface{}, error) {
-	return blockapi.GetBlockReceipts(ctx, api.b, blockNrOrHash)
-}
-
 // Call executes the given transaction on the state for the given block number.
 //
 // Additionally, the caller can specify a batch of contract for fields overriding.

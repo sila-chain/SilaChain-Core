@@ -50,6 +50,14 @@ func (api *BlockChainAPI) GetStorageAt(ctx context.Context, address common.Addre
 	return GetStorageAt(ctx, api.b, address, hexKey, blockNrOrHash)
 }
 
+func (api *BlockChainAPI) GetStorageValues(ctx context.Context, requests map[common.Address][]common.Hash, blockNrOrHash rpc.BlockNumberOrHash) (map[common.Address][]hexutil.Bytes, error) {
+	return GetStorageValues(ctx, api.b, requests, blockNrOrHash)
+}
+
+func (api *BlockChainAPI) GetBlockReceipts(ctx context.Context, blockNrOrHash rpc.BlockNumberOrHash) ([]map[string]interface{}, error) {
+	return GetBlockReceipts(ctx, api.b, blockNrOrHash)
+}
+
 // RPCMarshalBlockWithTransactions converts the given block to the RPC output using the supplied transaction formatter.
 func RPCMarshalBlockWithTransactions(block *types.Block, inclTx bool, formatTx func(int, *types.Transaction) interface{}) map[string]interface{} {
 	fields := RPCMarshalHeader(block.Header())
