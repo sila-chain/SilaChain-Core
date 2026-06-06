@@ -61,6 +61,7 @@ func NewTxPoolAPI(b Backend) *TxPoolAPI {
 type BlockChainAPI struct {
 	b Backend
 	*blockapi.BlockChainAPI
+	*callapi.API
 }
 
 // NewSilaBlockChainAPI creates a new SilaChain blockchain API.
@@ -68,6 +69,7 @@ func NewSilaBlockChainAPI(b Backend) *BlockChainAPI {
 	return &BlockChainAPI{
 		b:             b,
 		BlockChainAPI: blockapi.NewBlockChainAPI(b),
+		API:           callapi.NewAPI(b),
 	}
 }
 
@@ -84,16 +86,6 @@ type proofList = proofapi.ProofList
 // GetProof returns the Merkle-proof for a given account and optionally some storage keys.
 func (api *BlockChainAPI) GetProof(ctx context.Context, address common.Address, storageKeys []string, blockNrOrHash rpc.BlockNumberOrHash) (*AccountResult, error) {
 	return proofapi.GetProof(ctx, api.b, address, storageKeys, blockNrOrHash)
-}
-
-// Call executes the given transaction on the state for the given block number.
-//
-// Additionally, the caller can specify a batch of contract for fields overriding.
-//
-// Note, this function doesn't make and changes in the state/blockchain and is
-// useful to execute and retrieve values.
-func (api *BlockChainAPI) Call(ctx context.Context, args TransactionArgs, blockNrOrHash *rpc.BlockNumberOrHash, overrides *override.StateOverride, blockOverrides *override.BlockOverrides) (hexutil.Bytes, error) {
-	return callapi.Call(ctx, api.b, args, blockNrOrHash, overrides, blockOverrides, api.b.RPCEVMTimeout(), api.b.RPCGasCap())
 }
 
 // SimulateV1 executes series of transactions on top of a base state.

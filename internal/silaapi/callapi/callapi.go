@@ -54,6 +54,25 @@ type CallBackend interface {
 	GetEVM(ctx context.Context, state *state.StateDB, header *types.Header, vmConfig *vm.Config, blockCtx *vm.BlockContext) *vm.EVM
 }
 
+type API struct {
+	b AccessListBackend
+}
+
+func NewAPI(b AccessListBackend) *API {
+	return &API{b: b}
+}
+
+func (api *API) Call(ctx context.Context, args TransactionArgs, blockNrOrHash *rpc.BlockNumberOrHash, overrides *override.StateOverride, blockOverrides *override.BlockOverrides) (hexutil.Bytes, error) {
+	return Call(ctx, api.b, args, blockNrOrHash, overrides, blockOverrides, api.b.RPCEVMTimeout(), api.b.RPCGasCap())
+}
+
+func (api *API) EstimateGas(ctx context.Context, args TransactionArgs, blockNrOrHash *rpc.BlockNumberOrHash, overrides *override.StateOverride, blockOverrides *override.BlockOverrides) (hexutil.Uint64, error) {
+	return EstimateGas(ctx, api.b, args, blockNrOrHash, overrides, blockOverrides, api.b.RPCGasCap())
+}
+
+func (api *API) CreateAccessList(ctx context.Context, args TransactionArgs, blockNrOrHash *rpc.BlockNumberOrHash, stateOverrides *override.StateOverride) (*AccessListResult, error) {
+	return CreateAccessList(ctx, api.b, args, blockNrOrHash, stateOverrides)
+}
 func NewChainContext(ctx context.Context, backend ChainContextBackend) *ChainContext {
 	return chainctx.NewChainContext(ctx, backend)
 }
@@ -223,6 +242,7 @@ type AccessListBackend interface {
 	CallBackend
 	txfee.FeeBackend
 	RPCGasCap() uint64
+	RPCEVMTimeout() time.Duration
 }
 
 // AccessList creates an access list for the given transaction.
