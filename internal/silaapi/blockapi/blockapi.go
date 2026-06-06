@@ -42,6 +42,14 @@ func (api *BlockChainAPI) GetBalance(ctx context.Context, address common.Address
 	return GetBalance(ctx, api.b, address, blockNrOrHash)
 }
 
+func (api *BlockChainAPI) GetCode(ctx context.Context, address common.Address, blockNrOrHash rpc.BlockNumberOrHash) (hexutil.Bytes, error) {
+	return GetCode(ctx, api.b, address, blockNrOrHash)
+}
+
+func (api *BlockChainAPI) GetStorageAt(ctx context.Context, address common.Address, hexKey string, blockNrOrHash rpc.BlockNumberOrHash) (hexutil.Bytes, error) {
+	return GetStorageAt(ctx, api.b, address, hexKey, blockNrOrHash)
+}
+
 // RPCMarshalBlockWithTransactions converts the given block to the RPC output using the supplied transaction formatter.
 func RPCMarshalBlockWithTransactions(block *types.Block, inclTx bool, formatTx func(int, *types.Transaction) interface{}) map[string]interface{} {
 	fields := RPCMarshalHeader(block.Header())

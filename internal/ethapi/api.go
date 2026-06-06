@@ -137,18 +137,6 @@ func (api *BlockChainAPI) GetUncleCountByBlockHash(ctx context.Context, blockHas
 	return blockapi.GetUncleCountByBlockHash(ctx, api.b, blockHash)
 }
 
-// GetCode returns the code stored at the given address in the state for the given block number.
-func (api *BlockChainAPI) GetCode(ctx context.Context, address common.Address, blockNrOrHash rpc.BlockNumberOrHash) (hexutil.Bytes, error) {
-	return blockapi.GetCode(ctx, api.b, address, blockNrOrHash)
-}
-
-// GetStorageAt returns the storage from the state at the given address, key and
-// block number. The rpc.LatestBlockNumber and rpc.PendingBlockNumber meta block
-// numbers are also allowed.
-func (api *BlockChainAPI) GetStorageAt(ctx context.Context, address common.Address, hexKey string, blockNrOrHash rpc.BlockNumberOrHash) (hexutil.Bytes, error) {
-	return blockapi.GetStorageAt(ctx, api.b, address, hexKey, blockNrOrHash)
-}
-
 // GetStorageValues returns multiple storage slot values for multiple accounts
 // at the given block.
 func (api *BlockChainAPI) GetStorageValues(ctx context.Context, requests map[common.Address][]common.Hash, blockNrOrHash rpc.BlockNumberOrHash) (map[common.Address][]hexutil.Bytes, error) {
