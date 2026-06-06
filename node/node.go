@@ -378,13 +378,13 @@ func (n *Node) obtainJWTSecret(cliParam string) ([]byte, error) {
 // startup. It's not meant to be called at any time afterwards as it makes certain
 // assumptions about the state of the node.
 func (n *Node) startRPC() error {
-	if err := n.startInProc(filterLegacyCompatibilityAPIs(n.rpcAPIs)); err != nil {
+	if err := n.startInProc(filterSupersededRPCAPIs(n.rpcAPIs)); err != nil {
 		return err
 	}
 
 	// Configure IPC.
 	if n.ipc.endpoint != "" {
-		if err := n.ipc.start(filterLegacyCompatibilityAPIs(n.rpcAPIs)); err != nil {
+		if err := n.ipc.start(filterSupersededRPCAPIs(n.rpcAPIs)); err != nil {
 			return err
 		}
 	}
@@ -589,7 +589,7 @@ func (n *Node) RegisterAPIs(apis []rpc.API) {
 // getAPIs return two sets of APIs, both the ones that do not require
 // authentication, and the complete set
 func (n *Node) getAPIs() (unauthenticated, all []rpc.API) {
-	all = filterLegacyCompatibilityAPIs(n.rpcAPIs)
+	all = filterSupersededRPCAPIs(n.rpcAPIs)
 	for _, api := range all {
 		if !api.Authenticated {
 			unauthenticated = append(unauthenticated, api)

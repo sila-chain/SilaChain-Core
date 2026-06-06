@@ -643,9 +643,9 @@ func (is *ipcServer) stop() error {
 // RegisterApis checks the given modules' availability, generates an allowlist based on the allowed modules,
 // and then registers all of the APIs exposed by the services.
 
-// filterLegacyCompatibilityAPIs removes legacy RPC namespaces when the
+// filterSupersededRPCAPIs removes superseded RPC namespaces when the
 // corresponding Sila-native namespace is available.
-func filterLegacyCompatibilityAPIs(apis []rpc.API) []rpc.API {
+func filterSupersededRPCAPIs(apis []rpc.API) []rpc.API {
 	hasSila := make(map[string]bool)
 	for _, api := range apis {
 		hasSila[api.Namespace] = true

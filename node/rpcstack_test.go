@@ -625,7 +625,7 @@ func TestHTTP2H2C(t *testing.T) {
 	}
 }
 
-func TestFilterLegacyCompatibilityAPIs(t *testing.T) {
+func TestFilterSupersededRPCAPIs(t *testing.T) {
 	apis := []rpc.API{
 		{Namespace: "eth", Service: &testService{}},
 		{Namespace: "net", Service: &testService{}},
@@ -637,7 +637,7 @@ func TestFilterLegacyCompatibilityAPIs(t *testing.T) {
 		{Namespace: "silaEngine", Service: &testService{}},
 	}
 
-	filtered := filterLegacyCompatibilityAPIs(apis)
+	filtered := filterSupersededRPCAPIs(apis)
 
 	got := make(map[string]bool)
 	for _, api := range filtered {
@@ -650,7 +650,7 @@ func TestFilterLegacyCompatibilityAPIs(t *testing.T) {
 	}
 	for _, namespace := range []string{"eth", "net", "web3", "engine"} {
 		if got[namespace] {
-			t.Fatalf("legacy namespace %q must be filtered when Sila namespace is available", namespace)
+			t.Fatalf("superseded namespace %q must be filtered when Sila namespace is available", namespace)
 		}
 	}
 }
@@ -673,7 +673,7 @@ func (s *testService) Sleep() {
 	time.Sleep(1500 * time.Millisecond)
 }
 
-func TestFilterLegacyCompatibilityAPIsKeepsLegacyWithoutSilaReplacement(t *testing.T) {
+func TestFilterSupersededRPCAPIsKeepsLegacyWithoutSilaReplacement(t *testing.T) {
 	apis := []rpc.API{
 		{Namespace: "eth", Service: &testService{}},
 		{Namespace: "net", Service: &testService{}},
@@ -681,7 +681,7 @@ func TestFilterLegacyCompatibilityAPIsKeepsLegacyWithoutSilaReplacement(t *testi
 		{Namespace: "engine", Service: &testService{}},
 	}
 
-	filtered := filterLegacyCompatibilityAPIs(apis)
+	filtered := filterSupersededRPCAPIs(apis)
 
 	got := make(map[string]bool)
 	for _, api := range filtered {
@@ -689,7 +689,7 @@ func TestFilterLegacyCompatibilityAPIsKeepsLegacyWithoutSilaReplacement(t *testi
 	}
 	for _, namespace := range []string{"eth", "net", "web3", "engine"} {
 		if !got[namespace] {
-			t.Fatalf("legacy namespace %q must remain when Sila replacement is unavailable", namespace)
+			t.Fatalf("superseded namespace %q must remain when Sila replacement is unavailable", namespace)
 		}
 	}
 }
