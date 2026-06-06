@@ -60,31 +60,20 @@ func NewTxPoolAPI(b Backend) *TxPoolAPI {
 // BlockChainAPI provides an API to access SilaChain blockchain data.
 type BlockChainAPI struct {
 	b Backend
+	*blockapi.BlockChainAPI
 }
 
 // NewSilaBlockChainAPI creates a new SilaChain blockchain API.
 func NewSilaBlockChainAPI(b Backend) *BlockChainAPI {
-	return &BlockChainAPI{b}
+	return &BlockChainAPI{
+		b:             b,
+		BlockChainAPI: blockapi.NewBlockChainAPI(b),
+	}
 }
 
 // NewBlockChainAPI creates a new SilaChain blockchain API.
 func NewBlockChainAPI(b Backend) *BlockChainAPI {
 	return NewSilaBlockChainAPI(b)
-}
-
-// ChainId is the replay-protection chain id for the current SilaChain config.
-//
-// Note, this method does not conform to EIP-695 because the configured chain ID is always
-// returned, regardless of the current head block. We used to return an error when the chain
-// wasn't synced up to a block where EIP-155 is enabled, but this behavior caused issues
-// in CL clients.
-func (api *BlockChainAPI) ChainId() *hexutil.Big {
-	return blockapi.ChainId(api.b)
-}
-
-// BlockNumber returns the block number of the chain head.
-func (api *BlockChainAPI) BlockNumber() hexutil.Uint64 {
-	return blockapi.BlockNumber(api.b)
 }
 
 // GetBalance returns the amount of wei for the given address in the state of the
