@@ -444,6 +444,11 @@ func newTestAccountManager(t *testing.T) (*accounts.Manager, accounts.Account) {
 	return am, acc
 }
 
+var (
+	testTransferTopic   = common.HexToHash("ddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef")
+	testTransferAddress = common.HexToAddress("0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE")
+)
+
 type testBackend struct {
 	db     ethdb.Database
 	chain  *core.BlockChain
@@ -1965,9 +1970,9 @@ func TestSimulateV1(t *testing.T) {
 					ReturnValue: "0x",
 					GasUsed:     "0x77dc",
 					Logs: []log{{
-						Address: transferAddress,
+						Address: testTransferAddress,
 						Topics: []common.Hash{
-							transferTopic,
+							testTransferTopic,
 							addressToHash(accounts[0].addr),
 							addressToHash(randomAccounts[0].addr),
 						},
@@ -1975,9 +1980,9 @@ func TestSimulateV1(t *testing.T) {
 						BlockNumber:    hexutil.Uint64(11),
 						BlockTimestamp: hexutil.Uint64(0x70),
 					}, {
-						Address: transferAddress,
+						Address: testTransferAddress,
 						Topics: []common.Hash{
-							transferTopic,
+							testTransferTopic,
 							addressToHash(randomAccounts[0].addr),
 							addressToHash(fixedAccount.addr),
 						},
