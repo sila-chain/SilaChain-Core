@@ -493,7 +493,7 @@ func encodeNodeCompressed(addExtension bool, elements [][]byte, indices []int) [
 		bitmap := make([]byte, 2) // bitmaps for at most 16 children
 		for _, pos := range indices {
 			// Children[16] is only theoretically possible in the Merkle-Patricia-trie,
-			// in practice this field is never used in the Ethereum case. If it occurs,
+			// in practice this field is never used in the SilaChain case. If it occurs,
 			// use the FlagE for marking the presence.
 			if pos >= 16 {
 				log.Warn("Unexpected 16th child encountered in a full node")

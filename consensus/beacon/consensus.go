@@ -78,7 +78,7 @@ func (beacon *Beacon) Author(header *types.Header) (common.Address, error) {
 }
 
 // VerifyHeader checks whether a header conforms to the consensus rules of the
-// stock Ethereum consensus engine.
+// stock SilaChain consensus engine.
 func (beacon *Beacon) VerifyHeader(chain consensus.ChainHeaderReader, header *types.Header) error {
 	// During the live merge transition, the consensus engine used the terminal
 	// total difficulty to detect when PoW (PoA) switched to PoS. Maintaining the
@@ -185,7 +185,7 @@ func (beacon *Beacon) VerifyHeaders(chain consensus.ChainHeaderReader, headers [
 }
 
 // VerifyUncles verifies that the given block's uncles conform to the consensus
-// rules of the Ethereum consensus engine.
+// rules of the SilaChain consensus engine.
 func (beacon *Beacon) VerifyUncles(chain consensus.ChainReader, block *types.Block) error {
 	if !beacon.IsPoSHeader(block.Header()) {
 		return beacon.ethone.VerifyUncles(chain, block)
@@ -198,7 +198,7 @@ func (beacon *Beacon) VerifyUncles(chain consensus.ChainReader, block *types.Blo
 }
 
 // verifyHeader checks whether a header conforms to the consensus rules of the
-// stock Ethereum consensus engine. The difference between the beacon and classic is
+// stock SilaChain consensus engine. The difference between the beacon and classic is
 // (a) The following fields are expected to be constants:
 //   - difficulty is expected to be 0
 //   - nonce is expected to be 0
