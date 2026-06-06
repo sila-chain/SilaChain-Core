@@ -4,16 +4,42 @@
 package registry
 
 import (
-	"github.com/sila-org/sila/internal/ethapi"
+	"context"
+
+	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/internal/silaapi"
 	"github.com/sila-org/sila/internal/silaapi/addrlock"
 	"github.com/sila-org/sila/internal/silaapi/backend"
+	"github.com/sila-org/sila/internal/silaapi/blockapi"
+	"github.com/sila-org/sila/internal/silaapi/callapi"
+	"github.com/sila-org/sila/internal/silaapi/proofapi"
+	"github.com/sila-org/sila/internal/silaapi/simapi"
 	"github.com/sila-org/sila/internal/silaapi/txapi"
 	"github.com/sila-org/sila/rpc"
 )
 
+type blockChainAPI struct {
+	b backend.Backend
+	*blockapi.BlockChainAPI
+	*callapi.API
+	ProofAPI *proofapi.API
+}
+
 func NewSilaBlockChainAPI(apiBackend backend.Backend) interface{} {
-	return ethapi.NewSilaBlockChainAPI(apiBackend)
+	return &blockChainAPI{
+		b:             apiBackend,
+		BlockChainAPI: blockapi.NewBlockChainAPI(apiBackend),
+		API:           callapi.NewAPI(apiBackend),
+		ProofAPI:      proofapi.NewAPI(apiBackend),
+	}
+}
+
+func (api *blockChainAPI) GetProof(ctx context.Context, address common.Address, storageKeys []string, blockNrOrHash rpc.BlockNumberOrHash) (*proofapi.AccountResult, error) {
+	return proofapi.GetProof(ctx, api.b, address, storageKeys, blockNrOrHash)
+}
+
+func (api *blockChainAPI) SimulateV1(ctx context.Context, opts simapi.SimOpts, blockNrOrHash *rpc.BlockNumberOrHash) ([]*simapi.SimBlockResult, error) {
+	return simapi.SimulateV1(ctx, api.b, opts, blockNrOrHash)
 }
 
 func NewSilaTransactionAPI(apiBackend backend.Backend, nonceLock *addrlock.AddrLocker) interface{} {
