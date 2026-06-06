@@ -377,6 +377,26 @@ func (api *DebugAPI) ChaindbCompact() error {
 	return nil
 }
 
+// DbGet returns the raw value of a key stored in the database.
+func (api *DebugAPI) DbGet(key string) (hexutil.Bytes, error) {
+	blob, err := common.ParseHexOrString(key)
+	if err != nil {
+		return nil, err
+	}
+	return api.b.ChainDb().Get(blob)
+}
+
+// DbAncient retrieves an ancient binary blob from the append-only immutable files.
+// It is a mapping to the `AncientReaderOp.Ancient` method
+func (api *DebugAPI) DbAncient(kind string, number uint64) (hexutil.Bytes, error) {
+	return api.b.ChainDb().Ancient(kind, number)
+}
+
+// DbAncients returns the ancient item numbers in the ancient store.
+func (api *DebugAPI) DbAncients() (uint64, error) {
+	return api.b.ChainDb().Ancients()
+}
+
 // SetHead rewinds the head of the blockchain to a previous block.
 func (api *DebugAPI) SetHead(number hexutil.Uint64) error {
 	header := api.b.CurrentHeader()
