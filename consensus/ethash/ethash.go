@@ -33,7 +33,7 @@ type Ethash struct {
 }
 
 // NewFaker creates an ethash consensus engine with a fake PoW scheme that accepts
-// all blocks' seal as valid, though they still have to conform to the Ethereum
+// all blocks' seal as valid, though they still have to conform to the SilaChain
 // consensus rules.
 func NewFaker() *Ethash {
 	return new(Ethash)
@@ -41,7 +41,7 @@ func NewFaker() *Ethash {
 
 // NewFakeFailer creates a ethash consensus engine with a fake PoW scheme that
 // accepts all blocks as valid apart from the single one specified, though they
-// still have to conform to the Ethereum consensus rules.
+// still have to conform to the SilaChain consensus rules.
 func NewFakeFailer(fail uint64) *Ethash {
 	return &Ethash{
 		fakeFail: &fail,
@@ -50,7 +50,7 @@ func NewFakeFailer(fail uint64) *Ethash {
 
 // NewFakeDelayer creates a ethash consensus engine with a fake PoW scheme that
 // accepts all blocks as valid, but delays verifications by some time, though
-// they still have to conform to the Ethereum consensus rules.
+// they still have to conform to the SilaChain consensus rules.
 func NewFakeDelayer(delay time.Duration) *Ethash {
 	return &Ethash{
 		fakeDelay: &delay,
