@@ -130,14 +130,6 @@ func (api *BlockChainAPI) CreateAccessList(ctx context.Context, args Transaction
 	return callapi.CreateAccessList(ctx, api.b, args, blockNrOrHash, stateOverrides)
 }
 
-type config = blockapi.ChainConfigInfo
-type configResponse = blockapi.ChainConfigResponse
-
-// Config implements the EIP-7910 eth_config method.
-func (api *BlockChainAPI) Config(ctx context.Context) (*configResponse, error) {
-	return blockapi.GetConfig(ctx, api.b)
-}
-
 type DebugAPI struct {
 	b Backend
 	*silaapi.DebugAPI
