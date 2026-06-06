@@ -34,8 +34,7 @@ import (
 
 // Client defines typed wrappers for the SilaChain RPC API.
 type Client struct {
-	c         *rpc.Client
-	namespace string
+	c *rpc.Client
 }
 
 // SilaClient is the primary SilaChain RPC client alias.
@@ -76,15 +75,12 @@ func NewClient(c *rpc.Client) *Client {
 
 // NewSilaClient creates a Sila client that uses the given RPC client.
 func NewSilaClient(c *rpc.Client) *SilaClient {
-	return &Client{c: c, namespace: "sila"}
+	return &Client{c: c}
 }
 
 func (ec *Client) rpcMethod(name string) string {
-	if ec.namespace == "" || ec.namespace == "eth" {
-		return name
-	}
 	if len(name) > 4 && name[:4] == "eth_" {
-		return ec.namespace + name[3:]
+		return "sila" + name[3:]
 	}
 	return name
 }
