@@ -86,23 +86,6 @@ func (api *BlockChainAPI) GetProof(ctx context.Context, address common.Address, 
 	return proofapi.GetProof(ctx, api.b, address, storageKeys, blockNrOrHash)
 }
 
-// GetBlockByNumber returns the requested canonical block.
-//   - When number is -1 the chain pending block is returned.
-//   - When number is -2 the chain latest block is returned.
-//   - When number is -3 the chain finalized block is returned.
-//   - When number is -4 the chain safe block is returned.
-//   - When fullTx is true all transactions in the block are returned, otherwise
-//     only the transaction hash is returned.
-func (api *BlockChainAPI) GetBlockByNumber(ctx context.Context, number rpc.BlockNumber, fullTx bool) (map[string]interface{}, error) {
-	return blockapi.GetBlockByNumber(ctx, api.b, number, fullTx)
-}
-
-// GetBlockByHash returns the requested block. When fullTx is true all transactions in the block are returned in full
-// detail, otherwise only the transaction hash is returned.
-func (api *BlockChainAPI) GetBlockByHash(ctx context.Context, hash common.Hash, fullTx bool) (map[string]interface{}, error) {
-	return blockapi.GetBlockByHash(ctx, api.b, hash, fullTx)
-}
-
 // GetUncleByBlockNumberAndIndex returns the uncle block for the given block hash and index.
 func (api *BlockChainAPI) GetUncleByBlockNumberAndIndex(ctx context.Context, blockNr rpc.BlockNumber, index hexutil.Uint) (map[string]interface{}, error) {
 	return blockapi.GetUncleByBlockNumberAndIndex(ctx, api.b, blockNr, index)

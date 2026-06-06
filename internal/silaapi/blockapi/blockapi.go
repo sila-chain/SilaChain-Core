@@ -66,6 +66,14 @@ func (api *BlockChainAPI) GetHeaderByHash(ctx context.Context, hash common.Hash)
 	return GetHeaderByHash(ctx, api.b, hash)
 }
 
+func (api *BlockChainAPI) GetBlockByNumber(ctx context.Context, number rpc.BlockNumber, fullTx bool) (map[string]interface{}, error) {
+	return GetBlockByNumber(ctx, api.b, number, fullTx)
+}
+
+func (api *BlockChainAPI) GetBlockByHash(ctx context.Context, hash common.Hash, fullTx bool) (map[string]interface{}, error) {
+	return GetBlockByHash(ctx, api.b, hash, fullTx)
+}
+
 // RPCMarshalBlockWithTransactions converts the given block to the RPC output using the supplied transaction formatter.
 func RPCMarshalBlockWithTransactions(block *types.Block, inclTx bool, formatTx func(int, *types.Transaction) interface{}) map[string]interface{} {
 	fields := RPCMarshalHeader(block.Header())
