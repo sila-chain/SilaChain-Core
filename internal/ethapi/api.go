@@ -86,20 +86,6 @@ func (api *BlockChainAPI) GetProof(ctx context.Context, address common.Address, 
 	return proofapi.GetProof(ctx, api.b, address, storageKeys, blockNrOrHash)
 }
 
-// GetHeaderByNumber returns the requested canonical block header.
-//   - When number is -1 the chain pending header is returned.
-//   - When number is -2 the chain latest header is returned.
-//   - When number is -3 the chain finalized header is returned.
-//   - When number is -4 the chain safe header is returned.
-func (api *BlockChainAPI) GetHeaderByNumber(ctx context.Context, number rpc.BlockNumber) (map[string]interface{}, error) {
-	return blockapi.GetHeaderByNumber(ctx, api.b, number)
-}
-
-// GetHeaderByHash returns the requested header by hash.
-func (api *BlockChainAPI) GetHeaderByHash(ctx context.Context, hash common.Hash) map[string]interface{} {
-	return blockapi.GetHeaderByHash(ctx, api.b, hash)
-}
-
 // GetBlockByNumber returns the requested canonical block.
 //   - When number is -1 the chain pending block is returned.
 //   - When number is -2 the chain latest block is returned.
