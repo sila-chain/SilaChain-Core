@@ -32,7 +32,7 @@ func WithBlockGasLimit(gaslimit uint64) func(nodeConf *node.Config, ethConf *eth
 	}
 }
 
-// WithCallGasLimit configures the simulated backend to cap eth_calls to a specific
+// WithCallGasLimit configures the simulated backend to cap Sila calls to a specific
 // gas limit when running client operations.
 func WithCallGasLimit(gaslimit uint64) func(nodeConf *node.Config, ethConf *ethconfig.Config) {
 	return func(nodeConf *node.Config, ethConf *ethconfig.Config) {

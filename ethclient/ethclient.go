@@ -903,7 +903,7 @@ func (p *rpcProgress) toSyncProgress() *sila.SyncProgress {
 	}
 }
 
-// SimulateOptions represents the options for eth_simulateV1.
+// SimulateOptions represents the options for sila_simulateV1.
 type SimulateOptions struct {
 	BlockStateCalls        []SimulateBlock `json:"blockStateCalls"`
 	TraceTransfers         bool            `json:"traceTransfers"`
