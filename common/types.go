@@ -72,7 +72,7 @@ func BigToHash(b *big.Int) Hash { return BytesToHash(b.Bytes()) }
 func HexToHash(s string) Hash { return BytesToHash(FromHex(s)) }
 
 // IsHexHash verifies whether a string can represent a valid hex-encoded
-// Ethereum hash or not.
+// SilaChain hash or not.
 func IsHexHash(s string) bool {
 	if has0xPrefix(s) {
 		s = s[2:]
@@ -218,7 +218,7 @@ func (h UnprefixedHash) MarshalText() ([]byte, error) {
 
 /////////// Address
 
-// Address represents the 20 byte address of an Ethereum account.
+// Address represents the 20 byte address of a SilaChain account.
 type Address [AddressLength]byte
 
 // BytesToAddress returns Address with value b.
@@ -238,7 +238,7 @@ func BigToAddress(b *big.Int) Address { return BytesToAddress(b.Bytes()) }
 func HexToAddress(s string) Address { return BytesToAddress(FromHex(s)) }
 
 // IsHexAddress verifies whether a string can represent a valid hex-encoded
-// Ethereum address or not.
+// SilaChain address or not.
 func IsHexAddress(s string) bool {
 	if has0xPrefix(s) {
 		s = s[2:]
