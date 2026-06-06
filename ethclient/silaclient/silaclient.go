@@ -4,14 +4,14 @@
 package silaclient
 
 import (
-	gethclient "github.com/sila-org/sila/ethclient/gethclient"
+	extensions "github.com/sila-org/sila/ethclient/gethclient"
 	"github.com/sila-org/sila/rpc"
 )
 
 // Client is the primary SilaChain RPC extension client.
-type Client = gethclient.SilaClient
+type Client = extensions.SilaClient
 
 // New creates a SilaChain RPC extension client.
 func New(c *rpc.Client) *Client {
-	return gethclient.NewSila(c)
+	return extensions.NewSila(c)
 }
