@@ -2547,22 +2547,12 @@ func TestSimulateV1ChainLinkage(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	stateDB, baseHeader, err := backend.StateAndHeaderByNumberOrHash(ctx, rpc.BlockNumberOrHashWithNumber(rpc.LatestBlockNumber))
+	_, baseHeader, err := backend.StateAndHeaderByNumberOrHash(ctx, rpc.BlockNumberOrHashWithNumber(rpc.LatestBlockNumber))
 	if err != nil {
 		t.Fatalf("failed to get state and header: %v", err)
 	}
 
-	sim := &simulator{
-		b:              backend,
-		state:          stateDB,
-		base:           baseHeader,
-		chainConfig:    backend.ChainConfig(),
-		budget:         newGasBudget(0),
-		traceTransfers: false,
-		validate:       false,
-		fullTx:         false,
-	}
-
+	api := NewBlockChainAPI(backend)
 	var (
 		call1 = TransactionArgs{
 			From:  &sender,
@@ -2593,7 +2583,7 @@ func TestSimulateV1ChainLinkage(t *testing.T) {
 		}
 	)
 
-	results, err := sim.execute(ctx, blocks)
+	results, err := api.SimulateV1(ctx, simOpts{BlockStateCalls: blocks}, nil)
 	if err != nil {
 		t.Fatalf("simulation execution failed: %v", err)
 	}
@@ -2632,23 +2622,8 @@ func TestSimulateV1TxSender(t *testing.T) {
 		ctx = context.Background()
 	)
 	backend := newTestBackend(t, 0, gspec, beacon.New(ethash.NewFaker()), func(i int, b *core.BlockGen) {})
-	stateDB, baseHeader, err := backend.StateAndHeaderByNumberOrHash(ctx, rpc.BlockNumberOrHashWithNumber(rpc.LatestBlockNumber))
-	if err != nil {
-		t.Fatalf("failed to get state and header: %v", err)
-	}
-
-	sim := &simulator{
-		b:              backend,
-		state:          stateDB,
-		base:           baseHeader,
-		chainConfig:    backend.ChainConfig(),
-		budget:         newGasBudget(0),
-		traceTransfers: false,
-		validate:       false,
-		fullTx:         true,
-	}
-
-	results, err := sim.execute(ctx, []simBlock{
+	api := NewBlockChainAPI(backend)
+	results, err := api.SimulateV1(ctx, simOpts{BlockStateCalls: []simBlock{
 		{Calls: []TransactionArgs{
 			{From: &sender, To: &recipient, Value: (*hexutil.Big)(big.NewInt(1000))},
 			{From: &sender2, To: &recipient, Value: (*hexutil.Big)(big.NewInt(2000))},
@@ -2657,7 +2632,7 @@ func TestSimulateV1TxSender(t *testing.T) {
 		{Calls: []TransactionArgs{
 			{From: &sender2, To: &recipient, Value: (*hexutil.Big)(big.NewInt(4000))},
 		}},
-	})
+	}, ReturnFullTransactions: true}, nil)
 	if err != nil {
 		t.Fatalf("simulation execution failed: %v", err)
 	}
@@ -3061,6 +3036,9 @@ func hex2Bytes(str string) *hexutil.Bytes {
 	return &rpcBytes
 }
 
+func newInt(n int64) *hexutil.Big {
+	return (*hexutil.Big)(big.NewInt(n))
+}
 func newUint64(v uint64) *hexutil.Uint64 {
 	rpcUint64 := hexutil.Uint64(v)
 	return &rpcUint64

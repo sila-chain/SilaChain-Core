@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with the SilaChain library. If not, see <http://www.gnu.org/licenses/>.
 
-package ethapi
+package simapi
 
 import (
 	"math/big"
@@ -121,4 +121,7 @@ func TestSimulateSanitizeBlockOrder(t *testing.T) {
 
 func newInt(n int64) *hexutil.Big {
 	return (*hexutil.Big)(big.NewInt(n))
+}
+func newUint64(v uint64) *hexutil.Uint64 {
+	return (*hexutil.Uint64)(&v)
 }
