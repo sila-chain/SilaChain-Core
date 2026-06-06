@@ -86,26 +86,6 @@ func (api *BlockChainAPI) GetProof(ctx context.Context, address common.Address, 
 	return proofapi.GetProof(ctx, api.b, address, storageKeys, blockNrOrHash)
 }
 
-// GetUncleByBlockNumberAndIndex returns the uncle block for the given block hash and index.
-func (api *BlockChainAPI) GetUncleByBlockNumberAndIndex(ctx context.Context, blockNr rpc.BlockNumber, index hexutil.Uint) (map[string]interface{}, error) {
-	return blockapi.GetUncleByBlockNumberAndIndex(ctx, api.b, blockNr, index)
-}
-
-// GetUncleByBlockHashAndIndex returns the uncle block for the given block hash and index.
-func (api *BlockChainAPI) GetUncleByBlockHashAndIndex(ctx context.Context, blockHash common.Hash, index hexutil.Uint) (map[string]interface{}, error) {
-	return blockapi.GetUncleByBlockHashAndIndex(ctx, api.b, blockHash, index)
-}
-
-// GetUncleCountByBlockNumber returns number of uncles in the block for the given block number
-func (api *BlockChainAPI) GetUncleCountByBlockNumber(ctx context.Context, blockNr rpc.BlockNumber) (*hexutil.Uint, error) {
-	return blockapi.GetUncleCountByBlockNumber(ctx, api.b, blockNr)
-}
-
-// GetUncleCountByBlockHash returns number of uncles in the block for the given block hash
-func (api *BlockChainAPI) GetUncleCountByBlockHash(ctx context.Context, blockHash common.Hash) (*hexutil.Uint, error) {
-	return blockapi.GetUncleCountByBlockHash(ctx, api.b, blockHash)
-}
-
 // Call executes the given transaction on the state for the given block number.
 //
 // Additionally, the caller can specify a batch of contract for fields overriding.

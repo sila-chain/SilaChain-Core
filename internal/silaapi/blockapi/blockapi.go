@@ -74,6 +74,22 @@ func (api *BlockChainAPI) GetBlockByHash(ctx context.Context, hash common.Hash, 
 	return GetBlockByHash(ctx, api.b, hash, fullTx)
 }
 
+func (api *BlockChainAPI) GetUncleByBlockNumberAndIndex(ctx context.Context, blockNr rpc.BlockNumber, index hexutil.Uint) (map[string]interface{}, error) {
+	return GetUncleByBlockNumberAndIndex(ctx, api.b, blockNr, index)
+}
+
+func (api *BlockChainAPI) GetUncleByBlockHashAndIndex(ctx context.Context, blockHash common.Hash, index hexutil.Uint) (map[string]interface{}, error) {
+	return GetUncleByBlockHashAndIndex(ctx, api.b, blockHash, index)
+}
+
+func (api *BlockChainAPI) GetUncleCountByBlockNumber(ctx context.Context, blockNr rpc.BlockNumber) (*hexutil.Uint, error) {
+	return GetUncleCountByBlockNumber(ctx, api.b, blockNr)
+}
+
+func (api *BlockChainAPI) GetUncleCountByBlockHash(ctx context.Context, blockHash common.Hash) (*hexutil.Uint, error) {
+	return GetUncleCountByBlockHash(ctx, api.b, blockHash)
+}
+
 // RPCMarshalBlockWithTransactions converts the given block to the RPC output using the supplied transaction formatter.
 func RPCMarshalBlockWithTransactions(block *types.Block, inclTx bool, formatTx func(int, *types.Transaction) interface{}) map[string]interface{} {
 	fields := RPCMarshalHeader(block.Header())
