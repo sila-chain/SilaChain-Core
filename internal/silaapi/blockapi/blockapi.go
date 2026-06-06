@@ -38,6 +38,10 @@ func (api *BlockChainAPI) BlockNumber() hexutil.Uint64 {
 	return BlockNumber(api.b)
 }
 
+func (api *BlockChainAPI) GetBalance(ctx context.Context, address common.Address, blockNrOrHash rpc.BlockNumberOrHash) (*hexutil.Big, error) {
+	return GetBalance(ctx, api.b, address, blockNrOrHash)
+}
+
 // RPCMarshalBlockWithTransactions converts the given block to the RPC output using the supplied transaction formatter.
 func RPCMarshalBlockWithTransactions(block *types.Block, inclTx bool, formatTx func(int, *types.Transaction) interface{}) map[string]interface{} {
 	fields := RPCMarshalHeader(block.Header())

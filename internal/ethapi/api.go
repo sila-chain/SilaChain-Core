@@ -76,13 +76,6 @@ func NewBlockChainAPI(b Backend) *BlockChainAPI {
 	return NewSilaBlockChainAPI(b)
 }
 
-// GetBalance returns the amount of wei for the given address in the state of the
-// given block number. The rpc.LatestBlockNumber and rpc.PendingBlockNumber meta
-// block numbers are also allowed.
-func (api *BlockChainAPI) GetBalance(ctx context.Context, address common.Address, blockNrOrHash rpc.BlockNumberOrHash) (*hexutil.Big, error) {
-	return blockapi.GetBalance(ctx, api.b, address, blockNrOrHash)
-}
-
 // AccountResult structs for GetProof
 type AccountResult = proofapi.AccountResult
 type StorageResult = proofapi.StorageResult
