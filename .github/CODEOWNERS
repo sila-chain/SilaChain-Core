@@ -24,7 +24,6 @@ trie/                           @rjl493456442 @gballet
 triedb/                         @rjl493456442
 core/tracing/                   @s1na
 graphql/                        @s1na
-internal/ethapi/                @fjl @s1na @lightclient
 internal/era/                   @lightclient
 miner/                          @MariusVanDerWijden @fjl @rjl493456442
 node/                           @fjl

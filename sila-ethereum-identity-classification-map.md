@@ -1,10 +1,9 @@
-﻿# SilaChain Ethereum Identity Classification Map
+# SilaChain Ethereum Identity Classification Map
 
 ## 1. Runtime compatibility
 Purpose: Keep temporarily. Required for protocol/runtime compatibility.
 Examples:
 - eth/*
-- internal/ethapi/*
 - ethclient/*
 - eth_* RPC method names
 

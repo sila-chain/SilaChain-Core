@@ -96,7 +96,7 @@ PR titles follow the same convention as commit messages:
 Examples:
 - `core/vm: fix stack overflow in PUSH instruction`
 - `core, eth: add arena allocator support`
-- `cmd/sila, internal/ethapi: refactor transaction args`
+- `cmd/sila, internal/silaapi: refactor transaction args`
 - `trie/archiver: streaming subtree archival to fix OOM`
 
 Use the top-level package paths, comma-separated if multiple areas are affected. Only mention the directories with functional changes, interface changes that trickle all over the codebase should not generate an exhaustive list. The description should be a short, lowercase summary of the change.
