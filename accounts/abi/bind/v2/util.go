@@ -21,7 +21,7 @@ import (
 	"errors"
 	"time"
 
-	"github.com/sila-org/sila"
+	sila "github.com/sila-org/sila"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/core/types"
 	"github.com/sila-org/sila/log"
@@ -40,7 +40,7 @@ func WaitMined(ctx context.Context, b DeployBackend, txHash common.Hash) (*types
 			return receipt, nil
 		}
 
-		if errors.Is(err, ethereum.NotFound) {
+		if errors.Is(err, sila.NotFound) {
 			logger.Trace("Transaction not yet mined")
 		} else {
 			logger.Trace("Receipt retrieval failed", "err", err)

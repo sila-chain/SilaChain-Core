@@ -21,7 +21,7 @@ import (
 	"errors"
 	"math/big"
 
-	"github.com/sila-org/sila"
+	sila "github.com/sila-org/sila"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/core/types"
 )
@@ -57,9 +57,9 @@ type ContractCaller interface {
 	// between contract internal errors and the local chain being out of sync.
 	CodeAt(ctx context.Context, contract common.Address, blockNumber *big.Int) ([]byte, error)
 
-	// CallContract executes an Ethereum contract call with the specified data as the
+	// CallContract executes a SilaChain contract call with the specified data as the
 	// input.
-	CallContract(ctx context.Context, call ethereum.CallMsg, blockNumber *big.Int) ([]byte, error)
+	CallContract(ctx context.Context, call sila.CallMsg, blockNumber *big.Int) ([]byte, error)
 }
 
 // PendingContractCaller defines methods to perform contract calls on the pending state.
@@ -69,8 +69,8 @@ type PendingContractCaller interface {
 	// PendingCodeAt returns the code of the given account in the pending state.
 	PendingCodeAt(ctx context.Context, contract common.Address) ([]byte, error)
 
-	// PendingCallContract executes an Ethereum contract call against the pending state.
-	PendingCallContract(ctx context.Context, call ethereum.CallMsg) ([]byte, error)
+	// PendingCallContract executes a SilaChain contract call against the pending state.
+	PendingCallContract(ctx context.Context, call sila.CallMsg) ([]byte, error)
 }
 
 // BlockHashContractCaller defines methods to perform contract calls on a specific block hash.
@@ -80,8 +80,8 @@ type BlockHashContractCaller interface {
 	// CodeAtHash returns the code of the given account in the state at the specified block hash.
 	CodeAtHash(ctx context.Context, contract common.Address, blockHash common.Hash) ([]byte, error)
 
-	// CallContractAtHash executes an Ethereum contract call against the state at the specified block hash.
-	CallContractAtHash(ctx context.Context, call ethereum.CallMsg, blockHash common.Hash) ([]byte, error)
+	// CallContractAtHash executes a SilaChain contract call against the state at the specified block hash.
+	CallContractAtHash(ctx context.Context, call sila.CallMsg, blockHash common.Hash) ([]byte, error)
 }
 
 // ContractTransactor defines the methods needed to allow operating with a contract
@@ -89,10 +89,10 @@ type BlockHashContractCaller interface {
 // used when the user does not provide some needed values, but rather leaves it up
 // to the transactor to decide.
 type ContractTransactor interface {
-	ethereum.GasEstimator
-	ethereum.GasPricer
-	ethereum.GasPricer1559
-	ethereum.TransactionSender
+	sila.GasEstimator
+	sila.GasPricer
+	sila.GasPricer1559
+	sila.TransactionSender
 
 	// HeaderByNumber returns a block header from the current canonical chain. If
 	// number is nil, the latest known header is returned.
@@ -114,7 +114,7 @@ type DeployBackend interface {
 // ContractFilterer defines the methods needed to access log events using one-off
 // queries or continuous event subscriptions.
 type ContractFilterer interface {
-	ethereum.LogFilterer
+	sila.LogFilterer
 }
 
 // ContractBackend defines the methods needed to work with contracts on a read-write basis.

@@ -30,7 +30,7 @@ import (
 	"errors"
 	"math/big"
 
-	"github.com/sila-org/sila"
+	sila "github.com/sila-org/sila"
 	"github.com/sila-org/sila/accounts/abi"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/core/types"
@@ -109,7 +109,7 @@ type EventIterator[T any] struct {
 	current *T
 	unpack  func(*types.Log) (*T, error)
 	logs    <-chan types.Log
-	sub     ethereum.Subscription
+	sub     sila.Subscription
 	fail    error // error to hold reason for iteration failure
 	closed  bool  // true if Close has been called
 }

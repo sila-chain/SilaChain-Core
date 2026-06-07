@@ -24,7 +24,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/sila-org/sila"
+	sila "github.com/sila-org/sila"
 	"github.com/sila-org/sila/accounts/abi"
 	"github.com/sila-org/sila/accounts/abi/bind/v2"
 	"github.com/sila-org/sila/common"
@@ -67,7 +67,7 @@ func (mt *mockTransactor) SuggestGasTipCap(ctx context.Context) (*big.Int, error
 	return mt.gasTipCap, nil
 }
 
-func (mt *mockTransactor) EstimateGas(ctx context.Context, call ethereum.CallMsg) (gas uint64, err error) {
+func (mt *mockTransactor) EstimateGas(ctx context.Context, call sila.CallMsg) (gas uint64, err error) {
 	return 0, nil
 }
 
@@ -89,7 +89,7 @@ func (mc *mockCaller) CodeAt(ctx context.Context, contract common.Address, block
 	return mc.codeAtBytes, mc.codeAtErr
 }
 
-func (mc *mockCaller) CallContract(ctx context.Context, call ethereum.CallMsg, blockNumber *big.Int) ([]byte, error) {
+func (mc *mockCaller) CallContract(ctx context.Context, call sila.CallMsg, blockNumber *big.Int) ([]byte, error) {
 	mc.callContractBlockNumber = blockNumber
 	return mc.callContractBytes, mc.callContractErr
 }
@@ -109,7 +109,7 @@ func (mc *mockPendingCaller) PendingCodeAt(ctx context.Context, contract common.
 	return mc.pendingCodeAtBytes, mc.pendingCodeAtErr
 }
 
-func (mc *mockPendingCaller) PendingCallContract(ctx context.Context, call ethereum.CallMsg) ([]byte, error) {
+func (mc *mockPendingCaller) PendingCallContract(ctx context.Context, call sila.CallMsg) ([]byte, error) {
 	mc.pendingCallContractCalled = true
 	return mc.pendingCallContractBytes, mc.pendingCallContractErr
 }
@@ -129,7 +129,7 @@ func (mc *mockBlockHashCaller) CodeAtHash(ctx context.Context, contract common.A
 	return mc.codeAtHashBytes, mc.codeAtHashErr
 }
 
-func (mc *mockBlockHashCaller) CallContractAtHash(ctx context.Context, call ethereum.CallMsg, hash common.Hash) ([]byte, error) {
+func (mc *mockBlockHashCaller) CallContractAtHash(ctx context.Context, call sila.CallMsg, hash common.Hash) ([]byte, error) {
 	mc.callContractAtHashCalled = true
 	return mc.callContractAtHashBytes, mc.callContractAtHashErr
 }

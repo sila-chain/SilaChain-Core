@@ -8,7 +8,7 @@ import (
 	"strings"
 	"errors"
 
-	ethereum "github.com/sila-org/sila"
+	sila "github.com/sila-org/sila"
 	"github.com/sila-org/sila/accounts/abi"
 	"github.com/sila-org/sila/accounts/abi/bind"
 	"github.com/sila-org/sila/common"
@@ -21,7 +21,7 @@ var (
 	_ = errors.New
 	_ = big.NewInt
 	_ = strings.NewReader
-	_ = ethereum.NotFound
+	_ = sila.NotFound
 	_ = bind.Bind
 	_ = common.Big1
 	_ = types.BloomLookup
@@ -350,7 +350,7 @@ var (
 			event    string              // Event name to use for unpacking event data
 
 			logs chan types.Log        // Log channel receiving the found contract events
-			sub  ethereum.Subscription // Subscription for errors, completion and termination
+			sub  sila.Subscription // Subscription for errors, completion and termination
 			done bool                  // Whether the subscription completed delivering logs
 			fail error                 // Occurred error to stop iteration
 		}
