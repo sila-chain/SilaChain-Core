@@ -26,7 +26,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/sila-org/sila"
+	sila "github.com/sila-org/sila"
 	"github.com/sila-org/sila/accounts/abi"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/consensus/beacon"
@@ -44,17 +44,17 @@ import (
 
 // Verify that Client implements the SilaChain interfaces.
 var (
-	_ = ethereum.ChainReader(&ethclient.Client{})
-	_ = ethereum.TransactionReader(&ethclient.Client{})
-	_ = ethereum.ChainStateReader(&ethclient.Client{})
-	_ = ethereum.ChainSyncReader(&ethclient.Client{})
-	_ = ethereum.ContractCaller(&ethclient.Client{})
-	_ = ethereum.GasEstimator(&ethclient.Client{})
-	_ = ethereum.GasPricer(&ethclient.Client{})
-	_ = ethereum.LogFilterer(&ethclient.Client{})
-	_ = ethereum.PendingStateReader(&ethclient.Client{})
-	// _ = ethereum.PendingStateEventer(&ethclient.Client{})
-	_ = ethereum.PendingContractCaller(&ethclient.Client{})
+	_ = sila.ChainReader(&ethclient.Client{})
+	_ = sila.TransactionReader(&ethclient.Client{})
+	_ = sila.ChainStateReader(&ethclient.Client{})
+	_ = sila.ChainSyncReader(&ethclient.Client{})
+	_ = sila.ContractCaller(&ethclient.Client{})
+	_ = sila.GasEstimator(&ethclient.Client{})
+	_ = sila.GasPricer(&ethclient.Client{})
+	_ = sila.LogFilterer(&ethclient.Client{})
+	_ = sila.PendingStateReader(&ethclient.Client{})
+	// _ = sila.PendingStateEventer(&ethclient.Client{})
+	_ = sila.PendingContractCaller(&ethclient.Client{})
 )
 
 var (
@@ -214,7 +214,7 @@ func testHeader(t *testing.T, chain []*types.Block, client *rpc.Client) {
 		"future_block": {
 			block:   big.NewInt(1000000000),
 			want:    nil,
-			wantErr: ethereum.NotFound,
+			wantErr: sila.NotFound,
 		},
 	}
 	for name, tt := range tests {
@@ -293,8 +293,8 @@ func testTransactionInBlock(t *testing.T, client *rpc.Client) {
 	}
 
 	// Test tx in block not found.
-	if _, err := ec.TransactionInBlock(context.Background(), block.Hash(), 20); err != ethereum.NotFound {
-		t.Fatal("error should be ethereum.NotFound")
+	if _, err := ec.TransactionInBlock(context.Background(), block.Hash(), 20); err != sila.NotFound {
+		t.Fatal("error should be sila.NotFound")
 	}
 
 	// Test tx in block found.
@@ -430,7 +430,7 @@ func testStatusFunctions(t *testing.T, client *rpc.Client) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	want := &ethereum.FeeHistory{
+	want := &sila.FeeHistory{
 		OldestBlock: big.NewInt(2),
 		Reward: [][]*big.Int{
 			{
@@ -453,7 +453,7 @@ func testCallContractAtHash(t *testing.T, client *rpc.Client) {
 	ec := ethclient.NewClient(client)
 
 	// EstimateGas
-	msg := ethereum.CallMsg{
+	msg := sila.CallMsg{
 		From:  testAddr,
 		To:    &common.Address{},
 		Gas:   21000,
@@ -480,7 +480,7 @@ func testCallContract(t *testing.T, client *rpc.Client) {
 	ec := ethclient.NewClient(client)
 
 	// EstimateGas
-	msg := ethereum.CallMsg{
+	msg := sila.CallMsg{
 		From:  testAddr,
 		To:    &common.Address{},
 		Gas:   21000,
@@ -611,7 +611,7 @@ func testAtFunctions(t *testing.T, client *rpc.Client) {
 		t.Fatalf("unexpected error: %v", err)
 	}
 	// EstimateGasAtBlock
-	msg := ethereum.CallMsg{
+	msg := sila.CallMsg{
 		From:  testAddr,
 		To:    &common.Address{},
 		Gas:   21000,
@@ -770,7 +770,7 @@ func ExampleRevertErrorData() {
 	// Call the contract.
 	// Note we expect the call to return an error.
 	contract := common.HexToAddress("290f1b36649a61e369c6276f6d29463335b4400c")
-	call := ethereum.CallMsg{To: &contract, Gas: 30000}
+	call := sila.CallMsg{To: &contract, Gas: 30000}
 	result, err := ec.CallContract(ctx, call, nil)
 	if len(result) > 0 {
 		panic("got result")
@@ -826,7 +826,7 @@ func TestSimulateV1(t *testing.T) {
 	opts := ethclient.SimulateOptions{
 		BlockStateCalls: []ethclient.SimulateBlock{
 			{
-				Calls: []ethereum.CallMsg{
+				Calls: []sila.CallMsg{
 					{
 						From:      from,
 						To:        &to,
@@ -899,10 +899,10 @@ func TestSimulateV1WithBlockOverrides(t *testing.T) {
 	opts := ethclient.SimulateOptions{
 		BlockStateCalls: []ethclient.SimulateBlock{
 			{
-				BlockOverrides: &ethereum.BlockOverrides{
+				BlockOverrides: &sila.BlockOverrides{
 					Time: timestamp,
 				},
-				Calls: []ethereum.CallMsg{
+				Calls: []sila.CallMsg{
 					{
 						From:      from,
 						To:        &to,
@@ -960,7 +960,7 @@ func TestSimulateV1WithStateOverrides(t *testing.T) {
 	balance := new(big.Int)
 	balance.SetString(balanceStr, 10)
 
-	stateOverrides := map[common.Address]ethereum.OverrideAccount{
+	stateOverrides := map[common.Address]sila.OverrideAccount{
 		from: {
 			Balance: balance,
 		},
@@ -970,7 +970,7 @@ func TestSimulateV1WithStateOverrides(t *testing.T) {
 		BlockStateCalls: []ethclient.SimulateBlock{
 			{
 				StateOverrides: stateOverrides,
-				Calls: []ethereum.CallMsg{
+				Calls: []sila.CallMsg{
 					{
 						From:      from,
 						To:        &to,
@@ -1025,7 +1025,7 @@ func TestSimulateV1WithBlockNumberOrHash(t *testing.T) {
 	opts := ethclient.SimulateOptions{
 		BlockStateCalls: []ethclient.SimulateBlock{
 			{
-				Calls: []ethereum.CallMsg{
+				Calls: []sila.CallMsg{
 					{
 						From:      from,
 						To:        &to,

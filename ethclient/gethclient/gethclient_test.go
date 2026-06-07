@@ -24,7 +24,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/sila-org/sila"
+	sila "github.com/sila-org/sila"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/consensus/ethash"
 	"github.com/sila-org/sila/core"
@@ -192,14 +192,14 @@ func testAccessList(t *testing.T, client *rpc.Client) {
 	ec := New(client)
 
 	for i, tc := range []struct {
-		msg       ethereum.CallMsg
+		msg       sila.CallMsg
 		wantGas   uint64
 		wantErr   string
 		wantVMErr string
 		wantAL    string
 	}{
 		{ // Test transfer
-			msg: ethereum.CallMsg{
+			msg: sila.CallMsg{
 				From:     testAddr,
 				To:       &common.Address{},
 				Gas:      21000,
@@ -210,7 +210,7 @@ func testAccessList(t *testing.T, client *rpc.Client) {
 			wantAL:  `[]`,
 		},
 		{ // Test reverting transaction
-			msg: ethereum.CallMsg{
+			msg: sila.CallMsg{
 				From:     testAddr,
 				To:       nil,
 				Gas:      100000,
@@ -230,7 +230,7 @@ func testAccessList(t *testing.T, client *rpc.Client) {
 ]`,
 		},
 		{ // error when gasPrice is less than baseFee
-			msg: ethereum.CallMsg{
+			msg: sila.CallMsg{
 				From:     testAddr,
 				To:       &common.Address{},
 				Gas:      21000,
@@ -240,7 +240,7 @@ func testAccessList(t *testing.T, client *rpc.Client) {
 			wantErr: "max fee per gas less than block base fee",
 		},
 		{ // when gasPrice is not specified
-			msg: ethereum.CallMsg{
+			msg: sila.CallMsg{
 				From:  testAddr,
 				To:    &common.Address{},
 				Gas:   21000,
@@ -466,7 +466,7 @@ func testSubscribePendingTransactions(t *testing.T, client *rpc.Client) {
 
 func testCallContract(t *testing.T, client *rpc.Client) {
 	ec := New(client)
-	msg := ethereum.CallMsg{
+	msg := sila.CallMsg{
 		From:     testAddr,
 		To:       &common.Address{},
 		Gas:      21000,
@@ -595,7 +595,7 @@ func TestBlockOverridesMarshal(t *testing.T) {
 
 func testCallContractWithBlockOverrides(t *testing.T, client *rpc.Client) {
 	ec := New(client)
-	msg := ethereum.CallMsg{
+	msg := sila.CallMsg{
 		From:     testAddr,
 		To:       &common.Address{},
 		Gas:      50000,
@@ -662,7 +662,7 @@ func testTraceTransactionWithCallTracer(t *testing.T, client *rpc.Client, txHash
 
 func testTraceCallWithCallTracer(t *testing.T, client *rpc.Client) {
 	ec := New(client)
-	msg := ethereum.CallMsg{
+	msg := sila.CallMsg{
 		From:     testAddr,
 		To:       &common.Address{},
 		Gas:      21000,

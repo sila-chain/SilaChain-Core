@@ -20,7 +20,7 @@ import (
 	"errors"
 	"time"
 
-	"github.com/sila-org/sila"
+	sila "github.com/sila-org/sila"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/core"
 	"github.com/sila-org/sila/core/types"
@@ -37,20 +37,20 @@ import (
 
 // Client exposes the methods provided by the SilaChain RPC client.
 type Client interface {
-	ethereum.BlockNumberReader
-	ethereum.ChainReader
-	ethereum.ChainStateReader
-	ethereum.ContractCaller
-	ethereum.GasEstimator
-	ethereum.GasPricer
-	ethereum.GasPricer1559
-	ethereum.FeeHistoryReader
-	ethereum.LogFilterer
-	ethereum.PendingStateReader
-	ethereum.PendingContractCaller
-	ethereum.TransactionReader
-	ethereum.TransactionSender
-	ethereum.ChainIDReader
+	sila.BlockNumberReader
+	sila.ChainReader
+	sila.ChainStateReader
+	sila.ContractCaller
+	sila.GasEstimator
+	sila.GasPricer
+	sila.GasPricer1559
+	sila.FeeHistoryReader
+	sila.LogFilterer
+	sila.PendingStateReader
+	sila.PendingContractCaller
+	sila.TransactionReader
+	sila.TransactionSender
+	sila.ChainIDReader
 }
 
 // simClient wraps ethclient. This exists to prevent extracting ethclient.Client

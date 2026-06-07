@@ -22,7 +22,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/sila-org/sila"
+	sila "github.com/sila-org/sila"
 	"github.com/sila-org/sila/core"
 	"github.com/sila-org/sila/core/types"
 	"github.com/sila-org/sila/params"
@@ -63,7 +63,7 @@ func TestWithCallGasLimitOption(t *testing.T) {
 	defer sim.Close()
 
 	client := sim.Client()
-	_, err := client.CallContract(context.Background(), ethereum.CallMsg{
+	_, err := client.CallContract(context.Background(), sila.CallMsg{
 		From: testAddr,
 		To:   &testAddr,
 		Gas:  21000,

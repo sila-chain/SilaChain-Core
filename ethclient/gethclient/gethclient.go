@@ -28,7 +28,7 @@ import (
 	"runtime/debug"
 	"time"
 
-	"github.com/sila-org/sila"
+	sila "github.com/sila-org/sila"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/common/hexutil"
 	"github.com/sila-org/sila/core/types"
@@ -61,7 +61,7 @@ func NewSila(c *rpc.Client) *SilaClient {
 
 // CreateAccessList tries to create an access list for a specific transaction based on the
 // current pending state of the blockchain.
-func (ec *Client) CreateAccessList(ctx context.Context, msg ethereum.CallMsg) (*types.AccessList, uint64, string, error) {
+func (ec *Client) CreateAccessList(ctx context.Context, msg sila.CallMsg) (*types.AccessList, uint64, string, error) {
 	type accessListResult struct {
 		Accesslist *types.AccessList `json:"accessList"`
 		Error      string            `json:"error,omitempty"`
@@ -152,7 +152,7 @@ func (ec *Client) GetProof(ctx context.Context, account common.Address, keys []s
 // overrides specifies a map of contract states that should be overwritten before executing
 // the message call.
 // Please use ethclient.CallContract instead if you don't need the override functionality.
-func (ec *Client) CallContract(ctx context.Context, msg ethereum.CallMsg, blockNumber *big.Int, overrides *map[common.Address]OverrideAccount) ([]byte, error) {
+func (ec *Client) CallContract(ctx context.Context, msg sila.CallMsg, blockNumber *big.Int, overrides *map[common.Address]OverrideAccount) ([]byte, error) {
 	var hex hexutil.Bytes
 	err := ec.c.CallContext(
 		ctx, &hex, "sila_call", toCallArg(msg),
@@ -174,7 +174,7 @@ func (ec *Client) CallContract(ctx context.Context, msg ethereum.CallMsg, blockN
 // blockOverrides specifies block fields exposed to the EVM that can be overridden for the call.
 //
 // Please use ethclient.CallContract instead if you don't need the override functionality.
-func (ec *Client) CallContractWithBlockOverrides(ctx context.Context, msg ethereum.CallMsg, blockNumber *big.Int, overrides *map[common.Address]OverrideAccount, blockOverrides BlockOverrides) ([]byte, error) {
+func (ec *Client) CallContractWithBlockOverrides(ctx context.Context, msg sila.CallMsg, blockNumber *big.Int, overrides *map[common.Address]OverrideAccount, blockOverrides BlockOverrides) ([]byte, error) {
 	var hex hexutil.Bytes
 	err := ec.c.CallContext(
 		ctx, &hex, "sila_call", toCallArg(msg),
@@ -314,7 +314,7 @@ func (ec *Client) TraceTransactionWithCallTracer(ctx context.Context, txHash com
 // overrides specifies state overrides (nil for none), blockOverrides specifies
 // block header overrides (nil for none), and config configures the tracer
 // (nil for defaults).
-func (ec *Client) TraceCallWithCallTracer(ctx context.Context, msg ethereum.CallMsg, blockNrOrHash rpc.BlockNumberOrHash, overrides map[common.Address]OverrideAccount, blockOverrides *BlockOverrides, config *CallTracerConfig) (*CallFrame, error) {
+func (ec *Client) TraceCallWithCallTracer(ctx context.Context, msg sila.CallMsg, blockNrOrHash rpc.BlockNumberOrHash, overrides map[common.Address]OverrideAccount, blockOverrides *BlockOverrides, config *CallTracerConfig) (*CallFrame, error) {
 	var result CallFrame
 	err := ec.c.CallContext(ctx, &result, "debug_traceCall", toCallArg(msg), blockNrOrHash, callTraceCallConfig(config, overrides, blockOverrides))
 	if err != nil {
@@ -376,7 +376,7 @@ func toBlockNumArg(number *big.Int) string {
 	return fmt.Sprintf("<invalid %d>", number)
 }
 
-func toCallArg(msg ethereum.CallMsg) interface{} {
+func toCallArg(msg sila.CallMsg) interface{} {
 	arg := map[string]interface{}{
 		"from": msg.From,
 		"to":   msg.To,
@@ -415,7 +415,7 @@ func toCallArg(msg ethereum.CallMsg) interface{} {
 }
 
 // OverrideAccount is the Sila-compatible account override type.
-type OverrideAccount = ethereum.OverrideAccount
+type OverrideAccount = sila.OverrideAccount
 
 // BlockOverrides is the Sila-compatible block override type.
-type BlockOverrides = ethereum.BlockOverrides
+type BlockOverrides = sila.BlockOverrides

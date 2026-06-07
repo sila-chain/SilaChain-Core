@@ -22,7 +22,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/sila-org/sila"
+	sila "github.com/sila-org/sila"
 	"github.com/sila-org/sila/common"
 )
 
@@ -65,13 +65,13 @@ func TestToFilterArg(t *testing.T) {
 
 	for _, testCase := range []struct {
 		name   string
-		input  ethereum.FilterQuery
+		input  sila.FilterQuery
 		output interface{}
 		err    error
 	}{
 		{
 			"without addresses",
-			ethereum.FilterQuery{
+			sila.FilterQuery{
 				FromBlock: big.NewInt(1),
 				ToBlock:   big.NewInt(2),
 			},
@@ -86,7 +86,7 @@ func TestToFilterArg(t *testing.T) {
 			// the "address" field must be omitted so that non-SilaChain nodes
 			// (e.g. Hedera) do not reject the request with an error.
 			"with empty addresses slice",
-			ethereum.FilterQuery{
+			sila.FilterQuery{
 				Addresses: []common.Address{},
 				FromBlock: big.NewInt(1),
 				ToBlock:   big.NewInt(2),
@@ -99,7 +99,7 @@ func TestToFilterArg(t *testing.T) {
 		},
 		{
 			"without BlockHash",
-			ethereum.FilterQuery{
+			sila.FilterQuery{
 				Addresses: addresses,
 				FromBlock: big.NewInt(1),
 				ToBlock:   big.NewInt(2),
@@ -115,7 +115,7 @@ func TestToFilterArg(t *testing.T) {
 		},
 		{
 			"with nil fromBlock and nil toBlock",
-			ethereum.FilterQuery{
+			sila.FilterQuery{
 				Addresses: addresses,
 				Topics:    [][]common.Hash{},
 			},
@@ -129,7 +129,7 @@ func TestToFilterArg(t *testing.T) {
 		},
 		{
 			"with negative fromBlock and negative toBlock",
-			ethereum.FilterQuery{
+			sila.FilterQuery{
 				Addresses: addresses,
 				FromBlock: big.NewInt(-1),
 				ToBlock:   big.NewInt(-1),
@@ -145,7 +145,7 @@ func TestToFilterArg(t *testing.T) {
 		},
 		{
 			"with blockhash",
-			ethereum.FilterQuery{
+			sila.FilterQuery{
 				Addresses: addresses,
 				BlockHash: &blockHash,
 				Topics:    [][]common.Hash{},
@@ -159,7 +159,7 @@ func TestToFilterArg(t *testing.T) {
 		},
 		{
 			"with blockhash and from block",
-			ethereum.FilterQuery{
+			sila.FilterQuery{
 				Addresses: addresses,
 				BlockHash: &blockHash,
 				FromBlock: big.NewInt(1),
@@ -170,7 +170,7 @@ func TestToFilterArg(t *testing.T) {
 		},
 		{
 			"with blockhash and to block",
-			ethereum.FilterQuery{
+			sila.FilterQuery{
 				Addresses: addresses,
 				BlockHash: &blockHash,
 				ToBlock:   big.NewInt(1),
@@ -181,7 +181,7 @@ func TestToFilterArg(t *testing.T) {
 		},
 		{
 			"with blockhash and both from / to block",
-			ethereum.FilterQuery{
+			sila.FilterQuery{
 				Addresses: addresses,
 				BlockHash: &blockHash,
 				FromBlock: big.NewInt(1),
