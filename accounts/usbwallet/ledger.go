@@ -95,12 +95,12 @@ func (w *ledgerDriver) Status() (string, error) {
 		return fmt.Sprintf("Failed: %v", w.failure), w.failure
 	}
 	if w.browser {
-		return "Ethereum app in browser mode", w.failure
+		return "Wallet app in browser mode", w.failure
 	}
 	if w.offline() {
-		return "Ethereum app offline", w.failure
+		return "Wallet app offline", w.failure
 	}
-	return fmt.Sprintf("Ethereum app v%d.%d.%d online", w.version[0], w.version[1], w.version[2]), w.failure
+	return fmt.Sprintf("Wallet app v%d.%d.%d online", w.version[0], w.version[1], w.version[2]), w.failure
 }
 
 // offline returns whether the wallet application is offline or not.
@@ -161,7 +161,7 @@ func (w *ledgerDriver) Derive(path accounts.DerivationPath) (common.Address, err
 // too old to sign EIP-155 transactions, but such is requested nonetheless, an error
 // will be returned opposed to silently signing in Homestead mode.
 func (w *ledgerDriver) SignTx(path accounts.DerivationPath, tx *types.Transaction, chainID *big.Int) (common.Address, *types.Transaction, error) {
-	// If the Ethereum app doesn't run, abort
+	// If the wallet app does not run, abort
 	if w.offline() {
 		return common.Address{}, nil, accounts.ErrWalletClosed
 	}
@@ -179,7 +179,7 @@ func (w *ledgerDriver) SignTx(path accounts.DerivationPath, tx *types.Transactio
 //
 // Note: this was introduced in the ledger 1.5.0 firmware
 func (w *ledgerDriver) SignTypedMessage(path accounts.DerivationPath, domainHash []byte, messageHash []byte) ([]byte, error) {
-	// If the Ethereum app doesn't run, abort
+	// If the wallet app does not run, abort
 	if w.offline() {
 		return nil, accounts.ErrWalletClosed
 	}
@@ -273,13 +273,13 @@ func (w *ledgerDriver) ledgerDerive(derivationPath []uint32) (common.Address, er
 	}
 	reply = reply[1+int(reply[0]):]
 
-	// Extract the Ethereum hex address string
+	// Extract the legacy-compatible hex address string
 	if len(reply) < 1 || len(reply) < 1+int(reply[0]) {
 		return common.Address{}, errors.New("reply lacks address entry")
 	}
 	hexstr := reply[1 : 1+int(reply[0])]
 
-	// Decode the hex string into an Ethereum address and return
+	// Decode the hex string into a legacy-compatible address and return
 	var address common.Address
 	if _, err = hex.Decode(address[:], hexstr); err != nil {
 		return common.Address{}, err
@@ -386,7 +386,7 @@ func (w *ledgerDriver) ledgerSign(derivationPath []uint32, tx *types.Transaction
 		payload = payload[chunk:]
 		op = ledgerP1ContTransactionData
 	}
-	// Extract the Ethereum signature and do a sanity validation
+	// Extract the legacy-compatible signature and do a sanity validation
 	if len(reply) != crypto.SignatureLength {
 		return common.Address{}, nil, errors.New("reply lacks signature")
 	}
@@ -466,7 +466,7 @@ func (w *ledgerDriver) ledgerSignTypedMessage(derivationPath []uint32, domainHas
 		return nil, err
 	}
 
-	// Extract the Ethereum signature and do a sanity validation
+	// Extract the legacy-compatible signature and do a sanity validation
 	if len(reply) != crypto.SignatureLength {
 		return nil, errors.New("reply lacks signature")
 	}
