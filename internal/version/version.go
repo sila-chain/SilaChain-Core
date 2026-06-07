@@ -69,7 +69,7 @@ func Archive(gitCommit string) string {
 }
 
 // ClientName creates a software name/version identifier according to common
-// conventions in the legacy Ethereum-compatible p2p network.
+// conventions in the legacy Sila-compatible p2p network.
 func ClientName(clientIdentifier string) string {
 	git, _ := VCS()
 	return fmt.Sprintf("%s/v%v/%v-%v/%v",
