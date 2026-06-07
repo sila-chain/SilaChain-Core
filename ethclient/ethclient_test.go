@@ -42,7 +42,7 @@ import (
 	"github.com/sila-org/sila/rpc"
 )
 
-// Verify that Client implements the ethereum interfaces.
+// Verify that Client implements the SilaChain interfaces.
 var (
 	_ = ethereum.ChainReader(&ethclient.Client{})
 	_ = ethereum.TransactionReader(&ethclient.Client{})
@@ -108,7 +108,7 @@ func newTestBackend(config *node.Config) (*node.Node, []*types.Block, error) {
 	ecfg := &ethconfig.Config{Genesis: genesis, RPCGasCap: 1000000}
 	ethservice, err := eth.New(n, ecfg)
 	if err != nil {
-		return nil, nil, fmt.Errorf("can't create new ethereum service: %v", err)
+		return nil, nil, fmt.Errorf("can't create new SilaChain service: %v", err)
 	}
 	// Ensure tx pool starts the background operation
 	txPool := ethservice.TxPool()
