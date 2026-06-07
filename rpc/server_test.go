@@ -292,48 +292,7 @@ func TestServerWebsocketReadLimit(t *testing.T) {
 	}
 }
 
-func TestSilaEngineRegistersLegacyEngineAlias(t *testing.T) {
-	server := NewServer()
-	service := new(testService)
-
-	if err := server.RegisterName("silaEngine", service); err != nil {
-		t.Fatalf("register silaEngine: %v", err)
-	}
-
-	server.services.mu.Lock()
-	defer server.services.mu.Unlock()
-
-	if _, ok := server.services.services["silaEngine"]; !ok {
-		t.Fatal("silaEngine namespace not registered")
-	}
-	if _, ok := server.services.services["engine"]; !ok {
-		t.Fatal("engine compatibility alias not registered")
-	}
-}
-
-func TestSilaEngineCanDisableLegacyEngineAlias(t *testing.T) {
-	server := NewServer()
-	server.SetLegacyEngineCompatibilityAlias(false)
-	t.Cleanup(func() {
-		server.SetLegacyEngineCompatibilityAlias(true)
-	})
-	service := new(testService)
-
-	if err := server.RegisterName("silaEngine", service); err != nil {
-		t.Fatalf("register silaEngine: %v", err)
-	}
-
-	server.services.mu.Lock()
-	defer server.services.mu.Unlock()
-
-	if _, ok := server.services.services["silaEngine"]; !ok {
-		t.Fatal("silaEngine namespace not registered")
-	}
-	if _, ok := server.services.services["engine"]; ok {
-		t.Fatal("engine compatibility alias must not be registered when disabled")
-	}
-}
-func TestSilaEngineHidesLegacyEngineFromModules(t *testing.T) {
+func TestSilaEngineVisibleInModules(t *testing.T) {
 	server := NewServer()
 	service := new(testService)
 
@@ -344,8 +303,5 @@ func TestSilaEngineHidesLegacyEngineFromModules(t *testing.T) {
 	modules := server.services.services["rpc"].callbacks["modules"].rcvr.Interface().(*RPCService).Modules()
 	if _, ok := modules["silaEngine"]; !ok {
 		t.Fatal("silaEngine namespace not visible")
-	}
-	if _, ok := modules["engine"]; ok {
-		t.Fatal("engine compatibility alias should be hidden from modules")
 	}
 }
