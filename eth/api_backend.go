@@ -22,7 +22,7 @@ import (
 	"math/big"
 	"time"
 
-	"github.com/sila-org/sila"
+	sila "github.com/sila-org/sila"
 	"github.com/sila-org/sila/accounts"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/consensus"
@@ -408,7 +408,7 @@ func (b *SilaAPIBackend) SubscribeNewTxsEvent(ch chan<- core.NewTxsEvent) event.
 	return b.eth.txPool.SubscribeTransactions(ch, true)
 }
 
-func (b *SilaAPIBackend) SyncProgress(ctx context.Context) ethereum.SyncProgress {
+func (b *SilaAPIBackend) SyncProgress(ctx context.Context) sila.SyncProgress {
 	prog := b.eth.Downloader().Progress()
 	if txProg, err := b.eth.blockchain.TxIndexProgress(); err == nil {
 		prog.TxIndexFinishedBlocks = txProg.Indexed

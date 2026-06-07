@@ -23,7 +23,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/sila-org/sila"
+	sila "github.com/sila-org/sila"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/consensus/ethash"
 	"github.com/sila-org/sila/core"
@@ -579,7 +579,7 @@ func testEmptyShortCircuit(t *testing.T, protocol uint, mode SyncMode) {
 	}
 	select {
 	case <-success:
-		checkProgress(t, tester.downloader, "initial", ethereum.SyncProgress{
+		checkProgress(t, tester.downloader, "initial", sila.SyncProgress{
 			HighestBlock: uint64(len(chain.blocks) - 1),
 			CurrentBlock: uint64(len(chain.blocks) - 1),
 		})
@@ -608,7 +608,7 @@ func testEmptyShortCircuit(t *testing.T, protocol uint, mode SyncMode) {
 	}
 }
 
-func checkProgress(t *testing.T, d *Downloader, stage string, want ethereum.SyncProgress) {
+func checkProgress(t *testing.T, d *Downloader, stage string, want sila.SyncProgress) {
 	// Mark this method as a helper to report errors at callsite, not in here
 	t.Helper()
 
@@ -675,7 +675,7 @@ func testSyncProgress(t *testing.T, protocol uint, mode SyncMode) {
 		success <- struct{}{}
 	})
 	defer tester.terminate()
-	checkProgress(t, tester.downloader, "pristine", ethereum.SyncProgress{})
+	checkProgress(t, tester.downloader, "pristine", sila.SyncProgress{})
 
 	chain := testChainBase.shorten(blockCacheMaxItems - 15)
 	shortChain := chain.shorten(len(chain.blocks) / 2).blocks[1:]
@@ -692,7 +692,7 @@ func testSyncProgress(t *testing.T, protocol uint, mode SyncMode) {
 	select {
 	case <-success:
 		// Ok, downloader fully cancelled after sync cycle
-		checkProgress(t, tester.downloader, "peer-half", ethereum.SyncProgress{
+		checkProgress(t, tester.downloader, "peer-half", sila.SyncProgress{
 			CurrentBlock: uint64(len(chain.blocks)/2 - 1),
 			HighestBlock: uint64(len(chain.blocks)/2 - 1),
 		})
@@ -710,7 +710,7 @@ func testSyncProgress(t *testing.T, protocol uint, mode SyncMode) {
 	select {
 	case <-success:
 		// Ok, downloader fully cancelled after sync cycle
-		checkProgress(t, tester.downloader, "peer-full", ethereum.SyncProgress{
+		checkProgress(t, tester.downloader, "peer-full", sila.SyncProgress{
 			StartingBlock: startingBlock,
 			CurrentBlock:  uint64(len(chain.blocks) - 1),
 			HighestBlock:  uint64(len(chain.blocks) - 1),

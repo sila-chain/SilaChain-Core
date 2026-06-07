@@ -27,7 +27,7 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/sila-org/sila"
+	sila "github.com/sila-org/sila"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/common/hexutil"
 	"github.com/sila-org/sila/consensus/misc/eip1559"
@@ -1476,7 +1476,7 @@ func (r *Resolver) ChainID(ctx context.Context) (hexutil.Big, error) {
 
 // SyncState represents the synchronisation status returned from the `syncing` accessor.
 type SyncState struct {
-	progress ethereum.SyncProgress
+	progress sila.SyncProgress
 }
 
 func (s *SyncState) StartingBlock() hexutil.Uint64 {

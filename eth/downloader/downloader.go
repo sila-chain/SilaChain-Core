@@ -25,7 +25,7 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/sila-org/sila"
+	sila "github.com/sila-org/sila"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/core/rawdb"
 	"github.com/sila-org/sila/core/state/snapshot"
@@ -261,7 +261,7 @@ func New(stateDb ethdb.Database, mode ethconfig.SyncMode, mux *event.TypeMux, ch
 // In addition, during the state download phase of snap synchronisation the number
 // of processed and the total number of known states are also returned. Otherwise
 // these are zero.
-func (d *Downloader) Progress() ethereum.SyncProgress {
+func (d *Downloader) Progress() sila.SyncProgress {
 	// Lock the current stats and return the progress
 	d.syncStatsLock.RLock()
 	defer d.syncStatsLock.RUnlock()
@@ -278,7 +278,7 @@ func (d *Downloader) Progress() ethereum.SyncProgress {
 	}
 	progress, pending := d.SnapSyncer.Progress()
 
-	return ethereum.SyncProgress{
+	return sila.SyncProgress{
 		StartingBlock:       d.syncStatsChainOrigin,
 		CurrentBlock:        current,
 		HighestBlock:        d.syncStatsChainHeight,

@@ -8,7 +8,7 @@ import (
 	"math/big"
 	"time"
 
-	"github.com/sila-org/sila"
+	sila "github.com/sila-org/sila"
 	"github.com/sila-org/sila/accounts"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/consensus"
@@ -25,7 +25,7 @@ import (
 
 type Backend interface {
 	// General SilaChain API
-	SyncProgress(ctx context.Context) ethereum.SyncProgress
+	SyncProgress(ctx context.Context) sila.SyncProgress
 
 	SuggestGasTipCap(ctx context.Context) (*big.Int, error)
 	FeeHistory(ctx context.Context, blockCount uint64, lastBlock rpc.BlockNumber, rewardPercentiles []float64) (*big.Int, [][]*big.Int, []*big.Int, []float64, []*big.Int, []float64, error)

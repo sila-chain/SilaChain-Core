@@ -13,7 +13,7 @@ import (
 	"time"
 
 	"github.com/davecgh/go-spew/spew"
-	ethereum "github.com/sila-org/sila"
+	sila "github.com/sila-org/sila"
 	"github.com/sila-org/sila/accounts"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/common/hexutil"
@@ -59,7 +59,7 @@ type FeeHistoryResult struct {
 
 // SilaAPIBackend is the minimal backend required by SilaAPI helpers.
 type SilaAPIBackend interface {
-	SyncProgress(ctx context.Context) ethereum.SyncProgress
+	SyncProgress(ctx context.Context) sila.SyncProgress
 	SuggestGasTipCap(ctx context.Context) (*big.Int, error)
 	FeeHistory(ctx context.Context, blockCount uint64, lastBlock rpc.BlockNumber, rewardPercentiles []float64) (*big.Int, [][]*big.Int, []*big.Int, []float64, []*big.Int, []float64, error)
 	BlobBaseFee(ctx context.Context) *big.Int

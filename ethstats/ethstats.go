@@ -31,7 +31,7 @@ import (
 	"time"
 
 	"github.com/gorilla/websocket"
-	"github.com/sila-org/sila"
+	sila "github.com/sila-org/sila"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/common/mclock"
 	"github.com/sila-org/sila/consensus"
@@ -67,7 +67,7 @@ type backend interface {
 	CurrentHeader() *types.Header
 	HeaderByNumber(ctx context.Context, number rpc.BlockNumber) (*types.Header, error)
 	Stats() (pending int, queued int)
-	SyncProgress(ctx context.Context) ethereum.SyncProgress
+	SyncProgress(ctx context.Context) sila.SyncProgress
 }
 
 // fullNodeBackend encompasses the functionality necessary for a full node

@@ -21,7 +21,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/sila-org/sila"
+	sila "github.com/sila-org/sila"
 	"github.com/sila-org/sila/core"
 	"github.com/sila-org/sila/event"
 	"github.com/sila-org/sila/rpc"
@@ -75,7 +75,7 @@ func (api *DownloaderAPI) eventLoop() {
 		started bool
 		done    bool
 
-		getProgress = func() ethereum.SyncProgress {
+		getProgress = func() sila.SyncProgress {
 			prog := api.d.Progress()
 			if txProg, err := api.chain.TxIndexProgress(); err == nil {
 				prog.TxIndexFinishedBlocks = txProg.Indexed
@@ -163,8 +163,8 @@ func (api *DownloaderAPI) Syncing(ctx context.Context) (*rpc.Subscription, error
 
 // SyncingResult provides information about the current synchronisation status for this node.
 type SyncingResult struct {
-	Syncing bool                  `json:"syncing"`
-	Status  ethereum.SyncProgress `json:"status"`
+	Syncing bool              `json:"syncing"`
+	Status  sila.SyncProgress `json:"status"`
 }
 
 // uninstallSyncSubscriptionRequest uninstalls a syncing subscription in the API event loop.
