@@ -60,7 +60,7 @@ type driver interface {
 	// is still online and healthy.
 	Heartbeat() error
 
-	// Derive sends a derivation request to the USB device and returns the Ethereum
+	// Derive sends a derivation request to the USB device and returns the legacy-compatible
 	// address located on that path.
 	Derive(path accounts.DerivationPath) (common.Address, error)
 
