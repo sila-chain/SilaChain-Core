@@ -246,7 +246,7 @@ func offsetTimeAuth(secret [32]byte, offset time.Duration) rpc.HTTPAuth {
 	}
 }
 
-func TestLegacyEngineCompatibilityConfigDisablesEngineAlias(t *testing.T) {
+func TestSilaEngineRejectsEngineAlias(t *testing.T) {
 	conf := &Config{
 		HTTPHost:                  "127.0.0.1",
 		HTTPPort:                  0,
@@ -281,7 +281,7 @@ func TestLegacyEngineCompatibilityConfigDisablesEngineAlias(t *testing.T) {
 		t.Fatalf("silaEngine method must remain available: %v", err)
 	}
 	if err := cl.Call(&x, "engine_helloWorld"); err == nil {
-		t.Fatal("legacy engine alias must be unavailable when disabled")
+		t.Fatal("engine alias must be unavailable")
 	}
 }
 func TestDefaultAuthModulesExposeSilaEngine(t *testing.T) {
