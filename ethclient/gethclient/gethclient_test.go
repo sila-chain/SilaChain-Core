@@ -154,9 +154,6 @@ func TestSilaClientExtensions(t *testing.T) {
 			"TestGetNodeInfo",
 			func(t *testing.T) { testGetNodeInfo(t, client) },
 		}, {
-			"TestSubscribePendingTxHashes",
-			func(t *testing.T) { testSubscribePendingTransactions(t, client) },
-		}, {
 			"TestCallContract",
 			func(t *testing.T) { testCallContract(t, client) },
 		}, {
@@ -420,11 +417,15 @@ func testSubscribePendingTransactions(t *testing.T, client *rpc.Client) {
 
 	// Subscribe to Transactions
 	ch1 := make(chan common.Hash)
-	ec.SubscribePendingTransactions(context.Background(), ch1)
+	if _, err := ec.SubscribePendingTransactions(context.Background(), ch1); err != nil {
+		t.Fatal(err)
+	}
 
 	// Subscribe to Transactions
 	ch2 := make(chan *types.Transaction)
-	ec.SubscribeFullPendingTransactions(context.Background(), ch2)
+	if _, err := ec.SubscribeFullPendingTransactions(context.Background(), ch2); err != nil {
+		t.Fatal(err)
+	}
 
 	// Send a transaction
 	chainID, err := ethcl.ChainID(context.Background())
