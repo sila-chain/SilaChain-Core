@@ -154,15 +154,15 @@ var (
 	}
 
 	// A debian package is created for all executables listed here.
-	debEthereum = debPackage{
-		Name:        "ethereum",
+	debSila = debPackage{
+		Name:        "sila",
 		Version:     version.Semantic,
 		Executables: debExecutables,
 	}
 
 	// Debian meta packages to build and push to Ubuntu PPA
 	debPackages = []debPackage{
-		debEthereum,
+		debSila,
 	}
 
 	// Distros for which packages are created
@@ -1063,7 +1063,7 @@ func isUnstableBuild(env build.Environment) bool {
 }
 
 type debPackage struct {
-	Name        string          // the name of the Debian package to produce, e.g. "ethereum"
+	Name        string          // the name of the Debian package to produce, e.g. "sila"
 	Version     string          // the clean version of the debPackage, e.g. 1.8.12, without any metadata
 	Executables []debExecutable // executables to be included in the package
 }
@@ -1163,7 +1163,7 @@ func (meta debMetadata) ExeConflicts(exe debExecutable) string {
 		// be preferred and the conflicting files should be handled via
 		// alternates. We might do this eventually but using a conflict is
 		// easier now.
-		return "ethereum, " + exe.Package()
+		return "sila, " + exe.Package()
 	}
 	return ""
 }
