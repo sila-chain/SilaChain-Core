@@ -30,7 +30,7 @@ var OutputCheckerMetaData = bind.MetaData{
 	ID:  "cc1d4e235801a590b506d5130b0cca90a1",
 }
 
-// OutputChecker is an auto generated Go binding around an Ethereum contract.
+// OutputChecker is an auto generated Go binding around a SilaChain contract.
 type OutputChecker struct {
 	abi abi.ABI
 }

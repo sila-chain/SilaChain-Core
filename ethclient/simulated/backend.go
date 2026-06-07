@@ -114,7 +114,7 @@ func newWithNode(stack *node.Node, conf *eth.Config, blockPeriod uint64) (*Backe
 	// Register the filter system
 	filterSystem := filters.NewFilterSystem(backend.APIBackend, filters.Config{})
 	stack.RegisterAPIs([]rpc.API{{
-		Namespace: "eth",
+		Namespace: "sila",
 		Service:   filters.NewFilterAPI(filterSystem),
 	}})
 	// Start the node

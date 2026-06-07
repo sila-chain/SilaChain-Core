@@ -30,7 +30,7 @@ var InputCheckerMetaData = bind.MetaData{
 	ID:  "e551ce092312e54f54f45ffdf06caa4cdc",
 }
 
-// InputChecker is an auto generated Go binding around an Ethereum contract.
+// InputChecker is an auto generated Go binding around a SilaChain contract.
 type InputChecker struct {
 	abi abi.ABI
 }

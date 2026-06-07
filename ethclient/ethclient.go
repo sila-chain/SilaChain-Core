@@ -382,7 +382,7 @@ func (ec *Client) TransactionReceipt(ctx context.Context, txHash common.Hash) (*
 
 // SubscribeTransactionReceipts subscribes to notifications about transaction receipts.
 func (ec *Client) SubscribeTransactionReceipts(ctx context.Context, q *sila.TransactionReceiptsQuery, ch chan<- []*types.Receipt) (sila.Subscription, error) {
-	sub, err := ec.c.EthSubscribe(ctx, ch, "transactionReceipts", q)
+	sub, err := ec.c.SilaSubscribe(ctx, ch, "transactionReceipts", q)
 	if err != nil {
 		return nil, err
 	}
@@ -411,7 +411,7 @@ func (ec *Client) SyncProgress(ctx context.Context) (*sila.SyncProgress, error) 
 // SubscribeNewHead subscribes to notifications about the current blockchain head
 // on the given channel.
 func (ec *Client) SubscribeNewHead(ctx context.Context, ch chan<- *types.Header) (sila.Subscription, error) {
-	sub, err := ec.c.EthSubscribe(ctx, ch, "newHeads")
+	sub, err := ec.c.SilaSubscribe(ctx, ch, "newHeads")
 	if err != nil {
 		// Defensively prefer returning nil interface explicitly on error-path, instead
 		// of letting default golang behavior wrap it with non-nil interface that stores
@@ -515,7 +515,7 @@ func (ec *Client) SubscribeFilterLogs(ctx context.Context, q sila.FilterQuery, c
 	if err != nil {
 		return nil, err
 	}
-	sub, err := ec.c.EthSubscribe(ctx, ch, "logs", arg)
+	sub, err := ec.c.SilaSubscribe(ctx, ch, "logs", arg)
 	if err != nil {
 		// Defensively prefer returning nil interface explicitly on error-path, instead
 		// of letting default golang behavior wrap it with non-nil interface that stores

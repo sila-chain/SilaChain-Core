@@ -31,7 +31,7 @@ var EmptyMetaData = bind.MetaData{
 	Bin: "0x606060405260068060106000396000f3606060405200",
 }
 
-// Empty is an auto generated Go binding around an Ethereum contract.
+// Empty is an auto generated Go binding around a SilaChain contract.
 type Empty struct {
 	abi abi.ABI
 }

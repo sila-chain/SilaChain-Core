@@ -30,7 +30,7 @@ var EventCheckerMetaData = bind.MetaData{
 	ID:  "253d421f98e29b25315bde79c1251ab27c",
 }
 
-// EventChecker is an auto generated Go binding around an Ethereum contract.
+// EventChecker is an auto generated Go binding around a SilaChain contract.
 type EventChecker struct {
 	abi abi.ABI
 }

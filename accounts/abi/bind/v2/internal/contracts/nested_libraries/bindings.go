@@ -35,7 +35,7 @@ var C1MetaData = bind.MetaData{
 	},
 }
 
-// C1 is an auto generated Go binding around an Ethereum contract.
+// C1 is an auto generated Go binding around a SilaChain contract.
 type C1 struct {
 	abi abi.ABI
 }
@@ -113,7 +113,7 @@ var C2MetaData = bind.MetaData{
 	},
 }
 
-// C2 is an auto generated Go binding around an Ethereum contract.
+// C2 is an auto generated Go binding around a SilaChain contract.
 type C2 struct {
 	abi abi.ABI
 }
@@ -187,7 +187,7 @@ var L1MetaData = bind.MetaData{
 	Bin: "0x61011c61004d600b8282823980515f1a6073146041577f4e487b71000000000000000000000000000000000000000000000000000000005f525f60045260245ffd5b305f52607381538281f3fe73000000000000000000000000000000000000000030146080604052600436106032575f3560e01c80632ad11272146036575b5f5ffd5b604c600480360381019060489190609c565b6060565b6040516057919060cf565b60405180910390f35b5f60019050919050565b5f5ffd5b5f819050919050565b607e81606e565b81146087575f5ffd5b50565b5f813590506096816077565b92915050565b5f6020828403121560ae5760ad606a565b5b5f60b984828501608a565b91505092915050565b60c981606e565b82525050565b5f60208201905060e05f83018460c2565b9291505056fea26469706673582212200161c5f22d130a2b7ec6cf22e0910e42e32c2881fa4a8a01455f524f63cf218d64736f6c634300081c0033",
 }
 
-// L1 is an auto generated Go binding around an Ethereum contract.
+// L1 is an auto generated Go binding around a SilaChain contract.
 type L1 struct {
 	abi abi.ABI
 }
@@ -252,7 +252,7 @@ var L2MetaData = bind.MetaData{
 	},
 }
 
-// L2 is an auto generated Go binding around an Ethereum contract.
+// L2 is an auto generated Go binding around a SilaChain contract.
 type L2 struct {
 	abi abi.ABI
 }
@@ -317,7 +317,7 @@ var L2bMetaData = bind.MetaData{
 	},
 }
 
-// L2b is an auto generated Go binding around an Ethereum contract.
+// L2b is an auto generated Go binding around a SilaChain contract.
 type L2b struct {
 	abi abi.ABI
 }
@@ -379,7 +379,7 @@ var L3MetaData = bind.MetaData{
 	Bin: "0x61011c61004d600b8282823980515f1a6073146041577f4e487b71000000000000000000000000000000000000000000000000000000005f525f60045260245ffd5b305f52607381538281f3fe73000000000000000000000000000000000000000030146080604052600436106032575f3560e01c80632ad11272146036575b5f5ffd5b604c600480360381019060489190609c565b6060565b6040516057919060cf565b60405180910390f35b5f60019050919050565b5f5ffd5b5f819050919050565b607e81606e565b81146087575f5ffd5b50565b5f813590506096816077565b92915050565b5f6020828403121560ae5760ad606a565b5b5f60b984828501608a565b91505092915050565b60c981606e565b82525050565b5f60208201905060e05f83018460c2565b9291505056fea264697066735822122094cfcb0ce039318885cc58f6d8e609e6e4bec575e1a046d3d15ea2e01e97241e64736f6c634300081c0033",
 }
 
-// L3 is an auto generated Go binding around an Ethereum contract.
+// L3 is an auto generated Go binding around a SilaChain contract.
 type L3 struct {
 	abi abi.ABI
 }
@@ -445,7 +445,7 @@ var L4MetaData = bind.MetaData{
 	},
 }
 
-// L4 is an auto generated Go binding around an Ethereum contract.
+// L4 is an auto generated Go binding around a SilaChain contract.
 type L4 struct {
 	abi abi.ABI
 }
@@ -510,7 +510,7 @@ var L4bMetaData = bind.MetaData{
 	},
 }
 
-// L4b is an auto generated Go binding around an Ethereum contract.
+// L4b is an auto generated Go binding around a SilaChain contract.
 type L4b struct {
 	abi abi.ABI
 }
