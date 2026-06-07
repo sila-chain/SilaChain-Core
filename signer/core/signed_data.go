@@ -95,12 +95,12 @@ func (api *SignerAPI) SignData(ctx context.Context, contentType string, addr com
 // This method returns the mimetype for signing along with the request
 func (api *SignerAPI) determineSignatureFormat(ctx context.Context, contentType string, addr common.MixedcaseAddress, data interface{}) (*SignDataRequest, bool, error) {
 	var (
-		req          *SignDataRequest
-		useEthereumV = true // Default to use V = 27 or 28, the legacy wallet format
+		req        *SignDataRequest
+		useLegacyV = true // Default to use V = 27 or 28, the legacy wallet format
 	)
 	mediaType, _, err := mime.ParseMediaType(contentType)
 	if err != nil {
-		return nil, useEthereumV, err
+		return nil, useLegacyV, err
 	}
 
 	switch mediaType {
@@ -108,7 +108,7 @@ func (api *SignerAPI) determineSignatureFormat(ctx context.Context, contentType 
 		// Data with an intended validator
 		validatorData, err := UnmarshalValidatorData(data)
 		if err != nil {
-			return nil, useEthereumV, err
+			return nil, useLegacyV, err
 		}
 		sighash, msg := SignTextValidator(validatorData)
 		messages := []*apitypes.NameValueType{
@@ -138,11 +138,11 @@ func (api *SignerAPI) determineSignatureFormat(ctx context.Context, contentType 
 		// Clique is the legacy PoA standard
 		cliqueData, err := fromHex(data)
 		if err != nil {
-			return nil, useEthereumV, err
+			return nil, useLegacyV, err
 		}
 		header := &types.Header{}
 		if err := rlp.DecodeBytes(cliqueData, header); err != nil {
-			return nil, useEthereumV, err
+			return nil, useLegacyV, err
 		}
 		// Add space in the extradata to put the signature
 		newExtra := make([]byte, len(header.Extra)+65)
@@ -152,7 +152,7 @@ func (api *SignerAPI) determineSignatureFormat(ctx context.Context, contentType 
 		// Get back the rlp data, encoded by us
 		sighash, cliqueRlp, err := cliqueHeaderHashAndRlp(header)
 		if err != nil {
-			return nil, useEthereumV, err
+			return nil, useLegacyV, err
 		}
 		messages := []*apitypes.NameValueType{
 			{
@@ -162,14 +162,14 @@ func (api *SignerAPI) determineSignatureFormat(ctx context.Context, contentType 
 			},
 		}
 		// Clique uses V on the form 0 or 1
-		useEthereumV = false
+		useLegacyV = false
 		req = &SignDataRequest{ContentType: mediaType, Rawdata: cliqueRlp, Messages: messages, Hash: sighash}
 	case apitypes.DataTyped.Mime:
 		// EIP-712 conformant typed data
 		var err error
 		req, err = typedDataRequest(data)
 		if err != nil {
-			return nil, useEthereumV, err
+			return nil, useLegacyV, err
 		}
 	default: // also case TextPlain.Mime:
 		// Calculates a legacy-compatible ECDSA signature for:
@@ -177,7 +177,7 @@ func (api *SignerAPI) determineSignatureFormat(ctx context.Context, contentType 
 		// We expect input to be a hex-encoded string
 		textData, err := fromHex(data)
 		if err != nil {
-			return nil, useEthereumV, err
+			return nil, useLegacyV, err
 		}
 		sighash, msg := accounts.TextAndHash(textData)
 		messages := []*apitypes.NameValueType{
@@ -191,7 +191,7 @@ func (api *SignerAPI) determineSignatureFormat(ctx context.Context, contentType 
 	}
 	req.Address = addr
 	req.Meta = MetadataFromContext(ctx)
-	return req, useEthereumV, nil
+	return req, useLegacyV, nil
 }
 
 // SignTextValidator signs the given message which can be further recovered
