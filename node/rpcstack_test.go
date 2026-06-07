@@ -630,7 +630,7 @@ func TestFilterSupersededRPCAPIs(t *testing.T) {
 		{Namespace: "eth", Service: &testService{}},
 		{Namespace: "net", Service: &testService{}},
 		{Namespace: "web3", Service: &testService{}},
-		{Namespace: "engine", Service: &testService{}},
+
 		{Namespace: "sila", Service: &testService{}},
 		{Namespace: "silaNet", Service: &testService{}},
 		{Namespace: "silaWeb3", Service: &testService{}},
@@ -648,7 +648,7 @@ func TestFilterSupersededRPCAPIs(t *testing.T) {
 			t.Fatalf("required namespace %q must remain available", namespace)
 		}
 	}
-	for _, namespace := range []string{"eth", "net", "web3", "engine"} {
+	for _, namespace := range []string{"eth", "net", "web3"} {
 		if got[namespace] {
 			t.Fatalf("superseded namespace %q must be filtered when Sila namespace is available", namespace)
 		}
@@ -678,7 +678,6 @@ func TestFilterSupersededRPCAPIsKeepsLegacyWithoutSilaReplacement(t *testing.T) 
 		{Namespace: "eth", Service: &testService{}},
 		{Namespace: "net", Service: &testService{}},
 		{Namespace: "web3", Service: &testService{}},
-		{Namespace: "engine", Service: &testService{}},
 	}
 
 	filtered := filterSupersededRPCAPIs(apis)
@@ -687,7 +686,7 @@ func TestFilterSupersededRPCAPIsKeepsLegacyWithoutSilaReplacement(t *testing.T) 
 	for _, api := range filtered {
 		got[api.Namespace] = true
 	}
-	for _, namespace := range []string{"eth", "net", "web3", "engine"} {
+	for _, namespace := range []string{"eth", "net", "web3"} {
 		if !got[namespace] {
 			t.Fatalf("superseded namespace %q must remain when Sila replacement is unavailable", namespace)
 		}

@@ -663,10 +663,6 @@ func filterSupersededRPCAPIs(apis []rpc.API) []rpc.API {
 			if hasSila["silaWeb3"] {
 				continue
 			}
-		case "engine":
-			if hasSila["silaEngine"] {
-				continue
-			}
 		}
 		filtered = append(filtered, api)
 	}

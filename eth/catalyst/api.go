@@ -56,11 +56,6 @@ func Register(stack *node.Node, backend *eth.SilaChain) error {
 			Service:       NewSilaEngineAPI(backend),
 			Authenticated: true,
 		},
-		{
-			Namespace:     "engine",
-			Service:       NewConsensusAPI(backend),
-			Authenticated: true,
-		},
 	})
 	return nil
 }
