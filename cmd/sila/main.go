@@ -403,7 +403,7 @@ func ConfigureConsensusRuntime(
 
 	if beaconMode {
 		srv := rpc.NewServer()
-		srv.RegisterName("engine", catalyst.NewConsensusAPI(silaBackend))
+		srv.RegisterName("silaEngine", catalyst.NewConsensusAPI(silaBackend))
 
 		blsyncer := blsync.NewClient(beaconConfig)
 		blsyncer.SetEngineRPC(rpc.DialInProc(srv))
