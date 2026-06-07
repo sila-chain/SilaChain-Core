@@ -25,7 +25,7 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/sila-org/sila"
+	sila "github.com/sila-org/sila"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/common/lru"
 	"github.com/sila-org/sila/core"
@@ -181,7 +181,7 @@ type subscription struct {
 	id        rpc.ID
 	typ       Type
 	created   time.Time
-	logsCrit  ethereum.FilterQuery
+	logsCrit  sila.FilterQuery
 	logs      chan []*types.Log
 	txs       chan []*types.Transaction
 	headers   chan *types.Header
@@ -294,7 +294,7 @@ func (es *EventSystem) subscribe(sub *subscription) *Subscription {
 // SubscribeLogs creates a subscription that will write all logs matching the
 // given criteria to the given logs channel. Default value for the from and to
 // block is "latest". If the fromBlock > toBlock an error is returned.
-func (es *EventSystem) SubscribeLogs(crit ethereum.FilterQuery, logs chan []*types.Log) (*Subscription, error) {
+func (es *EventSystem) SubscribeLogs(crit sila.FilterQuery, logs chan []*types.Log) (*Subscription, error) {
 	if len(crit.Topics) > maxTopics {
 		return nil, errExceedMaxTopics
 	}
@@ -350,7 +350,7 @@ func (es *EventSystem) SubscribeLogs(crit ethereum.FilterQuery, logs chan []*typ
 
 // subscribeLogs creates a subscription that will write all logs matching the
 // given criteria to the given logs channel.
-func (es *EventSystem) subscribeLogs(crit ethereum.FilterQuery, logs chan []*types.Log) *Subscription {
+func (es *EventSystem) subscribeLogs(crit sila.FilterQuery, logs chan []*types.Log) *Subscription {
 	sub := &subscription{
 		id:        rpc.NewID(),
 		typ:       LogsSubscription,

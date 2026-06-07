@@ -25,7 +25,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/sila-org/sila"
+	sila "github.com/sila-org/sila"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/common/hexutil"
 	"github.com/sila-org/sila/core/history"
@@ -296,7 +296,7 @@ func (api *FilterAPI) Logs(ctx context.Context, crit FilterCriteria) (*rpc.Subsc
 		matchedLogs = make(chan []*types.Log)
 	)
 
-	logsSub, err := api.events.SubscribeLogs(ethereum.FilterQuery(crit), matchedLogs)
+	logsSub, err := api.events.SubscribeLogs(sila.FilterQuery(crit), matchedLogs)
 	if err != nil {
 		return nil, err
 	}
@@ -319,8 +319,8 @@ func (api *FilterAPI) Logs(ctx context.Context, crit FilterCriteria) (*rpc.Subsc
 }
 
 // TransactionReceiptsQuery defines criteria for transaction receipts subscription.
-// Same as ethereum.TransactionReceiptsQuery but with UnmarshalJSON() method.
-type TransactionReceiptsQuery ethereum.TransactionReceiptsQuery
+// Same as sila.TransactionReceiptsQuery but with UnmarshalJSON() method.
+type TransactionReceiptsQuery sila.TransactionReceiptsQuery
 
 // UnmarshalJSON sets *args fields with given data.
 func (args *TransactionReceiptsQuery) UnmarshalJSON(data []byte) error {
@@ -396,8 +396,8 @@ func (api *FilterAPI) TransactionReceipts(ctx context.Context, filter *Transacti
 }
 
 // FilterCriteria represents a request to create a new filter.
-// Same as ethereum.FilterQuery but with UnmarshalJSON() method.
-type FilterCriteria ethereum.FilterQuery
+// Same as sila.FilterQuery but with UnmarshalJSON() method.
+type FilterCriteria sila.FilterQuery
 
 // NewFilter creates a new filter and returns the filter id. It can be
 // used to retrieve logs when the state changes. This method cannot be
@@ -412,7 +412,7 @@ type FilterCriteria ethereum.FilterQuery
 // In case "fromBlock" > "toBlock" an error is returned.
 func (api *FilterAPI) NewFilter(crit FilterCriteria) (rpc.ID, error) {
 	logs := make(chan []*types.Log)
-	logsSub, err := api.events.SubscribeLogs(ethereum.FilterQuery(crit), logs)
+	logsSub, err := api.events.SubscribeLogs(sila.FilterQuery(crit), logs)
 	if err != nil {
 		return "", err
 	}
