@@ -171,7 +171,7 @@ type BlockChainConfig struct {
 	TrieJournalDirectory string        // Directory path to the journal used for persisting trie data across node restarts
 
 	Preimages         bool   // Whether to store preimage of trie key to the disk
-	StateScheme       string // Scheme used to store ethereum states and merkle tree nodes on top
+	StateScheme       string // Scheme used to store SilaChain states and merkle tree nodes on top
 	ArchiveMode       bool   // Whether to enable the archive mode
 	BinTrieGroupDepth int    // Number of levels per serialized group in binary trie (1-8)
 
