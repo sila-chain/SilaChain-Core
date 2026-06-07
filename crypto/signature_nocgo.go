@@ -92,7 +92,7 @@ func Sign(hash []byte, prv *ecdsa.PrivateKey) ([]byte, error) {
 	}
 	defer priv.Zero()
 	sig := decred_ecdsa.SignCompact(&priv, hash, false) // ref uncompressed pubkey
-	// Convert to Ethereum signature format with 'recovery id' v at the end.
+	// Convert to legacy-compatible signature format with 'recovery id' v at the end.
 	v := sig[0] - 27
 	copy(sig, sig[1:])
 	sig[RecoveryIDOffset] = v
