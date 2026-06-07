@@ -22,7 +22,7 @@ import (
 	"github.com/sila-org/sila/core/tracing"
 )
 
-// Contract represents an ethereum contract in the state database. It contains
+// Contract represents a SilaChain contract in the state database. It contains
 // the contract code, calling arguments. Contract implements ContractRef
 type Contract struct {
 	// caller is the result of the caller which initialised this

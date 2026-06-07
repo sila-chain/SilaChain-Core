@@ -28,7 +28,7 @@ var memoryPool = sync.Pool{
 	},
 }
 
-// Memory implements a simple memory model for the ethereum virtual machine.
+// Memory implements a simple memory model for the Sila virtual machine.
 type Memory struct {
 	store       []byte
 	lastGasCost uint64
