@@ -105,7 +105,6 @@ func New(conf *Config) (*Node, error) {
 	}
 	server := rpc.NewServer()
 	server.SetBatchLimits(conf.BatchRequestLimit, conf.BatchResponseMaxSize)
-	server.SetLegacyEngineCompatibilityAlias(conf.LegacyEngineCompatibility)
 	node := &Node{
 		config:        conf,
 		inprocHandler: server,
@@ -394,9 +393,8 @@ func (n *Node) startRPC() error {
 	)
 
 	rpcConfig := rpcEndpointConfig{
-		batchItemLimit:            n.config.BatchRequestLimit,
-		batchResponseSizeLimit:    n.config.BatchResponseMaxSize,
-		legacyEngineCompatibility: n.config.LegacyEngineCompatibility,
+		batchItemLimit:         n.config.BatchRequestLimit,
+		batchResponseSizeLimit: n.config.BatchResponseMaxSize,
 	}
 
 	initHttp := func(server *httpServer, port int) error {
@@ -440,11 +438,10 @@ func (n *Node) startRPC() error {
 			return err
 		}
 		sharedConfig := rpcEndpointConfig{
-			jwtSecret:                 secret,
-			batchItemLimit:            silaEngineAPIBatchItemLimit,
-			batchResponseSizeLimit:    silaEngineAPIBatchResponseSizeLimit,
-			httpBodyLimit:             silaEngineAPIBodyLimit,
-			legacyEngineCompatibility: n.config.LegacyEngineCompatibility,
+			jwtSecret:              secret,
+			batchItemLimit:         silaEngineAPIBatchItemLimit,
+			batchResponseSizeLimit: silaEngineAPIBatchResponseSizeLimit,
+			httpBodyLimit:          silaEngineAPIBodyLimit,
 		}
 		authModules := DefaultAuthModules
 
