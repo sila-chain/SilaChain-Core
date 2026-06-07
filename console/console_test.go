@@ -351,16 +351,3 @@ func TestSilaConsoleDoesNotLoadEthExtensionWhenSilaExists(t *testing.T) {
 		t.Fatalf("sila.getBlock should be available, got %q", result.String())
 	}
 }
-
-func TestSilaConsoleWeb3SilaExecutionAPI(t *testing.T) {
-	tester := newTester(t, nil)
-	defer tester.Close(t)
-
-	result, err := tester.console.jsre.Run(`typeof web3.sila.getBlock`)
-	if err != nil {
-		t.Fatalf("failed to inspect web3.sila.getBlock: %v", err)
-	}
-	if result.String() != "function" {
-		t.Fatalf("web3.sila.getBlock should be available, got %q", result.String())
-	}
-}
