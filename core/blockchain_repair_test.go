@@ -1780,7 +1780,7 @@ func testRepairWithScheme(t *testing.T, tt *rewindTest, snapshots bool, scheme s
 			BaseFee: big.NewInt(params.InitialBaseFee),
 			Config:  params.AllSilaProtocolChanges,
 		}
-		engine = ethash.NewFullFaker()
+		engine = ethash.NewSilaPoWFullFaker()
 		option = &BlockChainConfig{
 			TrieCleanLimit: 256,
 			TrieDirtyLimit: 256,
@@ -1931,7 +1931,7 @@ func testIssue23496(t *testing.T, scheme string) {
 			Config:  params.TestChainConfig,
 			BaseFee: big.NewInt(params.InitialBaseFee),
 		}
-		engine  = ethash.NewFullFaker()
+		engine  = ethash.NewSilaPoWFullFaker()
 		options = DefaultConfig().WithStateScheme(scheme)
 	)
 	chain, err := NewBlockChain(db, gspec, engine, options)

@@ -79,7 +79,7 @@ func (basic *snapshotTestBasic) prepare(t *testing.T) (*BlockChain, []*types.Blo
 			BaseFee: big.NewInt(params.InitialBaseFee),
 			Config:  params.AllSilaProtocolChanges,
 		}
-		engine = ethash.NewFullFaker()
+		engine = ethash.NewSilaPoWFullFaker()
 	)
 	chain, err := NewBlockChain(db, gspec, engine, DefaultConfig().WithStateScheme(basic.scheme).WithNoAsyncFlush(true))
 	if err != nil {

@@ -1983,7 +1983,7 @@ func testSetHeadWithScheme(t *testing.T, tt *rewindTest, snapshots bool, scheme 
 			BaseFee: big.NewInt(params.InitialBaseFee),
 			Config:  params.AllSilaProtocolChanges,
 		}
-		engine  = ethash.NewFullFaker()
+		engine  = ethash.NewSilaPoWFullFaker()
 		options = &BlockChainConfig{
 			TrieCleanLimit: 256,
 			TrieDirtyLimit: 256,
