@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with the SilaChain library. If not, see <http://www.gnu.org/licenses/>.
 
-// Package ethereum defines legacy-compatible interfaces for interacting with SilaChain.
+// Package ethereum is retained as a legacy import-compatibility package for SilaChain interfaces.
 package ethereum
 
 import (
