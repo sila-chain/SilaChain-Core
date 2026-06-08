@@ -234,6 +234,8 @@ func getGenesisState(db ethdb.Database, blockhash common.Hash) (alloc types.Gene
 	// - private network, can't recover
 	var genesis *Genesis
 	switch blockhash {
+	case params.SilaMainnetGenesisHash:
+		genesis = SilaDefaultGenesisBlock()
 	case params.MainnetGenesisHash:
 		genesis = DefaultGenesisBlock()
 	case params.SepoliaGenesisHash:
@@ -457,6 +459,8 @@ func (g *Genesis) chainConfigOrDefault(ghash common.Hash, stored *params.ChainCo
 	switch {
 	case g != nil:
 		return g.Config
+	case ghash == params.SilaMainnetGenesisHash:
+		return params.SilaMainnetChainConfig
 	case ghash == params.MainnetGenesisHash:
 		return params.MainnetChainConfig
 	case ghash == params.HoleskyGenesisHash:
