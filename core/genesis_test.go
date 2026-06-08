@@ -36,7 +36,7 @@ import (
 
 func newSilaPoWTestConfig(homestead *big.Int) *params.ChainConfig {
 	config := &params.ChainConfig{HomesteadBlock: homestead}
-	config.Ethash = &params.SilaPoWConfig{} // Legacy JSON compatibility slot for Sila PoW.
+	config.SilaPoW() // Touch the legacy JSON compatibility slot through the SilaPoW helper.
 	return config
 }
 func TestSetupGenesis(t *testing.T) {
