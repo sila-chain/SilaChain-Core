@@ -65,7 +65,7 @@ func testHeaderVerification(t *testing.T, scheme string) {
 				engine := ethash.NewFaker()
 				_, results = engine.VerifyHeaders(chain, []*types.Header{headers[i]})
 			} else {
-				engine := ethash.NewFakeFailer(headers[i].Number.Uint64())
+				engine := ethash.NewSilaPoWFailer(headers[i].Number.Uint64())
 				_, results = engine.VerifyHeaders(chain, []*types.Header{headers[i]})
 			}
 			// Wait for the verification result

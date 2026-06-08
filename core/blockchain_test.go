@@ -653,7 +653,7 @@ func testInsertNonceError(t *testing.T, full bool, scheme string) {
 			failAt = rand.Int() % len(blocks)
 			failNum = blocks[failAt].NumberU64()
 
-			blockchain.engine = ethash.NewFakeFailer(failNum)
+			blockchain.engine = ethash.NewSilaPoWFailer(failNum)
 			failRes, err = blockchain.InsertChain(blocks)
 		} else {
 			headers := makeHeaderChain(blockchain.chainConfig, blockchain.CurrentHeader(), i, ethash.NewFaker(), genDb, 0)
@@ -661,7 +661,7 @@ func testInsertNonceError(t *testing.T, full bool, scheme string) {
 			failAt = rand.Int() % len(headers)
 			failNum = headers[failAt].Number.Uint64()
 
-			blockchain.engine = ethash.NewFakeFailer(failNum)
+			blockchain.engine = ethash.NewSilaPoWFailer(failNum)
 			blockchain.hc.engine = blockchain.engine
 			failRes, err = blockchain.InsertHeaderChain(headers)
 		}
