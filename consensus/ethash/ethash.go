@@ -38,34 +38,50 @@ type SilaPoW = Ethash
 // NewFaker creates a SilaPoW compatibility consensus engine with a fake PoW scheme that accepts
 // all blocks' seal as valid, though they still have to conform to the SilaChain
 // consensus rules.
-func NewFaker() *SilaPoW {
+func NewSilaPoWFaker() *SilaPoW {
 	return new(SilaPoW)
+}
+
+func NewFaker() *SilaPoW {
+	return NewSilaPoWFaker()
 }
 
 // NewFakeFailer creates a SilaPoW compatibility consensus engine with a fake PoW scheme that
 // accepts all blocks as valid apart from the single one specified, though they
 // still have to conform to the SilaChain consensus rules.
-func NewFakeFailer(fail uint64) *SilaPoW {
+func NewSilaPoWFailer(fail uint64) *SilaPoW {
 	return &SilaPoW{
 		fakeFail: &fail,
 	}
 }
 
+func NewFakeFailer(fail uint64) *SilaPoW {
+	return NewSilaPoWFailer(fail)
+}
+
 // NewFakeDelayer creates a SilaPoW compatibility consensus engine with a fake PoW scheme that
 // accepts all blocks as valid, but delays verifications by some time, though
 // they still have to conform to the SilaChain consensus rules.
-func NewFakeDelayer(delay time.Duration) *SilaPoW {
+func NewSilaPoWDelayer(delay time.Duration) *SilaPoW {
 	return &SilaPoW{
 		fakeDelay: &delay,
 	}
 }
 
+func NewFakeDelayer(delay time.Duration) *SilaPoW {
+	return NewSilaPoWDelayer(delay)
+}
+
 // NewFullFaker creates a SilaPoW compatibility consensus engine with a full fake scheme that
 // accepts all blocks as valid, without checking any consensus rules whatsoever.
-func NewFullFaker() *SilaPoW {
+func NewSilaPoWFullFaker() *SilaPoW {
 	return &SilaPoW{
 		fakeFull: true,
 	}
+}
+
+func NewFullFaker() *SilaPoW {
+	return NewSilaPoWFullFaker()
 }
 
 // Close closes the exit channel to notify all backend threads exiting.
