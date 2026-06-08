@@ -66,7 +66,7 @@ func benchmarkFilters(b *testing.B, history uint64, noHistory bool) {
 		key1, _      = crypto.HexToECDSA("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
 		addr1        = crypto.PubkeyToAddress(key1.PublicKey)
 		addr2        = common.BytesToAddress([]byte("jeff"))
-		addr3        = common.BytesToAddress([]byte("ethereum"))
+		addr3        = common.BytesToAddress([]byte("sila"))
 		addr4        = common.BytesToAddress([]byte("random addresses please"))
 
 		gspec = &core.Genesis{
