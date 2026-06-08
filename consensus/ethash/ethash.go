@@ -42,6 +42,7 @@ func NewSilaPoWFaker() *SilaPoW {
 	return new(SilaPoW)
 }
 
+// Deprecated: use NewSilaPoWFaker.
 func NewFaker() *SilaPoW {
 	return NewSilaPoWFaker()
 }
@@ -55,6 +56,7 @@ func NewSilaPoWFailer(fail uint64) *SilaPoW {
 	}
 }
 
+// Deprecated: use NewSilaPoWFailer.
 func NewFakeFailer(fail uint64) *SilaPoW {
 	return NewSilaPoWFailer(fail)
 }
@@ -68,6 +70,7 @@ func NewSilaPoWDelayer(delay time.Duration) *SilaPoW {
 	}
 }
 
+// Deprecated: use NewSilaPoWDelayer.
 func NewFakeDelayer(delay time.Duration) *SilaPoW {
 	return NewSilaPoWDelayer(delay)
 }
@@ -80,6 +83,7 @@ func NewSilaPoWFullFaker() *SilaPoW {
 	}
 }
 
+// Deprecated: use NewSilaPoWFullFaker.
 func NewFullFaker() *SilaPoW {
 	return NewSilaPoWFullFaker()
 }
