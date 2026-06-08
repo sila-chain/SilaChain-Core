@@ -96,7 +96,7 @@ var (
 	badBlockKey = []byte("InvalidBlock")
 
 	// uncleanShutdownKey tracks the list of local crashes
-	uncleanShutdownKey = []byte("unclean-shutdown") // Sila config prefix for the db
+	uncleanShutdownKey = []byte("unclean-shutdown") // tracks local unclean shutdown markers
 
 	// transitionStatusKey tracks the eth2 transition status.
 	transitionStatusKey = []byte("eth2-transition") // deprecated
