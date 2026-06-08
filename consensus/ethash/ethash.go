@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with the SilaChain library. If not, see <http://www.gnu.org/licenses/>.
 
-// Package ethash implements the SilaPoW compatibility proof-of-work consensus engine.
+// Package ethash implements the legacy proof-of-work consensus engine for SilaPoW compatibility.
 package ethash
 
 import (
@@ -24,7 +24,7 @@ import (
 	"github.com/sila-org/sila/core/types"
 )
 
-// Ethash is the SilaPoW compatibility consensus engine based on proof-of-work implementing the legacy
+// Ethash is the legacy proof-of-work consensus engine retained for SilaPoW compatibility, implementing the legacy
 // algorithm.
 type Ethash struct {
 	fakeFail  *uint64        // Block number which fails PoW check even in fake mode
