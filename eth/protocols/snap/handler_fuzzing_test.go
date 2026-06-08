@@ -26,7 +26,7 @@ import (
 
 	fuzz "github.com/google/gofuzz"
 	"github.com/sila-org/sila/common"
-	"github.com/sila-org/sila/consensus/ethash"
+	silapow "github.com/sila-org/sila/consensus/ethash"
 	"github.com/sila-org/sila/core"
 	"github.com/sila-org/sila/core/rawdb"
 	"github.com/sila-org/sila/core/types"
@@ -121,7 +121,7 @@ func getChain() *core.BlockChain {
 		Config: params.TestChainConfig,
 		Alloc:  ga,
 	}
-	_, blocks, _ := core.GenerateChainWithGenesis(gspec, ethash.NewSilaPoWFaker(), 2, func(i int, gen *core.BlockGen) {})
+	_, blocks, _ := core.GenerateChainWithGenesis(gspec, silapow.NewSilaPoWFaker(), 2, func(i int, gen *core.BlockGen) {})
 	options := &core.BlockChainConfig{
 		TrieCleanLimit: 0,
 		TrieDirtyLimit: 0,
@@ -131,7 +131,7 @@ func getChain() *core.BlockChain {
 		SnapshotWait:   true,
 	}
 	trieRoot = blocks[len(blocks)-1].Root()
-	bc, _ := core.NewBlockChain(rawdb.NewMemoryDatabase(), gspec, ethash.NewSilaPoWFaker(), options)
+	bc, _ := core.NewBlockChain(rawdb.NewMemoryDatabase(), gspec, silapow.NewSilaPoWFaker(), options)
 	if _, err := bc.InsertChain(blocks); err != nil {
 		panic(err)
 	}

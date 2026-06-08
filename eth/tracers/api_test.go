@@ -34,7 +34,7 @@ import (
 	"github.com/sila-org/sila/common/hexutil"
 	"github.com/sila-org/sila/consensus"
 	"github.com/sila-org/sila/consensus/beacon"
-	"github.com/sila-org/sila/consensus/ethash"
+	silapow "github.com/sila-org/sila/consensus/ethash"
 	"github.com/sila-org/sila/core"
 	"github.com/sila-org/sila/core/rawdb"
 	"github.com/sila-org/sila/core/state"
@@ -70,7 +70,7 @@ type testBackend struct {
 func newTestBackend(t *testing.T, n int, gspec *core.Genesis, generator func(i int, b *core.BlockGen)) *testBackend {
 	backend := &testBackend{
 		chainConfig: gspec.Config,
-		engine:      ethash.NewSilaPoWFaker(),
+		engine:      silapow.NewSilaPoWFaker(),
 		chaindb:     rawdb.NewMemoryDatabase(),
 	}
 	// Generate blocks for testing
@@ -1358,7 +1358,7 @@ func TestTraceChain(t *testing.T) {
 func newTestMergedBackend(t *testing.T, n int, gspec *core.Genesis, generator func(i int, b *core.BlockGen)) *testBackend {
 	backend := &testBackend{
 		chainConfig: gspec.Config,
-		engine:      beacon.New(ethash.NewSilaPoWFaker()),
+		engine:      beacon.New(silapow.NewSilaPoWFaker()),
 		chaindb:     rawdb.NewMemoryDatabase(),
 	}
 	// Generate blocks for testing

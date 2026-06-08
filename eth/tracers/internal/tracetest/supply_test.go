@@ -30,7 +30,7 @@ import (
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/common/hexutil"
 	"github.com/sila-org/sila/consensus/beacon"
-	"github.com/sila-org/sila/consensus/ethash"
+	silapow "github.com/sila-org/sila/consensus/ethash"
 	"github.com/sila-org/sila/core"
 	"github.com/sila-org/sila/core/rawdb"
 	"github.com/sila-org/sila/core/types"
@@ -168,7 +168,7 @@ func TestSupplyRewardsWithUncle(t *testing.T) {
 	)
 
 	// Base reward for the miner
-	baseReward := ethash.ConstantinopleBlockReward.ToBig()
+	baseReward := silapow.ConstantinopleBlockReward.ToBig()
 	// Miner reward for uncle inclusion is 1/32 of the base reward
 	uncleInclusionReward := new(big.Int).Rsh(baseReward, 5)
 	// Uncle miner reward for an uncle that is 1 block behind is 7/8 of the base reward
@@ -591,7 +591,7 @@ func TestSupplySelfdestructItselfAndRevert(t *testing.T) {
 }
 
 func testSupplyTracer(t *testing.T, genesis *core.Genesis, gen func(b *core.BlockGen), numBlocks int) ([]supplyInfo, *core.BlockChain, error) {
-	engine := beacon.New(ethash.NewSilaPoWFaker())
+	engine := beacon.New(silapow.NewSilaPoWFaker())
 
 	traceOutputPath := filepath.ToSlash(t.TempDir())
 	traceOutputFilename := path.Join(traceOutputPath, "supply.jsonl")

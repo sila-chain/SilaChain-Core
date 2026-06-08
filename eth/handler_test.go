@@ -26,7 +26,7 @@ import (
 
 	"github.com/holiman/uint256"
 	"github.com/sila-org/sila/common"
-	"github.com/sila-org/sila/consensus/ethash"
+	silapow "github.com/sila-org/sila/consensus/ethash"
 	"github.com/sila-org/sila/core"
 	"github.com/sila-org/sila/core/rawdb"
 	"github.com/sila-org/sila/core/txpool"
@@ -198,9 +198,9 @@ func newTestHandlerWithBlocks(blocks int, mode ethconfig.SyncMode) *testHandler 
 		Config: params.TestChainConfig,
 		Alloc:  types.GenesisAlloc{testAddr: {Balance: big.NewInt(1000000)}},
 	}
-	chain, _ := core.NewBlockChain(db, gspec, ethash.NewSilaPoWFaker(), nil)
+	chain, _ := core.NewBlockChain(db, gspec, silapow.NewSilaPoWFaker(), nil)
 
-	_, bs, _ := core.GenerateChainWithGenesis(gspec, ethash.NewSilaPoWFaker(), blocks, nil)
+	_, bs, _ := core.GenerateChainWithGenesis(gspec, silapow.NewSilaPoWFaker(), blocks, nil)
 	if _, err := chain.InsertChain(bs); err != nil {
 		panic(err)
 	}

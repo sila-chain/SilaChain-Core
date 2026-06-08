@@ -25,7 +25,7 @@ import (
 
 	sila "github.com/sila-org/sila"
 	"github.com/sila-org/sila/common"
-	"github.com/sila-org/sila/consensus/ethash"
+	silapow "github.com/sila-org/sila/consensus/ethash"
 	"github.com/sila-org/sila/core"
 	"github.com/sila-org/sila/core/rawdb"
 	"github.com/sila-org/sila/core/types"
@@ -67,7 +67,7 @@ func newTesterWithNotification(t *testing.T, mode ethconfig.SyncMode, success fu
 		Alloc:   types.GenesisAlloc{testAddress: {Balance: big.NewInt(1000000000000000)}},
 		BaseFee: big.NewInt(params.InitialBaseFee),
 	}
-	chain, err := core.NewBlockChain(db, gspec, ethash.NewSilaPoWFaker(), nil)
+	chain, err := core.NewBlockChain(db, gspec, silapow.NewSilaPoWFaker(), nil)
 	if err != nil {
 		panic(err)
 	}

@@ -28,7 +28,7 @@ import (
 	"github.com/holiman/uint256"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/consensus/beacon"
-	"github.com/sila-org/sila/consensus/ethash"
+	silapow "github.com/sila-org/sila/consensus/ethash"
 	"github.com/sila-org/sila/core"
 	"github.com/sila-org/sila/core/rawdb"
 	"github.com/sila-org/sila/core/txpool"
@@ -59,7 +59,7 @@ func initBackend(withLocal bool) *SilaAPIBackend {
 	var (
 		// Create a database pre-initialize with a genesis block
 		db     = rawdb.NewMemoryDatabase()
-		engine = beacon.New(ethash.NewSilaPoWFaker())
+		engine = beacon.New(silapow.NewSilaPoWFaker())
 	)
 	chain, _ := core.NewBlockChain(db, gspec, engine, nil)
 

@@ -26,7 +26,7 @@ import (
 	"github.com/holiman/uint256"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/consensus/beacon"
-	"github.com/sila-org/sila/consensus/ethash"
+	silapow "github.com/sila-org/sila/consensus/ethash"
 	"github.com/sila-org/sila/core"
 	"github.com/sila-org/sila/core/rawdb"
 	"github.com/sila-org/sila/core/types/bal"
@@ -58,7 +58,7 @@ func getChainWithBALs(nBlocks int, balSize int) (*core.BlockChain, []common.Hash
 		Config: params.MergedTestChainConfig,
 	}
 	db := rawdb.NewMemoryDatabase()
-	engine := beacon.New(ethash.NewSilaPoWFaker())
+	engine := beacon.New(silapow.NewSilaPoWFaker())
 	_, blocks, _ := core.GenerateChainWithGenesis(gspec, engine, nBlocks, func(i int, gen *core.BlockGen) {})
 	options := &core.BlockChainConfig{
 		StateScheme:   rawdb.PathScheme,

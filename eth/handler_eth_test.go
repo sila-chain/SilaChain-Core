@@ -23,7 +23,7 @@ import (
 	"time"
 
 	"github.com/sila-org/sila/common"
-	"github.com/sila-org/sila/consensus/ethash"
+	silapow "github.com/sila-org/sila/consensus/ethash"
 	"github.com/sila-org/sila/core"
 	"github.com/sila-org/sila/core/rawdb"
 	"github.com/sila-org/sila/core/types"
@@ -83,7 +83,7 @@ func testForkIDSplit(t *testing.T, protocol uint) {
 	t.Parallel()
 
 	var (
-		engine = ethash.NewSilaPoWFaker()
+		engine = silapow.NewSilaPoWFaker()
 
 		configNoFork  = &params.ChainConfig{HomesteadBlock: big.NewInt(1)}
 		configProFork = &params.ChainConfig{

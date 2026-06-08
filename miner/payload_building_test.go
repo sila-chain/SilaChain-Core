@@ -27,7 +27,7 @@ import (
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/consensus"
 	"github.com/sila-org/sila/consensus/clique"
-	"github.com/sila-org/sila/consensus/ethash"
+	silapow "github.com/sila-org/sila/consensus/ethash"
 	"github.com/sila-org/sila/core"
 	"github.com/sila-org/sila/core/rawdb"
 	"github.com/sila-org/sila/core/txpool"
@@ -114,7 +114,7 @@ func newTestWorkerBackend(t *testing.T, chainConfig *params.ChainConfig, engine 
 		gspec.ExtraData = make([]byte, 32+common.AddressLength+crypto.SignatureLength)
 		copy(gspec.ExtraData[32:32+common.AddressLength], testBankAddress.Bytes())
 		e.Authorize(testBankAddress)
-	case *ethash.SilaPoW: // Legacy Sila PoW compatibility engine type.
+	case *silapow.SilaPoW: // Legacy Sila PoW compatibility engine type.
 	default:
 		t.Fatalf("unexpected consensus engine type: %T", engine)
 	}
@@ -148,7 +148,7 @@ func TestBuildPayload(t *testing.T) {
 		db        = rawdb.NewMemoryDatabase()
 		recipient = common.HexToAddress("0xdeadbeef")
 	)
-	w, b := newTestWorker(t, params.TestChainConfig, ethash.NewSilaPoWFaker(), db, 0)
+	w, b := newTestWorker(t, params.TestChainConfig, silapow.NewSilaPoWFaker(), db, 0)
 
 	timestamp := uint64(time.Now().Unix())
 	args := &BuildPayloadArgs{

@@ -27,7 +27,7 @@ import (
 	"github.com/holiman/uint256"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/consensus/beacon"
-	"github.com/sila-org/sila/consensus/ethash"
+	silapow "github.com/sila-org/sila/consensus/ethash"
 	"github.com/sila-org/sila/core"
 	"github.com/sila-org/sila/core/state"
 	"github.com/sila-org/sila/core/types"
@@ -150,7 +150,7 @@ func newTestBackend(t *testing.T, londonBlock *big.Int, cancunBlock *big.Int, pe
 		// Enable the merge with cancun fork.
 		config.MergeNetsplitBlock = cancunBlock
 	}
-	engine := beacon.New(ethash.NewSilaPoWFaker())
+	engine := beacon.New(silapow.NewSilaPoWFaker())
 
 	if cancunBlock != nil {
 		ts := gspec.Timestamp + cancunBlock.Uint64()*10 // fixed 10 sec block time in blockgen

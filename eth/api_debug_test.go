@@ -30,7 +30,7 @@ import (
 	"github.com/davecgh/go-spew/spew"
 	"github.com/holiman/uint256"
 	"github.com/sila-org/sila/common"
-	"github.com/sila-org/sila/consensus/ethash"
+	silapow "github.com/sila-org/sila/consensus/ethash"
 	"github.com/sila-org/sila/core"
 	"github.com/sila-org/sila/core/rawdb"
 	"github.com/sila-org/sila/core/state"
@@ -62,7 +62,7 @@ func newAccounts(n int) (accounts []Account) {
 // newTestBlockChain creates a new test blockchain. OBS: After test is done, teardown must be
 // invoked in order to release associated resources.
 func newTestBlockChain(t *testing.T, n int, gspec *core.Genesis, generator func(i int, b *core.BlockGen)) *core.BlockChain {
-	engine := ethash.NewSilaPoWFaker()
+	engine := silapow.NewSilaPoWFaker()
 	// Generate blocks for testing
 	_, blocks, _ := core.GenerateChainWithGenesis(gspec, engine, n, generator)
 

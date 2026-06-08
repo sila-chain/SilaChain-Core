@@ -26,7 +26,7 @@ import (
 
 	sila "github.com/sila-org/sila"
 	"github.com/sila-org/sila/common"
-	"github.com/sila-org/sila/consensus/ethash"
+	silapow "github.com/sila-org/sila/consensus/ethash"
 	"github.com/sila-org/sila/core"
 	"github.com/sila-org/sila/core/types"
 	"github.com/sila-org/sila/crypto"
@@ -114,7 +114,7 @@ func generateTestChain() (*core.Genesis, []*types.Block, []common.Hash) {
 		g.AddTx(tx)
 		txHashes = append(txHashes, tx.Hash())
 	}
-	_, blocks, _ := core.GenerateChainWithGenesis(genesis, ethash.NewSilaPoWFaker(), 1, generate)
+	_, blocks, _ := core.GenerateChainWithGenesis(genesis, silapow.NewSilaPoWFaker(), 1, generate)
 	blocks = append([]*types.Block{genesis.ToBlock()}, blocks...)
 	return genesis, blocks, txHashes
 }

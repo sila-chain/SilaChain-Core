@@ -30,7 +30,7 @@ import (
 	"github.com/sila-org/sila/accounts/abi"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/consensus/beacon"
-	"github.com/sila-org/sila/consensus/ethash"
+	silapow "github.com/sila-org/sila/consensus/ethash"
 	"github.com/sila-org/sila/core"
 	"github.com/sila-org/sila/core/types"
 	"github.com/sila-org/sila/crypto"
@@ -143,7 +143,7 @@ func generateTestChain() []*types.Block {
 			g.AddTx(testTx2)
 		}
 	}
-	_, blocks, _ := core.GenerateChainWithGenesis(genesis, beacon.New(ethash.NewSilaPoWFaker()), 2, generate)
+	_, blocks, _ := core.GenerateChainWithGenesis(genesis, beacon.New(silapow.NewSilaPoWFaker()), 2, generate)
 	return append([]*types.Block{genesis.ToBlock()}, blocks...)
 }
 

@@ -37,7 +37,7 @@ import (
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/common/hexutil"
 	"github.com/sila-org/sila/consensus/beacon"
-	"github.com/sila-org/sila/consensus/ethash"
+	silapow "github.com/sila-org/sila/consensus/ethash"
 	"github.com/sila-org/sila/core"
 	"github.com/sila-org/sila/core/types"
 	"github.com/sila-org/sila/crypto"
@@ -66,7 +66,7 @@ var (
 
 func generateMergeChain(n int, merged bool) (*core.Genesis, []*types.Block) {
 	config := *params.AllSilaProtocolChanges
-	engine := beacon.New(ethash.NewSilaPoWFaker())
+	engine := beacon.New(silapow.NewSilaPoWFaker())
 	if merged {
 		config.TerminalTotalDifficulty = common.Big0
 		config.MergeNetsplitBlock = common.Big0

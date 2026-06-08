@@ -29,7 +29,7 @@ import (
 
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/consensus/beacon"
-	"github.com/sila-org/sila/consensus/ethash"
+	silapow "github.com/sila-org/sila/consensus/ethash"
 	"github.com/sila-org/sila/core"
 	"github.com/sila-org/sila/core/rawdb"
 	"github.com/sila-org/sila/core/types"
@@ -489,7 +489,7 @@ func newGQLService(t *testing.T, stack *node.Node, shanghai bool, gspec *core.Ge
 		RPCGasCap:      1000000,
 		StateScheme:    rawdb.HashScheme,
 	}
-	var engine = beacon.New(ethash.NewSilaPoWFaker())
+	var engine = beacon.New(silapow.NewSilaPoWFaker())
 	if shanghai {
 		gspec.Config.TerminalTotalDifficulty = common.Big0
 		gspec.Config.MergeNetsplitBlock = common.Big0
