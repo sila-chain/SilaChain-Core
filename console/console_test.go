@@ -76,7 +76,7 @@ func (p *hookedPrompter) SetWordCompleter(completer prompt.WordCompleter) {}
 type tester struct {
 	workspace string
 	stack     *node.Node
-	ethereum  *eth.SilaChain
+	sila      *eth.SilaChain
 	console   *Console
 	input     *hookedPrompter
 	output    *bytes.Buffer
@@ -133,7 +133,7 @@ func newTester(t *testing.T, confOverride func(*ethconfig.Config)) *tester {
 	return &tester{
 		workspace: workspace,
 		stack:     stack,
-		ethereum:  ethBackend,
+		sila:      ethBackend,
 		console:   console,
 		input:     prompter,
 		output:    printer,
