@@ -59,3 +59,35 @@ Examples:
 - Web3 Secret Storage
 - Ethereum Signed Message
 - eth_* JSON-RPC compatibility
+
+## Sila Mainnet Specification Draft
+
+Status: design draft only. No runtime behavior is changed by this section.
+
+SilaChain mainnet must not use Ethereum mainnet identity as its final public network identity.
+
+Current inherited compatibility state:
+- `params.MainnetChainConfig` still uses `ChainID: big.NewInt(1)`.
+- `params.MainnetGenesisHash` still points to the inherited Ethereum mainnet genesis hash.
+- `core.DefaultGenesisBlock()` still builds from `params.MainnetChainConfig`.
+- `params.MainnetBootnodes` and DNS discovery are still inherited public Ethereum network discovery values.
+
+Approved target direction:
+- Sila mainnet should use an independent chain identity.
+- Proposed final ChainID: `2026`.
+- Proposed final NetworkID: `2026`.
+- Sila mainnet must receive its own genesis block, genesis hash, bootnodes, and DNS discovery configuration.
+- Existing Ethereum/Trezor/Ledger compatibility protocols must not be renamed or broken.
+- Ethereum EVM logic must remain unchanged; only Sila network identity should be introduced.
+
+Required implementation order:
+1. Define Sila mainnet chain configuration.
+2. Define Sila mainnet genesis.
+3. Compute and record Sila mainnet genesis hash.
+4. Replace inherited mainnet bootnodes with Sila-owned bootnodes.
+5. Disable or replace inherited Ethereum DNS discovery for Sila mainnet.
+6. Test `sila init`, `sila dumpgenesis`, chain ID reporting, and selected RPC paths.
+7. Commit and push only after tests pass.
+
+Do not directly change `ChainID` alone. ChainID, genesis, genesis hash, bootnodes, and discovery must move together.
+
