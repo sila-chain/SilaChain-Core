@@ -423,7 +423,7 @@ func (tx *stTransaction) toMessage(ps stPostState, baseFee *big.Int) (*core.Mess
 	dataHex := tx.Data[ps.Indexes.Data]
 	valueHex := tx.Value[ps.Indexes.Value]
 	gasLimit := tx.GasLimit[ps.Indexes.Gas]
-	// Value, Data hex encoding is messy: https://github.com/ethereum/tests/issues/203
+	// Value, Data hex encoding is messy: https://github.com/medo202225/tests/issues/203
 	value := new(big.Int)
 	if valueHex != "0x" {
 		v, ok := math.ParseBig256(valueHex)
