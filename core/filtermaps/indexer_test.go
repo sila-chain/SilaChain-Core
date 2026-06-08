@@ -565,7 +565,7 @@ func (tc *testChain) addBlocks(count, maxTxPerBlock, maxLogsPerReceipt, maxTopic
 	var (
 		blocks   []*types.Block
 		receipts []types.Receipts
-		engine   = ethash.NewFaker()
+		engine   = ethash.NewSilaPoWFaker()
 	)
 
 	if len(tc.canonical) == 0 {

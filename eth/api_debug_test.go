@@ -62,7 +62,7 @@ func newAccounts(n int) (accounts []Account) {
 // newTestBlockChain creates a new test blockchain. OBS: After test is done, teardown must be
 // invoked in order to release associated resources.
 func newTestBlockChain(t *testing.T, n int, gspec *core.Genesis, generator func(i int, b *core.BlockGen)) *core.BlockChain {
-	engine := ethash.NewFaker()
+	engine := ethash.NewSilaPoWFaker()
 	// Generate blocks for testing
 	_, blocks, _ := core.GenerateChainWithGenesis(gspec, engine, n, generator)
 

@@ -138,7 +138,7 @@ func testSetupGenesis(t *testing.T, scheme string) {
 				bc, _ := NewBlockChain(db, &oldcustomg, ethash.NewSilaPoWFullFaker(), DefaultConfig().WithStateScheme(scheme))
 				defer bc.Stop()
 
-				_, blocks, _ := GenerateChainWithGenesis(&oldcustomg, ethash.NewFaker(), 4, nil)
+				_, blocks, _ := GenerateChainWithGenesis(&oldcustomg, ethash.NewSilaPoWFaker(), 4, nil)
 				bc.InsertChain(blocks)
 
 				// This should return a compatibility error.

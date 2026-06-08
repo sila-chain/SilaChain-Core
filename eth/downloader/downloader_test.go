@@ -67,7 +67,7 @@ func newTesterWithNotification(t *testing.T, mode ethconfig.SyncMode, success fu
 		Alloc:   types.GenesisAlloc{testAddress: {Balance: big.NewInt(1000000000000000)}},
 		BaseFee: big.NewInt(params.InitialBaseFee),
 	}
-	chain, err := core.NewBlockChain(db, gspec, ethash.NewFaker(), nil)
+	chain, err := core.NewBlockChain(db, gspec, ethash.NewSilaPoWFaker(), nil)
 	if err != nil {
 		panic(err)
 	}

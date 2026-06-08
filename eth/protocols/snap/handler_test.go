@@ -58,7 +58,7 @@ func getChainWithBALs(nBlocks int, balSize int) (*core.BlockChain, []common.Hash
 		Config: params.MergedTestChainConfig,
 	}
 	db := rawdb.NewMemoryDatabase()
-	engine := beacon.New(ethash.NewFaker())
+	engine := beacon.New(ethash.NewSilaPoWFaker())
 	_, blocks, _ := core.GenerateChainWithGenesis(gspec, engine, nBlocks, func(i int, gen *core.BlockGen) {})
 	options := &core.BlockChainConfig{
 		StateScheme:   rawdb.PathScheme,

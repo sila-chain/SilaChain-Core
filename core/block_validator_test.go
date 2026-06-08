@@ -43,7 +43,7 @@ func testHeaderVerification(t *testing.T, scheme string) {
 	// Create a simple chain to verify
 	var (
 		gspec        = &Genesis{Config: params.TestChainConfig}
-		_, blocks, _ = GenerateChainWithGenesis(gspec, ethash.NewFaker(), 8, nil)
+		_, blocks, _ = GenerateChainWithGenesis(gspec, ethash.NewSilaPoWFaker(), 8, nil)
 	)
 	headers := make([]*types.Header, len(blocks))
 	for i, block := range blocks {
@@ -51,7 +51,7 @@ func testHeaderVerification(t *testing.T, scheme string) {
 	}
 	// Run the header checker for blocks one-by-one, checking for both valid and invalid nonces
 	options := DefaultConfig().WithStateScheme(scheme)
-	chain, err := NewBlockChain(rawdb.NewMemoryDatabase(), gspec, ethash.NewFaker(), options)
+	chain, err := NewBlockChain(rawdb.NewMemoryDatabase(), gspec, ethash.NewSilaPoWFaker(), options)
 	defer chain.Stop()
 	if err != nil {
 		t.Fatal(err)
@@ -62,7 +62,7 @@ func testHeaderVerification(t *testing.T, scheme string) {
 			var results <-chan error
 
 			if valid {
-				engine := ethash.NewFaker()
+				engine := ethash.NewSilaPoWFaker()
 				_, results = engine.VerifyHeaders(chain, []*types.Header{headers[i]})
 			} else {
 				engine := ethash.NewSilaPoWFailer(headers[i].Number.Uint64())
@@ -146,7 +146,7 @@ func testHeaderVerificationForMerging(t *testing.T, isClique bool) {
 	} else {
 		config := *params.TestChainConfig
 		gspec = &Genesis{Config: &config}
-		engine = beacon.New(ethash.NewFaker())
+		engine = beacon.New(ethash.NewSilaPoWFaker())
 		td := int(params.GenesisDifficulty.Uint64())
 		genDb, blocks, _ := GenerateChainWithGenesis(gspec, engine, 8, nil)
 		for _, block := range blocks {

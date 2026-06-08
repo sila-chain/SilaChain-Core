@@ -59,7 +59,7 @@ func initBackend(withLocal bool) *SilaAPIBackend {
 	var (
 		// Create a database pre-initialize with a genesis block
 		db     = rawdb.NewMemoryDatabase()
-		engine = beacon.New(ethash.NewFaker())
+		engine = beacon.New(ethash.NewSilaPoWFaker())
 	)
 	chain, _ := core.NewBlockChain(db, gspec, engine, nil)
 

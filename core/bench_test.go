@@ -195,11 +195,11 @@ func benchInsertChain(b *testing.B, disk bool, gen func(int, *BlockGen)) {
 		Config: params.TestChainConfig,
 		Alloc:  types.GenesisAlloc{benchRootAddr: {Balance: benchRootFunds}},
 	}
-	_, chain, _ := GenerateChainWithGenesis(gspec, ethash.NewFaker(), b.N, gen)
+	_, chain, _ := GenerateChainWithGenesis(gspec, ethash.NewSilaPoWFaker(), b.N, gen)
 
 	// Time the insertion of the new chain.
 	// State and blocks are stored in the same DB.
-	chainman, _ := NewBlockChain(db, gspec, ethash.NewFaker(), nil)
+	chainman, _ := NewBlockChain(db, gspec, ethash.NewSilaPoWFaker(), nil)
 	defer chainman.Stop()
 	b.ReportAllocs()
 	b.ResetTimer()
@@ -333,7 +333,7 @@ func benchReadChain(b *testing.B, full bool, count uint64) {
 		}
 		db = rawdb.NewDatabase(pdb)
 
-		chain, err := NewBlockChain(db, genesis, ethash.NewFaker(), options)
+		chain, err := NewBlockChain(db, genesis, ethash.NewSilaPoWFaker(), options)
 		if err != nil {
 			b.Fatalf("error creating chain: %v", err)
 		}

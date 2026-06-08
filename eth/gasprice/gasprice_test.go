@@ -150,7 +150,7 @@ func newTestBackend(t *testing.T, londonBlock *big.Int, cancunBlock *big.Int, pe
 		// Enable the merge with cancun fork.
 		config.MergeNetsplitBlock = cancunBlock
 	}
-	engine := beacon.New(ethash.NewFaker())
+	engine := beacon.New(ethash.NewSilaPoWFaker())
 
 	if cancunBlock != nil {
 		ts := gspec.Timestamp + cancunBlock.Uint64()*10 // fixed 10 sec block time in blockgen

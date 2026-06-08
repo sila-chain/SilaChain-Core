@@ -142,9 +142,9 @@ func verifyAccountState(t *testing.T, addr common.Address, actual, expected *acc
 func setupTestBlockchain(t *testing.T, genesis *core.Genesis, tx *types.Transaction, useBeacon bool) (*core.BlockChain, *types.Block, *state.StateDB) {
 	var engine consensus.Engine
 	if useBeacon {
-		engine = beacon.New(ethash.NewFaker())
+		engine = beacon.New(ethash.NewSilaPoWFaker())
 	} else {
-		engine = ethash.NewFaker()
+		engine = ethash.NewSilaPoWFaker()
 	}
 
 	_, blocks, _ := core.GenerateChainWithGenesis(genesis, engine, 1, func(i int, b *core.BlockGen) {

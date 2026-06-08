@@ -143,7 +143,7 @@ func generateTestChain() []*types.Block {
 			g.AddTx(testTx2)
 		}
 	}
-	_, blocks, _ := core.GenerateChainWithGenesis(genesis, beacon.New(ethash.NewFaker()), 2, generate)
+	_, blocks, _ := core.GenerateChainWithGenesis(genesis, beacon.New(ethash.NewSilaPoWFaker()), 2, generate)
 	return append([]*types.Block{genesis.ToBlock()}, blocks...)
 }
 

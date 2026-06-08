@@ -489,7 +489,7 @@ func newGQLService(t *testing.T, stack *node.Node, shanghai bool, gspec *core.Ge
 		RPCGasCap:      1000000,
 		StateScheme:    rawdb.HashScheme,
 	}
-	var engine = beacon.New(ethash.NewFaker())
+	var engine = beacon.New(ethash.NewSilaPoWFaker())
 	if shanghai {
 		gspec.Config.TerminalTotalDifficulty = common.Big0
 		gspec.Config.MergeNetsplitBlock = common.Big0

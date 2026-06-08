@@ -148,7 +148,7 @@ func TestBuildPayload(t *testing.T) {
 		db        = rawdb.NewMemoryDatabase()
 		recipient = common.HexToAddress("0xdeadbeef")
 	)
-	w, b := newTestWorker(t, params.TestChainConfig, ethash.NewFaker(), db, 0)
+	w, b := newTestWorker(t, params.TestChainConfig, ethash.NewSilaPoWFaker(), db, 0)
 
 	timestamp := uint64(time.Now().Unix())
 	args := &BuildPayloadArgs{

@@ -114,7 +114,7 @@ func generateTestChain() (*core.Genesis, []*types.Block, []common.Hash) {
 		g.AddTx(tx)
 		txHashes = append(txHashes, tx.Hash())
 	}
-	_, blocks, _ := core.GenerateChainWithGenesis(genesis, ethash.NewFaker(), 1, generate)
+	_, blocks, _ := core.GenerateChainWithGenesis(genesis, ethash.NewSilaPoWFaker(), 1, generate)
 	blocks = append([]*types.Block{genesis.ToBlock()}, blocks...)
 	return genesis, blocks, txHashes
 }

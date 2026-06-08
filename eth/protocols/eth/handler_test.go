@@ -79,7 +79,7 @@ func newTestBackendWithGenerator(blocks int, shanghai bool, cancun bool, generat
 		// Create a database pre-initialize with a genesis block
 		db     = rawdb.NewMemoryDatabase()
 		config = params.TestChainConfig
-		engine = beacon.New(ethash.NewFaker())
+		engine = beacon.New(ethash.NewSilaPoWFaker())
 	)
 	if shanghai {
 		config = &params.ChainConfig{

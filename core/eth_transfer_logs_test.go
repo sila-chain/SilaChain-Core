@@ -75,7 +75,7 @@ func testEthTransferLogs(t *testing.T, value uint64) {
 		testEvent2 = crypto.Keccak256Hash([]byte("TestEvent2()"))
 		config     = *params.MergedTestChainConfig
 		signer     = types.LatestSigner(&config)
-		engine     = beacon.New(ethash.NewFaker())
+		engine     = beacon.New(ethash.NewSilaPoWFaker())
 	)
 
 	//TODO remove this hacky config initialization when final Amsterdam config is available
