@@ -308,6 +308,10 @@ func (silapow *SilaPoW) CalcDifficulty(chain consensus.ChainHeaderReader, time u
 // CalcDifficulty is the difficulty adjustment algorithm. It returns
 // the difficulty that a new block should have when created at time
 // given the parent block's time and difficulty.
+func SilaPoWCalcDifficulty(config *params.ChainConfig, time uint64, parent *types.Header) *big.Int {
+	return CalcDifficulty(config, time, parent)
+}
+
 func CalcDifficulty(config *params.ChainConfig, time uint64, parent *types.Header) *big.Int {
 	next := new(big.Int).Add(parent.Number, big1)
 	switch {
@@ -491,6 +495,10 @@ func calcDifficultyFrontier(time uint64, parent *types.Header) *big.Int {
 var FrontierDifficultyCalculator = calcDifficultyFrontier
 var HomesteadDifficultyCalculator = calcDifficultyHomestead
 var DynamicDifficultyCalculator = makeDifficultyCalculator
+
+var SilaPoWFrontierDifficultyCalculator = FrontierDifficultyCalculator
+var SilaPoWHomesteadDifficultyCalculator = HomesteadDifficultyCalculator
+var SilaPoWDynamicDifficultyCalculator = DynamicDifficultyCalculator
 
 // Prepare implements consensus.Engine, initializing the difficulty field of a
 // header to conform to the SilaPoW compatibility protocol. The changes are done inline.
