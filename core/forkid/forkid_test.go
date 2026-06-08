@@ -439,7 +439,7 @@ func TestTimeBasedForkInGenesis(t *testing.T) {
 				MergeNetsplitBlock:      big.NewInt(0),
 				ShanghaiTime:            &shanghai,
 				CancunTime:              &cancun,
-				Ethash:                  new(params.SilaPoWConfig), // Legacy JSON compatibility slot for Sila PoW.
+				Ethash:                  new(params.SilaPoWConfig), // Retained for Sila PoW legacy JSON compatibility.
 			}
 		}
 	)

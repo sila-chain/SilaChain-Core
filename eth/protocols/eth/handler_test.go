@@ -102,7 +102,7 @@ func newTestBackendWithGenerator(blocks int, shanghai bool, cancun bool, generat
 			MergeNetsplitBlock:      big.NewInt(0),
 			ShanghaiTime:            u64(0),
 			TerminalTotalDifficulty: big.NewInt(0),
-			Ethash:                  new(params.SilaPoWConfig), // Legacy JSON compatibility slot for Sila PoW.
+			Ethash:                  new(params.SilaPoWConfig), // Retained for Sila PoW legacy JSON compatibility.
 		}
 	}
 
