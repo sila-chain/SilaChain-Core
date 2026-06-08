@@ -25,7 +25,7 @@ import (
 	"github.com/sila-org/sila/consensus"
 	"github.com/sila-org/sila/consensus/beacon"
 	"github.com/sila-org/sila/consensus/clique"
-	"github.com/sila-org/sila/consensus/ethash"
+	silapow "github.com/sila-org/sila/consensus/ethash"
 	"github.com/sila-org/sila/core"
 	"github.com/sila-org/sila/core/history"
 	"github.com/sila-org/sila/core/txpool/blobpool"
@@ -230,5 +230,5 @@ func CreateConsensusEngine(config *params.ChainConfig, db ethdb.Database) (conse
 	if config.Clique != nil {
 		return beacon.New(clique.New(config.Clique, db)), nil
 	}
-	return beacon.New(ethash.NewSilaPoWFaker()), nil
+	return beacon.New(silapow.NewSilaPoWFaker()), nil
 }
