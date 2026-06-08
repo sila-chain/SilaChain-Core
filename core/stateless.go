@@ -62,7 +62,7 @@ func ExecuteStateless(ctx context.Context, config *params.ChainConfig, vmconfig 
 		config:      config,
 		chainDb:     memdb,
 		headerCache: lru.NewCache[common.Hash, *types.Header](256),
-		engine:      beacon.New(ethash.NewFaker()),
+		engine:      beacon.New(ethash.NewSilaPoWFaker()),
 	}
 	processor := NewStateProcessor(chain)
 	validator := NewBlockValidator(config, nil) // No chain, we only validate the state, not the block

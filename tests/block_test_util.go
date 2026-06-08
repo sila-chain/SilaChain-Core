@@ -153,7 +153,7 @@ func (t *BlockTest) Run(snapshotter bool, scheme string, witness bool, tracer *t
 		return fmt.Errorf("genesis block state root does not match test: computed=%x, test=%x", gblock.Root().Bytes()[:6], t.json.Genesis.StateRoot[:6])
 	}
 	// Wrap the original engine within the beacon-engine
-	engine := beacon.New(ethash.NewFaker())
+	engine := beacon.New(ethash.NewSilaPoWFaker())
 
 	options := &core.BlockChainConfig{
 		TrieCleanLimit: 0,
