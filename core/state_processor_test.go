@@ -26,7 +26,7 @@ import (
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/consensus"
 	"github.com/sila-org/sila/consensus/beacon"
-	"github.com/sila-org/sila/consensus/ethash"
+	silapow "github.com/sila-org/sila/consensus/ethash"
 	"github.com/sila-org/sila/consensus/misc/eip1559"
 	"github.com/sila-org/sila/consensus/misc/eip4844"
 	"github.com/sila-org/sila/core/rawdb"
@@ -124,7 +124,7 @@ func TestStateProcessorErrors(t *testing.T) {
 					},
 				},
 			}
-			blockchain, _  = NewBlockChain(db, gspec, beacon.New(ethash.NewSilaPoWFaker()), nil)
+			blockchain, _  = NewBlockChain(db, gspec, beacon.New(silapow.NewSilaPoWFaker()), nil)
 			tooBigInitCode = [params.MaxInitCodeSize + 1]byte{}
 		)
 
@@ -264,7 +264,7 @@ func TestStateProcessorErrors(t *testing.T) {
 				want: "could not apply tx 0 [0x16505812a6da0b0150593e4d4eb90190ba64816a04b27d19ca926ebd6aff8aa0]: transaction gas limit too high (cap: 16777216, tx: 16777217)",
 			},
 		} {
-			block := GenerateBadBlock(gspec.ToBlock(), beacon.New(ethash.NewSilaPoWFaker()), tt.txs, gspec.Config, false)
+			block := GenerateBadBlock(gspec.ToBlock(), beacon.New(silapow.NewSilaPoWFaker()), tt.txs, gspec.Config, false)
 			_, err := blockchain.InsertChain(types.Blocks{block})
 			if err == nil {
 				t.Fatal("block imported without errors")
@@ -299,7 +299,7 @@ func TestStateProcessorErrors(t *testing.T) {
 					},
 				},
 			}
-			blockchain, _ = NewBlockChain(db, gspec, ethash.NewSilaPoWFaker(), nil)
+			blockchain, _ = NewBlockChain(db, gspec, silapow.NewSilaPoWFaker(), nil)
 		)
 		defer blockchain.Stop()
 		for i, tt := range []struct {
@@ -313,7 +313,7 @@ func TestStateProcessorErrors(t *testing.T) {
 				want: "could not apply tx 0 [0x88626ac0d53cb65308f2416103c62bb1f18b805573d4f96a3640bbbfff13c14f]: transaction type not supported",
 			},
 		} {
-			block := GenerateBadBlock(gspec.ToBlock(), ethash.NewSilaPoWFaker(), tt.txs, gspec.Config, true)
+			block := GenerateBadBlock(gspec.ToBlock(), silapow.NewSilaPoWFaker(), tt.txs, gspec.Config, true)
 			_, err := blockchain.InsertChain(types.Blocks{block})
 			if err == nil {
 				t.Fatal("block imported without errors")
@@ -338,7 +338,7 @@ func TestStateProcessorErrors(t *testing.T) {
 					},
 				},
 			}
-			blockchain, _ = NewBlockChain(db, gspec, beacon.New(ethash.NewSilaPoWFaker()), nil)
+			blockchain, _ = NewBlockChain(db, gspec, beacon.New(silapow.NewSilaPoWFaker()), nil)
 		)
 		defer blockchain.Stop()
 		for i, tt := range []struct {
@@ -352,7 +352,7 @@ func TestStateProcessorErrors(t *testing.T) {
 				want: "could not apply tx 0 [0x88626ac0d53cb65308f2416103c62bb1f18b805573d4f96a3640bbbfff13c14f]: sender not an eoa: address 0x71562b71999873DB5b286dF957af199Ec94617F7, len(code): 4",
 			},
 		} {
-			block := GenerateBadBlock(gspec.ToBlock(), beacon.New(ethash.NewSilaPoWFaker()), tt.txs, gspec.Config, false)
+			block := GenerateBadBlock(gspec.ToBlock(), beacon.New(silapow.NewSilaPoWFaker()), tt.txs, gspec.Config, false)
 			_, err := blockchain.InsertChain(types.Blocks{block})
 			if err == nil {
 				t.Fatal("block imported without errors")

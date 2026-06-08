@@ -27,7 +27,7 @@ import (
 	"testing"
 
 	"github.com/sila-org/sila/common"
-	"github.com/sila-org/sila/consensus/ethash"
+	silapow "github.com/sila-org/sila/consensus/ethash"
 	"github.com/sila-org/sila/core"
 	"github.com/sila-org/sila/core/rawdb"
 	"github.com/sila-org/sila/core/types"
@@ -565,7 +565,7 @@ func (tc *testChain) addBlocks(count, maxTxPerBlock, maxLogsPerReceipt, maxTopic
 	var (
 		blocks   []*types.Block
 		receipts []types.Receipts
-		engine   = ethash.NewSilaPoWFaker()
+		engine   = silapow.NewSilaPoWFaker()
 	)
 
 	if len(tc.canonical) == 0 {

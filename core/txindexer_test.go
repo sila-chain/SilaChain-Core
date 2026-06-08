@@ -21,7 +21,7 @@ import (
 	"testing"
 
 	"github.com/sila-org/sila/common"
-	"github.com/sila-org/sila/consensus/ethash"
+	silapow "github.com/sila-org/sila/consensus/ethash"
 	"github.com/sila-org/sila/core/rawdb"
 	"github.com/sila-org/sila/core/types"
 	"github.com/sila-org/sila/crypto"
@@ -81,7 +81,7 @@ func TestTxIndexer(t *testing.T) {
 			Alloc:   types.GenesisAlloc{testBankAddress: {Balance: testBankFunds}},
 			BaseFee: big.NewInt(params.InitialBaseFee),
 		}
-		engine    = ethash.NewSilaPoWFaker()
+		engine    = silapow.NewSilaPoWFaker()
 		nonce     = uint64(0)
 		chainHead = uint64(128)
 	)
@@ -144,7 +144,7 @@ func TestTxIndexerRepair(t *testing.T) {
 			Alloc:   types.GenesisAlloc{testBankAddress: {Balance: testBankFunds}},
 			BaseFee: big.NewInt(params.InitialBaseFee),
 		}
-		engine    = ethash.NewSilaPoWFaker()
+		engine    = silapow.NewSilaPoWFaker()
 		nonce     = uint64(0)
 		chainHead = uint64(128)
 	)
@@ -269,7 +269,7 @@ func TestTxIndexerReport(t *testing.T) {
 			Alloc:   types.GenesisAlloc{testBankAddress: {Balance: testBankFunds}},
 			BaseFee: big.NewInt(params.InitialBaseFee),
 		}
-		engine    = ethash.NewSilaPoWFaker()
+		engine    = silapow.NewSilaPoWFaker()
 		nonce     = uint64(0)
 		chainHead = uint64(128)
 	)

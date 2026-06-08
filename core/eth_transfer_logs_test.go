@@ -24,7 +24,7 @@ import (
 
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/consensus/beacon"
-	"github.com/sila-org/sila/consensus/ethash"
+	silapow "github.com/sila-org/sila/consensus/ethash"
 	"github.com/sila-org/sila/core/types"
 	"github.com/sila-org/sila/crypto"
 	"github.com/sila-org/sila/params"
@@ -75,7 +75,7 @@ func testEthTransferLogs(t *testing.T, value uint64) {
 		testEvent2 = crypto.Keccak256Hash([]byte("TestEvent2()"))
 		config     = *params.MergedTestChainConfig
 		signer     = types.LatestSigner(&config)
-		engine     = beacon.New(ethash.NewSilaPoWFaker())
+		engine     = beacon.New(silapow.NewSilaPoWFaker())
 	)
 
 	//TODO remove this hacky config initialization when final Amsterdam config is available

@@ -24,7 +24,7 @@ import (
 	"time"
 
 	"github.com/sila-org/sila/consensus"
-	"github.com/sila-org/sila/consensus/ethash"
+	silapow "github.com/sila-org/sila/consensus/ethash"
 	"github.com/sila-org/sila/core/rawdb"
 	"github.com/sila-org/sila/core/types"
 	"github.com/sila-org/sila/params"
@@ -70,14 +70,14 @@ func TestHeaderInsertion(t *testing.T) {
 		gspec = &Genesis{BaseFee: big.NewInt(params.InitialBaseFee), Config: params.AllSilaProtocolChanges}
 	)
 	gspec.Commit(db, triedb.NewDatabase(db, nil), nil)
-	hc, err := NewHeaderChain(db, gspec.Config, ethash.NewSilaPoWFaker(), func() bool { return false })
+	hc, err := NewHeaderChain(db, gspec.Config, silapow.NewSilaPoWFaker(), func() bool { return false })
 	if err != nil {
 		t.Fatal(err)
 	}
 	// chain A: G->A1->A2...A128
-	genDb, chainA := makeHeaderChainWithGenesis(gspec, 128, ethash.NewSilaPoWFaker(), 10)
+	genDb, chainA := makeHeaderChainWithGenesis(gspec, 128, silapow.NewSilaPoWFaker(), 10)
 	// chain B: G->A1->B1...B128
-	chainB := makeHeaderChain(gspec.Config, chainA[0], 128, ethash.NewSilaPoWFaker(), genDb, 10)
+	chainB := makeHeaderChain(gspec.Config, chainA[0], 128, silapow.NewSilaPoWFaker(), genDb, 10)
 
 	// Inserting 64 headers on an empty chain, expecting
 	// 1 callbacks, 1 canon-status, 0 sidestatus,

@@ -22,7 +22,7 @@ import (
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/common/lru"
 	"github.com/sila-org/sila/consensus/beacon"
-	"github.com/sila-org/sila/consensus/ethash"
+	silapow "github.com/sila-org/sila/consensus/ethash"
 	"github.com/sila-org/sila/core/state"
 	"github.com/sila-org/sila/core/stateless"
 	"github.com/sila-org/sila/core/types"
@@ -62,7 +62,7 @@ func ExecuteStateless(ctx context.Context, config *params.ChainConfig, vmconfig 
 		config:      config,
 		chainDb:     memdb,
 		headerCache: lru.NewCache[common.Hash, *types.Header](256),
-		engine:      beacon.New(ethash.NewSilaPoWFaker()),
+		engine:      beacon.New(silapow.NewSilaPoWFaker()),
 	}
 	processor := NewStateProcessor(chain)
 	validator := NewBlockValidator(config, nil) // No chain, we only validate the state, not the block

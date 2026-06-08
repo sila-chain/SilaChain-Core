@@ -30,7 +30,7 @@ import (
 	"time"
 
 	"github.com/sila-org/sila/consensus"
-	"github.com/sila-org/sila/consensus/ethash"
+	silapow "github.com/sila-org/sila/consensus/ethash"
 	"github.com/sila-org/sila/core/rawdb"
 	"github.com/sila-org/sila/core/types"
 	"github.com/sila-org/sila/ethdb"
@@ -79,7 +79,7 @@ func (basic *snapshotTestBasic) prepare(t *testing.T) (*BlockChain, []*types.Blo
 			BaseFee: big.NewInt(params.InitialBaseFee),
 			Config:  params.AllSilaProtocolChanges,
 		}
-		engine = ethash.NewSilaPoWFullFaker()
+		engine = silapow.NewSilaPoWFullFaker()
 	)
 	chain, err := NewBlockChain(db, gspec, engine, DefaultConfig().WithStateScheme(basic.scheme).WithNoAsyncFlush(true))
 	if err != nil {

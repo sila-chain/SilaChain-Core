@@ -27,7 +27,7 @@ import (
 	"time"
 
 	"github.com/sila-org/sila/common"
-	"github.com/sila-org/sila/consensus/ethash"
+	silapow "github.com/sila-org/sila/consensus/ethash"
 	"github.com/sila-org/sila/core/rawdb"
 	"github.com/sila-org/sila/core/types"
 	"github.com/sila-org/sila/ethdb/pebble"
@@ -1780,7 +1780,7 @@ func testRepairWithScheme(t *testing.T, tt *rewindTest, snapshots bool, scheme s
 			BaseFee: big.NewInt(params.InitialBaseFee),
 			Config:  params.AllSilaProtocolChanges,
 		}
-		engine = ethash.NewSilaPoWFullFaker()
+		engine = silapow.NewSilaPoWFullFaker()
 		option = &BlockChainConfig{
 			TrieCleanLimit: 256,
 			TrieDirtyLimit: 256,
@@ -1931,7 +1931,7 @@ func testIssue23496(t *testing.T, scheme string) {
 			Config:  params.TestChainConfig,
 			BaseFee: big.NewInt(params.InitialBaseFee),
 		}
-		engine  = ethash.NewSilaPoWFullFaker()
+		engine  = silapow.NewSilaPoWFullFaker()
 		options = DefaultConfig().WithStateScheme(scheme)
 	)
 	chain, err := NewBlockChain(db, gspec, engine, options)

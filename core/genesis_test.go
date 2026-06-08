@@ -25,7 +25,7 @@ import (
 
 	"github.com/davecgh/go-spew/spew"
 	"github.com/sila-org/sila/common"
-	"github.com/sila-org/sila/consensus/ethash"
+	silapow "github.com/sila-org/sila/consensus/ethash"
 	"github.com/sila-org/sila/core/rawdb"
 	"github.com/sila-org/sila/core/types"
 	"github.com/sila-org/sila/ethdb"
@@ -135,10 +135,10 @@ func testSetupGenesis(t *testing.T, scheme string) {
 				tdb := triedb.NewDatabase(db, newDbConfig(scheme))
 				oldcustomg.Commit(db, tdb, nil)
 
-				bc, _ := NewBlockChain(db, &oldcustomg, ethash.NewSilaPoWFullFaker(), DefaultConfig().WithStateScheme(scheme))
+				bc, _ := NewBlockChain(db, &oldcustomg, silapow.NewSilaPoWFullFaker(), DefaultConfig().WithStateScheme(scheme))
 				defer bc.Stop()
 
-				_, blocks, _ := GenerateChainWithGenesis(&oldcustomg, ethash.NewSilaPoWFaker(), 4, nil)
+				_, blocks, _ := GenerateChainWithGenesis(&oldcustomg, silapow.NewSilaPoWFaker(), 4, nil)
 				bc.InsertChain(blocks)
 
 				// This should return a compatibility error.

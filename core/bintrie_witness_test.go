@@ -24,7 +24,7 @@ import (
 
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/consensus/beacon"
-	"github.com/sila-org/sila/consensus/ethash"
+	silapow "github.com/sila-org/sila/consensus/ethash"
 	"github.com/sila-org/sila/core/rawdb"
 	"github.com/sila-org/sila/core/state"
 	"github.com/sila-org/sila/core/tracing"
@@ -93,7 +93,7 @@ func TestProcessUBT(t *testing.T) {
 	options := DefaultConfig().WithStateScheme(rawdb.PathScheme)
 	options.SnapshotLimit = 0
 	options.BinTrieGroupDepth = triedb.DefaultBinTrieGroupDepth
-	blockchain, _ := NewBlockChain(bcdb, gspec, beacon.New(ethash.NewSilaPoWFaker()), options)
+	blockchain, _ := NewBlockChain(bcdb, gspec, beacon.New(silapow.NewSilaPoWFaker()), options)
 	defer blockchain.Stop()
 
 	txCost1 := params.TxGas
@@ -131,7 +131,7 @@ func TestProcessUBT(t *testing.T) {
 		txCost1*2 + txCost2,
 		txCost1*2 + txCost2 + contractCreationCost + codeWithExtCodeCopyGas,
 	}
-	_, chain, _ := GenerateChainWithGenesis(gspec, beacon.New(ethash.NewSilaPoWFaker()), 2, func(i int, gen *BlockGen) {
+	_, chain, _ := GenerateChainWithGenesis(gspec, beacon.New(silapow.NewSilaPoWFaker()), 2, func(i int, gen *BlockGen) {
 		gen.SetPoS()
 
 		// TODO need to check that the tx cost provided is the exact amount used (no remaining left-over)
