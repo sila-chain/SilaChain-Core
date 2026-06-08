@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with the SilaChain library. If not, see <http://www.gnu.org/licenses/>.
 
-// Package ethash implements the ethash proof-of-work consensus engine.
+// Package ethash implements the SilaPoW compatibility proof-of-work consensus engine.
 package ethash
 
 import (
@@ -24,7 +24,7 @@ import (
 	"github.com/sila-org/sila/core/types"
 )
 
-// Ethash is a consensus engine based on proof-of-work implementing the ethash
+// Ethash is the SilaPoW compatibility consensus engine based on proof-of-work implementing the legacy
 // algorithm.
 type Ethash struct {
 	fakeFail  *uint64        // Block number which fails PoW check even in fake mode
@@ -32,14 +32,14 @@ type Ethash struct {
 	fakeFull  bool           // Accepts everything as valid
 }
 
-// NewFaker creates an ethash consensus engine with a fake PoW scheme that accepts
+// NewFaker creates a SilaPoW compatibility consensus engine with a fake PoW scheme that accepts
 // all blocks' seal as valid, though they still have to conform to the SilaChain
 // consensus rules.
 func NewFaker() *Ethash {
 	return new(Ethash)
 }
 
-// NewFakeFailer creates a ethash consensus engine with a fake PoW scheme that
+// NewFakeFailer creates a SilaPoW compatibility consensus engine with a fake PoW scheme that
 // accepts all blocks as valid apart from the single one specified, though they
 // still have to conform to the SilaChain consensus rules.
 func NewFakeFailer(fail uint64) *Ethash {
@@ -48,7 +48,7 @@ func NewFakeFailer(fail uint64) *Ethash {
 	}
 }
 
-// NewFakeDelayer creates a ethash consensus engine with a fake PoW scheme that
+// NewFakeDelayer creates a SilaPoW compatibility consensus engine with a fake PoW scheme that
 // accepts all blocks as valid, but delays verifications by some time, though
 // they still have to conform to the SilaChain consensus rules.
 func NewFakeDelayer(delay time.Duration) *Ethash {
@@ -57,7 +57,7 @@ func NewFakeDelayer(delay time.Duration) *Ethash {
 	}
 }
 
-// NewFullFaker creates an ethash consensus engine with a full fake scheme that
+// NewFullFaker creates a SilaPoW compatibility consensus engine with a full fake scheme that
 // accepts all blocks as valid, without checking any consensus rules whatsoever.
 func NewFullFaker() *Ethash {
 	return &Ethash{
@@ -71,8 +71,8 @@ func (ethash *Ethash) Close() error {
 }
 
 // Seal generates a new sealing request for the given input block and pushes
-// the result into the given channel. For the ethash engine, this method will
+// the result into the given channel. For the SilaPoW compatibility engine, this method will
 // just panic as sealing is not supported anymore.
 func (ethash *Ethash) Seal(chain consensus.ChainHeaderReader, block *types.Block, results chan<- *types.Block, stop <-chan struct{}) error {
-	panic("ethash (pow) sealing not supported any more")
+	panic("SilaPoW compatibility sealing not supported any more")
 }

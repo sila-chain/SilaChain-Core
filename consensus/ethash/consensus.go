@@ -36,7 +36,7 @@ import (
 	"github.com/sila-org/sila/rlp"
 )
 
-// Ethash proof-of-work protocol constants.
+// SilaPoW compatibility proof-of-work protocol constants.
 var (
 	FrontierBlockReward           = uint256.NewInt(5e+18) // Block reward in wei for successfully mining a block
 	ByzantiumBlockReward          = uint256.NewInt(3e+18) // Block reward in wei for successfully mining a block upward from Byzantium
@@ -264,14 +264,14 @@ func (ethash *Ethash) verifyHeader(chain consensus.ChainHeaderReader, header, pa
 		return consensus.ErrInvalidNumber
 	}
 	if chain.Config().IsShanghai(header.Number, header.Time) {
-		return errors.New("ethash does not support shanghai fork")
+		return errors.New("SilaPoW compatibility does not support shanghai fork")
 	}
 	// Verify the non-existence of withdrawalsHash.
 	if header.WithdrawalsHash != nil {
 		return fmt.Errorf("invalid withdrawalsHash: have %x, expected nil", header.WithdrawalsHash)
 	}
 	if chain.Config().IsCancun(header.Number, header.Time) {
-		return errors.New("ethash does not support cancun fork")
+		return errors.New("SilaPoW compatibility does not support cancun fork")
 	}
 	// Verify the non-existence of cancun-specific header fields
 	switch {
@@ -493,7 +493,7 @@ var HomesteadDifficultyCalculator = calcDifficultyHomestead
 var DynamicDifficultyCalculator = makeDifficultyCalculator
 
 // Prepare implements consensus.Engine, initializing the difficulty field of a
-// header to conform to the ethash protocol. The changes are done inline.
+// header to conform to the SilaPoW compatibility protocol. The changes are done inline.
 func (ethash *Ethash) Prepare(chain consensus.ChainHeaderReader, header *types.Header) error {
 	parent := chain.GetHeader(header.ParentHash, header.Number.Uint64()-1)
 	if parent == nil {
@@ -532,19 +532,19 @@ func (ethash *Ethash) SealHash(header *types.Header) (hash common.Hash) {
 		enc = append(enc, header.BaseFee)
 	}
 	if header.WithdrawalsHash != nil {
-		panic("withdrawal hash set on ethash")
+		panic("withdrawal hash set on SilaPoW compatibility engine")
 	}
 	if header.ExcessBlobGas != nil {
-		panic("excess blob gas set on ethash")
+		panic("excess blob gas set on SilaPoW compatibility engine")
 	}
 	if header.BlobGasUsed != nil {
-		panic("blob gas used set on ethash")
+		panic("blob gas used set on SilaPoW compatibility engine")
 	}
 	if header.ParentBeaconRoot != nil {
-		panic("parent beacon root set on ethash")
+		panic("parent beacon root set on SilaPoW compatibility engine")
 	}
 	if header.SlotNumber != nil {
-		panic("slot number set on ethash")
+		panic("slot number set on SilaPoW compatibility engine")
 	}
 	rlp.Encode(hasher, enc)
 	hasher.Sum(hash[:0])
