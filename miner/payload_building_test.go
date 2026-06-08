@@ -114,7 +114,7 @@ func newTestWorkerBackend(t *testing.T, chainConfig *params.ChainConfig, engine 
 		gspec.ExtraData = make([]byte, 32+common.AddressLength+crypto.SignatureLength)
 		copy(gspec.ExtraData[32:32+common.AddressLength], testBankAddress.Bytes())
 		e.Authorize(testBankAddress)
-	case *ethash.Ethash: // Legacy Sila PoW compatibility engine type.
+	case *ethash.SilaPoW: // Legacy Sila PoW compatibility engine type.
 	default:
 		t.Fatalf("unexpected consensus engine type: %T", engine)
 	}
