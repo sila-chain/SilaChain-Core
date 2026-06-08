@@ -27,7 +27,7 @@ import (
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/common/hexutil"
 	"github.com/sila-org/sila/common/math"
-	"github.com/sila-org/sila/consensus/ethash"
+	silapow "github.com/sila-org/sila/consensus/ethash"
 	"github.com/sila-org/sila/consensus/misc"
 	"github.com/sila-org/sila/consensus/misc/eip4844"
 	"github.com/sila-org/sila/core"
@@ -507,7 +507,7 @@ func rlpHash(x any) (h common.Hash) {
 	return h
 }
 
-// calcDifficulty is based on ethash.SilaPoWCalcDifficulty. This method is used in case
+// calcDifficulty is based on silapow.SilaPoWCalcDifficulty. This method is used in case
 // the caller does not provide an explicit difficulty, but instead provides only
 // parent timestamp + difficulty.
 // Note: this method only works for ethash engine.
@@ -524,5 +524,5 @@ func calcDifficulty(config *params.ChainConfig, number, currentTime, parentTime 
 		Number:     new(big.Int).SetUint64(number - 1),
 		Time:       parentTime,
 	}
-	return ethash.SilaPoWCalcDifficulty(config, currentTime, parent)
+	return silapow.SilaPoWCalcDifficulty(config, currentTime, parent)
 }

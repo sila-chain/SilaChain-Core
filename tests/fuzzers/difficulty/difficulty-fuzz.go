@@ -23,7 +23,7 @@ import (
 	"io"
 	"math/big"
 
-	"github.com/sila-org/sila/consensus/ethash"
+	silapow "github.com/sila-org/sila/consensus/ethash"
 	"github.com/sila-org/sila/core/types"
 )
 
@@ -131,9 +131,9 @@ func (f *fuzzer) fuzz() int {
 		bigFn  calculator
 		u256Fn calculator
 	}{
-		{ethash.SilaPoWFrontierDifficultyCalculator, ethash.SilaPoWCalcDifficultyFrontierU256},
-		{ethash.SilaPoWHomesteadDifficultyCalculator, ethash.SilaPoWCalcDifficultyHomesteadU256},
-		{ethash.SilaPoWDynamicDifficultyCalculator(bombDelay), ethash.SilaPoWMakeDifficultyCalculatorU256(bombDelay)},
+		{silapow.SilaPoWFrontierDifficultyCalculator, silapow.SilaPoWCalcDifficultyFrontierU256},
+		{silapow.SilaPoWHomesteadDifficultyCalculator, silapow.SilaPoWCalcDifficultyHomesteadU256},
+		{silapow.SilaPoWDynamicDifficultyCalculator(bombDelay), silapow.SilaPoWMakeDifficultyCalculatorU256(bombDelay)},
 	} {
 		want := pair.bigFn(time, header)
 		have := pair.u256Fn(time, header)

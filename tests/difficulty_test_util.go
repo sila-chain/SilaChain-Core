@@ -22,7 +22,7 @@ import (
 
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/common/math"
-	"github.com/sila-org/sila/consensus/ethash"
+	silapow "github.com/sila-org/sila/consensus/ethash"
 	"github.com/sila-org/sila/core/types"
 	"github.com/sila-org/sila/params"
 )
@@ -56,7 +56,7 @@ func (test *DifficultyTest) Run(config *params.ChainConfig) error {
 		UncleHash:  test.UncleHash,
 	}
 
-	actual := ethash.SilaPoWCalcDifficulty(config, test.CurrentTimestamp, parent)
+	actual := silapow.SilaPoWCalcDifficulty(config, test.CurrentTimestamp, parent)
 	exp := test.CurrentDifficulty
 
 	if actual.Cmp(exp) != 0 {

@@ -27,7 +27,7 @@ import (
 	"testing"
 
 	"github.com/sila-org/sila/common"
-	"github.com/sila-org/sila/consensus/ethash"
+	silapow "github.com/sila-org/sila/consensus/ethash"
 	"github.com/sila-org/sila/core"
 	"github.com/sila-org/sila/core/rawdb"
 	"github.com/sila-org/sila/core/types"
@@ -67,7 +67,7 @@ func TestHistoryImportAndExport(t *testing.T) {
 			)
 
 			// Generate chain.
-			db, blocks, _ := core.GenerateChainWithGenesis(genesis, ethash.NewSilaPoWFaker(), int(count), func(i int, g *core.BlockGen) {
+			db, blocks, _ := core.GenerateChainWithGenesis(genesis, silapow.NewSilaPoWFaker(), int(count), func(i int, g *core.BlockGen) {
 				if i == 0 {
 					return
 				}
@@ -89,7 +89,7 @@ func TestHistoryImportAndExport(t *testing.T) {
 			})
 
 			// Initialize BlockChain.
-			chain, err := core.NewBlockChain(db, genesis, ethash.NewSilaPoWFaker(), nil)
+			chain, err := core.NewBlockChain(db, genesis, silapow.NewSilaPoWFaker(), nil)
 			if err != nil {
 				t.Fatalf("unable to initialize chain: %v", err)
 			}
@@ -178,7 +178,7 @@ func TestHistoryImportAndExport(t *testing.T) {
 			})
 
 			genesis.MustCommit(db2, triedb.NewDatabase(db2, triedb.HashDefaults))
-			imported, err := core.NewBlockChain(db2, genesis, ethash.NewSilaPoWFaker(), nil)
+			imported, err := core.NewBlockChain(db2, genesis, silapow.NewSilaPoWFaker(), nil)
 			if err != nil {
 				t.Fatalf("unable to initialize chain: %v", err)
 			}
