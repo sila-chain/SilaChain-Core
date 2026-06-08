@@ -40,9 +40,9 @@ import (
 
 var (
 	// Test chain configurations
-	testTxPoolConfig  legacypool.Config
-	ethashChainConfig *params.ChainConfig
-	cliqueChainConfig *params.ChainConfig
+	testTxPoolConfig   legacypool.Config
+	silaPoWChainConfig *params.ChainConfig
+	cliqueChainConfig  *params.ChainConfig
 
 	// Test accounts
 	testBankKey, _  = crypto.GenerateKey()
@@ -66,8 +66,8 @@ var (
 func init() {
 	testTxPoolConfig = legacypool.DefaultConfig
 	testTxPoolConfig.Journal = ""
-	ethashChainConfig = new(params.ChainConfig)
-	*ethashChainConfig = *params.TestChainConfig
+	silaPoWChainConfig = new(params.ChainConfig)
+	*silaPoWChainConfig = *params.TestChainConfig
 	cliqueChainConfig = new(params.ChainConfig)
 	*cliqueChainConfig = *params.TestChainConfig
 	cliqueChainConfig.Clique = &params.CliqueConfig{

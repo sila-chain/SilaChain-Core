@@ -510,7 +510,7 @@ func rlpHash(x any) (h common.Hash) {
 // calcDifficulty is based on silapow.SilaPoWCalcDifficulty. This method is used in case
 // the caller does not provide an explicit difficulty, but instead provides only
 // parent timestamp + difficulty.
-// Note: this method only works for ethash engine.
+// Note: this method only works for SilaPoW compatibility engine.
 func calcDifficulty(config *params.ChainConfig, number, currentTime, parentTime uint64,
 	parentDifficulty *big.Int, parentUncleHash common.Hash) *big.Int {
 	uncleHash := parentUncleHash

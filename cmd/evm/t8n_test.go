@@ -530,7 +530,7 @@ func TestB11r(t *testing.T) {
 			},
 			expOut: "exp.json",
 		},
-		{ // ethash test seal
+		{ // SilaPoW compatibility test seal
 			base: "./testdata/21",
 			input: b11rInput{
 				inEnv:       "header.json",
