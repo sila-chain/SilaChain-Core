@@ -645,6 +645,19 @@ func DefaultGenesisBlock() *Genesis {
 	}
 }
 
+// SilaDefaultGenesisBlock returns the SilaChain main network genesis block.
+func SilaDefaultGenesisBlock() *Genesis {
+	return &Genesis{
+		Config:     params.SilaMainnetChainConfig,
+		Nonce:      0,
+		ExtraData:  []byte("SilaChain Mainnet"),
+		GasLimit:   30_000_000,
+		Difficulty: big.NewInt(0),
+		BaseFee:    big.NewInt(params.InitialBaseFee),
+		Alloc:      types.GenesisAlloc{},
+	}
+}
+
 // DefaultSepoliaGenesisBlock returns the Sepolia network genesis block.
 func DefaultSepoliaGenesisBlock() *Genesis {
 	return &Genesis{
