@@ -25,7 +25,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/ethereum/hid"
+	"github.com/medo202225/hid"
 	sila "github.com/sila-org/sila"
 	"github.com/sila-org/sila/accounts"
 	"github.com/sila-org/sila/common"

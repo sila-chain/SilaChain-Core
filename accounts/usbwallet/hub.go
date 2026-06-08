@@ -23,7 +23,7 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/ethereum/hid"
+	"github.com/medo202225/hid"
 	"github.com/sila-org/sila/accounts"
 	"github.com/sila-org/sila/event"
 	"github.com/sila-org/sila/log"

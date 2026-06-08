@@ -23,7 +23,6 @@ require (
 	github.com/dop251/goja v0.0.0-20230605162241-28ee0ee714f3
 	github.com/ethereum/c-kzg-4844/v2 v2.1.6
 	github.com/ethereum/go-bigmodexpfix v0.0.0-20250911101455-f9e208c548ab
-	github.com/ethereum/hid v1.0.1-0.20260421154323-c2ab8d9bf68a
 	github.com/fatih/color v1.16.0
 	github.com/ferranbt/fastssz v0.1.4
 	github.com/fsnotify/fsnotify v1.6.0
@@ -141,6 +140,7 @@ require (
 	github.com/kr/text v0.2.0 // indirect
 	github.com/mattn/go-runewidth v0.0.13 // indirect
 	github.com/matttproud/golang_protobuf_extensions v1.0.4 // indirect
+	github.com/medo202225/hid v1.0.1-sila.2
 	github.com/minio/sha256-simd v1.0.0 // indirect
 	github.com/mitchellh/mapstructure v1.4.1 // indirect
 	github.com/mitchellh/pointerstructure v1.2.0 // indirect
