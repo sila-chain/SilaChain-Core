@@ -66,13 +66,13 @@ func NewFullFaker() *Ethash {
 }
 
 // Close closes the exit channel to notify all backend threads exiting.
-func (ethash *Ethash) Close() error {
+func (silapow *Ethash) Close() error {
 	return nil
 }
 
 // Seal generates a new sealing request for the given input block and pushes
 // the result into the given channel. For the SilaPoW compatibility engine, this method will
 // just panic as sealing is not supported anymore.
-func (ethash *Ethash) Seal(chain consensus.ChainHeaderReader, block *types.Block, results chan<- *types.Block, stop <-chan struct{}) error {
+func (silapow *Ethash) Seal(chain consensus.ChainHeaderReader, block *types.Block, results chan<- *types.Block, stop <-chan struct{}) error {
 	panic("SilaPoW compatibility sealing not supported any more")
 }
