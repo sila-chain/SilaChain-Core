@@ -230,5 +230,5 @@ func CreateConsensusEngine(config *params.ChainConfig, db ethdb.Database) (conse
 	if config.Clique != nil {
 		return beacon.New(clique.New(config.Clique, db)), nil
 	}
-	return beacon.New(ethash.NewFaker()), nil
+	return beacon.New(ethash.NewSilaPoWFaker()), nil
 }
