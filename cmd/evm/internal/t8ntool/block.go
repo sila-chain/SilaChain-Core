@@ -79,10 +79,10 @@ type bbInput struct {
 	Withdrawals []*types.Withdrawal `json:"withdrawals,omitempty"`
 	Clique      *cliqueInput        `json:"clique,omitempty"`
 
-	// Ethash is the deprecated legacy seal switch retained for Sila PoW transitional compatibility.
-	Ethash bool                 `json:"-"`
-	Txs    []*types.Transaction `json:"-"`
-	Ommers []*types.Header      `json:"-"`
+	// SilaPoW is the deprecated legacy seal switch retained for Sila PoW transitional compatibility.
+	SilaPoW bool                 `json:"-"`
+	Txs     []*types.Transaction `json:"-"`
+	Ommers  []*types.Header      `json:"-"`
 }
 
 type cliqueInput struct {
