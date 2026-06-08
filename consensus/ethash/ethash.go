@@ -32,17 +32,20 @@ type Ethash struct {
 	fakeFull  bool           // Accepts everything as valid
 }
 
+// SilaPoW is the public Sila compatibility name for the legacy proof-of-work engine.
+type SilaPoW = Ethash
+
 // NewFaker creates a SilaPoW compatibility consensus engine with a fake PoW scheme that accepts
 // all blocks' seal as valid, though they still have to conform to the SilaChain
 // consensus rules.
-func NewFaker() *Ethash {
+func NewFaker() *SilaPoW {
 	return new(Ethash)
 }
 
 // NewFakeFailer creates a SilaPoW compatibility consensus engine with a fake PoW scheme that
 // accepts all blocks as valid apart from the single one specified, though they
 // still have to conform to the SilaChain consensus rules.
-func NewFakeFailer(fail uint64) *Ethash {
+func NewFakeFailer(fail uint64) *SilaPoW {
 	return &Ethash{
 		fakeFail: &fail,
 	}
@@ -51,7 +54,7 @@ func NewFakeFailer(fail uint64) *Ethash {
 // NewFakeDelayer creates a SilaPoW compatibility consensus engine with a fake PoW scheme that
 // accepts all blocks as valid, but delays verifications by some time, though
 // they still have to conform to the SilaChain consensus rules.
-func NewFakeDelayer(delay time.Duration) *Ethash {
+func NewFakeDelayer(delay time.Duration) *SilaPoW {
 	return &Ethash{
 		fakeDelay: &delay,
 	}
@@ -59,7 +62,7 @@ func NewFakeDelayer(delay time.Duration) *Ethash {
 
 // NewFullFaker creates a SilaPoW compatibility consensus engine with a full fake scheme that
 // accepts all blocks as valid, without checking any consensus rules whatsoever.
-func NewFullFaker() *Ethash {
+func NewFullFaker() *SilaPoW {
 	return &Ethash{
 		fakeFull: true,
 	}
