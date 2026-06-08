@@ -18,6 +18,11 @@ package params
 
 import "github.com/sila-org/sila/common"
 
+// SilaMainnetBootnodes are the enode URLs of the P2P bootstrap nodes running on
+// the SilaChain main network. This list is intentionally empty until Sila-owned
+// bootnodes are provisioned.
+var SilaMainnetBootnodes = []string{}
+
 // MainnetBootnodes are the enode URLs of the P2P bootstrap nodes running on
 // the main SilaChain network.
 var MainnetBootnodes = []string{
