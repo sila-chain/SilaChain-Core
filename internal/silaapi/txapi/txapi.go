@@ -27,7 +27,6 @@ import (
 	"github.com/sila-org/sila/core/types"
 	"github.com/sila-org/sila/core/vm"
 	"github.com/sila-org/sila/event"
-	ethapierrors "github.com/sila-org/sila/internal/silaapi/errors"
 	"github.com/sila-org/sila/internal/silaapi/rpctx"
 	"github.com/sila-org/sila/params"
 	"github.com/sila-org/sila/rpc"
@@ -152,7 +151,7 @@ func GetTransactionByHash(ctx context.Context, b Backend, hash common.Hash) (*rp
 			return rpctx.NewRPCPendingTransaction(tx, b.CurrentHeader(), b.ChainConfig()), nil
 		}
 		if !b.TxIndexDone() {
-			return nil, ethapierrors.NewTxIndexingError()
+			return nil, silaapierrors.NewTxIndexingError()
 		}
 		return nil, nil
 	}
@@ -170,7 +169,7 @@ func GetRawTransactionByHash(b Backend, hash common.Hash) (hexutil.Bytes, error)
 			return tx.MarshalBinary()
 		}
 		if !b.TxIndexDone() {
-			return nil, ethapierrors.NewTxIndexingError()
+			return nil, silaapierrors.NewTxIndexingError()
 		}
 		return nil, nil
 	}
@@ -181,7 +180,7 @@ func GetTransactionReceipt(b Backend, signer types.Signer, hash common.Hash) (ma
 	found, tx, blockHash, blockNumber, index := b.GetCanonicalTransaction(hash)
 	if !found {
 		if !b.TxIndexDone() {
-			return nil, ethapierrors.NewTxIndexingError()
+			return nil, silaapierrors.NewTxIndexingError()
 		}
 		return nil, nil
 	}

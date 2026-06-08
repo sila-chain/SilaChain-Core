@@ -12,7 +12,7 @@ import (
 	"github.com/sila-org/sila/core/state"
 	"github.com/sila-org/sila/core/types"
 	"github.com/sila-org/sila/crypto"
-	ethapierrors "github.com/sila-org/sila/internal/silaapi/errors"
+	silaapierrors "github.com/sila-org/sila/internal/silaapi/errors"
 	"github.com/sila-org/sila/rpc"
 )
 
@@ -87,7 +87,7 @@ func (api *API) GetProof(ctx context.Context, address common.Address, storageKey
 // GetProof returns the Merkle-proof for a given account and optionally some storage keys.
 func GetProof(ctx context.Context, b Backend, address common.Address, storageKeys []string, blockNrOrHash rpc.BlockNumberOrHash) (*AccountResult, error) {
 	if len(storageKeys) > maxGetProofKeys {
-		return nil, &ethapierrors.InvalidParamsError{Message: fmt.Sprintf("too many storage keys requested (max %d, got %d)", maxGetProofKeys, len(storageKeys))}
+		return nil, &silaapierrors.InvalidParamsError{Message: fmt.Sprintf("too many storage keys requested (max %d, got %d)", maxGetProofKeys, len(storageKeys))}
 	}
 	var (
 		keys         = make([]common.Hash, len(storageKeys))
@@ -99,7 +99,7 @@ func GetProof(ctx context.Context, b Backend, address common.Address, storageKey
 		var err error
 		keys[i], keyLengths[i], err = DecodeStorageKey(hexKey)
 		if err != nil {
-			return nil, &ethapierrors.InvalidParamsError{Message: fmt.Sprintf("%v: %q", err, hexKey)}
+			return nil, &silaapierrors.InvalidParamsError{Message: fmt.Sprintf("%v: %q", err, hexKey)}
 		}
 	}
 	statedb, header, err := b.StateAndHeaderByNumberOrHash(ctx, blockNrOrHash)

@@ -16,7 +16,7 @@ import (
 	"github.com/sila-org/sila/core/state"
 	"github.com/sila-org/sila/core/types"
 	"github.com/sila-org/sila/core/vm"
-	ethapierrors "github.com/sila-org/sila/internal/silaapi/errors"
+	silaapierrors "github.com/sila-org/sila/internal/silaapi/errors"
 	"github.com/sila-org/sila/internal/silaapi/rpctx"
 	"github.com/sila-org/sila/params"
 	"github.com/sila-org/sila/rpc"
@@ -294,11 +294,11 @@ func GetStorageValues(ctx context.Context, b BlockChainBackend, requests map[com
 	for _, keys := range requests {
 		totalSlots += len(keys)
 		if totalSlots > maxGetStorageSlots {
-			return nil, &ethapierrors.ClientLimitExceededError{Message: fmt.Sprintf("too many slots (max %d)", maxGetStorageSlots)}
+			return nil, &silaapierrors.ClientLimitExceededError{Message: fmt.Sprintf("too many slots (max %d)", maxGetStorageSlots)}
 		}
 	}
 	if totalSlots == 0 {
-		return nil, &ethapierrors.InvalidParamsError{Message: "empty request"}
+		return nil, &silaapierrors.InvalidParamsError{Message: "empty request"}
 	}
 
 	state, _, err := b.StateAndHeaderByNumberOrHash(ctx, blockNrOrHash)

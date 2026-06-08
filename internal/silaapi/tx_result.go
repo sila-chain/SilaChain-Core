@@ -19,7 +19,7 @@ import (
 	"github.com/sila-org/sila/common/hexutil"
 	"github.com/sila-org/sila/core/types"
 	"github.com/sila-org/sila/ethdb"
-	ethapierrors "github.com/sila-org/sila/internal/silaapi/errors"
+	silaapierrors "github.com/sila-org/sila/internal/silaapi/errors"
 	"github.com/sila-org/sila/internal/silaapi/rpctx"
 	"github.com/sila-org/sila/log"
 	"github.com/sila-org/sila/rlp"
@@ -335,7 +335,7 @@ func (api *DebugAPI) GetRawTransaction(ctx context.Context, hash common.Hash) (h
 			return tx.MarshalBinary()
 		}
 		if !api.b.TxIndexDone() {
-			return nil, ethapierrors.NewTxIndexingError()
+			return nil, silaapierrors.NewTxIndexingError()
 		}
 		return nil, nil
 	}

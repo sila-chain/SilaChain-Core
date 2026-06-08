@@ -21,7 +21,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	ethapierrors "github.com/sila-org/sila/internal/silaapi/errors"
+	silaapierrors "github.com/sila-org/sila/internal/silaapi/errors"
 	"math"
 	"math/big"
 	"time"
@@ -73,18 +73,18 @@ const (
 
 func SimulateV1(ctx context.Context, b Backend, opts SimOpts, blockNrOrHash *rpc.BlockNumberOrHash) ([]*SimBlockResult, error) {
 	if len(opts.BlockStateCalls) == 0 {
-		return nil, &ethapierrors.InvalidParamsError{Message: "empty input"}
+		return nil, &silaapierrors.InvalidParamsError{Message: "empty input"}
 	} else if len(opts.BlockStateCalls) > maxSimulateBlocks {
-		return nil, &ethapierrors.ClientLimitExceededError{Message: "too many blocks"}
+		return nil, &silaapierrors.ClientLimitExceededError{Message: "too many blocks"}
 	}
 	var totalCalls int
 	for _, block := range opts.BlockStateCalls {
 		if len(block.Calls) > maxSimulateCallsPerBlock {
-			return nil, &ethapierrors.ClientLimitExceededError{Message: fmt.Sprintf("too many calls in block: %d > %d", len(block.Calls), maxSimulateCallsPerBlock)}
+			return nil, &silaapierrors.ClientLimitExceededError{Message: fmt.Sprintf("too many calls in block: %d > %d", len(block.Calls), maxSimulateCallsPerBlock)}
 		}
 		totalCalls += len(block.Calls)
 		if totalCalls > maxSimulateTotalCalls {
-			return nil, &ethapierrors.ClientLimitExceededError{Message: fmt.Sprintf("too many calls: %d > %d", totalCalls, maxSimulateTotalCalls)}
+			return nil, &silaapierrors.ClientLimitExceededError{Message: fmt.Sprintf("too many calls: %d > %d", totalCalls, maxSimulateTotalCalls)}
 		}
 	}
 	if blockNrOrHash == nil {
@@ -420,7 +420,7 @@ func (sim *simulator) processBlock(ctx context.Context, block *simBlock, header,
 		msg := call.ToMessage(header.BaseFee, !sim.validate)
 		result, err := evmexec.ApplyMessageWithEVM(ctx, evm, msg, timeout, gp)
 		if err != nil {
-			txErr := ethapierrors.TxValidationError(err)
+			txErr := silaapierrors.TxValidationError(err)
 			return nil, nil, nil, txErr
 		}
 		// Update the state with pending changes.
@@ -445,7 +445,7 @@ func (sim *simulator) processBlock(ctx context.Context, block *simBlock, header,
 			callRes.Status = hexutil.Uint64(types.ReceiptStatusFailed)
 			if errors.Is(result.Err, vm.ErrExecutionReverted) {
 				// If the result contains a revert reason, try to unpack it.
-				revertErr := ethapierrors.NewRevertError(result.Revert())
+				revertErr := silaapierrors.NewRevertError(result.Revert())
 				callRes.Error = &callError{Message: revertErr.Error(), Code: revertErr.ErrorCode(), Data: revertErr.ErrorData().(string)}
 			} else {
 				msg := result.Err.Error()
@@ -523,7 +523,7 @@ func (sim *simulator) sanitizeCall(call *txargs.TransactionArgs, state vm.StateD
 		call.Gas = (*hexutil.Uint64)(&remaining)
 	}
 	if remaining < uint64(*call.Gas) {
-		return false, &ethapierrors.BlockGasLimitReachedError{fmt.Sprintf("block gas limit reached: remaining: %d, required: %d", remaining, *call.Gas)}
+		return false, &silaapierrors.BlockGasLimitReachedError{fmt.Sprintf("block gas limit reached: remaining: %d, required: %d", remaining, *call.Gas)}
 	}
 	// Clamp to the cross-block gas budget.
 	gas := sim.budget.cap(uint64(*call.Gas))
@@ -565,10 +565,10 @@ func (sim *simulator) sanitizeChain(blocks []simBlock) ([]simBlock, error) {
 		}
 		diff := new(big.Int).Sub(block.BlockOverrides.Number.ToInt(), prevNumber)
 		if diff.Cmp(common.Big0) <= 0 {
-			return nil, &ethapierrors.InvalidBlockNumberError{fmt.Sprintf("block numbers must be in order: %d <= %d", block.BlockOverrides.Number.ToInt().Uint64(), prevNumber)}
+			return nil, &silaapierrors.InvalidBlockNumberError{fmt.Sprintf("block numbers must be in order: %d <= %d", block.BlockOverrides.Number.ToInt().Uint64(), prevNumber)}
 		}
 		if total := new(big.Int).Sub(block.BlockOverrides.Number.ToInt(), base.Number); total.Cmp(big.NewInt(maxSimulateBlocks)) > 0 {
-			return nil, &ethapierrors.ClientLimitExceededError{Message: "too many blocks"}
+			return nil, &silaapierrors.ClientLimitExceededError{Message: "too many blocks"}
 		}
 		if diff.Cmp(big.NewInt(1)) > 0 {
 			// Fill the gap with empty blocks.
@@ -597,7 +597,7 @@ func (sim *simulator) sanitizeChain(blocks []simBlock) ([]simBlock, error) {
 		} else {
 			t = uint64(*block.BlockOverrides.Time)
 			if t <= prevTimestamp {
-				return nil, &ethapierrors.InvalidBlockTimestampError{fmt.Sprintf("block timestamps must be in order: %d <= %d", t, prevTimestamp)}
+				return nil, &silaapierrors.InvalidBlockTimestampError{fmt.Sprintf("block timestamps must be in order: %d <= %d", t, prevTimestamp)}
 			}
 		}
 		prevTimestamp = t
