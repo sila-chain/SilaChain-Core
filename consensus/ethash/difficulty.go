@@ -79,6 +79,9 @@ func CalcDifficultyFrontierU256(time uint64, parent *types.Header) *big.Int {
 // CalcDifficultyHomesteadU256 is the difficulty adjustment algorithm. It returns
 // the difficulty that a new block should have when created at time given the
 // parent block's time and difficulty. The calculation uses the Homestead rules.
+var SilaPoWCalcDifficultyFrontierU256 = CalcDifficultyFrontierU256
+var SilaPoWCalcDifficultyHomesteadU256 = CalcDifficultyHomesteadU256
+
 func CalcDifficultyHomesteadU256(time uint64, parent *types.Header) *big.Int {
 	/*
 		https://github.com/ethereum/EIPs/blob/master/EIPS/eip-2.md
