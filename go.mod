@@ -172,5 +172,3 @@ tool (
 	golang.org/x/tools/cmd/stringer
 	google.golang.org/protobuf/cmd/protoc-gen-go
 )
-
-replace github.com/ethereum/go-ethereum => .
