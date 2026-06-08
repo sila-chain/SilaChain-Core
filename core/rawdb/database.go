@@ -506,9 +506,9 @@ func InspectDatabase(db ethdb.Database, keyPrefix, keyStart []byte) error {
 				storageSnaps.add(size)
 			case bytes.HasPrefix(key, PreimagePrefix) && len(key) == (len(PreimagePrefix)+common.HashLength):
 				preimages.add(size)
-			case bytes.HasPrefix(key, configPrefix) && len(key) == (len(configPrefix)+common.HashLength):
+			case bytes.HasPrefix(key, silaConfigPrefix) && len(key) == (len(silaConfigPrefix)+common.HashLength):
 				metadata.add(size)
-			case bytes.HasPrefix(key, genesisPrefix) && len(key) == (len(genesisPrefix)+common.HashLength):
+			case bytes.HasPrefix(key, silaGenesisPrefix) && len(key) == (len(silaGenesisPrefix)+common.HashLength):
 				metadata.add(size)
 			case bytes.HasPrefix(key, skeletonHeaderPrefix) && len(key) == (len(skeletonHeaderPrefix)+8):
 				beaconHeaders.add(size)

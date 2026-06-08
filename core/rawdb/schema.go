@@ -96,7 +96,7 @@ var (
 	badBlockKey = []byte("InvalidBlock")
 
 	// uncleanShutdownKey tracks the list of local crashes
-	uncleanShutdownKey = []byte("unclean-shutdown") // config prefix for the db
+	uncleanShutdownKey = []byte("unclean-shutdown") // Sila config prefix for the db
 
 	// transitionStatusKey tracks the eth2 transition status.
 	transitionStatusKey = []byte("eth2-transition") // deprecated
@@ -142,9 +142,9 @@ var (
 	// (d) State ID lookups, etc.
 	VerklePrefix = []byte("v")
 
-	PreimagePrefix = []byte("secure-key-")       // PreimagePrefix + hash -> preimage
-	configPrefix   = []byte("ethereum-config-")  // config prefix for the db
-	genesisPrefix  = []byte("ethereum-genesis-") // genesis state prefix for the db
+	PreimagePrefix    = []byte("secure-key-")       // PreimagePrefix + hash -> preimage
+	silaConfigPrefix  = []byte("ethereum-config-")  // Sila config prefix for the db
+	silaGenesisPrefix = []byte("ethereum-genesis-") // Sila genesis state prefix for the db
 
 	CliqueSnapshotPrefix = []byte("clique-")
 
@@ -268,14 +268,14 @@ func IsCodeKey(key []byte) (bool, []byte) {
 	return false, nil
 }
 
-// configKey = configPrefix + hash
+// configKey = silaConfigPrefix + hash
 func configKey(hash common.Hash) []byte {
-	return append(configPrefix, hash.Bytes()...)
+	return append(silaConfigPrefix, hash.Bytes()...)
 }
 
-// genesisStateSpecKey = genesisPrefix + hash
+// genesisStateSpecKey = silaGenesisPrefix + hash
 func genesisStateSpecKey(hash common.Hash) []byte {
-	return append(genesisPrefix, hash.Bytes()...)
+	return append(silaGenesisPrefix, hash.Bytes()...)
 }
 
 // stateIDKey = stateIDPrefix + root (32 bytes)
