@@ -92,13 +92,13 @@ var (
 
 // Author implements consensus.Engine, returning the header's coinbase as the
 // proof-of-work verified author of the block.
-func (silapow *Ethash) Author(header *types.Header) (common.Address, error) {
+func (silapow *SilaPoW) Author(header *types.Header) (common.Address, error) {
 	return header.Coinbase, nil
 }
 
 // VerifyHeader checks whether a header conforms to the consensus rules of the
 // stock SilaChain legacy PoW engine.
-func (silapow *Ethash) VerifyHeader(chain consensus.ChainHeaderReader, header *types.Header) error {
+func (silapow *SilaPoW) VerifyHeader(chain consensus.ChainHeaderReader, header *types.Header) error {
 	// Short circuit if the header is known, or its parent not
 	number := header.Number.Uint64()
 	if chain.GetHeader(header.Hash(), number) != nil {
@@ -115,7 +115,7 @@ func (silapow *Ethash) VerifyHeader(chain consensus.ChainHeaderReader, header *t
 // VerifyHeaders is similar to VerifyHeader, but verifies a batch of headers
 // concurrently. The method returns a quit channel to abort the operations and
 // a results channel to retrieve the async verifications.
-func (silapow *Ethash) VerifyHeaders(chain consensus.ChainHeaderReader, headers []*types.Header) (chan<- struct{}, <-chan error) {
+func (silapow *SilaPoW) VerifyHeaders(chain consensus.ChainHeaderReader, headers []*types.Header) (chan<- struct{}, <-chan error) {
 	// If we're running a full engine faking, accept any input as valid
 	if silapow.fakeFull || len(headers) == 0 {
 		abort, results := make(chan struct{}), make(chan error, len(headers))
@@ -154,7 +154,7 @@ func (silapow *Ethash) VerifyHeaders(chain consensus.ChainHeaderReader, headers 
 
 // VerifyUncles verifies that the given block's uncles conform to the consensus
 // rules of the stock SilaChain legacy PoW engine.
-func (silapow *Ethash) VerifyUncles(chain consensus.ChainReader, block *types.Block) error {
+func (silapow *SilaPoW) VerifyUncles(chain consensus.ChainReader, block *types.Block) error {
 	// If we're running a full engine faking, accept any input as valid
 	if silapow.fakeFull {
 		return nil
@@ -218,7 +218,7 @@ func (silapow *Ethash) VerifyUncles(chain consensus.ChainReader, block *types.Bl
 // verifyHeader checks whether a header conforms to the consensus rules of the
 // stock SilaChain legacy PoW engine.
 // See YP section 4.3.4. "Block Header Validity"
-func (silapow *Ethash) verifyHeader(chain consensus.ChainHeaderReader, header, parent *types.Header, uncle bool, unixNow int64) error {
+func (silapow *SilaPoW) verifyHeader(chain consensus.ChainHeaderReader, header, parent *types.Header, uncle bool, unixNow int64) error {
 	// Ensure that the header's extra-data section is of a reasonable size
 	if uint64(len(header.Extra)) > params.MaximumExtraDataSize {
 		return fmt.Errorf("extra-data too long: %d > %d", len(header.Extra), params.MaximumExtraDataSize)
@@ -301,7 +301,7 @@ func (silapow *Ethash) verifyHeader(chain consensus.ChainHeaderReader, header, p
 // CalcDifficulty is the difficulty adjustment algorithm. It returns
 // the difficulty that a new block should have when created at time
 // given the parent block's time and difficulty.
-func (silapow *Ethash) CalcDifficulty(chain consensus.ChainHeaderReader, time uint64, parent *types.Header) *big.Int {
+func (silapow *SilaPoW) CalcDifficulty(chain consensus.ChainHeaderReader, time uint64, parent *types.Header) *big.Int {
 	return CalcDifficulty(chain.Config(), time, parent)
 }
 
@@ -494,7 +494,7 @@ var DynamicDifficultyCalculator = makeDifficultyCalculator
 
 // Prepare implements consensus.Engine, initializing the difficulty field of a
 // header to conform to the SilaPoW compatibility protocol. The changes are done inline.
-func (silapow *Ethash) Prepare(chain consensus.ChainHeaderReader, header *types.Header) error {
+func (silapow *SilaPoW) Prepare(chain consensus.ChainHeaderReader, header *types.Header) error {
 	parent := chain.GetHeader(header.ParentHash, header.Number.Uint64()-1)
 	if parent == nil {
 		return consensus.ErrUnknownAncestor
@@ -504,13 +504,13 @@ func (silapow *Ethash) Prepare(chain consensus.ChainHeaderReader, header *types.
 }
 
 // Finalize implements consensus.Engine, accumulating the block and uncle rewards.
-func (silapow *Ethash) Finalize(chain consensus.ChainHeaderReader, header *types.Header, state vm.StateDB, body *types.Body) {
+func (silapow *SilaPoW) Finalize(chain consensus.ChainHeaderReader, header *types.Header, state vm.StateDB, body *types.Body) {
 	// Accumulate any block and uncle rewards
 	accumulateRewards(chain.Config(), state, header, body.Uncles)
 }
 
 // SealHash returns the hash of a block prior to it being sealed.
-func (silapow *Ethash) SealHash(header *types.Header) (hash common.Hash) {
+func (silapow *SilaPoW) SealHash(header *types.Header) (hash common.Hash) {
 	hasher := keccak.NewLegacyKeccak256()
 
 	enc := []interface{}{
