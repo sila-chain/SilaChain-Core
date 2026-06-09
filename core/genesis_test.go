@@ -189,6 +189,7 @@ func TestGenesisHashes(t *testing.T) {
 		genesis *Genesis
 		want    common.Hash
 	}{
+		{SilaDefaultGenesisBlock(), params.SilaMainnetGenesisHash},
 		{DefaultGenesisBlock(), params.MainnetGenesisHash},
 		{DefaultSepoliaGenesisBlock(), params.SepoliaGenesisHash},
 		{DefaultHoleskyGenesisBlock(), params.HoleskyGenesisHash},
