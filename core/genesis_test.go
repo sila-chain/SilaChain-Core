@@ -344,3 +344,22 @@ func TestBinaryGenesisCommit(t *testing.T) {
 		t.Fatal("could not find node")
 	}
 }
+
+func TestSilaSetupGenesisBlock(t *testing.T) {
+	db := rawdb.NewMemoryDatabase()
+	triedb := triedb.NewDatabase(db, newDbConfig(rawdb.HashScheme))
+
+	config, hash, compat, err := SetupGenesisBlock(db, triedb, SilaDefaultGenesisBlock())
+	if err != nil {
+		t.Fatalf("SetupGenesisBlock: %v", err)
+	}
+	if compat != nil {
+		t.Fatalf("unexpected compatibility error: %v", compat)
+	}
+	if hash != params.SilaMainnetGenesisHash {
+		t.Fatalf("unexpected genesis hash: have %v, want %v", hash, params.SilaMainnetGenesisHash)
+	}
+	if config.ChainID.Cmp(params.SilaMainnetChainConfig.ChainID) != 0 {
+		t.Fatalf("unexpected chain id: have %v, want %v", config.ChainID, params.SilaMainnetChainConfig.ChainID)
+	}
+}
