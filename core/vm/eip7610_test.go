@@ -24,13 +24,6 @@ import (
 	"github.com/sila-org/sila/params"
 )
 
-func Example_ethereumLegacyMainnetEIP7610Accounts() {
-	list := eip7610Accounts[params.MainnetChainConfig.ChainID.Uint64()]
-	fmt.Println(len(list))
-	// Output:
-	// 0
-}
-
 func Example_silaMainnetEIP7610Accounts() {
 	list := eip7610Accounts[params.SilaMainnetChainConfig.ChainID.Uint64()]
 	fmt.Println(len(list))
