@@ -24,7 +24,7 @@ import (
 	"github.com/sila-org/sila/params"
 )
 
-func Example_mainnetEIP7610Accounts() {
+func Example_ethereumLegacyMainnetEIP7610Accounts() {
 	list := slices.Clone(eip7610Accounts[params.MainnetChainConfig.ChainID.Uint64()])
 	slices.SortFunc(list, common.Address.Cmp)
 	for _, addr := range list {
@@ -61,7 +61,7 @@ func Example_mainnetEIP7610Accounts() {
 	// 0xfeE7707fa4b8C0A923A0E40399Db3e7Ce26069C6
 }
 
-func Example_silaMainnetEIP7610Accounts() {
+func Example_mainnetEIP7610Accounts() {
 	list := slices.Clone(eip7610Accounts[params.SilaMainnetChainConfig.ChainID.Uint64()])
 	slices.SortFunc(list, common.Address.Cmp)
 	for _, addr := range list {
