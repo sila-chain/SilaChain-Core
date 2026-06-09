@@ -126,3 +126,27 @@ Status: intentionally empty until Sila-owned production bootnodes and DNS discov
 `params.KnownDNSNetwork(params.SilaMainnetGenesisHash, protocol)` intentionally returns an empty string to prevent inherited Ethereum DNS discovery from being used by Sila mainnet.
 
 Do not add Ethereum bootnodes or Ethereum DNS discovery back to Sila mainnet defaults. Do not add placeholder bootnodes.
+
+## Sila Mainnet Build Verification
+
+Status: verified on HEAD `ccca54708`.
+
+Confirmed build command:
+- `go build -o .\build\bin\sila.exe .\cmd\sila`
+
+Confirmed binary identity:
+- Name: `Sila`
+- Version: `1.17.3-unstable`
+- Git Commit: `ccca547082cd7d6447f15c75a33b8106a0307671`
+- Go Version: `go1.26.1`
+- OS/Arch: `windows/amd64`
+
+Confirmed `sila dumpgenesis --mainnet` values:
+- ChainID: `2026`
+- ExtraData: `SilaChain Mainnet`
+- DepositContractAddress: `0x0000000000000000000000000000000000000000`
+- GasLimit: `30000000`
+- BaseFeePerGas: `1000000000`
+- Alloc: empty `{}`
+
+This confirms the current Sila binary builds successfully and exposes the Sila mainnet genesis baseline.
