@@ -81,6 +81,14 @@ func testSetupGenesis(t *testing.T, scheme string) {
 			wantConfig: params.MainnetChainConfig,
 		},
 		{
+			name: "sila explicit genesis in empty DB",
+			fn: func(db ethdb.Database) (*params.ChainConfig, common.Hash, *params.ConfigCompatError, error) {
+				return SetupGenesisBlock(db, triedb.NewDatabase(db, newDbConfig(scheme)), SilaDefaultGenesisBlock())
+			},
+			wantHash:   params.SilaMainnetGenesisHash,
+			wantConfig: params.SilaMainnetChainConfig,
+		},
+		{
 			name: "sila block in DB, genesis == nil",
 			fn: func(db ethdb.Database) (*params.ChainConfig, common.Hash, *params.ConfigCompatError, error) {
 				SilaDefaultGenesisBlock().MustCommit(db, triedb.NewDatabase(db, newDbConfig(scheme)))
