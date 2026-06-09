@@ -230,6 +230,10 @@ func (r *reserver) Has(address common.Address) bool {
 // makeTx is a utility method to construct a random blob transaction and sign it
 // with a valid key, only setting the interesting fields from the perspective of
 // the blob pool.
+func makeSilaTx(nonce uint64, gasTipCap uint64, gasFeeCap uint64, blobFeeCap uint64, key *ecdsa.PrivateKey) *types.Transaction {
+	blobtx := makeSilaUnsignedTxWithTestBlob(nonce, gasTipCap, gasFeeCap, blobFeeCap, rnd.Intn(len(testBlobs)))
+	return types.MustSignNewTx(key, types.LatestSigner(params.SilaMainnetChainConfig), blobtx)
+}
 func makeTx(nonce uint64, gasTipCap uint64, gasFeeCap uint64, blobFeeCap uint64, key *ecdsa.PrivateKey) *types.Transaction {
 	blobtx := makeUnsignedTx(nonce, gasTipCap, gasFeeCap, blobFeeCap)
 	return types.MustSignNewTx(key, types.LatestSigner(params.MainnetChainConfig), blobtx)
