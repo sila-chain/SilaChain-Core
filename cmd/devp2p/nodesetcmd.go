@@ -228,6 +228,8 @@ func minAgeFilter(args []string) (nodeFilter, error) {
 func ethFilter(args []string) (nodeFilter, error) {
 	var filter forkid.Filter
 	switch args[0] {
+	case "sila", "sila-mainnet":
+		filter = forkid.NewStaticFilter(params.SilaMainnetChainConfig, core.SilaDefaultGenesisBlock().ToBlock())
 	case "mainnet":
 		filter = forkid.NewStaticFilter(params.MainnetChainConfig, core.DefaultGenesisBlock().ToBlock())
 	case "sepolia":
