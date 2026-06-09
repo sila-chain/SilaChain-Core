@@ -69,6 +69,39 @@ func TestCalcExcessBlobGas(t *testing.T) {
 	}
 }
 
+func TestSilaCalcExcessBlobGas(t *testing.T) {
+	var (
+		config        = params.SilaMainnetChainConfig
+		targetBlobs   = config.BlobScheduleConfig.Cancun.Target
+		targetBlobGas = uint64(targetBlobs) * params.BlobTxBlobGasPerBlob
+	)
+
+	tests := []struct {
+		excess uint64
+		blobs  int
+		want   uint64
+	}{
+		{excess: 0, blobs: 0, want: 0},
+		{excess: 0, blobs: targetBlobs, want: 0},
+		{excess: 0, blobs: targetBlobs + 1, want: 0},
+		{excess: targetBlobGas, blobs: 0, want: 0},
+		{excess: targetBlobGas, blobs: targetBlobs, want: 0},
+		{excess: targetBlobGas, blobs: targetBlobs + 1, want: 0},
+	}
+
+	for i, tt := range tests {
+		blobGasUsed := uint64(tt.blobs) * params.BlobTxBlobGasPerBlob
+		header := &types.Header{
+			ExcessBlobGas: &tt.excess,
+			BlobGasUsed:   &blobGasUsed,
+		}
+		result := CalcExcessBlobGas(config, header, *config.CancunTime)
+		if result != tt.want {
+			t.Errorf("test %d: Sila excess blob gas mismatch: have %v, want %v", i, result, tt.want)
+		}
+	}
+}
+
 func TestCalcBlobFee(t *testing.T) {
 	zero := uint64(0)
 
