@@ -231,8 +231,6 @@ func ethFilter(args []string) (nodeFilter, error) {
 	switch args[0] {
 	case "sila", "sila-mainnet":
 		filter = forkid.NewStaticFilter(params.SilaMainnetChainConfig, core.SilaDefaultGenesisBlock().ToBlock())
-	case "mainnet":
-		filter = forkid.NewStaticFilter(params.MainnetChainConfig, core.DefaultGenesisBlock().ToBlock())
 	case "sepolia":
 		filter = forkid.NewStaticFilter(params.SepoliaChainConfig, core.DefaultSepoliaGenesisBlock().ToBlock())
 	case "holesky":

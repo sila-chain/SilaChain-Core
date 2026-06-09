@@ -44,8 +44,8 @@ set to standard output. The following filters are supported:
 - `-limit <N>` limits the output set to N entries, taking the top N nodes by score
 - `-ip <CIDR>` filters nodes by IP subnet
 - `-min-age <duration>` filters nodes by 'first seen' time
-- `-sila-network <sila/sila-mainnet/mainnet/sepolia/holesky/hoodi>` filters nodes by "eth" ENR entry; `mainnet` remains Ethereum legacy compatibility
-- `-eth-network <sila/sila-mainnet/mainnet/sepolia/holesky/hoodi>` is retained as a legacy compatibility alias
+- `-sila-network <sila/sila-mainnet/sepolia/holesky/hoodi>` filters nodes by "eth" ENR entry
+- `-eth-network <sila/sila-mainnet/sepolia/holesky/hoodi>` is retained as a legacy compatibility alias
 - `-les-server` filters nodes by LES server support
 - `-snap` filters nodes by snap protocol support
 
