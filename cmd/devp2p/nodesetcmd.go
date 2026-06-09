@@ -135,12 +135,13 @@ type nodeFilterC struct {
 }
 
 var filterFlags = map[string]nodeFilterC{
-	"-limit":       {1, trueFilter}, // needed to skip over -limit
-	"-ip":          {1, ipFilter},
-	"-min-age":     {1, minAgeFilter},
-	"-eth-network": {1, ethFilter},
-	"-les-server":  {0, lesFilter},
-	"-snap":        {0, snapFilter},
+	"-limit":        {1, trueFilter}, // needed to skip over -limit
+	"-ip":           {1, ipFilter},
+	"-min-age":      {1, minAgeFilter},
+	"-eth-network":  {1, ethFilter},
+	"-sila-network": {1, ethFilter},
+	"-les-server":   {0, lesFilter},
+	"-snap":         {0, snapFilter},
 }
 
 // parseFilters parses nodeFilters from args.
