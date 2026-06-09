@@ -23,32 +23,32 @@ import (
 	"github.com/sila-org/sila/params"
 )
 
-func TestNewPolicy(t *testing.T) {
-	// KeepAll: no target.
+func TestEthereumLegacyNewPolicy(t *testing.T) {
+	// Ethereum legacy KeepAll: no target.
 	p, err := NewPolicy(KeepAll, params.MainnetGenesisHash)
 	if err != nil {
-		t.Fatalf("KeepAll: %v", err)
+		t.Fatalf("Ethereum legacy KeepAll: %v", err)
 	}
 	if p.Mode != KeepAll || p.Target != nil {
-		t.Errorf("KeepAll: unexpected policy %+v", p)
+		t.Errorf("Ethereum legacy KeepAll: unexpected policy %+v", p)
 	}
 
-	// PostMerge: resolves known mainnet prune point.
+	// Ethereum legacy PostMerge: resolves known mainnet prune point.
 	p, err = NewPolicy(KeepPostMerge, params.MainnetGenesisHash)
 	if err != nil {
-		t.Fatalf("PostMerge: %v", err)
+		t.Fatalf("Ethereum legacy PostMerge: %v", err)
 	}
 	if p.Target == nil || p.Target.BlockNumber != 15537393 {
-		t.Errorf("PostMerge: unexpected target %+v", p.Target)
+		t.Errorf("Ethereum legacy PostMerge: unexpected target %+v", p.Target)
 	}
 
-	// PostPrague: resolves known mainnet prune point.
+	// Ethereum legacy PostPrague: resolves known mainnet prune point.
 	p, err = NewPolicy(KeepPostPrague, params.MainnetGenesisHash)
 	if err != nil {
-		t.Fatalf("PostPrague: %v", err)
+		t.Fatalf("Ethereum legacy PostPrague: %v", err)
 	}
 	if p.Target == nil || p.Target.BlockNumber != 22431084 {
-		t.Errorf("PostPrague: unexpected target %+v", p.Target)
+		t.Errorf("Ethereum legacy PostPrague: unexpected target %+v", p.Target)
 	}
 
 	// PostMerge on unknown network: error.
@@ -57,19 +57,19 @@ func TestNewPolicy(t *testing.T) {
 	}
 }
 
-func TestSilaNewPolicy(t *testing.T) {
+func TestNewPolicy(t *testing.T) {
 	p, err := NewPolicy(KeepAll, params.SilaMainnetGenesisHash)
 	if err != nil {
-		t.Fatalf("Sila KeepAll: %v", err)
+		t.Fatalf("Sila Ethereum legacy KeepAll: %v", err)
 	}
 	if p.Mode != KeepAll || p.Target != nil {
-		t.Fatalf("Sila KeepAll: unexpected policy: %#v", p)
+		t.Fatalf("Sila Ethereum legacy KeepAll: unexpected policy: %#v", p)
 	}
 
 	if _, err := NewPolicy(KeepPostMerge, params.SilaMainnetGenesisHash); err == nil {
-		t.Fatalf("Sila KeepPostMerge: expected unavailable prune point")
+		t.Fatalf("Sila KeepEthereum legacy PostMerge: expected unavailable prune point")
 	}
 	if _, err := NewPolicy(KeepPostPrague, params.SilaMainnetGenesisHash); err == nil {
-		t.Fatalf("Sila KeepPostPrague: expected unavailable prune point")
+		t.Fatalf("Sila KeepEthereum legacy PostPrague: expected unavailable prune point")
 	}
 }
