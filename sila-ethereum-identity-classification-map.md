@@ -169,3 +169,23 @@ Required bootnode acceptance checks:
 9. Commit, push, and tag only after all checks pass.
 
 Do not add any bootnode value until it has passed the acceptance checks above.
+
+## Sila Production DNS Discovery Provisioning Plan
+
+Status: pending Sila-owned DNS discovery infrastructure.
+
+Sila mainnet DNS discovery must remain disabled until a Sila-owned ENR tree is created, signed, published, and verified. The Sila mainnet path must not use inherited Ethereum DNS discovery.
+
+Required DNS discovery acceptance checks:
+1. Provision a Sila-owned DNS zone for discovery.
+2. Generate and protect the ENR tree signing key.
+3. Build the ENR tree only from verified Sila production bootnodes.
+4. Publish the ENR tree under a Sila-owned DNS name.
+5. Verify DNS resolution from an external network.
+6. Verify `params.KnownDNSNetwork(params.SilaMainnetGenesisHash, protocol)` returns only the Sila-owned discovery URL.
+7. Verify Sila startup uses the Sila DNS URL only when configured for Sila mainnet.
+8. Run `go test ./params ./cmd/utils ./cmd/sila ./p2p/... ./core/... ./cmd/...`.
+9. Rebuild `sila.exe` and verify `sila version` and `sila dumpgenesis --mainnet`.
+10. Commit, push, and tag only after all checks pass.
+
+Do not enable DNS discovery for Sila mainnet until the DNS zone, ENR tree, and signing key are all Sila-owned and verified.
