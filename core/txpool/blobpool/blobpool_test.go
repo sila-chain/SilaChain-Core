@@ -2227,3 +2227,67 @@ func TestSilaMakeTx(t *testing.T) {
 		t.Fatalf("unexpected sender: have %v, want %v", sender, want)
 	}
 }
+
+func TestSilaBlobPoolHelpers(t *testing.T) {
+	key, err := crypto.GenerateKey()
+	if err != nil {
+		t.Fatal(err)
+	}
+	addr := crypto.PubkeyToAddress(key.PublicKey)
+
+	single := makeSilaTx(0, 1, 1, 1, key)
+	if single.ChainId().Cmp(params.SilaMainnetChainConfig.ChainID) != 0 {
+		t.Fatalf("single tx chain id mismatch: have %v, want %v", single.ChainId(), params.SilaMainnetChainConfig.ChainID)
+	}
+	sender, err := types.Sender(types.LatestSigner(params.SilaMainnetChainConfig), single)
+	if err != nil {
+		t.Fatalf("single tx sender recovery failed: %v", err)
+	}
+	if sender != addr {
+		t.Fatalf("single tx sender mismatch: have %v, want %v", sender, addr)
+	}
+
+	multi := makeSilaMultiBlobTx(1, 1, 1, 1, 2, 0, key, types.BlobSidecarVersion0)
+	if multi.ChainId().Cmp(params.SilaMainnetChainConfig.ChainID) != 0 {
+		t.Fatalf("multi tx chain id mismatch: have %v, want %v", multi.ChainId(), params.SilaMainnetChainConfig.ChainID)
+	}
+	if blobs := len(multi.BlobHashes()); blobs != 2 {
+		t.Fatalf("multi tx blob count mismatch: have %d, want 2", blobs)
+	}
+}
+
+func TestSilaBlobPoolAdd(t *testing.T) {
+	key, err := crypto.GenerateKey()
+	if err != nil {
+		t.Fatal(err)
+	}
+	addr := crypto.PubkeyToAddress(key.PublicKey)
+
+	statedb, _ := state.New(types.EmptyRootHash, state.NewDatabaseForTesting())
+	statedb.AddBalance(addr, uint256.NewInt(100_000_000_000_000), tracing.BalanceChangeUnspecified)
+	statedb.Commit(0, true, false)
+
+	chain := &testBlockChain{
+		config:  params.SilaMainnetChainConfig,
+		basefee: uint256.NewInt(params.InitialBaseFee),
+		blobfee: uint256.NewInt(params.BlobTxMinBlobGasprice),
+		statedb: statedb,
+	}
+	pool := New(Config{}, chain, nil)
+	if err := pool.Init(1, chain.CurrentBlock(), newReserver()); err != nil {
+		t.Fatalf("pool init failed: %v", err)
+	}
+	defer pool.Close()
+
+	tx := makeSilaMultiBlobTx(0, 2, params.InitialBaseFee+2, params.BlobTxMinBlobGasprice, 1, 0, key, types.BlobSidecarVersion1)
+	errs := pool.Add([]*types.Transaction{tx}, true)
+	if len(errs) != 1 {
+		t.Fatalf("unexpected add result count: have %d, want 1", len(errs))
+	}
+	if errs[0] != nil {
+		t.Fatalf("add Sila blob tx failed: %v", errs[0])
+	}
+	if !pool.Has(tx.Hash()) {
+		t.Fatalf("Sila blob tx not found in pool")
+	}
+}
