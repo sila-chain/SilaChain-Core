@@ -73,3 +73,13 @@ func TestDecodeRLPxDisconnect(t *testing.T) {
 		})
 	}
 }
+
+func TestParseFiltersAcceptsSilaNetwork(t *testing.T) {
+	filters, err := parseFilters([]string{"-sila-network", "sila-mainnet"})
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if len(filters) != 1 {
+		t.Fatalf("got %d filters, want 1", len(filters))
+	}
+}
