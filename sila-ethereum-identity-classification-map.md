@@ -108,3 +108,11 @@ This confirms Sila mainnet does not inherit the Ethereum mainnet deposit contrac
 
 Do not add a non-zero deposit contract address until a Sila-owned deposit contract and consensus genesis are finalized.
 Do not add initial allocations unless a final Sila mainnet allocation policy is approved.
+
+## Sila Filter/Log Checkpoints Status
+
+Status: deferred until Sila chain-derived checkpoints exist.
+
+`core/filtermaps/checkpoints.go` intentionally keeps the inherited Ethereum-family checkpoint JSON files for compatibility. No Sila checkpoint file is added until real Sila finalized-chain log checkpoints are generated from canonical Sila chain data.
+
+Do not add mock checkpoint JSON files. Do not replace inherited checkpoint data without a generated Sila equivalent.
