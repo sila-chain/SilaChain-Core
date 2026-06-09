@@ -401,6 +401,28 @@ func TestValidation(t *testing.T) {
 
 // Tests that IDs are properly RLP encoded (specifically important because we
 // use uint32 to store the hash, but we need to encode it as [4]byte).
+
+func TestSilaValidation(t *testing.T) {
+	tests := []struct {
+		head uint64
+		time uint64
+		id   ID
+		err  error
+	}{
+		{0, 0, ID{Hash: checksumToBytes(0xda416f09), Next: 0}, nil},
+		{1, 0, ID{Hash: checksumToBytes(0xda416f09), Next: 0}, nil},
+		{30000000, 2000000000, ID{Hash: checksumToBytes(0xda416f09), Next: 0}, nil},
+		{30000000, 2000000000, ID{Hash: checksumToBytes(0x12345678), Next: 0}, ErrLocalIncompatibleOrStale},
+	}
+	genesis := core.SilaDefaultGenesisBlock().ToBlock()
+	for i, tt := range tests {
+		filter := newFilter(params.SilaMainnetChainConfig, genesis, func() (uint64, uint64) { return tt.head, tt.time })
+		if err := filter(tt.id); err != tt.err {
+			t.Errorf("test %d: validation error mismatch: have %v, want %v", i, err, tt.err)
+		}
+	}
+}
+
 func TestEncoding(t *testing.T) {
 	tests := []struct {
 		id   ID
