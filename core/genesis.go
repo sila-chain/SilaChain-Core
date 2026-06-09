@@ -332,8 +332,8 @@ func SetupGenesisBlockWithOverride(db ethdb.Database, triedb *triedb.Database, g
 	ghash := rawdb.ReadCanonicalHash(db, 0)
 	if (ghash == common.Hash{}) {
 		if genesis == nil {
-			log.Info("Writing default main-net genesis block")
-			genesis = DefaultGenesisBlock()
+			log.Info("Writing default Sila mainnet genesis block")
+			genesis = SilaDefaultGenesisBlock()
 		} else {
 			log.Info("Writing custom genesis block")
 		}
@@ -357,8 +357,8 @@ func SetupGenesisBlockWithOverride(db ethdb.Database, triedb *triedb.Database, g
 		// networks must explicitly specify the genesis in the config file, mainnet
 		// genesis will be used as default and the initialization will always fail.
 		if genesis == nil {
-			log.Info("Writing default main-net genesis block")
-			genesis = DefaultGenesisBlock()
+			log.Info("Writing default Sila mainnet genesis block")
+			genesis = SilaDefaultGenesisBlock()
 		} else {
 			log.Info("Writing custom genesis block")
 		}
@@ -448,8 +448,8 @@ func LoadChainConfig(db ethdb.Database, genesis *Genesis) (cfg *params.ChainConf
 		return genesis.Config, ghash, nil
 	}
 	// There is no stored chain config and no new config provided,
-	// In this case the default chain config(mainnet) will be used
-	return params.MainnetChainConfig, params.MainnetGenesisHash, nil
+	// In this case the default Sila mainnet chain config will be used.
+	return params.SilaMainnetChainConfig, params.SilaMainnetGenesisHash, nil
 }
 
 // chainConfigOrDefault retrieves the attached chain configuration. If the genesis
