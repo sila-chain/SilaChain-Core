@@ -207,3 +207,16 @@ Required checkpoint acceptance checks:
 8. Commit, push, and tag only after all checks pass.
 
 Do not replace `core/filtermaps` checkpoint data until Sila-generated checkpoints exist and pass verification.
+
+## Sila Bootnode Command Template
+
+Status: command template only. Do not run for production until a real server and public IP are available.
+
+Production key generation must happen outside the repository on the target bootnode host:
+
+- `devp2p.exe key generate <secure-keyfile>`
+- `devp2p.exe key to-enode --ip <PUBLIC_IP> --tcp 30303 --udp 30303 <secure-keyfile>`
+- `devp2p.exe key to-enr --ip <PUBLIC_IP> --tcp 30303 --udp 30303 <secure-keyfile>`
+- `devp2p.exe discv4 listen --nodekey <hex-nodekey> --addr :30303 --extaddr <PUBLIC_IP>:30303`
+
+Do not commit node keys. Do not store production node keys inside the repository.
