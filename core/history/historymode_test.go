@@ -24,7 +24,7 @@ import (
 )
 
 func TestEthereumLegacyNewPolicy(t *testing.T) {
-	// Ethereum legacy KeepAll: no target.
+	// Ethereum legacy KeepAll remains valid because it does not require a static prune point.
 	p, err := NewPolicy(KeepAll, params.MainnetGenesisHash)
 	if err != nil {
 		t.Fatalf("Ethereum legacy KeepAll: %v", err)
@@ -33,25 +33,13 @@ func TestEthereumLegacyNewPolicy(t *testing.T) {
 		t.Errorf("Ethereum legacy KeepAll: unexpected policy %+v", p)
 	}
 
-	// Ethereum legacy PostMerge: resolves known mainnet prune point.
-	p, err = NewPolicy(KeepPostMerge, params.MainnetGenesisHash)
-	if err != nil {
-		t.Fatalf("Ethereum legacy PostMerge: %v", err)
+	if _, err = NewPolicy(KeepPostMerge, params.MainnetGenesisHash); err == nil {
+		t.Fatal("Ethereum legacy PostMerge: expected unavailable prune point")
 	}
-	if p.Target == nil || p.Target.BlockNumber != 15537393 {
-		t.Errorf("Ethereum legacy PostMerge: unexpected target %+v", p.Target)
+	if _, err = NewPolicy(KeepPostPrague, params.MainnetGenesisHash); err == nil {
+		t.Fatal("Ethereum legacy PostPrague: expected unavailable prune point")
 	}
 
-	// Ethereum legacy PostPrague: resolves known mainnet prune point.
-	p, err = NewPolicy(KeepPostPrague, params.MainnetGenesisHash)
-	if err != nil {
-		t.Fatalf("Ethereum legacy PostPrague: %v", err)
-	}
-	if p.Target == nil || p.Target.BlockNumber != 22431084 {
-		t.Errorf("Ethereum legacy PostPrague: unexpected target %+v", p.Target)
-	}
-
-	// PostMerge on unknown network: error.
 	if _, err = NewPolicy(KeepPostMerge, common.HexToHash("0xdeadbeef")); err == nil {
 		t.Fatal("PostMerge unknown network: expected error")
 	}
