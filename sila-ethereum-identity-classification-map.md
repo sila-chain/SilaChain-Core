@@ -189,3 +189,21 @@ Required DNS discovery acceptance checks:
 10. Commit, push, and tag only after all checks pass.
 
 Do not enable DNS discovery for Sila mainnet until the DNS zone, ENR tree, and signing key are all Sila-owned and verified.
+
+## Sila Chain-Derived Checkpoints Generation Plan
+
+Status: pending canonical Sila chain data.
+
+Sila filter/log checkpoints must be generated only from finalized canonical Sila chain data. The inherited Ethereum-family checkpoint files remain compatibility data until Sila checkpoints are generated and verified.
+
+Required checkpoint acceptance checks:
+1. Run a canonical Sila chain with finalized blocks.
+2. Generate log/filter checkpoints from Sila chain data only.
+3. Verify checkpoint block hashes against the canonical Sila chain.
+4. Verify checkpoint first-index values against Sila log history.
+5. Add Sila checkpoint data only after it is generated from real Sila chain history.
+6. Do not add empty, placeholder, copied, or Ethereum-derived checkpoint data.
+7. Run `go test ./core/filtermaps ./core/... ./cmd/...`.
+8. Commit, push, and tag only after all checks pass.
+
+Do not replace `core/filtermaps` checkpoint data until Sila-generated checkpoints exist and pass verification.
