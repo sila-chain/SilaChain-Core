@@ -56,3 +56,20 @@ func TestNewPolicy(t *testing.T) {
 		t.Fatal("PostMerge unknown network: expected error")
 	}
 }
+
+func TestSilaNewPolicy(t *testing.T) {
+	p, err := NewPolicy(KeepAll, params.SilaMainnetGenesisHash)
+	if err != nil {
+		t.Fatalf("Sila KeepAll: %v", err)
+	}
+	if p.Mode != KeepAll || p.Target != nil {
+		t.Fatalf("Sila KeepAll: unexpected policy: %#v", p)
+	}
+
+	if _, err := NewPolicy(KeepPostMerge, params.SilaMainnetGenesisHash); err == nil {
+		t.Fatalf("Sila KeepPostMerge: expected unavailable prune point")
+	}
+	if _, err := NewPolicy(KeepPostPrague, params.SilaMainnetGenesisHash); err == nil {
+		t.Fatalf("Sila KeepPostPrague: expected unavailable prune point")
+	}
+}
