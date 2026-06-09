@@ -66,11 +66,11 @@ Status: design draft only. No runtime behavior is changed by this section.
 
 SilaChain mainnet must not use Ethereum mainnet identity as its final public network identity.
 
-Current inherited compatibility state:
-- `params.MainnetChainConfig` still uses `ChainID: big.NewInt(1)`.
-- `params.MainnetGenesisHash` still points to the inherited Ethereum mainnet genesis hash.
-- `core.DefaultGenesisBlock()` still builds from `params.MainnetChainConfig`.
-- `params.MainnetBootnodes` and DNS discovery are still inherited public Ethereum network discovery values.
+Current Sila mainnet identity state:
+- `params.SilaMainnetChainConfig` is the production Sila mainnet config.
+- `params.SilaMainnetGenesisHash` is the production Sila mainnet genesis hash.
+- `core.SilaDefaultGenesisBlock()` is the production Sila mainnet genesis block.
+- `params.MainnetChainConfig`, `params.MainnetGenesisHash`, `core.DefaultGenesisBlock()`, and Ethereum bootnodes remain only as inherited compatibility boundaries where explicitly required.
 
 Approved target direction:
 - Sila mainnet should use an independent chain identity.
