@@ -62,7 +62,7 @@ Examples:
 
 ## Sila Mainnet Specification Draft
 
-Status: design draft only. No runtime behavior is changed by this section.
+Status: implemented for Sila mainnet identity, with inherited Ethereum compatibility boundaries retained only where explicitly required.
 
 SilaChain mainnet must not use Ethereum mainnet identity as its final public network identity.
 
