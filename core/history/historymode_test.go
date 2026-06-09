@@ -45,7 +45,7 @@ func TestEthereumLegacyNewPolicy(t *testing.T) {
 	}
 }
 
-func TestNewPolicy(t *testing.T) {
+func TestSilaNewPolicy(t *testing.T) {
 	p, err := NewPolicy(KeepAll, params.SilaMainnetGenesisHash)
 	if err != nil {
 		t.Fatalf("Sila KeepAll: %v", err)
