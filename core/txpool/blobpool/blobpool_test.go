@@ -241,6 +241,37 @@ func makeTx(nonce uint64, gasTipCap uint64, gasFeeCap uint64, blobFeeCap uint64,
 
 // makeMultiBlobTx is a utility method to construct a ramdom blob tx with
 // certain number of blobs in its sidecar.
+func makeSilaMultiBlobTx(nonce uint64, gasTipCap uint64, gasFeeCap uint64, blobFeeCap uint64, blobCount int, blobOffset int, key *ecdsa.PrivateKey, version byte) *types.Transaction {
+	var (
+		blobs       []kzg4844.Blob
+		blobHashes  []common.Hash
+		commitments []kzg4844.Commitment
+		proofs      []kzg4844.Proof
+	)
+	for i := 0; i < blobCount; i++ {
+		blobs = append(blobs, *testBlobs[blobOffset+i])
+		commitments = append(commitments, testBlobCommits[blobOffset+i])
+		if version == types.BlobSidecarVersion0 {
+			proofs = append(proofs, testBlobProofs[blobOffset+i])
+		} else {
+			cellProofs, _ := kzg4844.ComputeCellProofs(testBlobs[blobOffset+i])
+			proofs = append(proofs, cellProofs...)
+		}
+		blobHashes = append(blobHashes, testBlobVHashes[blobOffset+i])
+	}
+	blobtx := &types.BlobTx{
+		ChainID:    uint256.MustFromBig(params.SilaMainnetChainConfig.ChainID),
+		Nonce:      nonce,
+		GasTipCap:  uint256.NewInt(gasTipCap),
+		GasFeeCap:  uint256.NewInt(gasFeeCap),
+		Gas:        21000,
+		BlobFeeCap: uint256.NewInt(blobFeeCap),
+		BlobHashes: blobHashes,
+		Value:      uint256.NewInt(100),
+		Sidecar:    types.NewBlobTxSidecar(version, blobs, commitments, proofs),
+	}
+	return types.MustSignNewTx(key, types.LatestSigner(params.SilaMainnetChainConfig), blobtx)
+}
 func makeMultiBlobTx(nonce uint64, gasTipCap uint64, gasFeeCap uint64, blobFeeCap uint64, blobCount int, blobOffset int, key *ecdsa.PrivateKey, version byte) *types.Transaction {
 	var (
 		blobs       []kzg4844.Blob
