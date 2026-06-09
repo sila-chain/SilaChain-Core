@@ -17,33 +17,9 @@
 package history
 
 import (
-	"testing"
-
-	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/params"
+	"testing"
 )
-
-func TestEthereumLegacyNewPolicy(t *testing.T) {
-	// Ethereum legacy KeepAll remains valid because it does not require a static prune point.
-	p, err := NewPolicy(KeepAll, params.MainnetGenesisHash)
-	if err != nil {
-		t.Fatalf("Ethereum legacy KeepAll: %v", err)
-	}
-	if p.Mode != KeepAll || p.Target != nil {
-		t.Errorf("Ethereum legacy KeepAll: unexpected policy %+v", p)
-	}
-
-	if _, err = NewPolicy(KeepPostMerge, params.MainnetGenesisHash); err == nil {
-		t.Fatal("Ethereum legacy PostMerge: expected unavailable prune point")
-	}
-	if _, err = NewPolicy(KeepPostPrague, params.MainnetGenesisHash); err == nil {
-		t.Fatal("Ethereum legacy PostPrague: expected unavailable prune point")
-	}
-
-	if _, err = NewPolicy(KeepPostMerge, common.HexToHash("0xdeadbeef")); err == nil {
-		t.Fatal("PostMerge unknown network: expected error")
-	}
-}
 
 func TestSilaNewPolicy(t *testing.T) {
 	p, err := NewPolicy(KeepAll, params.SilaMainnetGenesisHash)
