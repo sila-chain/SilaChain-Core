@@ -1,4 +1,4 @@
-﻿// Copyright 2026 The SilaChain Authors
+// Copyright 2026 The SilaChain Authors
 // This file is part of the SilaChain library.
 //
 // The SilaChain library is free software: you can redistribute it and/or modify
@@ -97,3 +97,14 @@ func TestParseRange(t *testing.T) {
 	}
 }
 
+func TestDumpGenesisMainnetUsesSilaGenesis(t *testing.T) {
+	t.Parallel()
+
+	sila := runSila(t, "dumpgenesis", "--mainnet")
+	defer sila.ExpectExit()
+
+	sila.ExpectRegexp(`"chainId":2026`)
+	sila.ExpectRegexp(`"depositContractAddress":"0x0000000000000000000000000000000000000000"`)
+	sila.ExpectRegexp(`"extraData":"0x53696c61436861696e204d61696e6e6574"`)
+	sila.ExpectRegexp(`"slotNumber":null}`)
+}
