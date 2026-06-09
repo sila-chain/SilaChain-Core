@@ -44,14 +44,15 @@ set to standard output. The following filters are supported:
 - `-limit <N>` limits the output set to N entries, taking the top N nodes by score
 - `-ip <CIDR>` filters nodes by IP subnet
 - `-min-age <duration>` filters nodes by 'first seen' time
-- `-eth-network <sila/sila-mainnet/mainnet/sepolia/holesky/hoodi>` filters nodes by "eth" ENR entry; `mainnet` remains Ethereum legacy compatibility
+- `-sila-network <sila/sila-mainnet/mainnet/sepolia/holesky/hoodi>` filters nodes by "eth" ENR entry; `mainnet` remains Ethereum legacy compatibility
+- `-eth-network <sila/sila-mainnet/mainnet/sepolia/holesky/hoodi>` is retained as a legacy compatibility alias
 - `-les-server` filters nodes by LES server support
 - `-snap` filters nodes by snap protocol support
 
 For example, given a node set in `nodes.json`, you could create a filtered set containing
 up to 20 Sila mainnet nodes which also support snap sync using this command:
 
-    devp2p nodeset filter nodes.json -eth-network sila-mainnet -snap -limit 20
+    devp2p nodeset filter nodes.json -sila-network sila-mainnet -snap -limit 20
 
 ### Discovery v4 Utilities
 
