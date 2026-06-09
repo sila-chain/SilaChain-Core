@@ -2138,3 +2138,26 @@ func benchmarkPoolPending(b *testing.B, datacap uint64) {
 		}
 	}
 }
+
+func TestSilaBlobPoolSignerAndConfig(t *testing.T) {
+	chain := &testBlockChain{
+		config: params.SilaMainnetChainConfig,
+	}
+
+	pool := New(Config{}, chain, nil)
+	if pool.signer.ChainID().Cmp(params.SilaMainnetChainConfig.ChainID) != 0 {
+		t.Fatalf("unexpected blobpool signer chain id: have %v, want %v", pool.signer.ChainID(), params.SilaMainnetChainConfig.ChainID)
+	}
+
+	tx := makeUnsignedTx(0, 1, 1, 1)
+	tx.ChainID = uint256.MustFromBig(params.SilaMainnetChainConfig.ChainID)
+
+	key, err := crypto.GenerateKey()
+	if err != nil {
+		t.Fatal(err)
+	}
+	signed := types.MustSignNewTx(key, types.LatestSigner(params.SilaMainnetChainConfig), tx)
+	if signed.ChainId().Cmp(params.SilaMainnetChainConfig.ChainID) != 0 {
+		t.Fatalf("unexpected signed blob transaction chain id: have %v, want %v", signed.ChainId(), params.SilaMainnetChainConfig.ChainID)
+	}
+}
