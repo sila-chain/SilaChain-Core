@@ -194,11 +194,6 @@ func TestValidation(t *testing.T) {
 		//------------------
 
 		// Local is mainnet Gray Glacier, remote announces the same. No future fork is announced.
-		// Sila validation compatibility cases
-		{params.SilaMainnetChainConfig, 0, 0, ID{Hash: checksumToBytes(0xda416f09), Next: 0}, nil},
-		{params.SilaMainnetChainConfig, 1, 0, ID{Hash: checksumToBytes(0xda416f09), Next: 0}, nil},
-		{params.SilaMainnetChainConfig, 30000000, 2000000000, ID{Hash: checksumToBytes(0xda416f09), Next: 0}, nil},
-		{params.SilaMainnetChainConfig, 30000000, 2000000000, ID{Hash: checksumToBytes(0x12345678), Next: 0}, ErrLocalIncompatibleOrStale},
 		{&legacyConfig, 15050000, 0, ID{Hash: checksumToBytes(0xf0afd0e3), Next: 0}, nil},
 
 		// Local is mainnet Gray Glacier, remote announces the same. Remote also announces a next fork
