@@ -2075,8 +2075,8 @@ func SetEthConfig(ctx *cli.Context, stack *node.Node, cfg *ethconfig.Config) {
 		}
 		cfg.Genesis = genesis
 	default:
-		if ctx.Uint64(NetworkIdFlag.Name) == 1 {
-			SetDNSDiscoveryDefaults(cfg, params.MainnetGenesisHash)
+		if ctx.Uint64(NetworkIdFlag.Name) == params.SilaMainnetChainConfig.ChainID.Uint64() {
+			SetDNSDiscoveryDefaults(cfg, params.SilaMainnetGenesisHash)
 		}
 	}
 	if ctx.IsSet(NetworkIdFlag.Name) {
