@@ -18,6 +18,9 @@ package vm
 
 import (
 	"fmt"
+	"testing"
+
+	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/params"
 )
 
@@ -33,4 +36,14 @@ func Example_silaMainnetEIP7610Accounts() {
 	fmt.Println(len(list))
 	// Output:
 	// 0
+}
+
+func TestSilaEIP7610RejectedAccountListIsEmpty(t *testing.T) {
+	addr := common.HexToAddress("0x0000000000000000000000000000000000000001")
+	if isEIP7610RejectedAccount(params.SilaMainnetChainConfig.ChainID, addr, true) {
+		t.Fatal("Sila mainnet should not reject accounts through EIP-7610 historical list")
+	}
+	if isEIP7610RejectedAccount(params.SilaMainnetChainConfig.ChainID, addr, false) {
+		t.Fatal("Sila mainnet should not reject accounts before EIP-158")
+	}
 }
