@@ -43,6 +43,16 @@ func TestCreation(t *testing.T) {
 		genesis *types.Block
 		cases   []testcase
 	}{
+		// Sila mainnet test cases
+		{
+			params.SilaMainnetChainConfig,
+			core.SilaDefaultGenesisBlock().ToBlock(),
+			[]testcase{
+				{0, 0, ID{Hash: checksumToBytes(0xda416f09), Next: 0}},                 // Sila mainnet genesis
+				{1, 0, ID{Hash: checksumToBytes(0xda416f09), Next: 0}},                 // Sila mainnet post-genesis
+				{30000000, 2000000000, ID{Hash: checksumToBytes(0xda416f09), Next: 0}}, // Sila mainnet future head
+			},
+		},
 		// Mainnet test cases
 		{
 			params.MainnetChainConfig,
