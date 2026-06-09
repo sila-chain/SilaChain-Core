@@ -49,14 +49,16 @@ var FullNodeGPO = gasprice.Config{
 	IgnorePrice:      gasprice.DefaultIgnorePrice,
 }
 
+const SilaMainnetHistoryRetentionBlocks = 2350000
+
 // Defaults contains default settings for use on the SilaChain mainnet.
 var Defaults = Config{
 	HistoryMode:             history.KeepAll,
 	SyncMode:                SnapSync,
 	NetworkId:               0, // enable auto configuration of networkID == chainID
-	TxLookupLimit:           2350000,
-	TransactionHistory:      2350000,
-	LogHistory:              2350000,
+	TxLookupLimit:           SilaMainnetHistoryRetentionBlocks,
+	TransactionHistory:      SilaMainnetHistoryRetentionBlocks,
+	LogHistory:              SilaMainnetHistoryRetentionBlocks,
 	StateHistory:            pathdb.Defaults.StateHistory,
 	TrienodeHistory:         pathdb.Defaults.TrienodeHistory,
 	NodeFullValueCheckpoint: pathdb.Defaults.FullValueCheckpoint,
