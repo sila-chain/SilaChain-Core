@@ -91,3 +91,20 @@ Required implementation order:
 
 Do not directly change `ChainID` alone. ChainID, genesis, genesis hash, bootnodes, and discovery must move together.
 
+## Sila Mainnet Genesis Verification
+
+Status: verified by `sila dumpgenesis --mainnet`.
+
+Confirmed Sila mainnet genesis values:
+- ChainID: `2026`
+- Network name: `sila-mainnet`
+- DepositContractAddress: `0x0000000000000000000000000000000000000000`
+- ExtraData: `SilaChain Mainnet`
+- GasLimit: `30000000`
+- BaseFeePerGas: `1000000000`
+- Alloc: empty `{}`
+
+This confirms Sila mainnet does not inherit the Ethereum mainnet deposit contract or Ethereum prealloc state.
+
+Do not add a non-zero deposit contract address until a Sila-owned deposit contract and consensus genesis are finalized.
+Do not add initial allocations unless a final Sila mainnet allocation policy is approved.
