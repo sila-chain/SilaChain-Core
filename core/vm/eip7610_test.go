@@ -60,3 +60,12 @@ func Example_mainnetEIP7610Accounts() {
 	// 0xFc4465F84B29a1F8794Dc753F41BeF1F4b025ED2
 	// 0xfeE7707fa4b8C0A923A0E40399Db3e7Ce26069C6
 }
+
+func Example_silaMainnetEIP7610Accounts() {
+	list := slices.Clone(eip7610Accounts[params.SilaMainnetChainConfig.ChainID.Uint64()])
+	slices.SortFunc(list, common.Address.Cmp)
+	for _, addr := range list {
+		fmt.Println(addr.Hex())
+	}
+	// Output:
+}
