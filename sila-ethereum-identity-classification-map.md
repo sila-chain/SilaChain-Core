@@ -116,3 +116,13 @@ Status: deferred until Sila chain-derived checkpoints exist.
 `core/filtermaps/checkpoints.go` intentionally keeps the inherited Ethereum-family checkpoint JSON files for compatibility. No Sila checkpoint file is added until real Sila finalized-chain log checkpoints are generated from canonical Sila chain data.
 
 Do not add mock checkpoint JSON files. Do not replace inherited checkpoint data without a generated Sila equivalent.
+
+## Sila Mainnet Bootnodes and DNS Status
+
+Status: intentionally empty until Sila-owned production bootnodes and DNS discovery are provisioned.
+
+`params.SilaMainnetBootnodes` is the only default bootnode list used by Sila mainnet paths and devp2p discovery tooling. It remains empty until real Sila-owned bootnodes are available.
+
+`params.KnownDNSNetwork(params.SilaMainnetGenesisHash, protocol)` intentionally returns an empty string to prevent inherited Ethereum DNS discovery from being used by Sila mainnet.
+
+Do not add Ethereum bootnodes or Ethereum DNS discovery back to Sila mainnet defaults. Do not add placeholder bootnodes.
