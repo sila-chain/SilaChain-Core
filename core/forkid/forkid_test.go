@@ -412,6 +412,7 @@ func TestSilaValidation(t *testing.T) {
 		{0, 0, ID{Hash: checksumToBytes(0xda416f09), Next: 0}, nil},
 		{1, 0, ID{Hash: checksumToBytes(0xda416f09), Next: 0}, nil},
 		{30000000, 2000000000, ID{Hash: checksumToBytes(0xda416f09), Next: 0}, nil},
+		{30000000, 2000000000, ID{Hash: checksumToBytes(0xda416f09), Next: 1}, ErrLocalIncompatibleOrStale},
 		{30000000, 2000000000, ID{Hash: checksumToBytes(0x12345678), Next: 0}, ErrLocalIncompatibleOrStale},
 	}
 	genesis := core.SilaDefaultGenesisBlock().ToBlock()
