@@ -150,3 +150,22 @@ Confirmed `sila dumpgenesis --mainnet` values:
 - Alloc: empty `{}`
 
 This confirms the current Sila binary builds successfully and exposes the Sila mainnet genesis baseline.
+
+## Sila Production Bootnodes Provisioning Plan
+
+Status: pending real Sila-owned bootnode infrastructure.
+
+Production bootnodes must be added only after real Sila nodes are provisioned, reachable, and verified. The bootnode list must not contain Ethereum nodes, temporary nodes, private local nodes, or placeholder ENRs/enodes.
+
+Required bootnode acceptance checks:
+1. Generate Sila-owned node keys.
+2. Start persistent Sila bootnodes on stable public infrastructure.
+3. Verify each node advertises the correct public IP and UDP/TCP discovery ports.
+4. Verify each enode/ENR is reachable from an external network.
+5. Verify the node participates in Sila discovery without using inherited Ethereum DNS.
+6. Add only verified Sila enode URLs to `params.SilaMainnetBootnodes`.
+7. Run `go test ./params ./cmd/utils ./cmd/devp2p ./cmd/sila ./core/... ./cmd/...`.
+8. Rebuild `sila.exe` and verify `sila version` and `sila dumpgenesis --mainnet`.
+9. Commit, push, and tag only after all checks pass.
+
+Do not add any bootnode value until it has passed the acceptance checks above.
