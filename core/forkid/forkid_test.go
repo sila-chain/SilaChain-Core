@@ -43,7 +43,7 @@ func TestCreation(t *testing.T) {
 		genesis *types.Block
 		cases   []testcase
 	}{
-		// Sila mainnet test cases
+		// Sila mainnet primary test cases
 		{
 			params.SilaMainnetChainConfig,
 			core.SilaDefaultGenesisBlock().ToBlock(),
@@ -53,7 +53,7 @@ func TestCreation(t *testing.T) {
 				{30000000, 2000000000, ID{Hash: checksumToBytes(0xda416f09), Next: 0}}, // Sila mainnet future head
 			},
 		},
-		// Mainnet test cases
+		// Ethereum legacy mainnet compatibility test cases
 		{
 			params.MainnetChainConfig,
 			core.DefaultGenesisBlock().ToBlock(),
@@ -98,7 +98,7 @@ func TestCreation(t *testing.T) {
 				{50000000, 2000000000, ID{Hash: checksumToBytes(0x07c9462e), Next: 0}},          // Future BPO2 block
 			},
 		},
-		// Sepolia test cases
+		// Ethereum legacy Sepolia compatibility test cases
 		{
 			params.SepoliaChainConfig,
 			core.DefaultSepoliaGenesisBlock().ToBlock(),
@@ -121,7 +121,7 @@ func TestCreation(t *testing.T) {
 				{1735372, 2000000000, ID{Hash: checksumToBytes(0x268956b6), Next: 0}},          // Future BPO2 block
 			},
 		},
-		// Holesky test cases
+		// Ethereum legacy Holesky compatibility test cases
 		{
 			params.HoleskyChainConfig,
 			core.DefaultHoleskyGenesisBlock().ToBlock(),
@@ -142,7 +142,7 @@ func TestCreation(t *testing.T) {
 				{123, 2000000000, ID{Hash: checksumToBytes(0x9bc6cb31), Next: 0}},          // Future BPO1 block
 			},
 		},
-		// Hoodi test cases
+		// Ethereum legacy Hoodi compatibility test cases
 		{
 			params.HoodiChainConfig,
 			core.DefaultHoodiGenesisBlock().ToBlock(),
