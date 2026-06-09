@@ -2209,3 +2209,21 @@ func TestSilaBlobPoolSignerAndConfig(t *testing.T) {
 		t.Fatalf("unexpected signed blob transaction chain id: have %v, want %v", signed.ChainId(), params.SilaMainnetChainConfig.ChainID)
 	}
 }
+
+func TestSilaMakeTx(t *testing.T) {
+	key, err := crypto.GenerateKey()
+	if err != nil {
+		t.Fatal(err)
+	}
+	tx := makeSilaTx(0, 1, 1, 1, key)
+	if tx.ChainId().Cmp(params.SilaMainnetChainConfig.ChainID) != 0 {
+		t.Fatalf("unexpected chain id: have %v, want %v", tx.ChainId(), params.SilaMainnetChainConfig.ChainID)
+	}
+	sender, err := types.Sender(types.LatestSigner(params.SilaMainnetChainConfig), tx)
+	if err != nil {
+		t.Fatalf("sender recovery failed: %v", err)
+	}
+	if want := crypto.PubkeyToAddress(key.PublicKey); sender != want {
+		t.Fatalf("unexpected sender: have %v, want %v", sender, want)
+	}
+}
