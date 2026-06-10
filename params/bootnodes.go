@@ -21,7 +21,9 @@ import "github.com/sila-org/sila/common"
 // SilaMainnetBootnodes are the enode URLs of the P2P bootstrap nodes running on
 // the SilaChain main network. This list is intentionally empty until Sila-owned
 // bootnodes are provisioned.
-var SilaMainnetBootnodes = []string{}
+var SilaMainnetBootnodes = []string{
+	"enode://2b91077d5fff048d13899c93d7f6d1391e182cd24b9a877355493328b9519aa59c5f7d90fa23fd315978e5129f94fe9ec99ffaf913acf19b57855cfd98f07ce0@192.248.181.185:30303", // sila-bootnode-01 | Vultr Frankfurt
+}
 
 // MainnetBootnodes are the enode URLs of the P2P bootstrap nodes running on
 // the main SilaChain network.
