@@ -206,14 +206,14 @@ func BuildExecutionNode(ctx *cli.Context, stack *node.Node, cfg *ExecutionConfig
 	if err := ConfigureConsensusRuntime(
 		stack,
 		sila,
-		ctx.IsSet(utils.DeveloperFlag.Name),
+		ctx.IsSet(utils.DeveloperFlag.Name) || ctx.IsSet(utils.SilaDevBeaconFlag.Name),
 		ctx.Uint64(utils.DeveloperPeriodFlag.Name),
 		cfg.sila.Miner.PendingFeeRecipient,
 		beaconMode,
 		beaconConfig,
 	); err != nil {
-		if ctx.IsSet(utils.DeveloperFlag.Name) {
-			utils.Fatalf("failed to register dev mode catalyst service: %v", err)
+		if ctx.IsSet(utils.DeveloperFlag.Name) || ctx.IsSet(utils.SilaDevBeaconFlag.Name) {
+			utils.Fatalf("failed to register simulated beacon catalyst service: %v", err)
 		}
 		utils.Fatalf("failed to register catalyst service: %v", err)
 	}

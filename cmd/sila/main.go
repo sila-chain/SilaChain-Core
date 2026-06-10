@@ -127,6 +127,7 @@ var (
 		utils.DeveloperFlag,
 		utils.DeveloperGasLimitFlag,
 		utils.DeveloperPeriodFlag,
+		utils.SilaDevBeaconFlag,
 		utils.VMEnableDebugFlag,
 		utils.VMTraceFlag,
 		utils.VMTraceJsonConfigFlag,

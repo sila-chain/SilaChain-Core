@@ -172,6 +172,11 @@ var (
 		Usage:    "Block period to use in developer mode (0 = mine only if transaction pending)",
 		Category: flags.DevCategory,
 	}
+	SilaDevBeaconFlag = &cli.BoolFlag{
+		Name:     "sila.devbeacon",
+		Usage:    "Enable Sila simulated beacon without disabling P2P networking",
+		Category: flags.DevCategory,
+	}
 	DeveloperGasLimitFlag = &cli.Uint64Flag{
 		Name:     "dev.gaslimit",
 		Usage:    "Initial block gas limit",
