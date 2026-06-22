@@ -76,6 +76,42 @@ var (
 		},
 	}
 
+	// SilaPublicTestnetChainConfig is the chain parameters for the 30-day Sila public testnet.
+	SilaPublicTestnetChainConfig = &ChainConfig{
+		ChainID:                 big.NewInt(20263001),
+		HomesteadBlock:          big.NewInt(0),
+		DAOForkBlock:            nil,
+		DAOForkSupport:          true,
+		EIP150Block:             big.NewInt(0),
+		EIP155Block:             big.NewInt(0),
+		EIP158Block:             big.NewInt(0),
+		ByzantiumBlock:          big.NewInt(0),
+		ConstantinopleBlock:     big.NewInt(0),
+		PetersburgBlock:         big.NewInt(0),
+		IstanbulBlock:           big.NewInt(0),
+		MuirGlacierBlock:        nil,
+		BerlinBlock:             big.NewInt(0),
+		LondonBlock:             big.NewInt(0),
+		ArrowGlacierBlock:       nil,
+		GrayGlacierBlock:        nil,
+		TerminalTotalDifficulty: big.NewInt(0),
+		MergeNetsplitBlock:      nil,
+		ShanghaiTime:            newUint64(0),
+		CancunTime:              newUint64(0),
+		PragueTime:              newUint64(0),
+		OsakaTime:               newUint64(0),
+		BPO1Time:                newUint64(0),
+		BPO2Time:                newUint64(0),
+		Ethash:                  new(SilaPoWConfig), // Legacy ethash JSON compatibility field for Sila PoW.
+		BlobScheduleConfig: &BlobScheduleConfig{
+			Cancun: DefaultCancunBlobConfig,
+			Prague: DefaultPragueBlobConfig,
+			Osaka:  DefaultOsakaBlobConfig,
+			BPO1:   DefaultBPO1BlobConfig,
+			BPO2:   DefaultBPO2BlobConfig,
+		},
+	}
+
 	// MainnetChainConfig is the chain parameters to run a node on the main network.
 	MainnetChainConfig = &ChainConfig{
 		ChainID:                 big.NewInt(1),
@@ -456,7 +492,8 @@ var (
 
 // NetworkNames are user friendly names to use in the chain spec banner.
 var NetworkNames = map[string]string{
-	SilaMainnetChainConfig.ChainID.String(): "sila-mainnet",
+	SilaMainnetChainConfig.ChainID.String():       "sila-mainnet",
+	SilaPublicTestnetChainConfig.ChainID.String(): "sila-public-testnet",
 
 	MainnetChainConfig.ChainID.String(): "mainnet",
 	SepoliaChainConfig.ChainID.String(): "sepolia",
