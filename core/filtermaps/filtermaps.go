@@ -63,7 +63,7 @@ const (
 //
 // Note that FilterMaps implements the same data structure as proposed in SIP-7745
 // without the tree hashing and consensus changes:
-// https://sips.sila.org/SIPS/eip-7745
+// https://sips.sila.org/SIPS/sip-7745
 type FilterMaps struct {
 	// If disabled is set, log indexing is fully disabled.
 	// This is configured by the --history.logs.disable Sila flag.
@@ -683,7 +683,7 @@ func (f *FilterMaps) storeFilterMapRowsOfGroup(batch siladb.Batch, mapIndices []
 // proposed in SIP-7745 for tree-hashing the filter map structure and for the
 // same data proximity reasons it is also suitable for database representation.
 // See also:
-// https://sips.sila.org/SIPS/eip-7745#hash-tree-structure
+// https://sips.sila.org/SIPS/sip-7745#hash-tree-structure
 func (f *FilterMaps) mapRowIndex(mapIndex, rowIndex uint32) uint64 {
 	epochIndex, mapSubIndex := mapIndex>>f.logMapsPerEpoch, mapIndex&(f.mapsPerEpoch-1)
 	return (uint64(epochIndex)<<f.logMapHeight+uint64(rowIndex))<<f.logMapsPerEpoch + uint64(mapSubIndex)

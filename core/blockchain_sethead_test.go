@@ -31,8 +31,8 @@ import (
 	"github.com/sila-org/sila/consensus/silaash"
 	"github.com/sila-org/sila/core/rawdb"
 	"github.com/sila-org/sila/core/types"
-	"github.com/sila-org/sila/siladb/pebble"
 	"github.com/sila-org/sila/params"
+	"github.com/sila-org/sila/siladb/pebble"
 	"github.com/sila-org/sila/triedb"
 	"github.com/sila-org/sila/triedb/hashdb"
 	"github.com/sila-org/sila/triedb/pathdb"
@@ -1983,8 +1983,8 @@ func testSetHeadWithScheme(t *testing.T, tt *rewindTest, snapshots bool, scheme 
 			BaseFee: big.NewInt(params.InitialBaseFee),
 			Config:  params.AllSilaashProtocolChanges,
 		}
-		silaEngine  = silaash.NewFullFaker()
-		options = &BlockChainConfig{
+		silaEngine = silaash.NewFullFaker()
+		options    = &BlockChainConfig{
 			TrieCleanLimit: 256,
 			TrieDirtyLimit: 256,
 			TrieTimeLimit:  5 * time.Minute,

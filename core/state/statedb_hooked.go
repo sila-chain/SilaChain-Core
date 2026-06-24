@@ -21,6 +21,7 @@ import (
 	"math/big"
 	"sort"
 
+	"github.com/holiman/uint256"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/core/stateless"
 	"github.com/sila-org/sila/core/tracing"
@@ -28,7 +29,6 @@ import (
 	"github.com/sila-org/sila/core/types/bal"
 	"github.com/sila-org/sila/crypto"
 	"github.com/sila-org/sila/params"
-	"github.com/holiman/uint256"
 )
 
 // hookedStateDB represents a statedb which emits calls to tracing-hooks
@@ -260,7 +260,7 @@ func (s *hookedStateDB) Finalise(deleteEmptyObjects bool) *bal.ConstructionBlock
 		obj := s.inner.stateObjects[addr]
 		// Bingo: state object was self-destructed, call relevant hooks.
 
-		// If ether was sent to account post-selfdestruct, record as burnt.
+		// If sila was sent to account post-selfdestruct, record as burnt.
 		if s.hooks.OnBalanceChange != nil {
 			if bal := obj.Balance(); bal.Sign() != 0 {
 				s.hooks.OnBalanceChange(addr, bal.ToBig(), new(big.Int), tracing.BalanceDecreaseSelfdestructBurn)

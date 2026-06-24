@@ -20,8 +20,8 @@ import (
 	"encoding/binary"
 
 	"github.com/sila-org/sila/common"
-	"github.com/sila-org/sila/siladb"
 	"github.com/sila-org/sila/log"
+	"github.com/sila-org/sila/siladb"
 )
 
 // ReadSnapshotDisabled retrieves if the snapshot maintenance is disabled.

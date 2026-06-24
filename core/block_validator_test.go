@@ -89,7 +89,9 @@ func testHeaderVerification(t *testing.T, scheme string) {
 }
 
 func TestHeaderVerificationForMergingClique(t *testing.T) { testHeaderVerificationForMerging(t, true) }
-func TestHeaderVerificationForMergingSilaash(t *testing.T) { testHeaderVerificationForMerging(t, false) }
+func TestHeaderVerificationForMergingSilaash(t *testing.T) {
+	testHeaderVerificationForMerging(t, false)
+}
 
 // Tests the verification for eth1/2 merging, including pre-merge and post-merge
 func testHeaderVerificationForMerging(t *testing.T, isClique bool) {
@@ -97,7 +99,7 @@ func testHeaderVerificationForMerging(t *testing.T, isClique bool) {
 		gspec      *Genesis
 		preBlocks  []*types.Block
 		postBlocks []*types.Block
-		silaEngine     consensus.SilaEngine
+		silaEngine consensus.SilaEngine
 	)
 	if isClique {
 		var (

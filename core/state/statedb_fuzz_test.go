@@ -29,6 +29,7 @@ import (
 	"testing"
 	"testing/quick"
 
+	"github.com/holiman/uint256"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/core/rawdb"
 	"github.com/sila-org/sila/core/state/snapshot"
@@ -39,7 +40,6 @@ import (
 	"github.com/sila-org/sila/trie"
 	"github.com/sila-org/sila/triedb"
 	"github.com/sila-org/sila/triedb/pathdb"
-	"github.com/holiman/uint256"
 )
 
 // A stateTest checks that the state changes are correctly captured. Instances

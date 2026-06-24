@@ -20,17 +20,17 @@ import (
 	"bytes"
 	"testing"
 
+	"github.com/holiman/uint256"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/core/rawdb"
 	"github.com/sila-org/sila/core/types"
 	"github.com/sila-org/sila/crypto"
-	"github.com/sila-org/sila/siladb"
 	"github.com/sila-org/sila/rlp"
+	"github.com/sila-org/sila/siladb"
 	"github.com/sila-org/sila/trie"
 	"github.com/sila-org/sila/triedb"
 	"github.com/sila-org/sila/triedb/hashdb"
 	"github.com/sila-org/sila/triedb/pathdb"
-	"github.com/holiman/uint256"
 )
 
 // testAccount is the data associated with an account used by the state tests.

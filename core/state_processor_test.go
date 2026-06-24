@@ -115,11 +115,11 @@ func TestStateProcessorErrors(t *testing.T) {
 				Config: config,
 				Alloc: types.GenesisAlloc{
 					common.HexToAddress("0x71562b71999873DB5b286dF957af199Ec94617F7"): types.Account{
-						Balance: big.NewInt(1000000000000000000), // 1 ether
+						Balance: big.NewInt(1000000000000000000), // 1 sila
 						Nonce:   0,
 					},
 					common.HexToAddress("0xfd0810DD14796680f72adf1a371963d0745BCc64"): types.Account{
-						Balance: big.NewInt(1000000000000000000), // 1 ether
+						Balance: big.NewInt(1000000000000000000), // 1 sila
 						Nonce:   math.MaxUint64,
 					},
 				},
@@ -294,7 +294,7 @@ func TestStateProcessorErrors(t *testing.T) {
 				},
 				Alloc: types.GenesisAlloc{
 					common.HexToAddress("0x71562b71999873DB5b286dF957af199Ec94617F7"): types.Account{
-						Balance: big.NewInt(1000000000000000000), // 1 ether
+						Balance: big.NewInt(1000000000000000000), // 1 sila
 						Nonce:   0,
 					},
 				},
@@ -332,7 +332,7 @@ func TestStateProcessorErrors(t *testing.T) {
 				Config: config,
 				Alloc: types.GenesisAlloc{
 					common.HexToAddress("0x71562b71999873DB5b286dF957af199Ec94617F7"): types.Account{
-						Balance: big.NewInt(1000000000000000000), // 1 ether
+						Balance: big.NewInt(1000000000000000000), // 1 sila
 						Nonce:   0,
 						Code:    common.FromHex("0xB0B0FACE"),
 					},

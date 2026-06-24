@@ -58,8 +58,8 @@ func TestEraDatabase(t *testing.T) {
 // the ones derived from the equivalent era1 files.
 func TestEreDatabase(t *testing.T) {
 	dir := t.TempDir()
-	convertEra1ToEre(t, "testdata/sepolia-00000-643a00f7.era1", dir, "sepolia", 0)
-	convertEra1ToEre(t, "testdata/sepolia-00021-b8814b14.era1", dir, "sepolia", 21)
+	convertEra1ToEre(t, "testdata/sila-public-testnet-00000-643a00f7.era1", dir, "silaPublicTestnet", 0)
+	convertEra1ToEre(t, "testdata/sila-public-testnet-00021-b8814b14.era1", dir, "silaPublicTestnet", 21)
 
 	db, err := New(dir)
 	require.NoError(t, err)

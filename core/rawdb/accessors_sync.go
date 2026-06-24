@@ -18,9 +18,9 @@ package rawdb
 
 import (
 	"github.com/sila-org/sila/core/types"
-	"github.com/sila-org/sila/siladb"
 	"github.com/sila-org/sila/log"
 	"github.com/sila-org/sila/rlp"
+	"github.com/sila-org/sila/siladb"
 )
 
 // ReadSkeletonSyncStatus retrieves the serialized sync status saved at shutdown.

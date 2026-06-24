@@ -72,8 +72,8 @@ func testSetupGenesis(t *testing.T, scheme string) {
 			fn: func(db siladb.Database) (*params.ChainConfig, common.Hash, *params.ConfigCompatError, error) {
 				return SetupGenesisBlock(db, triedb.NewDatabase(db, newDbConfig(scheme)), nil)
 			},
-			wantHash:   params.MainnetGenesisHash,
-			wantConfig: params.MainnetChainConfig,
+			wantHash:   params.SilaMainnetGenesisHash,
+			wantConfig: params.SilaMainnetChainConfig,
 		},
 		{
 			name: "mainnet block in DB, genesis == nil",
@@ -81,8 +81,8 @@ func testSetupGenesis(t *testing.T, scheme string) {
 				DefaultGenesisBlock().MustCommit(db, triedb.NewDatabase(db, newDbConfig(scheme)))
 				return SetupGenesisBlock(db, triedb.NewDatabase(db, newDbConfig(scheme)), nil)
 			},
-			wantHash:   params.MainnetGenesisHash,
-			wantConfig: params.MainnetChainConfig,
+			wantHash:   params.SilaMainnetGenesisHash,
+			wantConfig: params.SilaMainnetChainConfig,
 		},
 		{
 			name: "custom block in DB, genesis == nil",
@@ -95,22 +95,22 @@ func testSetupGenesis(t *testing.T, scheme string) {
 			wantConfig: customg.Config,
 		},
 		{
-			name: "custom block in DB, genesis == sepolia",
+			name: "custom block in DB, genesis == silaPublicTestnet",
 			fn: func(db siladb.Database) (*params.ChainConfig, common.Hash, *params.ConfigCompatError, error) {
 				tdb := triedb.NewDatabase(db, newDbConfig(scheme))
 				customg.Commit(db, tdb, nil)
-				return SetupGenesisBlock(db, tdb, DefaultSepoliaGenesisBlock())
+				return SetupGenesisBlock(db, tdb, DefaultSilaPublicTestnetGenesisBlock())
 			},
-			wantErr: &GenesisMismatchError{Stored: customghash, New: params.SepoliaGenesisHash},
+			wantErr: &GenesisMismatchError{Stored: customghash, New: params.SilaPublicTestnetGenesisHash},
 		},
 		{
-			name: "custom block in DB, genesis == hoodi",
+			name: "custom block in DB, genesis == silaDevTestnet",
 			fn: func(db siladb.Database) (*params.ChainConfig, common.Hash, *params.ConfigCompatError, error) {
 				tdb := triedb.NewDatabase(db, newDbConfig(scheme))
 				customg.Commit(db, tdb, nil)
-				return SetupGenesisBlock(db, tdb, DefaultHoodiGenesisBlock())
+				return SetupGenesisBlock(db, tdb, DefaultSilaDevTestnetGenesisBlock())
 			},
-			wantErr: &GenesisMismatchError{Stored: customghash, New: params.HoodiGenesisHash},
+			wantErr: &GenesisMismatchError{Stored: customghash, New: params.SilaDevTestnetGenesisHash},
 		},
 		{
 			name: "compatible config in DB",
@@ -184,10 +184,10 @@ func TestGenesisHashes(t *testing.T) {
 		genesis *Genesis
 		want    common.Hash
 	}{
-		{DefaultGenesisBlock(), params.MainnetGenesisHash},
-		{DefaultSepoliaGenesisBlock(), params.SepoliaGenesisHash},
-		{DefaultHoleskyGenesisBlock(), params.HoleskyGenesisHash},
-		{DefaultHoodiGenesisBlock(), params.HoodiGenesisHash},
+		{DefaultGenesisBlock(), params.SilaMainnetGenesisHash},
+		{DefaultSilaPublicTestnetGenesisBlock(), params.SilaPublicTestnetGenesisHash},
+		{DefaultSilaStagingTestnetGenesisBlock(), params.SilaStagingTestnetGenesisHash},
+		{DefaultSilaDevTestnetGenesisBlock(), params.SilaDevTestnetGenesisHash},
 	} {
 		// Test via MustCommit
 		db := rawdb.NewMemoryDatabase()

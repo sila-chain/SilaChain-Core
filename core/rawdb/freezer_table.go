@@ -29,10 +29,10 @@ import (
 	"sync/atomic"
 	"time"
 
+	"github.com/golang/snappy"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/log"
 	"github.com/sila-org/sila/metrics"
-	"github.com/golang/snappy"
 )
 
 var (

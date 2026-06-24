@@ -50,9 +50,9 @@ func (evm *EVM) precompile(addr common.Address) (PrecompiledContract, bool) {
 // it shouldn't be modified.
 type BlockContext struct {
 	// CanTransfer returns whether the account contains
-	// sufficient ether to transfer the value
+	// sufficient sila to transfer the value
 	CanTransfer CanTransferFunc
-	// Transfer transfers ether from one account to the other
+	// Transfer transfers sila from one account to the other
 	Transfer TransferFunc
 	// GetHash returns the hash corresponding to n
 	GetHash GetHashFunc
@@ -189,12 +189,12 @@ func NewEVM(blockCtx BlockContext, statedb StateDB, chainConfig *params.ChainCon
 		// Deep-copy jumptable to prevent modification of opcodes in other tables
 		evm.table = copyJumpTable(evm.table)
 	}
-	for _, eip := range evm.Config.ExtraSips {
-		if err := EnableEIP(eip, evm.table); err != nil {
+	for _, sip := range evm.Config.ExtraSips {
+		if err := EnableEIP(sip, evm.table); err != nil {
 			// Disable it, so caller can check if it's activated or not
-			log.Error("SIP activation failed", "eip", eip, "error", err)
+			log.Error("SIP activation failed", "sip", sip, "error", err)
 		} else {
-			extraSips = append(extraSips, eip)
+			extraSips = append(extraSips, sip)
 		}
 	}
 	evm.Config.ExtraSips = extraSips

@@ -21,8 +21,8 @@ import (
 	"path/filepath"
 	"sync"
 
-	"github.com/sila-org/sila/siladb"
 	"github.com/sila-org/sila/log"
+	"github.com/sila-org/sila/siladb"
 )
 
 const tmpSuffix = ".tmp"

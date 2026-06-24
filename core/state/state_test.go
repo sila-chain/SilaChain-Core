@@ -21,12 +21,12 @@ import (
 	"encoding/json"
 	"testing"
 
+	"github.com/holiman/uint256"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/core/rawdb"
 	"github.com/sila-org/sila/core/types"
 	"github.com/sila-org/sila/crypto"
 	"github.com/sila-org/sila/triedb"
-	"github.com/holiman/uint256"
 )
 
 type stateEnv struct {

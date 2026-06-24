@@ -21,8 +21,8 @@ import (
 
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/crypto"
-	"github.com/sila-org/sila/siladb"
 	"github.com/sila-org/sila/log"
+	"github.com/sila-org/sila/siladb"
 )
 
 // HashScheme is the legacy hash-based state scheme with which trie nodes are

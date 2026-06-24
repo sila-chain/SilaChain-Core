@@ -25,6 +25,7 @@ import (
 	"os"
 	"testing"
 
+	"github.com/holiman/uint256"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/core/types"
 	"github.com/sila-org/sila/core/types/bal"
@@ -32,7 +33,6 @@ import (
 	"github.com/sila-org/sila/crypto/keccak"
 	"github.com/sila-org/sila/params"
 	"github.com/sila-org/sila/rlp"
-	"github.com/holiman/uint256"
 )
 
 // Tests block header storage and retrieval operations.

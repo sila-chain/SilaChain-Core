@@ -23,8 +23,8 @@ import (
 	"github.com/VictoriaMetrics/fastcache"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/core/rawdb"
-	"github.com/sila-org/sila/siladb/memorydb"
 	"github.com/sila-org/sila/rlp"
+	"github.com/sila-org/sila/siladb/memorydb"
 )
 
 // reverse reverses the contents of a byte slice. It's used to update random accs

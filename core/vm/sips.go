@@ -52,17 +52,17 @@ var activators = map[int]func(*JumpTable){
 func EnableEIP(eipNum int, jt *JumpTable) error {
 	enablerFn, ok := activators[eipNum]
 	if !ok {
-		return fmt.Errorf("undefined eip %d", eipNum)
+		return fmt.Errorf("undefined sip %d", eipNum)
 	}
 	enablerFn(jt)
 	return nil
 }
 
-func ValidEip(eipNum int) bool {
+func ValidSIP(eipNum int) bool {
 	_, ok := activators[eipNum]
 	return ok
 }
-func ActivateableEips() []string {
+func ActivateableSIPs() []string {
 	var nums []string
 	for k := range activators {
 		nums = append(nums, fmt.Sprintf("%d", k))
@@ -121,7 +121,7 @@ func enable2200(jt *JumpTable) {
 }
 
 // enable2929 enables "SIP-2929: Gas cost increases for state access opcodes"
-// https://sips.sila.org/SIPS/eip-2929
+// https://sips.sila.org/SIPS/sip-2929
 func enable2929(jt *JumpTable) {
 	jt[SSTORE].dynamicGas = gasSStoreEIP2929
 
@@ -241,14 +241,14 @@ func opPush0(pc *uint64, evm *EVM, scope *ScopeContext) ([]byte, error) {
 }
 
 // enable3860 enables "SIP-3860: Limit and meter initcode"
-// https://sips.sila.org/SIPS/eip-3860
+// https://sips.sila.org/SIPS/sip-3860
 func enable3860(jt *JumpTable) {
 	jt[CREATE].dynamicGas = gasCreateEip3860
 	jt[CREATE2].dynamicGas = gasCreate2Eip3860
 }
 
 // enable5656 enables SIP-5656 (MCOPY opcode)
-// https://sips.sila.org/SIPS/eip-5656
+// https://sips.sila.org/SIPS/sip-5656
 func enable5656(jt *JumpTable) {
 	jt[MCOPY] = &operation{
 		execute:     opMcopy,
@@ -260,7 +260,7 @@ func enable5656(jt *JumpTable) {
 	}
 }
 
-// opMcopy implements the MCOPY opcode (https://sips.sila.org/SIPS/eip-5656)
+// opMcopy implements the MCOPY opcode (https://sips.sila.org/SIPS/sip-5656)
 func opMcopy(pc *uint64, evm *EVM, scope *ScopeContext) ([]byte, error) {
 	dst, src, length := scope.Stack.pop3()
 	// These values are checked for overflow during memory expansion calculation

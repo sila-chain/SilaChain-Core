@@ -25,8 +25,8 @@ import (
 	"github.com/sila-org/sila/core/rawdb"
 	"github.com/sila-org/sila/core/types"
 	"github.com/sila-org/sila/crypto"
-	"github.com/sila-org/sila/siladb"
 	"github.com/sila-org/sila/params"
+	"github.com/sila-org/sila/siladb"
 )
 
 func verifyIndexes(t *testing.T, db siladb.Database, block *types.Block, exist bool) {
@@ -81,9 +81,9 @@ func TestTxIndexer(t *testing.T) {
 			Alloc:   types.GenesisAlloc{testBankAddress: {Balance: testBankFunds}},
 			BaseFee: big.NewInt(params.InitialBaseFee),
 		}
-		silaEngine    = silaash.NewFaker()
-		nonce     = uint64(0)
-		chainHead = uint64(128)
+		silaEngine = silaash.NewFaker()
+		nonce      = uint64(0)
+		chainHead  = uint64(128)
 	)
 	_, blocks, receipts := GenerateChainWithGenesis(gspec, silaEngine, int(chainHead), func(i int, gen *BlockGen) {
 		tx, _ := types.SignTx(types.NewTransaction(nonce, common.HexToAddress("0xdeadbeef"), big.NewInt(1000), params.TxGas, big.NewInt(10*params.InitialBaseFee), nil), types.HomesteadSigner{}, testBankKey)
@@ -144,9 +144,9 @@ func TestTxIndexerRepair(t *testing.T) {
 			Alloc:   types.GenesisAlloc{testBankAddress: {Balance: testBankFunds}},
 			BaseFee: big.NewInt(params.InitialBaseFee),
 		}
-		silaEngine    = silaash.NewFaker()
-		nonce     = uint64(0)
-		chainHead = uint64(128)
+		silaEngine = silaash.NewFaker()
+		nonce      = uint64(0)
+		chainHead  = uint64(128)
 	)
 	_, blocks, receipts := GenerateChainWithGenesis(gspec, silaEngine, int(chainHead), func(i int, gen *BlockGen) {
 		tx, _ := types.SignTx(types.NewTransaction(nonce, common.HexToAddress("0xdeadbeef"), big.NewInt(1000), params.TxGas, big.NewInt(10*params.InitialBaseFee), nil), types.HomesteadSigner{}, testBankKey)
@@ -269,9 +269,9 @@ func TestTxIndexerReport(t *testing.T) {
 			Alloc:   types.GenesisAlloc{testBankAddress: {Balance: testBankFunds}},
 			BaseFee: big.NewInt(params.InitialBaseFee),
 		}
-		silaEngine    = silaash.NewFaker()
-		nonce     = uint64(0)
-		chainHead = uint64(128)
+		silaEngine = silaash.NewFaker()
+		nonce      = uint64(0)
+		chainHead  = uint64(128)
 	)
 	_, blocks, receipts := GenerateChainWithGenesis(gspec, silaEngine, int(chainHead), func(i int, gen *BlockGen) {
 		tx, _ := types.SignTx(types.NewTransaction(nonce, common.HexToAddress("0xdeadbeef"), big.NewInt(1000), params.TxGas, big.NewInt(10*params.InitialBaseFee), nil), types.HomesteadSigner{}, testBankKey)

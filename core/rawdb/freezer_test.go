@@ -26,8 +26,8 @@ import (
 	"testing"
 
 	"github.com/sila-org/sila/core/rawdb/ancienttest"
-	"github.com/sila-org/sila/siladb"
 	"github.com/sila-org/sila/rlp"
+	"github.com/sila-org/sila/siladb"
 	"github.com/stretchr/testify/require"
 )
 

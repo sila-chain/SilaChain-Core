@@ -32,7 +32,7 @@ import (
 
 func getBlock(transactions int, uncles int, dataSize int) *types.Block {
 	var (
-		aa     = common.HexToAddress("0x000000000000000000000000000000000000aaaa")
+		aa         = common.HexToAddress("0x000000000000000000000000000000000000aaaa")
 		silaEngine = silaash.NewFaker()
 
 		// A sender who makes transactions, has some funds

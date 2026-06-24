@@ -22,8 +22,8 @@ import (
 	"math"
 	"slices"
 
-	"github.com/sila-org/sila/common"
 	"github.com/holiman/uint256"
+	"github.com/sila-org/sila/common"
 )
 
 // evictHeap is a helper data structure to keep track of the cheapest bottleneck

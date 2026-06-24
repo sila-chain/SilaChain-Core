@@ -136,7 +136,7 @@ func TestByteOp(t *testing.T) {
 }
 
 func TestSHL(t *testing.T) {
-	// Testcases from https://github.com/sila-org/SIPs/blob/master/SIPS/eip-145.md#shl-shift-left
+	// Testcases from https://github.com/sila-org/SIPs/blob/master/SIPS/sip-145.md#shl-shift-left
 	tests := []TwoOperandTestcase{
 		{"0000000000000000000000000000000000000000000000000000000000000001", "01", "0000000000000000000000000000000000000000000000000000000000000002"},
 		{"0000000000000000000000000000000000000000000000000000000000000001", "ff", "8000000000000000000000000000000000000000000000000000000000000000"},
@@ -153,7 +153,7 @@ func TestSHL(t *testing.T) {
 }
 
 func TestSHR(t *testing.T) {
-	// Testcases from https://github.com/sila-org/SIPs/blob/master/SIPS/eip-145.md#shr-logical-shift-right
+	// Testcases from https://github.com/sila-org/SIPs/blob/master/SIPS/sip-145.md#shr-logical-shift-right
 	tests := []TwoOperandTestcase{
 		{"0000000000000000000000000000000000000000000000000000000000000001", "00", "0000000000000000000000000000000000000000000000000000000000000001"},
 		{"0000000000000000000000000000000000000000000000000000000000000001", "01", "0000000000000000000000000000000000000000000000000000000000000000"},
@@ -171,7 +171,7 @@ func TestSHR(t *testing.T) {
 }
 
 func TestSAR(t *testing.T) {
-	// Testcases from https://github.com/sila-org/SIPs/blob/master/SIPS/eip-145.md#sar-arithmetic-shift-right
+	// Testcases from https://github.com/sila-org/SIPs/blob/master/SIPS/sip-145.md#sar-arithmetic-shift-right
 	tests := []TwoOperandTestcase{
 		{"0000000000000000000000000000000000000000000000000000000000000001", "00", "0000000000000000000000000000000000000000000000000000000000000001"},
 		{"0000000000000000000000000000000000000000000000000000000000000001", "01", "0000000000000000000000000000000000000000000000000000000000000000"},
@@ -780,7 +780,7 @@ func TestBlobHash(t *testing.T) {
 }
 
 func TestOpMCopy(t *testing.T) {
-	// Test cases from https://sips.sila.org/SIPS/eip-5656#test-cases
+	// Test cases from https://sips.sila.org/SIPS/sip-5656#test-cases
 	for i, tc := range []struct {
 		dst, src, len string
 		pre           string

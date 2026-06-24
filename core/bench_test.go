@@ -27,9 +27,9 @@ import (
 	"github.com/sila-org/sila/core/rawdb"
 	"github.com/sila-org/sila/core/types"
 	"github.com/sila-org/sila/crypto"
+	"github.com/sila-org/sila/params"
 	"github.com/sila-org/sila/siladb"
 	"github.com/sila-org/sila/siladb/pebble"
-	"github.com/sila-org/sila/params"
 )
 
 func BenchmarkInsertChain_empty_memdb(b *testing.B) {
@@ -121,7 +121,7 @@ func init() {
 	}
 }
 
-// genTxRing returns a block generator that sends ether in a ring
+// genTxRing returns a block generator that sends sila in a ring
 // among n accounts. This is creates n entries in the state database
 // and fills the blocks with many small transactions.
 func genTxRing(naccounts int) func(int, *BlockGen) {

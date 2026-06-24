@@ -1496,7 +1496,7 @@ func testEIP161AccountRemoval(t *testing.T, scheme string) {
 		}
 		block.AddTx(tx)
 	})
-	// account must exist pre eip 161
+	// account must exist pre SIP 161
 	blockchain, _ := NewBlockChain(rawdb.NewMemoryDatabase(), gspec, silaash.NewFaker(), DefaultConfig().WithStateScheme(scheme))
 	defer blockchain.Stop()
 
@@ -1507,7 +1507,7 @@ func testEIP161AccountRemoval(t *testing.T, scheme string) {
 		t.Error("expected account to exist")
 	}
 
-	// account needs to be deleted post eip 161
+	// account needs to be deleted post SIP 161
 	if _, err := blockchain.InsertChain(types.Blocks{blocks[1]}); err != nil {
 		t.Fatal(err)
 	}
@@ -1515,7 +1515,7 @@ func testEIP161AccountRemoval(t *testing.T, scheme string) {
 		t.Error("account should not exist")
 	}
 
-	// account mustn't be created post eip 161
+	// account mustn't be created post SIP 161
 	if _, err := blockchain.InsertChain(types.Blocks{blocks[2]}); err != nil {
 		t.Fatal(err)
 	}
@@ -3043,7 +3043,7 @@ func testDeleteRecreateSlotsAcrossManyBlocks(t *testing.T, scheme string) {
 // TestInitThenFailCreateContract tests a pretty notorious case that happened
 // on mainnet over blocks 7338108, 7338110 and 7338115.
 //   - Block 7338108: address e771789f5cccac282f23bb7add5690e1f6ca467c is initiated
-//     with 0.001 ether (thus created but no code)
+//     with 0.001 sila (thus created but no code)
 //   - Block 7338110: a CREATE2 is attempted. The CREATE2 would deploy code on
 //     the same address e771789f5cccac282f23bb7add5690e1f6ca467c. However, the
 //     deployment fails due to OOG during initcode execution
@@ -3272,7 +3272,7 @@ func testSIP1559Transition(t *testing.T, scheme string) {
 		key2, _ = crypto.HexToECDSA("8a1f9a8f95be41cd7ccb6168179afb4504aefe388d1e14474d32c45c72ce7b7a")
 		addr1   = crypto.PubkeyToAddress(key1.PublicKey)
 		addr2   = crypto.PubkeyToAddress(key2.PublicKey)
-		funds   = new(big.Int).Mul(common.Big1, big.NewInt(params.Ether))
+		funds   = new(big.Int).Mul(common.Big1, big.NewInt(params.SilaBaseUnit))
 		config  = *params.AllSilaashProtocolChanges
 		gspec   = &Genesis{
 			Config: &config,
@@ -3912,7 +3912,7 @@ func TestEIP3651(t *testing.T) {
 		key2, _ = crypto.HexToECDSA("8a1f9a8f95be41cd7ccb6168179afb4504aefe388d1e14474d32c45c72ce7b7a")
 		addr1   = crypto.PubkeyToAddress(key1.PublicKey)
 		addr2   = crypto.PubkeyToAddress(key2.PublicKey)
-		funds   = new(big.Int).Mul(common.Big1, big.NewInt(params.Ether))
+		funds   = new(big.Int).Mul(common.Big1, big.NewInt(params.SilaBaseUnit))
 		config  = *params.AllSilaashProtocolChanges
 		gspec   = &Genesis{
 			Config: &config,
@@ -4110,7 +4110,7 @@ func TestEIP7702(t *testing.T) {
 		addr2      = crypto.PubkeyToAddress(key2.PublicKey)
 		aa         = common.HexToAddress("0x000000000000000000000000000000000000aaaa")
 		bb         = common.HexToAddress("0x000000000000000000000000000000000000bbbb")
-		funds      = new(big.Int).Mul(common.Big1, big.NewInt(params.Ether))
+		funds      = new(big.Int).Mul(common.Big1, big.NewInt(params.SilaBaseUnit))
 	)
 	gspec := &Genesis{
 		Config: &config,

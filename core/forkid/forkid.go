@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with the sila library. If not, see <http://www.gnu.org/licenses/>.
 
-// Package forkid implements SIP-2124 (https://sips.sila.org/SIPS/eip-2124).
+// Package forkid implements SIP-2124 (https://sips.sila.org/SIPS/sip-2124).
 package forkid
 
 import (

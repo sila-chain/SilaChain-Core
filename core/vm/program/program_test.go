@@ -21,9 +21,9 @@ import (
 	"math/big"
 	"testing"
 
+	"github.com/holiman/uint256"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/core/vm"
-	"github.com/holiman/uint256"
 )
 
 func TestPush(t *testing.T) {

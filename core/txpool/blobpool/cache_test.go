@@ -26,6 +26,8 @@ import (
 	"testing"
 	"time"
 
+	"github.com/holiman/billy"
+	"github.com/holiman/uint256"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/common/mclock"
 	"github.com/sila-org/sila/core/state"
@@ -33,8 +35,6 @@ import (
 	"github.com/sila-org/sila/core/types"
 	"github.com/sila-org/sila/crypto"
 	"github.com/sila-org/sila/params"
-	"github.com/holiman/billy"
-	"github.com/holiman/uint256"
 )
 
 type txSpec struct {

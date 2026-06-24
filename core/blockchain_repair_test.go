@@ -30,8 +30,8 @@ import (
 	"github.com/sila-org/sila/consensus/silaash"
 	"github.com/sila-org/sila/core/rawdb"
 	"github.com/sila-org/sila/core/types"
-	"github.com/sila-org/sila/siladb/pebble"
 	"github.com/sila-org/sila/params"
+	"github.com/sila-org/sila/siladb/pebble"
 )
 
 // Tests a recovery for a short canonical chain where a recent block was already
@@ -1781,7 +1781,7 @@ func testRepairWithScheme(t *testing.T, tt *rewindTest, snapshots bool, scheme s
 			Config:  params.AllSilaashProtocolChanges,
 		}
 		silaEngine = silaash.NewFullFaker()
-		option = &BlockChainConfig{
+		option     = &BlockChainConfig{
 			TrieCleanLimit: 256,
 			TrieDirtyLimit: 256,
 			TrieTimeLimit:  5 * time.Minute,
@@ -1931,8 +1931,8 @@ func testIssue23496(t *testing.T, scheme string) {
 			Config:  params.TestChainConfig,
 			BaseFee: big.NewInt(params.InitialBaseFee),
 		}
-		silaEngine  = silaash.NewFullFaker()
-		options = DefaultConfig().WithStateScheme(scheme)
+		silaEngine = silaash.NewFullFaker()
+		options    = DefaultConfig().WithStateScheme(scheme)
 	)
 	chain, err := NewBlockChain(db, gspec, silaEngine, options)
 	if err != nil {

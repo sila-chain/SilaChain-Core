@@ -22,9 +22,9 @@ import (
 
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/core/rawdb"
-	"github.com/sila-org/sila/siladb"
 	"github.com/sila-org/sila/event"
 	"github.com/sila-org/sila/log"
+	"github.com/sila-org/sila/siladb"
 )
 
 // TxIndexProgress is the struct describing the progress for transaction indexing.

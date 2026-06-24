@@ -20,6 +20,7 @@ import (
 	"math/big"
 	"testing"
 
+	"github.com/holiman/uint256"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/core/rawdb"
 	"github.com/sila-org/sila/core/tracing"
@@ -27,7 +28,6 @@ import (
 	"github.com/sila-org/sila/crypto"
 	"github.com/sila-org/sila/internal/testrand"
 	"github.com/sila-org/sila/triedb"
-	"github.com/holiman/uint256"
 )
 
 func filledStateDB() *StateDB {

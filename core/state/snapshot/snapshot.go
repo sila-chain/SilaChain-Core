@@ -27,10 +27,10 @@ import (
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/core/rawdb"
 	"github.com/sila-org/sila/core/types"
-	"github.com/sila-org/sila/siladb"
 	"github.com/sila-org/sila/log"
 	"github.com/sila-org/sila/metrics"
 	"github.com/sila-org/sila/rlp"
+	"github.com/sila-org/sila/siladb"
 	"github.com/sila-org/sila/triedb"
 )
 
@@ -168,7 +168,7 @@ type Config struct {
 // cheap iteration of the account/storage tries for sync aid.
 type Tree struct {
 	config Config                   // Snapshots configurations
-	diskdb siladb.KeyValueStore      // Persistent database to store the snapshot
+	diskdb siladb.KeyValueStore     // Persistent database to store the snapshot
 	triedb *triedb.Database         // In-memory cache to access the trie through
 	layers map[common.Hash]snapshot // Collection of all known layers
 	lock   sync.RWMutex

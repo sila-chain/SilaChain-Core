@@ -78,7 +78,7 @@ func TestProcessUBT(t *testing.T) {
 			Config: testUBTChainConfig,
 			Alloc: GenesisAlloc{
 				coinbase: {
-					Balance: big.NewInt(1000000000000000000), // 1 ether
+					Balance: big.NewInt(1000000000000000000), // 1 sila
 					Nonce:   0,
 				},
 				params.BeaconRootsAddress:        {Nonce: 1, Code: params.BeaconRootsCode, Balance: common.Big0},

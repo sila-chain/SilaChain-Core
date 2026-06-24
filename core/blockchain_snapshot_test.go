@@ -34,9 +34,9 @@ import (
 	"github.com/sila-org/sila/consensus/silaash"
 	"github.com/sila-org/sila/core/rawdb"
 	"github.com/sila-org/sila/core/types"
+	"github.com/sila-org/sila/params"
 	"github.com/sila-org/sila/siladb"
 	"github.com/sila-org/sila/siladb/pebble"
-	"github.com/sila-org/sila/params"
 )
 
 // snapshotTestBasic wraps the common testing fields in the snapshot tests.
@@ -53,12 +53,12 @@ type snapshotTestBasic struct {
 	expSnapshotBottom  uint64 // The block height corresponding to the snapshot disk layer
 
 	// share fields, set in runtime
-	datadir string
-	ancient string
-	db      siladb.Database
-	genDb   siladb.Database
-	silaEngine  consensus.SilaEngine
-	gspec   *Genesis
+	datadir    string
+	ancient    string
+	db         siladb.Database
+	genDb      siladb.Database
+	silaEngine consensus.SilaEngine
+	gspec      *Genesis
 }
 
 func (basic *snapshotTestBasic) prepare(t *testing.T) (*BlockChain, []*types.Block) {

@@ -775,7 +775,7 @@ type removedAccountWithBalance struct {
 // still receive funds between sending/burning its previous balance and actual
 // removal. In this case the burning of these remaining balances still need to
 // be logged.
-// Specification SIP-7708: https://sips.sila.org/SIPS/eip-7708
+// Specification SIP-7708: https://sips.sila.org/SIPS/sip-7708
 //
 // This function should only be invoked at the transaction boundary, specifically
 // before the Finalise.

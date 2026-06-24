@@ -150,8 +150,8 @@ func newMergeInstructionSet() JumpTable {
 // constantinople, istanbul, petersburg, berlin and london instructions.
 func newLondonInstructionSet() JumpTable {
 	instructionSet := newBerlinInstructionSet()
-	enable3529(&instructionSet) // SIP-3529: Reduction in refunds https://sips.sila.org/SIPS/eip-3529
-	enable3198(&instructionSet) // Base fee opcode https://sips.sila.org/SIPS/eip-3198
+	enable3529(&instructionSet) // SIP-3529: Reduction in refunds https://sips.sila.org/SIPS/sip-3529
+	enable3198(&instructionSet) // Base fee opcode https://sips.sila.org/SIPS/sip-3198
 	return validate(instructionSet)
 }
 
@@ -159,7 +159,7 @@ func newLondonInstructionSet() JumpTable {
 // constantinople, istanbul, petersburg and berlin instructions.
 func newBerlinInstructionSet() JumpTable {
 	instructionSet := newIstanbulInstructionSet()
-	enable2929(&instructionSet) // Gas cost increases for state access opcodes https://sips.sila.org/SIPS/eip-2929
+	enable2929(&instructionSet) // Gas cost increases for state access opcodes https://sips.sila.org/SIPS/sip-2929
 	return validate(instructionSet)
 }
 
@@ -168,9 +168,9 @@ func newBerlinInstructionSet() JumpTable {
 func newIstanbulInstructionSet() JumpTable {
 	instructionSet := newConstantinopleInstructionSet()
 
-	enable1344(&instructionSet) // ChainID opcode - https://sips.sila.org/SIPS/eip-1344
-	enable1884(&instructionSet) // Reprice reader opcodes - https://sips.sila.org/SIPS/eip-1884
-	enable2200(&instructionSet) // Net metered SSTORE - https://sips.sila.org/SIPS/eip-2200
+	enable1344(&instructionSet) // ChainID opcode - https://sips.sila.org/SIPS/sip-1344
+	enable1884(&instructionSet) // Reprice reader opcodes - https://sips.sila.org/SIPS/sip-1884
+	enable2200(&instructionSet) // Net metered SSTORE - https://sips.sila.org/SIPS/sip-2200
 
 	return validate(instructionSet)
 }

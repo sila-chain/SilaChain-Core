@@ -116,7 +116,7 @@ This release contained only minor extensions to the tracing interface.
 
 ## [v1.14.3]
 
-There have been minor backwards-compatible changes to the tracing interface to explicitly mark the execution of **system** contracts. As of now the only system call updates the parent beacon block root as per [SIP-4788](https://sips.sila.org/SIPS/eip-4788). Other system calls are being considered for the future hardfork.
+There have been minor backwards-compatible changes to the tracing interface to explicitly mark the execution of **system** contracts. As of now the only system call updates the parent beacon block root as per [SIP-4788](https://sips.sila.org/SIPS/sip-4788). Other system calls are being considered for the future hardfork.
 
 ### New methods
 
@@ -167,7 +167,7 @@ If you have sharp eyes you might have noticed the new names for `OnTxStart` and 
 
 The live tracing feature was half about adding more observability into the state of the blockchain. As such there have been a host of method additions. Please consult the [Hooks](./hooks.go) struct for the full list of methods. Custom tracers which are invoked through the API (as opposed to "live" tracers) can benefit from the following new methods:
 
-- `OnGasChange(old, new uint64, reason GasChangeReason)`: This hook tracks the lifetime of gas within a transaction and its subcalls. It will first track the initial purchase of gas with ether, then the following consumptions and refunds of gas until at the end the rest is returned.
+- `OnGasChange(old, new uint64, reason GasChangeReason)`: This hook tracks the lifetime of gas within a transaction and its subcalls. It will first track the initial purchase of gas with sila, then the following consumptions and refunds of gas until at the end the rest is returned.
 - `OnBalanceChange(addr common.Address, prev, new *big.Int, reason BalanceChangeReason)`: This hook tracks the balance changes of accounts. Where possible a reason is provided for the change (e.g. a transfer, gas purchase, withdrawal deposit etc).
 - `OnNonceChange(addr common.Address, prev, new uint64)`: This hook tracks the nonce changes of accounts.
 - `OnCodeChange(addr common.Address, prevCodeHash common.Hash, prevCode []byte, codeHash common.Hash, code []byte)`: This hook tracks the code changes of accounts.

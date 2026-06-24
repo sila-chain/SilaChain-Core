@@ -29,9 +29,9 @@ import (
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/core/rawdb"
 	"github.com/sila-org/sila/crypto"
-	"github.com/sila-org/sila/siladb"
 	"github.com/sila-org/sila/log"
 	"github.com/sila-org/sila/metrics"
+	"github.com/sila-org/sila/siladb"
 	"github.com/sila-org/sila/triedb"
 	"golang.org/x/sync/errgroup"
 )

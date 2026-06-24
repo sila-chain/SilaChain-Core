@@ -31,9 +31,9 @@ import (
 	"github.com/sila-org/sila/core"
 	"github.com/sila-org/sila/core/rawdb"
 	"github.com/sila-org/sila/core/types"
-	"github.com/sila-org/sila/siladb"
 	"github.com/sila-org/sila/params"
 	"github.com/sila-org/sila/rlp"
+	"github.com/sila-org/sila/siladb"
 )
 
 var testParams = Params{
@@ -563,9 +563,9 @@ func (tc *testChain) addBlocks(count, maxTxPerBlock, maxLogsPerReceipt, maxTopic
 	}
 
 	var (
-		blocks   []*types.Block
-		receipts []types.Receipts
-		silaEngine   = silaash.NewFaker()
+		blocks     []*types.Block
+		receipts   []types.Receipts
+		silaEngine = silaash.NewFaker()
 	)
 
 	if len(tc.canonical) == 0 {

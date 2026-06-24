@@ -27,10 +27,10 @@ import (
 	"github.com/sila-org/sila/consensus"
 	"github.com/sila-org/sila/core/rawdb"
 	"github.com/sila-org/sila/core/types"
-	"github.com/sila-org/sila/siladb"
 	"github.com/sila-org/sila/log"
 	"github.com/sila-org/sila/params"
 	"github.com/sila-org/sila/rlp"
+	"github.com/sila-org/sila/siladb"
 )
 
 const (
@@ -66,7 +66,7 @@ type HeaderChain struct {
 	numberCache *lru.Cache[common.Hash, uint64] // most recent block numbers
 
 	procInterrupt func() bool
-	silaEngine        consensus.SilaEngine
+	silaEngine    consensus.SilaEngine
 }
 
 // NewHeaderChain creates a new HeaderChain structure. ProcInterrupt points
@@ -78,7 +78,7 @@ func NewHeaderChain(chainDb siladb.Database, config *params.ChainConfig, silaEng
 		headerCache:   lru.NewCache[common.Hash, *types.Header](headerCacheLimit),
 		numberCache:   lru.NewCache[common.Hash, uint64](numberCacheLimit),
 		procInterrupt: procInterrupt,
-		silaEngine:        silaEngine,
+		silaEngine:    silaEngine,
 	}
 	hc.genesisHeader = hc.GetHeaderByNumber(0)
 	if hc.genesisHeader == nil {

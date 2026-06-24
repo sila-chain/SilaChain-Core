@@ -28,7 +28,7 @@ import (
 // SIP-158 after genesis need an entry; all others have no pre-existing
 // address collisions to guard against.
 var sip7610Accounts = map[uint64][]common.Address{
-	params.MainnetChainConfig.ChainID.Uint64(): {
+	params.SilaMainnetChainConfig.ChainID.Uint64(): {
 		common.HexToAddress("0x02820E4bEE488C40f7455fDCa53125565148708F"),
 		common.HexToAddress("0x14725085d004f1b10Ee07234A4ab28c5Ad2a7b9E"),
 		common.HexToAddress("0x19272418753B90D9a3E3Efc8430b1612c55fcB3A"),

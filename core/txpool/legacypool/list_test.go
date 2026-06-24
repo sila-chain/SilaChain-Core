@@ -21,10 +21,10 @@ import (
 	"math/rand"
 	"testing"
 
+	"github.com/holiman/uint256"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/core/types"
 	"github.com/sila-org/sila/crypto"
-	"github.com/holiman/uint256"
 )
 
 // Tests that transactions can be added to strict lists and list contents and

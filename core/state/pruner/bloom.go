@@ -21,10 +21,10 @@ import (
 	"errors"
 	"os"
 
+	bloomfilter "github.com/holiman/bloomfilter/v2"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/core/rawdb"
 	"github.com/sila-org/sila/log"
-	bloomfilter "github.com/holiman/bloomfilter/v2"
 )
 
 // stateBloomHash is used to convert a trie hash or contract code hash into a 64 bit mini hash.

@@ -19,10 +19,10 @@ package state
 import (
 	"testing"
 
+	"github.com/holiman/uint256"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/core/tracing"
 	"github.com/sila-org/sila/core/types"
-	"github.com/holiman/uint256"
 )
 
 // fuzzJournalAddrs is a small fixed pool used by the fuzz harness to force

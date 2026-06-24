@@ -319,7 +319,7 @@ func ReadCanonicalRawReceipt(db siladb.Reader, blockHash common.Hash, blockNumbe
 // proposed in SIP-7745 for tree-hashing the filter map structure and for the
 // same data proximity reasons it is also suitable for database representation.
 // See also:
-// https://sips.sila.org/SIPS/eip-7745#hash-tree-structure
+// https://sips.sila.org/SIPS/sip-7745#hash-tree-structure
 func ReadFilterMapExtRow(db siladb.KeyValueReader, mapRowIndex uint64, bitLength uint) ([]uint32, error) {
 	byteLength := int(bitLength) / 8
 	if int(bitLength) != byteLength*8 {

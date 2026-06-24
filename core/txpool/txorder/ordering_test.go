@@ -23,11 +23,11 @@ import (
 	"testing"
 	"time"
 
+	"github.com/holiman/uint256"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/core/txpool"
 	"github.com/sila-org/sila/core/types"
 	"github.com/sila-org/sila/crypto"
-	"github.com/holiman/uint256"
 )
 
 func TestTransactionPriceNonceSortLegacy(t *testing.T) {

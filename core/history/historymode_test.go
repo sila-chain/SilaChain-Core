@@ -25,7 +25,7 @@ import (
 
 func TestNewPolicy(t *testing.T) {
 	// KeepAll: no target.
-	p, err := NewPolicy(KeepAll, params.MainnetGenesisHash)
+	p, err := NewPolicy(KeepAll, params.SilaMainnetGenesisHash)
 	if err != nil {
 		t.Fatalf("KeepAll: %v", err)
 	}
@@ -34,7 +34,7 @@ func TestNewPolicy(t *testing.T) {
 	}
 
 	// PostMerge: resolves known mainnet prune point.
-	p, err = NewPolicy(KeepPostMerge, params.MainnetGenesisHash)
+	p, err = NewPolicy(KeepPostMerge, params.SilaMainnetGenesisHash)
 	if err != nil {
 		t.Fatalf("PostMerge: %v", err)
 	}
@@ -43,7 +43,7 @@ func TestNewPolicy(t *testing.T) {
 	}
 
 	// PostPrague: resolves known mainnet prune point.
-	p, err = NewPolicy(KeepPostPrague, params.MainnetGenesisHash)
+	p, err = NewPolicy(KeepPostPrague, params.SilaMainnetGenesisHash)
 	if err != nil {
 		t.Fatalf("PostPrague: %v", err)
 	}

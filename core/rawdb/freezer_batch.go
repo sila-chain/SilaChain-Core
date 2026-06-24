@@ -21,8 +21,8 @@ import (
 	"math"
 	"time"
 
-	"github.com/sila-org/sila/rlp"
 	"github.com/golang/snappy"
+	"github.com/sila-org/sila/rlp"
 )
 
 const (

@@ -19,12 +19,12 @@ package blobpool
 import (
 	"errors"
 
+	"github.com/holiman/billy"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/core/types"
 	"github.com/sila-org/sila/log"
 	"github.com/sila-org/sila/params"
 	"github.com/sila-org/sila/rlp"
-	"github.com/holiman/billy"
 )
 
 // limboBlob is a wrapper around an opaque blobset that also contains the tx hash

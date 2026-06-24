@@ -24,9 +24,9 @@ import (
 
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/core/rawdb/eradb"
-	"github.com/sila-org/sila/siladb"
 	"github.com/sila-org/sila/log"
 	"github.com/sila-org/sila/params"
+	"github.com/sila-org/sila/siladb"
 )
 
 const (
@@ -45,7 +45,7 @@ const (
 // key-value database to flat files for saving space on live database.
 type chainFreezer struct {
 	ancients siladb.AncientStore // Ancient store for storing cold chain segment
-	eradb    *eradb.Store       // Optional Era database used as a backup for the pruned chain
+	eradb    *eradb.Store        // Optional Era database used as a backup for the pruned chain
 
 	quit    chan struct{}
 	wg      sync.WaitGroup

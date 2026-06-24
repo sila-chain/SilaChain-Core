@@ -19,8 +19,8 @@ package state
 import (
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/core/types"
-	"github.com/sila-org/sila/siladb"
 	"github.com/sila-org/sila/rlp"
+	"github.com/sila-org/sila/siladb"
 	"github.com/sila-org/sila/trie"
 )
 

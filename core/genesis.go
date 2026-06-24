@@ -234,14 +234,14 @@ func getGenesisState(db siladb.Database, blockhash common.Hash) (alloc types.Gen
 	// - private network, can't recover
 	var genesis *Genesis
 	switch blockhash {
-	case params.MainnetGenesisHash:
+	case params.SilaMainnetGenesisHash:
 		genesis = DefaultGenesisBlock()
-	case params.SepoliaGenesisHash:
-		genesis = DefaultSepoliaGenesisBlock()
-	case params.HoleskyGenesisHash:
-		genesis = DefaultHoleskyGenesisBlock()
-	case params.HoodiGenesisHash:
-		genesis = DefaultHoodiGenesisBlock()
+	case params.SilaPublicTestnetGenesisHash:
+		genesis = DefaultSilaPublicTestnetGenesisBlock()
+	case params.SilaStagingTestnetGenesisHash:
+		genesis = DefaultSilaStagingTestnetGenesisBlock()
+	case params.SilaDevTestnetGenesisHash:
+		genesis = DefaultSilaDevTestnetGenesisBlock()
 	}
 	if genesis != nil {
 		return genesis.Alloc, nil
@@ -447,7 +447,7 @@ func LoadChainConfig(db siladb.Database, genesis *Genesis) (cfg *params.ChainCon
 	}
 	// There is no stored chain config and no new config provided,
 	// In this case the default chain config(mainnet) will be used
-	return params.MainnetChainConfig, params.MainnetGenesisHash, nil
+	return params.SilaMainnetChainConfig, params.SilaMainnetGenesisHash, nil
 }
 
 // chainConfigOrDefault retrieves the attached chain configuration. If the genesis
@@ -457,14 +457,14 @@ func (g *Genesis) chainConfigOrDefault(ghash common.Hash, stored *params.ChainCo
 	switch {
 	case g != nil:
 		return g.Config
-	case ghash == params.MainnetGenesisHash:
-		return params.MainnetChainConfig
-	case ghash == params.HoleskyGenesisHash:
-		return params.HoleskyChainConfig
-	case ghash == params.SepoliaGenesisHash:
-		return params.SepoliaChainConfig
-	case ghash == params.HoodiGenesisHash:
-		return params.HoodiChainConfig
+	case ghash == params.SilaMainnetGenesisHash:
+		return params.SilaMainnetChainConfig
+	case ghash == params.SilaStagingTestnetGenesisHash:
+		return params.SilaStagingTestnetChainConfig
+	case ghash == params.SilaPublicTestnetGenesisHash:
+		return params.SilaPublicTestnetChainConfig
+	case ghash == params.SilaDevTestnetGenesisHash:
+		return params.SilaDevTestnetChainConfig
 	default:
 		return stored
 	}
@@ -637,7 +637,7 @@ func EnableUBTAtGenesis(db siladb.Database, genesis *Genesis) (bool, error) {
 // DefaultGenesisBlock returns the Sila main net genesis block.
 func DefaultGenesisBlock() *Genesis {
 	return &Genesis{
-		Config:     params.MainnetChainConfig,
+		Config:     params.SilaMainnetChainConfig,
 		Nonce:      66,
 		ExtraData:  hexutil.MustDecode("0x11bbe8db4e347b4e8c937c1c8370e4b5ed33adb3db69cbdb7a38e1e50b1b82fa"),
 		GasLimit:   5000,
@@ -646,40 +646,40 @@ func DefaultGenesisBlock() *Genesis {
 	}
 }
 
-// DefaultSepoliaGenesisBlock returns the Sepolia network genesis block.
-func DefaultSepoliaGenesisBlock() *Genesis {
+// DefaultSilaPublicTestnetGenesisBlock returns the SilaPublicTestnet network genesis block.
+func DefaultSilaPublicTestnetGenesisBlock() *Genesis {
 	return &Genesis{
-		Config:     params.SepoliaChainConfig,
+		Config:     params.SilaPublicTestnetChainConfig,
 		Nonce:      0,
-		ExtraData:  []byte("Sepolia, Athens, Attica, Greece!"),
+		ExtraData:  []byte("SilaPublicTestnet, Athens, Attica, Greece!"),
 		GasLimit:   0x1c9c380,
 		Difficulty: big.NewInt(0x20000),
 		Timestamp:  1633267481,
-		Alloc:      decodePrealloc(sepoliaAllocData),
+		Alloc:      decodePrealloc(sila - public - testnetAllocData),
 	}
 }
 
-// DefaultHoleskyGenesisBlock returns the Holesky network genesis block.
-func DefaultHoleskyGenesisBlock() *Genesis {
+// DefaultSilaStagingTestnetGenesisBlock returns the SilaStagingTestnet network genesis block.
+func DefaultSilaStagingTestnetGenesisBlock() *Genesis {
 	return &Genesis{
-		Config:     params.HoleskyChainConfig,
+		Config:     params.SilaStagingTestnetChainConfig,
 		Nonce:      0x1234,
 		GasLimit:   0x17d7840,
 		Difficulty: big.NewInt(0x01),
 		Timestamp:  1695902100,
-		Alloc:      decodePrealloc(holeskyAllocData),
+		Alloc:      decodePrealloc(sila - staging - testnetAllocData),
 	}
 }
 
-// DefaultHoodiGenesisBlock returns the Hoodi network genesis block.
-func DefaultHoodiGenesisBlock() *Genesis {
+// DefaultSilaDevTestnetGenesisBlock returns the SilaDevTestnet network genesis block.
+func DefaultSilaDevTestnetGenesisBlock() *Genesis {
 	return &Genesis{
-		Config:     params.HoodiChainConfig,
+		Config:     params.SilaDevTestnetChainConfig,
 		Nonce:      0x1234,
 		GasLimit:   0x2255100,
 		Difficulty: big.NewInt(0x01),
 		Timestamp:  1742212800,
-		Alloc:      decodePrealloc(hoodiAllocData),
+		Alloc:      decodePrealloc(sila - dev - testnetAllocData),
 	}
 }
 

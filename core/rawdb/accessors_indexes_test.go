@@ -22,12 +22,12 @@ import (
 	"testing"
 
 	"github.com/davecgh/go-spew/spew"
+	"github.com/holiman/uint256"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/core/types"
-	"github.com/sila-org/sila/siladb"
 	"github.com/sila-org/sila/internal/blocktest"
 	"github.com/sila-org/sila/rlp"
-	"github.com/holiman/uint256"
+	"github.com/sila-org/sila/siladb"
 )
 
 var newTestHasher = blocktest.NewHasher

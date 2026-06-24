@@ -25,7 +25,7 @@ import (
 )
 
 func TestMemoryCopy(t *testing.T) {
-	// Test cases from https://sips.sila.org/SIPS/eip-5656#test-cases
+	// Test cases from https://sips.sila.org/SIPS/sip-5656#test-cases
 	for i, tc := range []struct {
 		dst, src, len uint64
 		pre           string

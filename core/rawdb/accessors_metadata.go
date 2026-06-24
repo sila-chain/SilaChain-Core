@@ -21,10 +21,10 @@ import (
 	"time"
 
 	"github.com/sila-org/sila/common"
-	"github.com/sila-org/sila/siladb"
 	"github.com/sila-org/sila/log"
 	"github.com/sila-org/sila/params"
 	"github.com/sila-org/sila/rlp"
+	"github.com/sila-org/sila/siladb"
 )
 
 // ReadDatabaseVersion retrieves the version number of the database.
