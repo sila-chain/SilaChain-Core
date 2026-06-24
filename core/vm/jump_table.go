@@ -220,7 +220,7 @@ func newByzantiumInstructionSet() JumpTable {
 	instructionSet := newSpuriousDragonInstructionSet()
 	instructionSet[STATICCALL] = &operation{
 		execute:     opStaticCall,
-		constantGas: params.CallGasEIP150,
+		constantGas: params.CallGasSIP150,
 		dynamicGas:  gasStaticCall,
 		minStack:    minStack(6, 1),
 		maxStack:    maxStack(6, 1),
@@ -260,13 +260,13 @@ func newSpuriousDragonInstructionSet() JumpTable {
 // SIP 150 a.k.a Tangerine Whistle
 func newTangerineWhistleInstructionSet() JumpTable {
 	instructionSet := newHomesteadInstructionSet()
-	instructionSet[BALANCE].constantGas = params.BalanceGasEIP150
-	instructionSet[EXTCODESIZE].constantGas = params.ExtcodeSizeGasEIP150
-	instructionSet[SLOAD].constantGas = params.SloadGasEIP150
-	instructionSet[EXTCODECOPY].constantGas = params.ExtcodeCopyBaseEIP150
-	instructionSet[CALL].constantGas = params.CallGasEIP150
-	instructionSet[CALLCODE].constantGas = params.CallGasEIP150
-	instructionSet[DELEGATECALL].constantGas = params.CallGasEIP150
+	instructionSet[BALANCE].constantGas = params.BalanceGasSIP150
+	instructionSet[EXTCODESIZE].constantGas = params.ExtcodeSizeGasSIP150
+	instructionSet[SLOAD].constantGas = params.SloadGasSIP150
+	instructionSet[EXTCODECOPY].constantGas = params.ExtcodeCopyBaseSIP150
+	instructionSet[CALL].constantGas = params.CallGasSIP150
+	instructionSet[CALLCODE].constantGas = params.CallGasSIP150
+	instructionSet[DELEGATECALL].constantGas = params.CallGasSIP150
 	return validate(instructionSet)
 }
 

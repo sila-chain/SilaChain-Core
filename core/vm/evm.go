@@ -175,9 +175,9 @@ func NewEVM(blockCtx BlockContext, statedb StateDB, chainConfig *params.ChainCon
 		evm.table = &constantinopleInstructionSet
 	case evm.chainRules.IsByzantium:
 		evm.table = &byzantiumInstructionSet
-	case evm.chainRules.IsEIP158:
+	case evm.chainRules.IsSIP158:
 		evm.table = &spuriousDragonInstructionSet
-	case evm.chainRules.IsEIP150:
+	case evm.chainRules.IsSIP150:
 		evm.table = &tangerineWhistleInstructionSet
 	case evm.chainRules.IsHomestead:
 		evm.table = &homesteadInstructionSet
@@ -216,7 +216,7 @@ func (evm *EVM) SetJumpDestCache(jumpDests JumpDestCache) {
 // SetTxContext resets the EVM with a new transaction context.
 // This is not threadsafe and should only be done very cautiously.
 func (evm *EVM) SetTxContext(txCtx TxContext) {
-	if evm.chainRules.IsEIP4762 {
+	if evm.chainRules.IsSIP4762 {
 		txCtx.AccessEvents = state.NewAccessEvents()
 	}
 	evm.TxContext = txCtx
@@ -268,7 +268,7 @@ func (evm *EVM) Call(caller common.Address, addr common.Address, input []byte, g
 	snapshot := evm.StateDB.Snapshot()
 	p, isPrecompile := evm.precompile(addr)
 	if !evm.StateDB.Exist(addr) {
-		if !isPrecompile && evm.chainRules.IsEIP4762 && !isSystemCall(caller) {
+		if !isPrecompile && evm.chainRules.IsSIP4762 && !isSystemCall(caller) {
 			// Add proof of absence to witness
 			// At this point, the read costs have already been charged, either because this
 			// is a direct tx call, in which case it's covered by the intrinsic gas, or because
@@ -283,7 +283,7 @@ func (evm *EVM) Call(caller common.Address, addr common.Address, input []byte, g
 			}
 		}
 
-		if !isPrecompile && evm.chainRules.IsEIP158 && value.IsZero() {
+		if !isPrecompile && evm.chainRules.IsSIP158 && value.IsZero() {
 			// Calling a non-existing account, don't do anything.
 			return nil, gas, nil
 		}
@@ -501,7 +501,7 @@ func (evm *EVM) create(caller common.Address, code []byte, gas GasBudget, value 
 	evm.StateDB.SetNonce(caller, nonce+1, tracing.NonceChangeContractCreator)
 
 	// Charge the contract creation init gas in verkle mode
-	if evm.chainRules.IsEIP4762 {
+	if evm.chainRules.IsSIP4762 {
 		statelessGas := evm.AccessEvents.ContractCreatePreCheckGas(address, gas.RegularGas)
 		prior, ok := gas.Charge(GasCosts{RegularGas: statelessGas})
 		if !ok {
@@ -514,7 +514,7 @@ func (evm *EVM) create(caller common.Address, code []byte, gas GasBudget, value 
 
 	// We add this to the access list _before_ taking a snapshot. Even if the
 	// creation fails, the access-list change should not be rolled back.
-	if evm.chainRules.IsEIP2929 {
+	if evm.chainRules.IsSIP2929 {
 		evm.StateDB.AddAddressToAccessList(address)
 	}
 	// Ensure there's no existing contract already at the designated address.
@@ -525,7 +525,7 @@ func (evm *EVM) create(caller common.Address, code []byte, gas GasBudget, value 
 	contractHash := evm.StateDB.GetCodeHash(address)
 	if evm.StateDB.GetNonce(address) != 0 ||
 		(contractHash != (common.Hash{}) && contractHash != types.EmptyCodeHash) || // non-empty code
-		isEIP7610RejectedAccount(evm.ChainConfig().ChainID, address, evm.chainRules.IsEIP158) {
+		isEIP7610RejectedAccount(evm.ChainConfig().ChainID, address, evm.chainRules.IsSIP158) {
 		halt := gas.ExitHalt()
 		if evm.Config.Tracer.HasGasHook() {
 			evm.Config.Tracer.EmitGasChange(gas.AsTracing(), halt.AsTracing(), tracing.GasChangeCallFailedExecution)
@@ -548,11 +548,11 @@ func (evm *EVM) create(caller common.Address, code []byte, gas GasBudget, value 
 	// acts inside that account.
 	evm.StateDB.CreateContract(address)
 
-	if evm.chainRules.IsEIP158 {
+	if evm.chainRules.IsSIP158 {
 		evm.StateDB.SetNonce(address, 1, tracing.NonceChangeNewContract)
 	}
 	// Charge the contract creation init gas in verkle mode
-	if evm.chainRules.IsEIP4762 {
+	if evm.chainRules.IsSIP4762 {
 		consumed, wanted := evm.AccessEvents.ContractCreateInitGas(address, gas.RegularGas)
 		if consumed < wanted {
 			return nil, common.Address{}, gas.ExitHalt(), false, ErrOutOfGas
@@ -605,7 +605,7 @@ func (evm *EVM) initNewContract(contract *Contract, address common.Address) ([]b
 	if len(ret) >= 1 && ret[0] == 0xEF && evm.chainRules.IsLondon {
 		return ret, ErrInvalidCode
 	}
-	if evm.chainRules.IsEIP4762 {
+	if evm.chainRules.IsSIP4762 {
 		consumed, wanted := evm.AccessEvents.CodeChunksRangeGas(address, 0, uint64(len(ret)), uint64(len(ret)), true, contract.Gas.RegularGas)
 		contract.chargeRegular(consumed, evm.Config.Tracer, tracing.GasChangeWitnessCodeChunk)
 		if len(ret) > 0 && (consumed < wanted) {

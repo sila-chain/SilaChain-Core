@@ -1037,7 +1037,7 @@ func listEIP7610EligibleAccounts(ctx *cli.Context) error {
 		log.Error("Failed to load chain config", "err", err)
 		return err
 	}
-	if !config.IsEIP158(headBlock.Number()) {
+	if !config.IsSIP158(headBlock.Number()) {
 		log.Info("Local head is prior to SIP-161", "head", headBlock.Number(), "eip-161", *config.SIP158Block)
 		return nil
 	}

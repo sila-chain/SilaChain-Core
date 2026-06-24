@@ -447,11 +447,11 @@ type ChainConfig struct {
 	ConstantinopleBlock *big.Int `json:"constantinopleBlock,omitempty"` // Constantinople switch block (nil = no fork, 0 = already activated)
 	PetersburgBlock     *big.Int `json:"petersburgBlock,omitempty"`     // Petersburg switch block (nil = same as Constantinople)
 	IstanbulBlock       *big.Int `json:"istanbulBlock,omitempty"`       // Istanbul switch block (nil = no fork, 0 = already on istanbul)
-	MuirGlacierBlock    *big.Int `json:"muirGlacierBlock,omitempty"`    // Eip-2384 (bomb delay) switch block (nil = no fork, 0 = already activated)
+	MuirGlacierBlock    *big.Int `json:"muirGlacierBlock,omitempty"`    // SIP-2384 (bomb delay) switch block (nil = no fork, 0 = already activated)
 	BerlinBlock         *big.Int `json:"berlinBlock,omitempty"`         // Berlin switch block (nil = no fork, 0 = already on berlin)
 	LondonBlock         *big.Int `json:"londonBlock,omitempty"`         // London switch block (nil = no fork, 0 = already on london)
-	ArrowGlacierBlock   *big.Int `json:"arrowGlacierBlock,omitempty"`   // Eip-4345 (bomb delay) switch block (nil = no fork, 0 = already activated)
-	GrayGlacierBlock    *big.Int `json:"grayGlacierBlock,omitempty"`    // Eip-5133 (bomb delay) switch block (nil = no fork, 0 = already activated)
+	ArrowGlacierBlock   *big.Int `json:"arrowGlacierBlock,omitempty"`   // SIP-4345 (bomb delay) switch block (nil = no fork, 0 = already activated)
+	GrayGlacierBlock    *big.Int `json:"grayGlacierBlock,omitempty"`    // SIP-5133 (bomb delay) switch block (nil = no fork, 0 = already activated)
 	MergeNetsplitBlock  *big.Int `json:"mergeNetsplitBlock,omitempty"`  // Virtual fork after The Merge to use as a network splitter
 
 	// Fork scheduling was switched from blocks to timestamps here
@@ -736,8 +736,8 @@ func (c *ChainConfig) IsDAOFork(num *big.Int) bool {
 	return isBlockForked(c.DAOForkBlock, num)
 }
 
-// IsEIP150 returns whether num is either equal to the SIP150 fork block or greater.
-func (c *ChainConfig) IsEIP150(num *big.Int) bool {
+// IsSIP150 returns whether num is either equal to the SIP150 fork block or greater.
+func (c *ChainConfig) IsSIP150(num *big.Int) bool {
 	return isBlockForked(c.SIP150Block, num)
 }
 
@@ -746,8 +746,8 @@ func (c *ChainConfig) IsSIP155(num *big.Int) bool {
 	return isBlockForked(c.SIP155Block, num)
 }
 
-// IsEIP158 returns whether num is either equal to the SIP158 fork block or greater.
-func (c *ChainConfig) IsEIP158(num *big.Int) bool {
+// IsSIP158 returns whether num is either equal to the SIP158 fork block or greater.
+func (c *ChainConfig) IsSIP158(num *big.Int) bool {
 	return isBlockForked(c.SIP158Block, num)
 }
 
@@ -885,8 +885,8 @@ func (c *ChainConfig) IsUBTGenesis() bool {
 	return c.EnableUBTAtGenesis
 }
 
-// IsEIP4762 returns whether eip 4762 has been activated at given block.
-func (c *ChainConfig) IsEIP4762(num *big.Int, time uint64) bool {
+// IsSIP4762 returns whether SIP 4762 has been activated at given block.
+func (c *ChainConfig) IsSIP4762(num *big.Int, time uint64) bool {
 	return c.IsUBT(num, time)
 }
 
@@ -1055,7 +1055,7 @@ func (c *ChainConfig) checkCompatible(newcfg *ChainConfig, headNumber *big.Int, 
 	if isForkBlockIncompatible(c.SIP158Block, newcfg.SIP158Block, headNumber) {
 		return newBlockCompatError("SIP158 fork block", c.SIP158Block, newcfg.SIP158Block)
 	}
-	if c.IsEIP158(headNumber) && !configBlockEqual(c.ChainID, newcfg.ChainID) {
+	if c.IsSIP158(headNumber) && !configBlockEqual(c.ChainID, newcfg.ChainID) {
 		return newBlockCompatError("SIP158 chain ID", c.SIP158Block, newcfg.SIP158Block)
 	}
 	if isForkBlockIncompatible(c.ByzantiumBlock, newcfg.ByzantiumBlock, headNumber) {
@@ -1375,8 +1375,8 @@ func (err *ConfigCompatError) Error() string {
 // Rules is a one time interface meaning that it shouldn't be used in between transition
 // phases.
 type Rules struct {
-	IsHomestead, IsEIP150, IsSIP155, IsEIP158               bool
-	IsEIP2929, IsEIP4762                                    bool
+	IsHomestead, IsSIP150, IsSIP155, IsSIP158               bool
+	IsSIP2929, IsSIP4762                                    bool
 	IsByzantium, IsConstantinople, IsPetersburg, IsIstanbul bool
 	IsBerlin, IsLondon                                      bool
 	IsMerge, IsShanghai, IsCancun, IsPrague, IsOsaka        bool
@@ -1390,15 +1390,15 @@ func (c *ChainConfig) Rules(num *big.Int, isMerge bool, timestamp uint64) Rules 
 	isUBT := isMerge && c.IsUBT(num, timestamp)
 	return Rules{
 		IsHomestead:      c.IsHomestead(num),
-		IsEIP150:         c.IsEIP150(num),
+		IsSIP150:         c.IsSIP150(num),
 		IsSIP155:         c.IsSIP155(num),
-		IsEIP158:         c.IsEIP158(num),
+		IsSIP158:         c.IsSIP158(num),
 		IsByzantium:      c.IsByzantium(num),
 		IsConstantinople: c.IsConstantinople(num),
 		IsPetersburg:     c.IsPetersburg(num),
 		IsIstanbul:       c.IsIstanbul(num),
 		IsBerlin:         c.IsBerlin(num),
-		IsEIP2929:        c.IsBerlin(num) && !isUBT,
+		IsSIP2929:        c.IsBerlin(num) && !isUBT,
 		IsLondon:         c.IsLondon(num),
 		IsMerge:          isMerge,
 		IsShanghai:       isMerge && c.IsShanghai(num, timestamp),
@@ -1407,6 +1407,6 @@ func (c *ChainConfig) Rules(num *big.Int, isMerge bool, timestamp uint64) Rules 
 		IsOsaka:          isMerge && c.IsOsaka(num, timestamp),
 		IsAmsterdam:      isMerge && c.IsAmsterdam(num, timestamp),
 		IsUBT:            isUBT,
-		IsEIP4762:        isUBT,
+		IsSIP4762:        isUBT,
 	}
 }

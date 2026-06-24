@@ -308,7 +308,7 @@ func (pre *Prestate) Apply(vmConfig vm.Config, chainConfig *params.ChainConfig, 
 		receipts = append(receipts, receipt)
 		blockAccessList.Merge(bal)
 	}
-	statedb.IntermediateRoot(chainConfig.IsEIP158(vmContext.BlockNumber))
+	statedb.IntermediateRoot(chainConfig.IsSIP158(vmContext.BlockNumber))
 
 	// TODO(rjl493456442) call silaEngine.Finalize() instead
 	// Add mining reward? (-1 means rewards are disabled)
@@ -369,7 +369,7 @@ func (pre *Prestate) Apply(vmConfig vm.Config, chainConfig *params.ChainConfig, 
 	blockAccessList.Merge(bal)
 
 	// Commit block
-	root, err := statedb.Commit(vmContext.BlockNumber.Uint64(), chainConfig.IsEIP158(vmContext.BlockNumber), chainConfig.IsCancun(vmContext.BlockNumber, vmContext.Time))
+	root, err := statedb.Commit(vmContext.BlockNumber.Uint64(), chainConfig.IsSIP158(vmContext.BlockNumber), chainConfig.IsCancun(vmContext.BlockNumber, vmContext.Time))
 	if err != nil {
 		return nil, nil, nil, NewError(ErrorEVM, fmt.Errorf("could not commit state: %v", err))
 	}

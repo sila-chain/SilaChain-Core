@@ -243,7 +243,7 @@ func (t *StateTest) Run(subtest StateSubtest, vmconfig vm.Config, snapshotter bo
 			if err != nil {
 				return fmt.Errorf("failed to get chain config: %w", err)
 			}
-			root = st.StateDB.IntermediateRoot(config.IsEIP158(new(big.Int).SetUint64(t.json.Env.Number)))
+			root = st.StateDB.IntermediateRoot(config.IsSIP158(new(big.Int).SetUint64(t.json.Env.Number)))
 			if root != common.Hash(post.Root) {
 				return fmt.Errorf("post-state root does not match the pre-state root, indicates an error in the test: got %x, want %x", root, post.Root)
 			}
@@ -358,7 +358,7 @@ func (t *StateTest) RunNoVerify(subtest StateSubtest, vmconfig vm.Config, snapsh
 	st.StateDB.AddBalance(block.Coinbase(), new(uint256.Int), tracing.BalanceChangeUnspecified)
 
 	// Commit state mutations into database.
-	root, _ = st.StateDB.Commit(block.NumberU64(), config.IsEIP158(block.Number()), config.IsCancun(block.Number(), block.Time()))
+	root, _ = st.StateDB.Commit(block.NumberU64(), config.IsSIP158(block.Number()), config.IsCancun(block.Number(), block.Time()))
 	if tracer := evm.Config.Tracer; tracer != nil && tracer.OnTxEnd != nil {
 		receipt := &types.Receipt{GasUsed: vmRet.UsedGas}
 		tracer.OnTxEnd(receipt, nil)

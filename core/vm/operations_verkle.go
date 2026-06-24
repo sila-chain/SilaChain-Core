@@ -71,7 +71,7 @@ func makeCallVariantGasEIP4762(oldCalculator gasFunc, withTransferCosts bool) ga
 			}
 			witnessGas = wantedValueTransferWitnessGas
 		} else if isPrecompile || isSystemContract {
-			witnessGas = params.WarmStorageReadCostEIP2929
+			witnessGas = params.WarmStorageReadCostSIP2929
 		} else {
 			// The charging for the value transfer is done BEFORE subtracting
 			// the 1/64th gas, as this is considered part of the CALL instruction.
@@ -194,7 +194,7 @@ func gasExtCodeCopyEIP4762(evm *EVM, contract *Contract, stack *Stack, mem *Memo
 	_, isPrecompile := evm.precompile(addr)
 	if isPrecompile || addr == params.HistoryStorageAddress {
 		var overflow bool
-		if gas, overflow = math.SafeAdd(gas, params.WarmStorageReadCostEIP2929); overflow {
+		if gas, overflow = math.SafeAdd(gas, params.WarmStorageReadCostSIP2929); overflow {
 			return GasCosts{}, ErrGasUintOverflow
 		}
 		return GasCosts{RegularGas: gas}, nil

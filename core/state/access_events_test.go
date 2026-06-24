@@ -135,7 +135,7 @@ func TestMessageCallGas(t *testing.T) {
 
 	// Check warm read cost
 	gas = ae.MessageCallGas(testAddr, math.MaxUint64)
-	if gas != params.WarmStorageReadCostEIP2929 {
-		t.Fatalf("incorrect gas computed, got %d, want %d", gas, params.WarmStorageReadCostEIP2929)
+	if gas != params.WarmStorageReadCostSIP2929 {
+		t.Fatalf("incorrect gas computed, got %d, want %d", gas, params.WarmStorageReadCostSIP2929)
 	}
 }

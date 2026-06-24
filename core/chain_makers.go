@@ -427,7 +427,7 @@ func GenerateChain(config *params.ChainConfig, parent *types.Block, silaEngine c
 		block := AssembleBlock(cm, b.header, statedb, &body, b.receipts, b.bal)
 
 		// Write state changes to db
-		root, err := statedb.Commit(b.header.Number.Uint64(), config.IsEIP158(b.header.Number), config.IsCancun(b.header.Number, b.header.Time))
+		root, err := statedb.Commit(b.header.Number.Uint64(), config.IsSIP158(b.header.Number), config.IsCancun(b.header.Number, b.header.Time))
 		if err != nil {
 			panic(fmt.Sprintf("state write error: %v", err))
 		}
@@ -506,7 +506,7 @@ func (cm *chainMaker) makeHeader(parent *types.Block, state *state.StateDB, sila
 	time := parent.Time() + 10 // block time is fixed at 10 seconds
 	parentHeader := parent.Header()
 	header := &types.Header{
-		Root:       state.IntermediateRoot(cm.config.IsEIP158(parent.Number())),
+		Root:       state.IntermediateRoot(cm.config.IsSIP158(parent.Number())),
 		ParentHash: parent.Hash(),
 		Coinbase:   parent.Coinbase(),
 		Difficulty: silaEngine.CalcDifficulty(cm, time, parentHeader),

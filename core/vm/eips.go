@@ -78,9 +78,9 @@ func ActivateableEips() []string {
 // - Define SELFBALANCE, with cost GasFastStep (5)
 func enable1884(jt *JumpTable) {
 	// Gas cost changes
-	jt[SLOAD].constantGas = params.SloadGasEIP1884
-	jt[BALANCE].constantGas = params.BalanceGasEIP1884
-	jt[EXTCODEHASH].constantGas = params.ExtcodeHashGasEIP1884
+	jt[SLOAD].constantGas = params.SloadGasSIP1884
+	jt[BALANCE].constantGas = params.BalanceGasSIP1884
+	jt[EXTCODEHASH].constantGas = params.ExtcodeHashGasSIP1884
 
 	// New opcode
 	jt[SELFBALANCE] = &operation{
@@ -116,7 +116,7 @@ func opChainID(pc *uint64, evm *EVM, scope *ScopeContext) ([]byte, error) {
 
 // enable2200 applies SIP-2200 (Rebalance net-metered SSTORE)
 func enable2200(jt *JumpTable) {
-	jt[SLOAD].constantGas = params.SloadGasEIP2200
+	jt[SLOAD].constantGas = params.SloadGasSIP2200
 	jt[SSTORE].dynamicGas = gasSStoreEIP2200
 }
 
@@ -128,33 +128,33 @@ func enable2929(jt *JumpTable) {
 	jt[SLOAD].constantGas = 0
 	jt[SLOAD].dynamicGas = gasSLoadEIP2929
 
-	jt[EXTCODECOPY].constantGas = params.WarmStorageReadCostEIP2929
+	jt[EXTCODECOPY].constantGas = params.WarmStorageReadCostSIP2929
 	jt[EXTCODECOPY].dynamicGas = gasExtCodeCopyEIP2929
 
-	jt[EXTCODESIZE].constantGas = params.WarmStorageReadCostEIP2929
+	jt[EXTCODESIZE].constantGas = params.WarmStorageReadCostSIP2929
 	jt[EXTCODESIZE].dynamicGas = gasEip2929AccountCheck
 
-	jt[EXTCODEHASH].constantGas = params.WarmStorageReadCostEIP2929
+	jt[EXTCODEHASH].constantGas = params.WarmStorageReadCostSIP2929
 	jt[EXTCODEHASH].dynamicGas = gasEip2929AccountCheck
 
-	jt[BALANCE].constantGas = params.WarmStorageReadCostEIP2929
+	jt[BALANCE].constantGas = params.WarmStorageReadCostSIP2929
 	jt[BALANCE].dynamicGas = gasEip2929AccountCheck
 
-	jt[CALL].constantGas = params.WarmStorageReadCostEIP2929
+	jt[CALL].constantGas = params.WarmStorageReadCostSIP2929
 	jt[CALL].dynamicGas = gasCallEIP2929
 
-	jt[CALLCODE].constantGas = params.WarmStorageReadCostEIP2929
+	jt[CALLCODE].constantGas = params.WarmStorageReadCostSIP2929
 	jt[CALLCODE].dynamicGas = gasCallCodeEIP2929
 
-	jt[STATICCALL].constantGas = params.WarmStorageReadCostEIP2929
+	jt[STATICCALL].constantGas = params.WarmStorageReadCostSIP2929
 	jt[STATICCALL].dynamicGas = gasStaticCallEIP2929
 
-	jt[DELEGATECALL].constantGas = params.WarmStorageReadCostEIP2929
+	jt[DELEGATECALL].constantGas = params.WarmStorageReadCostSIP2929
 	jt[DELEGATECALL].dynamicGas = gasDelegateCallEIP2929
 
 	// This was previously part of the dynamic cost, but we're using it as a constantGas
 	// factor here
-	jt[SELFDESTRUCT].constantGas = params.SelfdestructGasEIP150
+	jt[SELFDESTRUCT].constantGas = params.SelfdestructGasSIP150
 	jt[SELFDESTRUCT].dynamicGas = gasSelfdestructEIP2929
 }
 
@@ -185,14 +185,14 @@ func enable3198(jt *JumpTable) {
 func enable1153(jt *JumpTable) {
 	jt[TLOAD] = &operation{
 		execute:     opTload,
-		constantGas: params.WarmStorageReadCostEIP2929,
+		constantGas: params.WarmStorageReadCostSIP2929,
 		minStack:    minStack(1, 1),
 		maxStack:    maxStack(1, 1),
 	}
 
 	jt[TSTORE] = &operation{
 		execute:     opTstore,
-		constantGas: params.WarmStorageReadCostEIP2929,
+		constantGas: params.WarmStorageReadCostSIP2929,
 		minStack:    minStack(2, 0),
 		maxStack:    maxStack(2, 0),
 	}
@@ -329,7 +329,7 @@ func enable6780(jt *JumpTable) {
 	jt[SELFDESTRUCT] = &operation{
 		execute:     opSelfdestruct6780,
 		dynamicGas:  gasSelfdestructEIP3529,
-		constantGas: params.SelfdestructGasEIP150,
+		constantGas: params.SelfdestructGasSIP150,
 		minStack:    minStack(1, 0),
 		maxStack:    maxStack(1, 0),
 	}
@@ -489,14 +489,14 @@ func enable4762(jt *JumpTable) {
 	jt[SELFDESTRUCT] = &operation{
 		execute:     opSelfdestruct6780,
 		dynamicGas:  gasSelfdestructEIP4762,
-		constantGas: params.SelfdestructGasEIP150,
+		constantGas: params.SelfdestructGasSIP150,
 		minStack:    minStack(1, 0),
 		maxStack:    maxStack(1, 0),
 	}
 
 	jt[CREATE] = &operation{
 		execute:     opCreate,
-		constantGas: params.CreateNGasEip4762,
+		constantGas: params.CreateNGasSIP4762,
 		dynamicGas:  gasCreateEip3860,
 		minStack:    minStack(3, 1),
 		maxStack:    maxStack(3, 1),
@@ -505,7 +505,7 @@ func enable4762(jt *JumpTable) {
 
 	jt[CREATE2] = &operation{
 		execute:     opCreate2,
-		constantGas: params.CreateNGasEip4762,
+		constantGas: params.CreateNGasSIP4762,
 		dynamicGas:  gasCreate2Eip3860,
 		minStack:    minStack(4, 1),
 		maxStack:    maxStack(4, 1),

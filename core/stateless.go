@@ -62,7 +62,7 @@ func ExecuteStateless(ctx context.Context, config *params.ChainConfig, vmconfig 
 		config:      config,
 		chainDb:     memdb,
 		headerCache: lru.NewCache[common.Hash, *types.Header](256),
-		silaEngine:      beacon.New(silaash.NewFaker()),
+		silaEngine:  beacon.New(silaash.NewFaker()),
 	}
 	processor := NewStateProcessor(chain)
 	validator := NewBlockValidator(config, nil) // No chain, we only validate the state, not the block
@@ -77,6 +77,6 @@ func ExecuteStateless(ctx context.Context, config *params.ChainConfig, vmconfig 
 	}
 	// Almost everything validated, but receipt and state root needs to be returned
 	receiptRoot := types.DeriveSha(res.Receipts, trie.NewStackTrie(nil))
-	stateRoot := db.IntermediateRoot(config.IsEIP158(block.Number()))
+	stateRoot := db.IntermediateRoot(config.IsSIP158(block.Number()))
 	return stateRoot, receiptRoot, nil
 }

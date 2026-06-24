@@ -20,11 +20,11 @@ import (
 	"maps"
 	gomath "math"
 
+	"github.com/holiman/uint256"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/common/math"
 	"github.com/sila-org/sila/params"
 	"github.com/sila-org/sila/trie/bintrie"
-	"github.com/holiman/uint256"
 )
 
 // mode specifies how a tree location has been accessed
@@ -113,7 +113,7 @@ func (ae *AccessEvents) AddAccount(addr common.Address, isWrite bool, availableG
 func (ae *AccessEvents) MessageCallGas(destination common.Address, availableGas uint64) uint64 {
 	_, expected := ae.touchAddressAndChargeGas(destination, zeroTreeIndex, bintrie.BasicDataLeafKey, false, availableGas)
 	if expected == 0 {
-		expected = params.WarmStorageReadCostEIP2929
+		expected = params.WarmStorageReadCostSIP2929
 	}
 	return expected
 }
@@ -127,7 +127,7 @@ func (ae *AccessEvents) ValueTransferGas(callerAddr, targetAddr common.Address, 
 	}
 	_, expected2 := ae.touchAddressAndChargeGas(targetAddr, zeroTreeIndex, bintrie.BasicDataLeafKey, true, availableGas-expected1)
 	if expected1+expected2 == 0 {
-		return params.WarmStorageReadCostEIP2929
+		return params.WarmStorageReadCostSIP2929
 	}
 	return expected1 + expected2
 }
@@ -172,7 +172,7 @@ func (ae *AccessEvents) SlotGas(addr common.Address, slot common.Hash, isWrite b
 	treeIndex, subIndex := bintrie.StorageIndex(slot.Bytes())
 	_, expected := ae.touchAddressAndChargeGas(addr, *treeIndex, subIndex, isWrite, availableGas)
 	if expected == 0 && chargeWarmCosts {
-		expected = params.WarmStorageReadCostEIP2929
+		expected = params.WarmStorageReadCostSIP2929
 	}
 	return expected
 }
@@ -314,10 +314,10 @@ func (ae *AccessEvents) CodeChunksRangeGas(contractAddr common.Address, startPC,
 func (ae *AccessEvents) BasicDataGas(addr common.Address, isWrite bool, availableGas uint64, chargeWarmCosts bool) uint64 {
 	_, expected := ae.touchAddressAndChargeGas(addr, zeroTreeIndex, bintrie.BasicDataLeafKey, isWrite, availableGas)
 	if expected == 0 && chargeWarmCosts {
-		if availableGas < params.WarmStorageReadCostEIP2929 {
+		if availableGas < params.WarmStorageReadCostSIP2929 {
 			return availableGas
 		}
-		expected = params.WarmStorageReadCostEIP2929
+		expected = params.WarmStorageReadCostSIP2929
 	}
 	return expected
 }
@@ -330,10 +330,10 @@ func (ae *AccessEvents) BasicDataGas(addr common.Address, isWrite bool, availabl
 func (ae *AccessEvents) CodeHashGas(addr common.Address, isWrite bool, availableGas uint64, chargeWarmCosts bool) uint64 {
 	_, expected := ae.touchAddressAndChargeGas(addr, zeroTreeIndex, bintrie.CodeHashLeafKey, isWrite, availableGas)
 	if expected == 0 && chargeWarmCosts {
-		if availableGas < params.WarmStorageReadCostEIP2929 {
+		if availableGas < params.WarmStorageReadCostSIP2929 {
 			return availableGas
 		}
-		expected = params.WarmStorageReadCostEIP2929
+		expected = params.WarmStorageReadCostSIP2929
 	}
 	return expected
 }

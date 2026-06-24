@@ -185,7 +185,7 @@ func TestIntrinsicGas(t *testing.T) {
 			data:      bytes.Repeat([]byte{0xff}, 100),
 			isEIP2028: true,
 			// 100 nz bytes * 16 (post-SIP2028)
-			want: vm.GasCosts{RegularGas: params.TxGas + 100*params.TxDataNonZeroGasEIP2028},
+			want: vm.GasCosts{RegularGas: params.TxGas + 100*params.TxDataNonZeroGasSIP2028},
 		},
 		{
 			name:      "istanbul/zero-data",
@@ -198,7 +198,7 @@ func TestIntrinsicGas(t *testing.T) {
 			name:      "istanbul/mixed-data",
 			data:      append(bytes.Repeat([]byte{0x00}, 50), bytes.Repeat([]byte{0xff}, 50)...),
 			isEIP2028: true,
-			want:      vm.GasCosts{RegularGas: params.TxGas + 50*params.TxDataZeroGas + 50*params.TxDataNonZeroGasEIP2028},
+			want:      vm.GasCosts{RegularGas: params.TxGas + 50*params.TxDataZeroGas + 50*params.TxDataNonZeroGasSIP2028},
 		},
 		{
 			name:        "shanghai/init-code-word-gas",
@@ -293,7 +293,7 @@ func TestIntrinsicGas(t *testing.T) {
 			isAmsterdam: true,
 			want: vm.GasCosts{
 				RegularGas: params.TxGas + params.CreateGasAmsterdam +
-					32*params.TxDataNonZeroGasEIP2028 + 1*params.InitCodeWordGas +
+					32*params.TxDataNonZeroGasSIP2028 + 1*params.InitCodeWordGas +
 					1*params.TxAccessListAddressGas + 1*params.TxAccessListStorageKeyGas +
 					1*amsterdamAddressCost + 1*amsterdamStorageKeyCost,
 				StateGas: params.AccountCreationSize * params.CostPerStateByte,
@@ -315,7 +315,7 @@ func TestIntrinsicGas(t *testing.T) {
 			//   state:   (AuthorizationCreationSize + AccountCreationSize) * CostPerStateByte per auth
 			want: vm.GasCosts{
 				RegularGas: params.TxGas +
-					100*params.TxDataNonZeroGasEIP2028 +
+					100*params.TxDataNonZeroGasSIP2028 +
 					1*params.TxAccessListAddressGas + 1*params.TxAccessListStorageKeyGas +
 					1*amsterdamAddressCost + 1*amsterdamStorageKeyCost +
 					1*params.TxAuthTupleRegularGas,

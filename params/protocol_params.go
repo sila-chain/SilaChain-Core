@@ -28,7 +28,7 @@ const (
 	MaxGasLimit          uint64 = 0x7fffffffffffffff // Maximum the gas limit (2^63-1).
 	GenesisGasLimit      uint64 = 4712388            // Gas limit of the Genesis block.
 
-	MaxTxGas uint64 = 1 << 24 // Maximum transaction gas limit after eip-7825 (16,777,216).
+	MaxTxGas uint64 = 1 << 24 // Maximum transaction gas limit after sip-7825 (16,777,216).
 
 	MaximumExtraDataSize  uint64 = 32    // Maximum size extra data may be after Genesis.
 	ExpByteGas            uint64 = 10    // Times ceil(log256(exponent)) for the EXP instruction.
@@ -60,20 +60,20 @@ const (
 	NetSstoreResetRefund      uint64 = 4800  // Once per SSTORE operation for resetting to the original non-zero value
 	NetSstoreResetClearRefund uint64 = 19800 // Once per SSTORE operation for resetting to the original zero value
 
-	SstoreSentryGasEIP2200            uint64 = 2300  // Minimum gas required to be present for an SSTORE call, not consumed
-	SstoreSetGasEIP2200               uint64 = 20000 // Once per SSTORE operation from clean zero to non-zero
-	SstoreResetGasEIP2200             uint64 = 5000  // Once per SSTORE operation from clean non-zero to something else
-	SstoreClearsScheduleRefundEIP2200 uint64 = 15000 // Once per SSTORE operation for clearing an originally existing storage slot
+	SstoreSentryGasSIP2200            uint64 = 2300  // Minimum gas required to be present for an SSTORE call, not consumed
+	SstoreSetGasSIP2200               uint64 = 20000 // Once per SSTORE operation from clean zero to non-zero
+	SstoreResetGasSIP2200             uint64 = 5000  // Once per SSTORE operation from clean non-zero to something else
+	SstoreClearsScheduleRefundSIP2200 uint64 = 15000 // Once per SSTORE operation for clearing an originally existing storage slot
 
-	ColdAccountAccessCostEIP2929 = uint64(2600) // COLD_ACCOUNT_ACCESS_COST
-	ColdSloadCostEIP2929         = uint64(2100) // COLD_SLOAD_COST
-	WarmStorageReadCostEIP2929   = uint64(100)  // WARM_STORAGE_READ_COST
+	ColdAccountAccessCostSIP2929 = uint64(2600) // COLD_ACCOUNT_ACCESS_COST
+	ColdSloadCostSIP2929         = uint64(2100) // COLD_SLOAD_COST
+	WarmStorageReadCostSIP2929   = uint64(100)  // WARM_STORAGE_READ_COST
 
 	// In SIP-2200: SstoreResetGas was 5000.
 	// In SIP-2929: SstoreResetGas was changed to '5000 - COLD_SLOAD_COST'.
 	// In SIP-3529: SSTORE_CLEARS_SCHEDULE is defined as SSTORE_RESET_GAS + ACCESS_LIST_STORAGE_KEY_COST
 	// Which becomes: 5000 - 2100 + 1900 = 4800
-	SstoreClearsScheduleRefundEIP3529 uint64 = SstoreResetGasEIP2200 - ColdSloadCostEIP2929 + TxAccessListStorageKeyGas
+	SstoreClearsScheduleRefundSIP3529 uint64 = SstoreResetGasSIP2200 - ColdSloadCostSIP2929 + TxAccessListStorageKeyGas
 
 	JumpdestGas   uint64 = 1     // Once per JUMPDEST operation.
 	EpochDuration uint64 = 30000 // Duration between proof-of-work epochs.
@@ -89,12 +89,12 @@ const (
 	CreateGas             uint64 = 32000 // Once per CREATE operation & contract-creation transaction.
 	Create2Gas            uint64 = 32000 // Once per CREATE2 operation
 	CreateGasAmsterdam    uint64 = 9000  // Regular gas portion of CREATE in Amsterdam (SIP-8037); state gas is charged separately.
-	CreateNGasEip4762     uint64 = 1000  // Once per CREATEn operations post-verkle
+	CreateNGasSIP4762     uint64 = 1000  // Once per CREATEn operations post-verkle
 	SelfdestructRefundGas uint64 = 24000 // Refunded following a selfdestruct operation.
 	MemoryGas             uint64 = 3     // Times the address of the (highest referenced byte in memory + 1). NOTE: referencing happens on read, write and in instructions such as RETURN and CALL.
 
 	TxDataNonZeroGasFrontier  uint64 = 68    // Per byte of data attached to a transaction that is not equal to zero. NOTE: Not payable on data of calls between transactions.
-	TxDataNonZeroGasEIP2028   uint64 = 16    // Per byte of non zero data attached to a transaction after SIP 2028 (part in Istanbul)
+	TxDataNonZeroGasSIP2028   uint64 = 16    // Per byte of non zero data attached to a transaction after SIP 2028 (part in Istanbul)
 	TxTokenPerNonZeroByte     uint64 = 4     // Token cost per non-zero byte as specified by SIP-7623.
 	TxCostFloorPerToken       uint64 = 10    // Cost floor per byte of data as specified by SIP-7623.
 	TxCostFloorPerToken7976   uint64 = 16    // Cost floor per byte of data as specified by SIP-7976.
@@ -105,32 +105,32 @@ const (
 
 	// These have been changed during the course of the chain
 	CallGasFrontier              uint64 = 40  // Once per CALL operation & message call transaction.
-	CallGasEIP150                uint64 = 700 // Static portion of gas for CALL-derivates after SIP 150 (Tangerine)
+	CallGasSIP150                uint64 = 700 // Static portion of gas for CALL-derivates after SIP 150 (Tangerine)
 	BalanceGasFrontier           uint64 = 20  // The cost of a BALANCE operation
-	BalanceGasEIP150             uint64 = 400 // The cost of a BALANCE operation after Tangerine
-	BalanceGasEIP1884            uint64 = 700 // The cost of a BALANCE operation after SIP 1884 (part of Istanbul)
+	BalanceGasSIP150             uint64 = 400 // The cost of a BALANCE operation after Tangerine
+	BalanceGasSIP1884            uint64 = 700 // The cost of a BALANCE operation after SIP 1884 (part of Istanbul)
 	ExtcodeSizeGasFrontier       uint64 = 20  // Cost of EXTCODESIZE before SIP 150 (Tangerine)
-	ExtcodeSizeGasEIP150         uint64 = 700 // Cost of EXTCODESIZE after SIP 150 (Tangerine)
+	ExtcodeSizeGasSIP150         uint64 = 700 // Cost of EXTCODESIZE after SIP 150 (Tangerine)
 	SloadGasFrontier             uint64 = 50
-	SloadGasEIP150               uint64 = 200
-	SloadGasEIP1884              uint64 = 800  // Cost of SLOAD after SIP 1884 (part of Istanbul)
-	SloadGasEIP2200              uint64 = 800  // Cost of SLOAD after SIP 2200 (part of Istanbul)
+	SloadGasSIP150               uint64 = 200
+	SloadGasSIP1884              uint64 = 800  // Cost of SLOAD after SIP 1884 (part of Istanbul)
+	SloadGasSIP2200              uint64 = 800  // Cost of SLOAD after SIP 2200 (part of Istanbul)
 	ExtcodeHashGasConstantinople uint64 = 400  // Cost of EXTCODEHASH (introduced in Constantinople)
-	ExtcodeHashGasEIP1884        uint64 = 700  // Cost of EXTCODEHASH after SIP 1884 (part in Istanbul)
-	SelfdestructGasEIP150        uint64 = 5000 // Cost of SELFDESTRUCT post SIP 150 (Tangerine)
+	ExtcodeHashGasSIP1884        uint64 = 700  // Cost of EXTCODEHASH after SIP 1884 (part in Istanbul)
+	SelfdestructGasSIP150        uint64 = 5000 // Cost of SELFDESTRUCT post SIP 150 (Tangerine)
 
 	// EXP has a dynamic portion depending on the size of the exponent
 	ExpByteFrontier uint64 = 10 // was set to 10 in Frontier
-	ExpByteEIP158   uint64 = 50 // was raised to 50 during Eip158 (Spurious Dragon)
+	ExpByteSIP158   uint64 = 50 // was raised to 50 during SIP158 (Spurious Dragon)
 
 	// Extcodecopy has a dynamic AND a static cost. This represents only the
 	// static portion of the gas. It was changed during SIP 150 (Tangerine)
 	ExtcodeCopyBaseFrontier uint64 = 20
-	ExtcodeCopyBaseEIP150   uint64 = 700
+	ExtcodeCopyBaseSIP150   uint64 = 700
 
 	// CreateBySelfdestructGas is used when the refunded account is one that does
 	// not exist. This logic is similar to call.
-	// Introduced in Tangerine Whistle (Eip 150)
+	// Introduced in Tangerine Whistle (SIP 150)
 	CreateBySelfdestructGas uint64 = 25000
 
 	DefaultBaseFeeChangeDenominator = 8          // Bounds the amount the base fee can change between blocks.
@@ -175,7 +175,7 @@ const (
 	// The Refund Quotient is the cap on how much of the used gas can be refunded. Before SIP-3529,
 	// up to half the consumed gas could be refunded. Redefined as 1/5th in SIP-3529
 	RefundQuotient        uint64 = 2
-	RefundQuotientEIP3529 uint64 = 5
+	RefundQuotientSIP3529 uint64 = 5
 
 	BlobTxBytesPerFieldElement         = 32      // Size in bytes of a field element
 	BlobTxFieldElementsPerBlob         = 4096    // Number of field elements stored in a single data blob

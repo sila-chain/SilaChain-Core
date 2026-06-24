@@ -42,12 +42,12 @@ import (
 	"github.com/sila-org/sila/core/types"
 	"github.com/sila-org/sila/core/vm"
 	"github.com/sila-org/sila/crypto"
-	"github.com/sila-org/sila/sila/tracers/logger"
-	"github.com/sila-org/sila/siladb"
 	"github.com/sila-org/sila/internal/silaapi"
 	"github.com/sila-org/sila/internal/silaapi/override"
 	"github.com/sila-org/sila/params"
 	"github.com/sila-org/sila/rpc"
+	"github.com/sila-org/sila/sila/tracers/logger"
+	"github.com/sila-org/sila/siladb"
 )
 
 var (
@@ -57,7 +57,7 @@ var (
 
 type testBackend struct {
 	chainConfig *params.ChainConfig
-	silaEngine      consensus.SilaEngine
+	silaEngine  consensus.SilaEngine
 	chaindb     siladb.Database
 	chain       *core.BlockChain
 
@@ -70,7 +70,7 @@ type testBackend struct {
 func newTestBackend(t *testing.T, n int, gspec *core.Genesis, generator func(i int, b *core.BlockGen)) *testBackend {
 	backend := &testBackend{
 		chainConfig: gspec.Config,
-		silaEngine:      silaash.NewFaker(),
+		silaEngine:  silaash.NewFaker(),
 		chaindb:     rawdb.NewMemoryDatabase(),
 	}
 	// Generate blocks for testing
@@ -191,7 +191,7 @@ func (b *testBackend) StateAtTransaction(ctx context.Context, block *types.Block
 		if _, err := core.ApplyMessage(evm, msg, nil); err != nil {
 			return nil, vm.BlockContext{}, nil, nil, fmt.Errorf("transaction %#x failed: %v", tx.Hash(), err)
 		}
-		statedb.Finalise(evm.ChainConfig().IsEIP158(block.Number()))
+		statedb.Finalise(evm.ChainConfig().IsSIP158(block.Number()))
 	}
 	return nil, vm.BlockContext{}, nil, nil, fmt.Errorf("transaction index %d out of range for block %#x", txIndex, block.Hash())
 }
@@ -1358,7 +1358,7 @@ func TestTraceChain(t *testing.T) {
 func newTestMergedBackend(t *testing.T, n int, gspec *core.Genesis, generator func(i int, b *core.BlockGen)) *testBackend {
 	backend := &testBackend{
 		chainConfig: gspec.Config,
-		silaEngine:      beacon.New(silaash.NewFaker()),
+		silaEngine:  beacon.New(silaash.NewFaker()),
 		chaindb:     rawdb.NewMemoryDatabase(),
 	}
 	// Generate blocks for testing

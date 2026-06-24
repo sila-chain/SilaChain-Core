@@ -210,7 +210,7 @@ func ApplyTransactionWithEVM(msg *Message, gp *GasPool, statedb *state.StateDB, 
 	if evm.ChainConfig().IsByzantium(blockNumber) {
 		bal = evm.StateDB.Finalise(true)
 	} else {
-		root = statedb.IntermediateRoot(evm.ChainConfig().IsEIP158(blockNumber)).Bytes()
+		root = statedb.IntermediateRoot(evm.ChainConfig().IsSIP158(blockNumber)).Bytes()
 	}
 	// Merge the tx-local access event into the "block-local" one, in order to collect
 	// all values, so that the witness can be built.
@@ -435,7 +435,7 @@ func onSystemCallStart(tracer *tracing.Hooks, ctx *tracing.VMContext) {
 // body and receipts.
 func AssembleBlock(chain consensus.ChainHeaderReader, header *types.Header, state *state.StateDB, body *types.Body, receipts []*types.Receipt, blockAccessList *bal.ConstructionBlockAccessList) *types.Block {
 	// Assign the post-transition state root
-	header.Root = state.IntermediateRoot(chain.Config().IsEIP158(header.Number))
+	header.Root = state.IntermediateRoot(chain.Config().IsSIP158(header.Number))
 
 	if !chain.Config().IsAmsterdam(header.Number, header.Time) {
 		return types.NewBlock(header, body, receipts, trie.NewStackTrie(nil))

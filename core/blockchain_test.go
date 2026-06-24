@@ -3242,7 +3242,7 @@ func testEIP2718Transition(t *testing.T, scheme string) {
 
 	// Expected gas is intrinsic + 2 * pc + hot load + cold load, since only one load is in the access list
 	expected := params.TxGas + params.TxAccessListAddressGas + params.TxAccessListStorageKeyGas +
-		vm.GasQuickStep*2 + params.WarmStorageReadCostEIP2929 + params.ColdSloadCostEIP2929
+		vm.GasQuickStep*2 + params.WarmStorageReadCostSIP2929 + params.ColdSloadCostSIP2929
 	if block.GasUsed() != expected {
 		t.Fatalf("incorrect amount of gas spent: expected %d, got %d", expected, block.GasUsed())
 	}
@@ -3337,7 +3337,7 @@ func testSIP1559Transition(t *testing.T, scheme string) {
 
 	// 1+2: Ensure SIP-1559 access lists are accounted for via gas usage.
 	expectedGas := params.TxGas + params.TxAccessListAddressGas + params.TxAccessListStorageKeyGas +
-		vm.GasQuickStep*2 + params.WarmStorageReadCostEIP2929 + params.ColdSloadCostEIP2929
+		vm.GasQuickStep*2 + params.WarmStorageReadCostSIP2929 + params.ColdSloadCostSIP2929
 	if block.GasUsed() != expectedGas {
 		t.Fatalf("incorrect amount of gas spent: expected %d, got %d", expectedGas, block.GasUsed())
 	}
@@ -3990,7 +3990,7 @@ func TestEIP3651(t *testing.T) {
 	block := chain.GetBlockByNumber(1)
 
 	// 1+2: Ensure SIP-1559 access lists are accounted for via gas usage.
-	innerGas := vm.GasQuickStep*2 + params.ColdSloadCostEIP2929*2
+	innerGas := vm.GasQuickStep*2 + params.ColdSloadCostSIP2929*2
 	expectedGas := params.TxGas + 5*vm.GasFastestStep + vm.GasQuickStep + 100 + innerGas // 100 because 0xaaaa is in access list
 	if block.GasUsed() != expectedGas {
 		t.Fatalf("incorrect amount of gas spent: expected %d, got %d", expectedGas, block.GasUsed())

@@ -20,9 +20,9 @@ import (
 	"fmt"
 	"math"
 
+	"github.com/holiman/uint256"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/params"
-	"github.com/holiman/uint256"
 )
 
 // CheckMaxInitCodeSize checks the size of contract initcode against the protocol-defined limit.
@@ -46,7 +46,7 @@ func CheckMaxCodeSize(rules *params.Rules, size uint64) error {
 		if size > params.MaxCodeSizeAmsterdam {
 			return fmt.Errorf("%w: code size %v limit %v", ErrMaxCodeSizeExceeded, size, params.MaxCodeSizeAmsterdam)
 		}
-	} else if rules.IsEIP158 {
+	} else if rules.IsSIP158 {
 		if size > params.MaxCodeSize {
 			return fmt.Errorf("%w: code size %v limit %v", ErrMaxCodeSizeExceeded, size, params.MaxCodeSize)
 		}

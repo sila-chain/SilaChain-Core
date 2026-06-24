@@ -50,9 +50,9 @@ func LookupInstructionSet(rules params.Rules) (JumpTable, error) {
 		return newConstantinopleInstructionSet(), nil
 	case rules.IsByzantium:
 		return newByzantiumInstructionSet(), nil
-	case rules.IsEIP158:
+	case rules.IsSIP158:
 		return newSpuriousDragonInstructionSet(), nil
-	case rules.IsEIP150:
+	case rules.IsSIP150:
 		return newTangerineWhistleInstructionSet(), nil
 	case rules.IsHomestead:
 		return newHomesteadInstructionSet(), nil

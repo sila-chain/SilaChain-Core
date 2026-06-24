@@ -1451,10 +1451,10 @@ func (s *StateDB) CommitWithUpdate(block uint64, deleteEmptyObjects bool, noStor
 // - Add coinbase to access list (SIP-3651)
 // - Reset transient storage (SIP-1153)
 func (s *StateDB) Prepare(rules params.Rules, sender, coinbase common.Address, dst *common.Address, precompiles []common.Address, list types.AccessList) {
-	if rules.IsEIP2929 && rules.IsEIP4762 {
+	if rules.IsSIP2929 && rules.IsSIP4762 {
 		panic("sip2929 and sip4762 are both activated")
 	}
-	if rules.IsEIP2929 {
+	if rules.IsSIP2929 {
 		// Clear out any leftover from previous executions
 		al := newAccessList()
 		s.accessList = al

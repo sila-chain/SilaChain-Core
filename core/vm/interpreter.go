@@ -134,7 +134,7 @@ func (evm *EVM) Run(contract *Contract, input []byte, readOnly bool) (ret []byte
 		logged    bool   // deferred EVMLogger should ignore already logged steps
 		res       []byte // result of the opcode execution function
 		debug     = evm.Config.Tracer != nil
-		isEIP4762 = evm.chainRules.IsEIP4762
+		isEIP4762 = evm.chainRules.IsSIP4762
 	)
 	// Don't move this deferred function, it's placed before the OnOpcode-deferred method,
 	// so that it gets executed _after_: the OnOpcode needs the stacks before

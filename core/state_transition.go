@@ -100,7 +100,7 @@ func IntrinsicGas(data []byte, accessList types.AccessList, authList []types.Set
 		// Make sure we don't exceed uint64 for all data combinations
 		nonZeroGas := params.TxDataNonZeroGasFrontier
 		if rules.IsIstanbul {
-			nonZeroGas = params.TxDataNonZeroGasEIP2028
+			nonZeroGas = params.TxDataNonZeroGasSIP2028
 		}
 		if (math.MaxUint64-gas.RegularGas)/nonZeroGas < nz {
 			return vm.GasCosts{}, ErrGasUintOverflow
@@ -645,7 +645,7 @@ func (st *stateTransition) execute() (*ExecutionResult, error) {
 		}
 	}
 
-	if rules.IsEIP4762 {
+	if rules.IsSIP4762 {
 		st.evm.AccessEvents.AddTxOrigin(msg.From)
 
 		if targetAddr := msg.To; targetAddr != nil {
@@ -735,7 +735,7 @@ func (st *stateTransition) execute() (*ExecutionResult, error) {
 		st.state.AddBalance(st.evm.Context.Coinbase, fee, tracing.BalanceIncreaseRewardTransactionFee)
 
 		// add the coinbase to the witness iff the fee is greater than 0
-		if rules.IsEIP4762 && fee.Sign() != 0 {
+		if rules.IsSIP4762 && fee.Sign() != 0 {
 			st.evm.AccessEvents.AddAccount(st.evm.Context.Coinbase, true, math.MaxUint64)
 		}
 	}
@@ -949,7 +949,7 @@ func (st *stateTransition) applyAuthorizations(rules params.Rules, auths []types
 func (st *stateTransition) calcRefund(gasUsedBeforeRefund uint64) uint64 {
 	quotient := params.RefundQuotient
 	if st.evm.ChainConfig().IsLondon(st.evm.Context.BlockNumber) {
-		quotient = params.RefundQuotientEIP3529
+		quotient = params.RefundQuotientSIP3529
 	}
 	refund := gasUsedBeforeRefund / quotient
 	if refund > st.state.GetRefund() {
