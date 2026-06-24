@@ -179,7 +179,7 @@ func (h *Header) EmptyReceipts() bool {
 }
 
 // Body is a simple (mutable, non-safe) data container for storing and moving
-// a block's data contents (transactions and uncles) tosilaer.
+// a block's data contents (transactions and uncles) together.
 type Body struct {
 	Transactions []*Transaction
 	Uncles       []*Header
@@ -260,7 +260,7 @@ func NewBlock(header *Header, body *Body, receipts []*Receipt, hasher ListHasher
 	} else {
 		b.header.ReceiptHash = DeriveSha(Receipts(receipts), hasher)
 		// Receipts must go through MakeReceipt to calculate the receipt's bloom
-		// already. Merge the receipt's bloom tosilaer instead of recalculating
+		// already. Merge the receipt's bloom together instead of recalculating
 		// everything.
 		b.header.Bloom = MergeBloom(receipts)
 	}
