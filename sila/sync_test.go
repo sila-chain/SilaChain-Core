@@ -1,0 +1,101 @@
+// Copyright 2015 The sila Authors
+// This file is part of the sila library.
+//
+// The sila library is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Lesser General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// The sila library is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU Lesser General Public License for more details.
+//
+// You should have received a copy of the GNU Lesser General Public License
+// along with the sila library. If not, see <http://www.gnu.org/licenses/>.
+
+package sila
+
+import (
+	"testing"
+	"time"
+
+	"github.com/sila-org/sila/sila/silaconfig"
+	"github.com/sila-org/sila/sila/protocols/sila"
+	"github.com/sila-org/sila/sila/protocols/snap"
+	"github.com/sila-org/sila/p2p"
+	"github.com/sila-org/sila/p2p/enode"
+)
+
+// Tests that snap sync is disabled after a successful sync cycle.
+func TestSnapSyncDisabling69(t *testing.T) { testSnapSyncDisabling(t, sila.SILA69, snap.SNAP1) }
+
+// Tests that snap sync gets disabled as soon as a real block is successfully
+// imported into the blockchain.
+func testSnapSyncDisabling(t *testing.T, silaVer uint, snapVer uint) {
+	t.Parallel()
+
+	// Create an empty handler and ensure it's in snap sync mode
+	empty := newTestHandler(silaconfig.SnapSync)
+	defer empty.close()
+
+	// Create a full handler and ensure snap sync ends up disabled
+	full := newTestHandlerWithBlocks(1024, silaconfig.SnapSync)
+	defer full.close()
+
+	// Sync up the two handlers via both `sila` and `snap`
+	caps := []p2p.Cap{{Name: "sila", Version: silaVer}, {Name: "snap", Version: snapVer}}
+
+	emptyPipeEth, fullPipeEth := p2p.MsgPipe()
+	defer emptyPipeEth.Close()
+	defer fullPipeEth.Close()
+
+	emptyPeerEth := sila.NewPeer(silaVer, p2p.NewPeer(enode.ID{1}, "", caps), emptyPipeEth, empty.txpool, nil)
+	fullPeerEth := sila.NewPeer(silaVer, p2p.NewPeer(enode.ID{2}, "", caps), fullPipeEth, full.txpool, nil)
+	defer emptyPeerEth.Close()
+	defer fullPeerEth.Close()
+
+	go empty.handler.runEthPeer(emptyPeerEth, func(peer *sila.Peer) error {
+		return sila.Handle((*silaHandler)(empty.handler), peer)
+	})
+	go full.handler.runEthPeer(fullPeerEth, func(peer *sila.Peer) error {
+		return sila.Handle((*silaHandler)(full.handler), peer)
+	})
+
+	emptyPipeSnap, fullPipeSnap := p2p.MsgPipe()
+	defer emptyPipeSnap.Close()
+	defer fullPipeSnap.Close()
+
+	emptyPeerSnap := snap.NewPeer(snapVer, p2p.NewPeer(enode.ID{1}, "", caps), emptyPipeSnap)
+	fullPeerSnap := snap.NewPeer(snapVer, p2p.NewPeer(enode.ID{2}, "", caps), fullPipeSnap)
+
+	go empty.handler.runSnapExtension(emptyPeerSnap, func(peer *snap.Peer) error {
+		return snap.Handle((*snapHandler)(empty.handler), peer)
+	})
+	go full.handler.runSnapExtension(fullPeerSnap, func(peer *snap.Peer) error {
+		return snap.Handle((*snapHandler)(full.handler), peer)
+	})
+	// Wait a bit for the above handlers to start
+	time.Sleep(250 * time.Millisecond)
+
+	// Check that snap sync was disabled
+	if err := empty.handler.downloader.BeaconSync(full.chain.CurrentBlock(), nil); err != nil {
+		t.Fatal("sync failed:", err)
+	}
+	// Snap sync and mode switching happen asynchronously, poll for completion.
+	timeout := time.NewTimer(15 * time.Second)
+	tick := time.NewTicker(100 * time.Millisecond)
+	defer timeout.Stop()
+	defer tick.Stop()
+
+	for {
+		select {
+		case <-timeout.C:
+			t.Fatalf("snap sync not disabled after successful synchronisation")
+		case <-tick.C:
+			if empty.handler.synced.Load() && empty.handler.downloader.ConfigSyncMode() == silaconfig.FullSync {
+				return
+			}
+		}
+	}
+}

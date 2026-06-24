@@ -1,0 +1,13 @@
+// -*- mode: go -*-
+
+package test
+
+import (
+       eth1 "github.com/sila-org/sila/sila"
+       sila "github.com/sila-org/sila/sila/protocols/sila"
+)
+
+type Test struct {
+    A eth1.MinerAPI
+    B sila.GetReceiptsPacket69
+}

@@ -1,0 +1,5 @@
+build/bin/{{.BinaryName}} usr/bin
+{{- if eq .BinaryName "sila" }}
+build/deb/sila/completions/bash/sila etc/bash_completion.d
+build/deb/sila/completions/zsh/_sila usr/share/zsh/vendor-completions
+{{end -}}
