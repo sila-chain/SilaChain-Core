@@ -253,7 +253,7 @@ func newByzantiumInstructionSet() JumpTable {
 // SIP 158 a.k.a Spurious Dragon
 func newSpuriousDragonInstructionSet() JumpTable {
 	instructionSet := newTangerineWhistleInstructionSet()
-	instructionSet[EXP].dynamicGas = gasExpEIP158
+	instructionSet[EXP].dynamicGas = gasExpSIP158
 	return validate(instructionSet)
 }
 

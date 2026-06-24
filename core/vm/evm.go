@@ -190,7 +190,7 @@ func NewEVM(blockCtx BlockContext, statedb StateDB, chainConfig *params.ChainCon
 		evm.table = copyJumpTable(evm.table)
 	}
 	for _, sip := range evm.Config.ExtraSips {
-		if err := EnableEIP(sip, evm.table); err != nil {
+		if err := EnableSIP(sip, evm.table); err != nil {
 			// Disable it, so caller can check if it's activated or not
 			log.Error("SIP activation failed", "sip", sip, "error", err)
 		} else {
@@ -525,7 +525,7 @@ func (evm *EVM) create(caller common.Address, code []byte, gas GasBudget, value 
 	contractHash := evm.StateDB.GetCodeHash(address)
 	if evm.StateDB.GetNonce(address) != 0 ||
 		(contractHash != (common.Hash{}) && contractHash != types.EmptyCodeHash) || // non-empty code
-		isEIP7610RejectedAccount(evm.ChainConfig().ChainID, address, evm.chainRules.IsSIP158) {
+		isSIP7610RejectedAccount(evm.ChainConfig().ChainID, address, evm.chainRules.IsSIP158) {
 		halt := gas.ExitHalt()
 		if evm.Config.Tracer.HasGasHook() {
 			evm.Config.Tracer.EmitGasChange(gas.AsTracing(), halt.AsTracing(), tracing.GasChangeCallFailedExecution)

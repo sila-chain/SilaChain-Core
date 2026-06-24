@@ -237,11 +237,11 @@ func BenchmarkPrecompiledIdentity(bench *testing.B) {
 func TestPrecompiledModExp(t *testing.T)      { testJson("modexp", "05", t) }
 func BenchmarkPrecompiledModExp(b *testing.B) { benchJson("modexp", "05", b) }
 
-func TestPrecompiledModExpEip2565(t *testing.T)      { testJson("modexp_sip2565", "f5", t) }
-func BenchmarkPrecompiledModExpEip2565(b *testing.B) { benchJson("modexp_sip2565", "f5", b) }
+func TestPrecompiledModExpSip2565(t *testing.T)      { testJson("modexp_sip2565", "f5", t) }
+func BenchmarkPrecompiledModExpSip2565(b *testing.B) { benchJson("modexp_sip2565", "f5", b) }
 
-func TestPrecompiledModExpEip7883(t *testing.T)      { testJson("modexp_sip7883", "f6", t) }
-func BenchmarkPrecompiledModExpEip7883(b *testing.B) { benchJson("modexp_sip7883", "f6", b) }
+func TestPrecompiledModExpSip7883(t *testing.T)      { testJson("modexp_sip7883", "f6", t) }
+func BenchmarkPrecompiledModExpSip7883(b *testing.B) { benchJson("modexp_sip7883", "f6", b) }
 
 // Tests the sample inputs from the elliptic curve addition SIP 213.
 func TestPrecompiledBn256Add(t *testing.T)      { testJson("bn256Add", "06", t) }
@@ -256,18 +256,18 @@ func TestPrecompiledModExpOOG(t *testing.T) {
 	for _, test := range modexpTests {
 		testPrecompiledOOG("05", test, t)
 	}
-	modexpTestsEIP2565, err := loadJson("modexp_sip2565")
+	modexpTestsSIP2565, err := loadJson("modexp_sip2565")
 	if err != nil {
 		t.Fatal(err)
 	}
-	for _, test := range modexpTestsEIP2565 {
+	for _, test := range modexpTestsSIP2565 {
 		testPrecompiledOOG("f5", test, t)
 	}
-	modexpTestsEIP7883, err := loadJson("modexp_sip7883")
+	modexpTestsSIP7883, err := loadJson("modexp_sip7883")
 	if err != nil {
 		t.Fatal(err)
 	}
-	for _, test := range modexpTestsEIP7883 {
+	for _, test := range modexpTestsSIP7883 {
 		testPrecompiledOOG("f6", test, t)
 	}
 	gasCostTest := precompiledTest{

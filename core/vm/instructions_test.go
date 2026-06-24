@@ -1028,7 +1028,7 @@ func TestOpCLZ(t *testing.T) {
 	}
 }
 
-func TestEIP8024_Execution(t *testing.T) {
+func TestSIP8024_Execution(t *testing.T) {
 	evm := NewEVM(BlockContext{}, nil, params.TestChainConfig, Config{})
 
 	tests := []struct {

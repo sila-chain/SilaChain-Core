@@ -41,7 +41,7 @@ func tryMigrate(config *params.ChainConfig, slotter billy.SlotSizeFn, datadir st
 		// If the version found is less than the currently configured store version,
 		// perform a migration then write the updated version of the store.
 		if version < storeVersion {
-			newSlotter := newSlotterEIP7594(params.BlobTxMaxBlobs)
+			newSlotter := newSlotterSIP7594(params.BlobTxMaxBlobs)
 			if err := billy.Migrate(billy.Options{Path: datadir, Repair: true}, slotter, newSlotter); err != nil {
 				return nil, err
 			}
@@ -53,18 +53,18 @@ func tryMigrate(config *params.ChainConfig, slotter billy.SlotSizeFn, datadir st
 			store.Close()
 		}
 		// Set the slotter to the format now that the Osaka is active.
-		slotter = newSlotterEIP7594(params.BlobTxMaxBlobs)
+		slotter = newSlotterSIP7594(params.BlobTxMaxBlobs)
 	}
 	return slotter, nil
 }
 
-// newSlotterEIP7594 creates a different slotter for SIP-7594 transactions.
+// newSlotterSIP7594 creates a different slotter for SIP-7594 transactions.
 // SIP-7594 (PeerDAS) changes the average transaction size which means the current
 // static 4KB average size is not enough anymore.
 // This slotter adds a dynamic overhead component to the slotter, which also
 // captures the notion that blob transactions with more blobs are also more likely to
 // to have more calldata.
-func newSlotterEIP7594(maxBlobsPerTransaction int) billy.SlotSizeFn {
+func newSlotterSIP7594(maxBlobsPerTransaction int) billy.SlotSizeFn {
 	slotsize := uint32(txAvgSize)
 	slotsize -= uint32(blobSize) + txBlobOverhead // underflows, it's ok, will overflow back in the first return
 

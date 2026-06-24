@@ -82,7 +82,7 @@ var sip2200Tests = []struct {
 	{1, 2307, "0x6001600055", 806, 0, nil},                                     // 1 -> 1 (2301 sentry + 2xPUSH)
 }
 
-func TestEIP2200(t *testing.T) {
+func TestSIP2200(t *testing.T) {
 	for i, tt := range sip2200Tests {
 		address := common.BytesToAddress([]byte("contract"))
 

@@ -53,7 +53,7 @@ func gasExtCodeHash4762(evm *EVM, contract *Contract, stack *Stack, mem *Memory,
 	return GasCosts{RegularGas: evm.AccessEvents.CodeHashGas(address, false, contract.Gas.RegularGas, true)}, nil
 }
 
-func makeCallVariantGasEIP4762(oldCalculator gasFunc, withTransferCosts bool) gasFunc {
+func makeCallVariantGasSIP4762(oldCalculator gasFunc, withTransferCosts bool) gasFunc {
 	return func(evm *EVM, contract *Contract, stack *Stack, mem *Memory, memorySize uint64) (GasCosts, error) {
 		var (
 			target           = common.Address(stack.back(1).Bytes20())
@@ -102,13 +102,13 @@ func makeCallVariantGasEIP4762(oldCalculator gasFunc, withTransferCosts bool) ga
 }
 
 var (
-	gasCallEIP4762         = makeCallVariantGasEIP4762(gasCall, true)
-	gasCallCodeEIP4762     = makeCallVariantGasEIP4762(gasCallCode, false)
-	gasStaticCallEIP4762   = makeCallVariantGasEIP4762(gasStaticCall, false)
-	gasDelegateCallEIP4762 = makeCallVariantGasEIP4762(gasDelegateCall, false)
+	gasCallSIP4762         = makeCallVariantGasSIP4762(gasCall, true)
+	gasCallCodeSIP4762     = makeCallVariantGasSIP4762(gasCallCode, false)
+	gasStaticCallSIP4762   = makeCallVariantGasSIP4762(gasStaticCall, false)
+	gasDelegateCallSIP4762 = makeCallVariantGasSIP4762(gasDelegateCall, false)
 )
 
-func gasSelfdestructEIP4762(evm *EVM, contract *Contract, stack *Stack, mem *Memory, memorySize uint64) (GasCosts, error) {
+func gasSelfdestructSIP4762(evm *EVM, contract *Contract, stack *Stack, mem *Memory, memorySize uint64) (GasCosts, error) {
 	beneficiaryAddr := common.Address(stack.peek().Bytes20())
 	if _, isPrecompile := evm.precompile(beneficiaryAddr); isPrecompile {
 		return GasCosts{}, nil
@@ -160,7 +160,7 @@ func gasSelfdestructEIP4762(evm *EVM, contract *Contract, stack *Stack, mem *Mem
 	return GasCosts{RegularGas: statelessGas}, nil
 }
 
-func gasCodeCopyEip4762(evm *EVM, contract *Contract, stack *Stack, mem *Memory, memorySize uint64) (GasCosts, error) {
+func gasCodeCopySip4762(evm *EVM, contract *Contract, stack *Stack, mem *Memory, memorySize uint64) (GasCosts, error) {
 	gasCost, err := gasCodeCopy(evm, contract, stack, mem, memorySize)
 	if err != nil {
 		return GasCosts{}, err
@@ -183,7 +183,7 @@ func gasCodeCopyEip4762(evm *EVM, contract *Contract, stack *Stack, mem *Memory,
 	return GasCosts{RegularGas: gas}, nil
 }
 
-func gasExtCodeCopyEIP4762(evm *EVM, contract *Contract, stack *Stack, mem *Memory, memorySize uint64) (GasCosts, error) {
+func gasExtCodeCopySIP4762(evm *EVM, contract *Contract, stack *Stack, mem *Memory, memorySize uint64) (GasCosts, error) {
 	// memory expansion first (dynamic part of pre-2929 implementation)
 	gasCost, err := gasExtCodeCopy(evm, contract, stack, mem, memorySize)
 	if err != nil {

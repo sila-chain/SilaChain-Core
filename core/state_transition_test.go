@@ -152,8 +152,8 @@ func TestIntrinsicGas(t *testing.T) {
 		authList    []types.SetCodeAuthorization
 		creation    bool
 		isHomestead bool
-		isEIP2028   bool
-		isEIP3860   bool
+		isSIP2028   bool
+		isSIP3860   bool
 		isAmsterdam bool
 		want        vm.GasCosts
 	}{
@@ -183,21 +183,21 @@ func TestIntrinsicGas(t *testing.T) {
 		{
 			name:      "istanbul/non-zero-data",
 			data:      bytes.Repeat([]byte{0xff}, 100),
-			isEIP2028: true,
+			isSIP2028: true,
 			// 100 nz bytes * 16 (post-SIP2028)
 			want: vm.GasCosts{RegularGas: params.TxGas + 100*params.TxDataNonZeroGasSIP2028},
 		},
 		{
 			name:      "istanbul/zero-data",
 			data:      bytes.Repeat([]byte{0x00}, 100),
-			isEIP2028: true,
+			isSIP2028: true,
 			// 100 zero bytes * 4
 			want: vm.GasCosts{RegularGas: params.TxGas + 100*params.TxDataZeroGas},
 		},
 		{
 			name:      "istanbul/mixed-data",
 			data:      append(bytes.Repeat([]byte{0x00}, 50), bytes.Repeat([]byte{0xff}, 50)...),
-			isEIP2028: true,
+			isSIP2028: true,
 			want:      vm.GasCosts{RegularGas: params.TxGas + 50*params.TxDataZeroGas + 50*params.TxDataNonZeroGasSIP2028},
 		},
 		{
@@ -205,8 +205,8 @@ func TestIntrinsicGas(t *testing.T) {
 			data:        bytes.Repeat([]byte{0x00}, 64), // 2 words
 			creation:    true,
 			isHomestead: true,
-			isEIP2028:   true,
-			isEIP3860:   true,
+			isSIP2028:   true,
+			isSIP3860:   true,
 			// TxGasContractCreation + 64 zero bytes * 4 + 2 words * 2
 			want: vm.GasCosts{RegularGas: params.TxGasContractCreation + 64*params.TxDataZeroGas + 2*params.InitCodeWordGas},
 		},
@@ -215,8 +215,8 @@ func TestIntrinsicGas(t *testing.T) {
 			data:        bytes.Repeat([]byte{0x00}, 33), // 2 words (rounded up)
 			creation:    true,
 			isHomestead: true,
-			isEIP2028:   true,
-			isEIP3860:   true,
+			isSIP2028:   true,
+			isSIP3860:   true,
 			want:        vm.GasCosts{RegularGas: params.TxGasContractCreation + 33*params.TxDataZeroGas + 2*params.InitCodeWordGas},
 		},
 		{
@@ -225,7 +225,7 @@ func TestIntrinsicGas(t *testing.T) {
 				{Address: addr1, StorageKeys: []common.Hash{key1, key2}},
 				{Address: addr2, StorageKeys: []common.Hash{key1}},
 			},
-			isEIP2028: true,
+			isSIP2028: true,
 			// 2 addrs * 2400 + 3 keys * 1900
 			want: vm.GasCosts{RegularGas: params.TxGas + 2*params.TxAccessListAddressGas + 3*params.TxAccessListStorageKeyGas},
 		},
@@ -235,7 +235,7 @@ func TestIntrinsicGas(t *testing.T) {
 				{Address: addr1, StorageKeys: []common.Hash{key1, key2}},
 				{Address: addr2, StorageKeys: []common.Hash{key1}},
 			},
-			isEIP2028:   true,
+			isSIP2028:   true,
 			isAmsterdam: true,
 			// base access-list charge + SIP-7981 extra
 			want: vm.GasCosts{RegularGas: params.TxGas +
@@ -249,7 +249,7 @@ func TestIntrinsicGas(t *testing.T) {
 				{Address: addr2},
 				{Address: addr1},
 			},
-			isEIP2028: true,
+			isSIP2028: true,
 			// 3 auths * 25000 (pre-Amsterdam: CallNewAccountGas per auth tuple)
 			want: vm.GasCosts{RegularGas: params.TxGas + 3*params.CallNewAccountGas},
 		},
@@ -257,7 +257,7 @@ func TestIntrinsicGas(t *testing.T) {
 			name:        "amsterdam/contract-creation-empty",
 			creation:    true,
 			isHomestead: true,
-			isEIP2028:   true,
+			isSIP2028:   true,
 			isAmsterdam: true,
 			// SIP-8037: creation regular gas is TxGas + CreateGasAmsterdam (not TxGasContractCreation),
 			// and account-creation cost is moved to state gas.
@@ -271,8 +271,8 @@ func TestIntrinsicGas(t *testing.T) {
 			data:        bytes.Repeat([]byte{0x00}, 64), // 2 words of init code
 			creation:    true,
 			isHomestead: true,
-			isEIP2028:   true,
-			isEIP3860:   true, // Shanghai gates init-code word gas
+			isSIP2028:   true,
+			isSIP3860:   true, // Shanghai gates init-code word gas
 			isAmsterdam: true,
 			want: vm.GasCosts{
 				RegularGas: params.TxGas + params.CreateGasAmsterdam +
@@ -288,8 +288,8 @@ func TestIntrinsicGas(t *testing.T) {
 			},
 			creation:    true,
 			isHomestead: true,
-			isEIP2028:   true,
-			isEIP3860:   true,
+			isSIP2028:   true,
+			isSIP3860:   true,
 			isAmsterdam: true,
 			want: vm.GasCosts{
 				RegularGas: params.TxGas + params.CreateGasAmsterdam +
@@ -308,7 +308,7 @@ func TestIntrinsicGas(t *testing.T) {
 			authList: []types.SetCodeAuthorization{
 				{Address: addr2},
 			},
-			isEIP2028:   true,
+			isSIP2028:   true,
 			isAmsterdam: true,
 			// SIP-8037 splits the auth-tuple charge into regular + state gas:
 			//   regular: TxAuthTupleRegularGas (7500) per auth
@@ -327,8 +327,8 @@ func TestIntrinsicGas(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			rules := params.Rules{
 				IsHomestead: tt.isHomestead,
-				IsIstanbul:  tt.isEIP2028,
-				IsShanghai:  tt.isEIP3860,
+				IsIstanbul:  tt.isSIP2028,
+				IsShanghai:  tt.isSIP3860,
 				IsAmsterdam: tt.isAmsterdam,
 			}
 			got, err := IntrinsicGas(tt.data, tt.accessList, tt.authList,

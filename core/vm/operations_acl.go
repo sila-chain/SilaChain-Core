@@ -93,12 +93,12 @@ func makeGasSStoreFunc(clearingRefund uint64) gasFunc {
 	}
 }
 
-// gasSLoadEIP2929 calculates dynamic gas for SLOAD according to SIP-2929
+// gasSLoadSIP2929 calculates dynamic gas for SLOAD according to SIP-2929
 // For SLOAD, if the (address, storage_key) pair (where address is the address of the contract
 // whose storage is being read) is not yet in accessed_storage_keys,
 // charge 2100 gas and add the pair to accessed_storage_keys.
 // If the pair is already in accessed_storage_keys, charge 100 gas.
-func gasSLoadEIP2929(evm *EVM, contract *Contract, stack *Stack, mem *Memory, memorySize uint64) (GasCosts, error) {
+func gasSLoadSIP2929(evm *EVM, contract *Contract, stack *Stack, mem *Memory, memorySize uint64) (GasCosts, error) {
 	loc := stack.peek()
 	slot := common.Hash(loc.Bytes32())
 	// Check slot presence in the access list
@@ -111,12 +111,12 @@ func gasSLoadEIP2929(evm *EVM, contract *Contract, stack *Stack, mem *Memory, me
 	return GasCosts{RegularGas: params.WarmStorageReadCostSIP2929}, nil
 }
 
-// gasExtCodeCopyEIP2929 implements extcodecopy according to SIP-2929
+// gasExtCodeCopySIP2929 implements extcodecopy according to SIP-2929
 // SIP spec:
 // > If the target is not in accessed_addresses,
 // > charge COLD_ACCOUNT_ACCESS_COST gas, and add the address to accessed_addresses.
 // > Otherwise, charge WARM_STORAGE_READ_COST gas.
-func gasExtCodeCopyEIP2929(evm *EVM, contract *Contract, stack *Stack, mem *Memory, memorySize uint64) (GasCosts, error) {
+func gasExtCodeCopySIP2929(evm *EVM, contract *Contract, stack *Stack, mem *Memory, memorySize uint64) (GasCosts, error) {
 	// memory expansion first (dynamic part of pre-2929 implementation)
 	gasCost, err := gasExtCodeCopy(evm, contract, stack, mem, memorySize)
 	if err != nil {
@@ -137,14 +137,14 @@ func gasExtCodeCopyEIP2929(evm *EVM, contract *Contract, stack *Stack, mem *Memo
 	return GasCosts{RegularGas: gas}, nil
 }
 
-// gasEip2929AccountCheck checks whether the first stack item (as address) is present in the access list.
+// gasSip2929AccountCheck checks whether the first stack item (as address) is present in the access list.
 // If it is, this method returns '0', otherwise 'cold-warm' gas, presuming that the opcode using it
 // is also using 'warm' as constant factor.
 // This method is used by:
 // - extcodehash,
 // - extcodesize,
 // - (ext) balance
-func gasEip2929AccountCheck(evm *EVM, contract *Contract, stack *Stack, mem *Memory, memorySize uint64) (GasCosts, error) {
+func gasSip2929AccountCheck(evm *EVM, contract *Contract, stack *Stack, mem *Memory, memorySize uint64) (GasCosts, error) {
 	addr := common.Address(stack.peek().Bytes20())
 	// Check slot presence in the access list
 	if !evm.StateDB.AddressInAccessList(addr) {
@@ -156,7 +156,7 @@ func gasEip2929AccountCheck(evm *EVM, contract *Contract, stack *Stack, mem *Mem
 	return GasCosts{}, nil
 }
 
-func makeCallVariantGasCallEIP2929(oldCalculator gasFunc, addressPosition int) gasFunc {
+func makeCallVariantGasCallSIP2929(oldCalculator gasFunc, addressPosition int) gasFunc {
 	return func(evm *EVM, contract *Contract, stack *Stack, mem *Memory, memorySize uint64) (GasCosts, error) {
 		addr := common.Address(stack.back(addressPosition).Bytes20())
 		// Check slot presence in the access list
@@ -197,15 +197,15 @@ func makeCallVariantGasCallEIP2929(oldCalculator gasFunc, addressPosition int) g
 }
 
 var (
-	gasCallEIP2929         = makeCallVariantGasCallEIP2929(gasCall, 1)
-	gasDelegateCallEIP2929 = makeCallVariantGasCallEIP2929(gasDelegateCall, 1)
-	gasStaticCallEIP2929   = makeCallVariantGasCallEIP2929(gasStaticCall, 1)
-	gasCallCodeEIP2929     = makeCallVariantGasCallEIP2929(gasCallCode, 1)
-	gasSelfdestructEIP2929 = makeSelfdestructGasFn(true)
-	// gasSelfdestructEIP3529 implements the changes in SIP-3529 (no refunds)
-	gasSelfdestructEIP3529 = makeSelfdestructGasFn(false)
+	gasCallSIP2929         = makeCallVariantGasCallSIP2929(gasCall, 1)
+	gasDelegateCallSIP2929 = makeCallVariantGasCallSIP2929(gasDelegateCall, 1)
+	gasStaticCallSIP2929   = makeCallVariantGasCallSIP2929(gasStaticCall, 1)
+	gasCallCodeSIP2929     = makeCallVariantGasCallSIP2929(gasCallCode, 1)
+	gasSelfdestructSIP2929 = makeSelfdestructGasFn(true)
+	// gasSelfdestructSIP3529 implements the changes in SIP-3529 (no refunds)
+	gasSelfdestructSIP3529 = makeSelfdestructGasFn(false)
 
-	// gasSStoreEIP2929 implements gas cost for SSTORE according to SIP-2929
+	// gasSStoreSIP2929 implements gas cost for SSTORE according to SIP-2929
 	//
 	// When calling SSTORE, check if the (address, storage_key) pair is in accessed_storage_keys.
 	// If it is not, charge an additional COLD_SLOAD_COST gas, and add the pair to accessed_storage_keys.
@@ -216,12 +216,12 @@ var (
 	// SSTORE_RESET_GAS 	5000 	5000 - COLD_SLOAD_COST
 	//
 	//The other parameters defined in SIP 2200 are unchanged.
-	// see gasSStoreEIP2200(...) in core/vm/gas_table.go for more info about how SIP 2200 is specified
-	gasSStoreEIP2929 = makeGasSStoreFunc(params.SstoreClearsScheduleRefundSIP2200)
+	// see gasSStoreSIP2200(...) in core/vm/gas_table.go for more info about how SIP 2200 is specified
+	gasSStoreSIP2929 = makeGasSStoreFunc(params.SstoreClearsScheduleRefundSIP2200)
 
-	// gasSStoreEIP3529 implements gas cost for SSTORE according to SIP-3529
+	// gasSStoreSIP3529 implements gas cost for SSTORE according to SIP-3529
 	// Replace `SSTORE_CLEARS_SCHEDULE` with `SSTORE_RESET_GAS + ACCESS_LIST_STORAGE_KEY_COST` (4,800)
-	gasSStoreEIP3529 = makeGasSStoreFunc(params.SstoreClearsScheduleRefundSIP3529)
+	gasSStoreSIP3529 = makeGasSStoreFunc(params.SstoreClearsScheduleRefundSIP3529)
 )
 
 // makeSelfdestructGasFn can create the selfdestruct dynamic gas function for SIP-2929 and SIP-3529
@@ -258,14 +258,14 @@ func makeSelfdestructGasFn(refundsEnabled bool) gasFunc {
 }
 
 var (
-	innerGasCallEIP7702    = makeCallVariantGasCallEIP7702(gasCallIntrinsic)
-	gasDelegateCallEIP7702 = makeCallVariantGasCallEIP7702(gasDelegateCallIntrinsic)
-	gasStaticCallEIP7702   = makeCallVariantGasCallEIP7702(gasStaticCallIntrinsic)
-	gasCallCodeEIP7702     = makeCallVariantGasCallEIP7702(gasCallCodeIntrinsic)
-	innerGasCallEIP8037    = makeCallVariantGasCallEIP8037(regularGasCall8037, stateGasCall8037)
+	innerGasCallSIP7702    = makeCallVariantGasCallSIP7702(gasCallIntrinsic)
+	gasDelegateCallSIP7702 = makeCallVariantGasCallSIP7702(gasDelegateCallIntrinsic)
+	gasStaticCallSIP7702   = makeCallVariantGasCallSIP7702(gasStaticCallIntrinsic)
+	gasCallCodeSIP7702     = makeCallVariantGasCallSIP7702(gasCallCodeIntrinsic)
+	innerGasCallSIP8037    = makeCallVariantGasCallSIP8037(regularGasCall8037, stateGasCall8037)
 )
 
-func gasCallEIP7702(evm *EVM, contract *Contract, stack *Stack, mem *Memory, memorySize uint64) (GasCosts, error) {
+func gasCallSIP7702(evm *EVM, contract *Contract, stack *Stack, mem *Memory, memorySize uint64) (GasCosts, error) {
 	// Return early if this call attempts to transfer value in a static context.
 	// Although it's checked in `gasCall`, SIP-7702 loads the target's code before
 	// to determine if it is resolving a delegation. This could incorrectly record
@@ -274,18 +274,18 @@ func gasCallEIP7702(evm *EVM, contract *Contract, stack *Stack, mem *Memory, mem
 	if evm.readOnly && transfersValue {
 		return GasCosts{}, ErrWriteProtection
 	}
-	return innerGasCallEIP7702(evm, contract, stack, mem, memorySize)
+	return innerGasCallSIP7702(evm, contract, stack, mem, memorySize)
 }
 
-func gasCallEIP8037(evm *EVM, contract *Contract, stack *Stack, mem *Memory, memorySize uint64) (GasCosts, error) {
+func gasCallSIP8037(evm *EVM, contract *Contract, stack *Stack, mem *Memory, memorySize uint64) (GasCosts, error) {
 	transfersValue := !stack.back(2).IsZero()
 	if evm.readOnly && transfersValue {
 		return GasCosts{}, ErrWriteProtection
 	}
-	return innerGasCallEIP8037(evm, contract, stack, mem, memorySize)
+	return innerGasCallSIP8037(evm, contract, stack, mem, memorySize)
 }
 
-func makeCallVariantGasCallEIP7702(intrinsicFunc intrinsicGasFunc) gasFunc {
+func makeCallVariantGasCallSIP7702(intrinsicFunc intrinsicGasFunc) gasFunc {
 	return func(evm *EVM, contract *Contract, stack *Stack, mem *Memory, memorySize uint64) (GasCosts, error) {
 		var (
 			sip2929Cost uint64
@@ -372,11 +372,11 @@ func makeCallVariantGasCallEIP7702(intrinsicFunc intrinsicGasFunc) gasFunc {
 	}
 }
 
-// makeCallVariantGasCallEIP8037 creates a call gas function for Amsterdam (SIP-8037).
+// makeCallVariantGasCallSIP8037 creates a call gas function for Amsterdam (SIP-8037).
 // It extends the SIP-7702 pattern with state gas handling and GasUsed tracking.
 // intrinsicFunc computes the regular gas (memory + transfer, no new account creation).
 // stateGasFunc computes the state gas (new account creation as state gas).
-func makeCallVariantGasCallEIP8037(regularFunc regularGasFunc, stateGasFunc stateGasFunc) gasFunc {
+func makeCallVariantGasCallSIP8037(regularFunc regularGasFunc, stateGasFunc stateGasFunc) gasFunc {
 	return func(evm *EVM, contract *Contract, stack *Stack, mem *Memory, memorySize uint64) (GasCosts, error) {
 		var (
 			sip2929Cost uint64

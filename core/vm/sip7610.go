@@ -74,7 +74,7 @@ var sip7610AccountSets = func() map[uint64]map[common.Address]struct{} {
 	return sets
 }()
 
-// isEIP7610RejectedAccount reports whether the account identified by the
+// isSIP7610RejectedAccount reports whether the account identified by the
 // address is eligible for contract deployment rejection due to having
 // non-empty storage.
 //
@@ -86,9 +86,9 @@ var sip7610AccountSets = func() map[uint64]map[common.Address]struct{} {
 // against potential address collisions in the future. Chains that are not
 // registered in sip7610Accounts are assumed to have no rejected accounts,
 // and false is returned for them.
-func isEIP7610RejectedAccount(chainID *big.Int, addr common.Address, isEIP158 bool) bool {
+func isSIP7610RejectedAccount(chainID *big.Int, addr common.Address, isSIP158 bool) bool {
 	// Short circuit for blocks prior to SIP-158.
-	if !isEIP158 {
+	if !isSIP158 {
 		return false
 	}
 	// Unknown chains fall through as a nil set; the second lookup then

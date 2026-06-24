@@ -477,7 +477,7 @@ func TestOpenDrops(t *testing.T) {
 	storage := t.TempDir()
 
 	os.MkdirAll(filepath.Join(storage, pendingTransactionStore), 0700)
-	store, _ := billy.Open(billy.Options{Path: filepath.Join(storage, pendingTransactionStore)}, newSlotterEIP7594(testMaxBlobsPerBlock), nil)
+	store, _ := billy.Open(billy.Options{Path: filepath.Join(storage, pendingTransactionStore)}, newSlotterSIP7594(testMaxBlobsPerBlock), nil)
 
 	// Insert a malformed transaction to verify that decoding errors (or format
 	// changes) are handled gracefully (case 1)
@@ -799,7 +799,7 @@ func TestOpenIndex(t *testing.T) {
 	storage := t.TempDir()
 
 	os.MkdirAll(filepath.Join(storage, pendingTransactionStore), 0700)
-	store, _ := billy.Open(billy.Options{Path: filepath.Join(storage, pendingTransactionStore)}, newSlotterEIP7594(testMaxBlobsPerBlock), nil)
+	store, _ := billy.Open(billy.Options{Path: filepath.Join(storage, pendingTransactionStore)}, newSlotterSIP7594(testMaxBlobsPerBlock), nil)
 
 	// Insert a sequence of transactions with varying price points to check that
 	// the cumulative minimum will be maintained.
@@ -887,7 +887,7 @@ func TestOpenHeap(t *testing.T) {
 	storage := t.TempDir()
 
 	os.MkdirAll(filepath.Join(storage, pendingTransactionStore), 0700)
-	store, _ := billy.Open(billy.Options{Path: filepath.Join(storage, pendingTransactionStore)}, newSlotterEIP7594(testMaxBlobsPerBlock), nil)
+	store, _ := billy.Open(billy.Options{Path: filepath.Join(storage, pendingTransactionStore)}, newSlotterSIP7594(testMaxBlobsPerBlock), nil)
 
 	// Insert a few transactions from a few accounts. To remove randomness from
 	// the heap initialization, use a deterministic account/tx/priority ordering.
@@ -973,7 +973,7 @@ func TestOpenCap(t *testing.T) {
 	storage := t.TempDir()
 
 	os.MkdirAll(filepath.Join(storage, pendingTransactionStore), 0700)
-	store, _ := billy.Open(billy.Options{Path: filepath.Join(storage, pendingTransactionStore)}, newSlotterEIP7594(testMaxBlobsPerBlock), nil)
+	store, _ := billy.Open(billy.Options{Path: filepath.Join(storage, pendingTransactionStore)}, newSlotterSIP7594(testMaxBlobsPerBlock), nil)
 
 	// Insert a few transactions from a few accounts
 	var (
@@ -1062,7 +1062,7 @@ func TestChangingSlotterSize(t *testing.T) {
 	storage := t.TempDir()
 
 	os.MkdirAll(filepath.Join(storage, pendingTransactionStore), 0700)
-	store, _ := billy.Open(billy.Options{Path: filepath.Join(storage, pendingTransactionStore)}, newSlotterEIP7594(6), nil)
+	store, _ := billy.Open(billy.Options{Path: filepath.Join(storage, pendingTransactionStore)}, newSlotterSIP7594(6), nil)
 
 	// Create transactions from a few accounts.
 	var (
@@ -1164,7 +1164,7 @@ func TestBillyMigration(t *testing.T) {
 	os.MkdirAll(filepath.Join(storage, pendingTransactionStore), 0700)
 	os.MkdirAll(filepath.Join(storage, limboedTransactionStore), 0700)
 	// Create the billy with the old slotter
-	oldSlotter := newSlotterEIP7594(6)
+	oldSlotter := newSlotterSIP7594(6)
 	store, _ := billy.Open(billy.Options{Path: filepath.Join(storage, pendingTransactionStore)}, oldSlotter, nil)
 
 	// Create transactions from a few accounts.
@@ -1273,7 +1273,7 @@ func TestLegacyTxConversion(t *testing.T) {
 	// Initialize the pending store with two blob transactions encoded in the
 	// legacy format.
 	queuedir := filepath.Join(storage, pendingTransactionStore)
-	store, err := billy.Open(billy.Options{Path: queuedir}, newSlotterEIP7594(testMaxBlobsPerBlock), nil)
+	store, err := billy.Open(billy.Options{Path: queuedir}, newSlotterSIP7594(testMaxBlobsPerBlock), nil)
 	if err != nil {
 		t.Fatalf("failed to open billy: %v", err)
 	}
@@ -1785,7 +1785,7 @@ func TestAdd(t *testing.T) {
 		storage := filepath.Join(t.TempDir(), fmt.Sprintf("test-%d", i))
 
 		os.MkdirAll(filepath.Join(storage, pendingTransactionStore), 0700)
-		store, _ := billy.Open(billy.Options{Path: filepath.Join(storage, pendingTransactionStore)}, newSlotterEIP7594(testMaxBlobsPerBlock), nil)
+		store, _ := billy.Open(billy.Options{Path: filepath.Join(storage, pendingTransactionStore)}, newSlotterSIP7594(testMaxBlobsPerBlock), nil)
 
 		// Insert the seed transactions for the pool startup
 		var (
@@ -1896,7 +1896,7 @@ func TestGetBlobs(t *testing.T) {
 	storage := t.TempDir()
 
 	os.MkdirAll(filepath.Join(storage, pendingTransactionStore), 0700)
-	store, _ := billy.Open(billy.Options{Path: filepath.Join(storage, pendingTransactionStore)}, newSlotterEIP7594(params.BlobTxMaxBlobs), nil)
+	store, _ := billy.Open(billy.Options{Path: filepath.Join(storage, pendingTransactionStore)}, newSlotterSIP7594(params.BlobTxMaxBlobs), nil)
 
 	// Create transactions from a few accounts.
 	var (

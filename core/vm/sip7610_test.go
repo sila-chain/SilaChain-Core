@@ -24,7 +24,7 @@ import (
 	"github.com/sila-org/sila/params"
 )
 
-func Example_mainnetEIP7610Accounts() {
+func Example_mainnetSIP7610Accounts() {
 	list := slices.Clone(sip7610Accounts[params.SilaMainnetChainConfig.ChainID.Uint64()])
 	slices.SortFunc(list, common.Address.Cmp)
 	for _, addr := range list {

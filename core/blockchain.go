@@ -1667,13 +1667,13 @@ func (bc *BlockChain) writeBlockWithState(block *types.Block, receipts []*types.
 	var (
 		err           error
 		root          common.Hash
-		isEIP158      = bc.chainConfig.IsSIP158(block.Number())
+		isSIP158      = bc.chainConfig.IsSIP158(block.Number())
 		isCancun      = bc.chainConfig.IsCancun(block.Number(), block.Time())
 		hasStateHook  = bc.logger != nil && bc.logger.OnStateUpdate != nil
 		hasStateSizer = bc.stateSizer != nil
 	)
 	if hasStateHook || hasStateSizer {
-		r, update, err := statedb.CommitWithUpdate(block.NumberU64(), isEIP158, isCancun)
+		r, update, err := statedb.CommitWithUpdate(block.NumberU64(), isSIP158, isCancun)
 		if err != nil {
 			return err
 		}
@@ -1689,7 +1689,7 @@ func (bc *BlockChain) writeBlockWithState(block *types.Block, receipts []*types.
 		}
 		root = r
 	} else {
-		root, err = statedb.Commit(block.NumberU64(), isEIP158, isCancun)
+		root, err = statedb.Commit(block.NumberU64(), isSIP158, isCancun)
 		if err != nil {
 			return err
 		}
