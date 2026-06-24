@@ -32,7 +32,7 @@ import (
 	"github.com/sila-org/sila/common/hexutil"
 	"github.com/sila-org/sila/common/math"
 	"github.com/sila-org/sila/consensus"
-	"github.com/sila-org/sila/consensus/misc/eip1559"
+	"github.com/sila-org/sila/consensus/misc/sip1559"
 	"github.com/sila-org/sila/core"
 	"github.com/sila-org/sila/core/forkid"
 	"github.com/sila-org/sila/core/state"
@@ -1203,7 +1203,7 @@ func NewRPCPendingTransaction(tx *types.Transaction, current *types.Header, conf
 		blockTime   = uint64(0)
 	)
 	if current != nil {
-		baseFee = eip1559.CalcBaseFee(config, current)
+		baseFee = sip1559.CalcBaseFee(config, current)
 		blockNumber = current.Number.Uint64()
 		blockTime = current.Time
 	}
@@ -1686,7 +1686,7 @@ func (api *TransactionAPI) SendTransaction(ctx context.Context, args Transaction
 		api.nonceLock.LockAddr(args.from())
 		defer api.nonceLock.UnlockAddr(args.from())
 	}
-	if args.IsEIP4844() {
+	if args.IsSIP4844() {
 		return common.Hash{}, errBlobTxNotSupported
 	}
 
@@ -1924,7 +1924,7 @@ func (api *TransactionAPI) SignTransaction(ctx context.Context, args Transaction
 	// If the transaction-to-sign was a blob transaction, then the signed one
 	// no longer retains the blobs, only the blob hashes. In this step, we need
 	// to put back the blob(s).
-	if args.IsEIP4844() {
+	if args.IsSIP4844() {
 		signed = signed.WithBlobTxSidecar(types.NewBlobTxSidecar(sidecarVersion, args.Blobs, args.Commitments, args.Proofs))
 	}
 	data, err := signed.MarshalBinary()

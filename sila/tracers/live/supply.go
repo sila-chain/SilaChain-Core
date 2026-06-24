@@ -25,13 +25,13 @@ import (
 
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/common/hexutil"
-	"github.com/sila-org/sila/consensus/misc/eip4844"
+	"github.com/sila-org/sila/consensus/misc/sip4844"
 	"github.com/sila-org/sila/core/tracing"
 	"github.com/sila-org/sila/core/types"
 	"github.com/sila-org/sila/core/vm"
-	"github.com/sila-org/sila/sila/tracers"
 	"github.com/sila-org/sila/log"
 	"github.com/sila-org/sila/params"
+	"github.com/sila-org/sila/sila/tracers"
 	"gopkg.in/natefinch/lumberjack.v2"
 )
 
@@ -53,14 +53,14 @@ type supplyInfoIssuanceMarshaling struct {
 }
 
 type supplyInfoBurn struct {
-	EIP1559 *big.Int `json:"1559,omitempty"`
+	SIP1559 *big.Int `json:"1559,omitempty"`
 	Blob    *big.Int `json:"blob,omitempty"`
 	Misc    *big.Int `json:"misc,omitempty"`
 }
 
 //go:generate go run github.com/fjl/gencodec -type supplyInfoBurn -field-override supplyInfoBurnMarshaling -out gen_supplyinfoburn.go
 type supplyInfoBurnMarshaling struct {
-	EIP1559 *hexutil.Big
+	SIP1559 *hexutil.Big
 	Blob    *hexutil.Big
 	Misc    *hexutil.Big
 }
@@ -134,7 +134,7 @@ func newSupplyInfo() supplyInfo {
 			Withdrawals:  big.NewInt(0),
 		},
 		Burn: &supplyInfoBurn{
-			EIP1559: big.NewInt(0),
+			SIP1559: big.NewInt(0),
 			Blob:    big.NewInt(0),
 			Misc:    big.NewInt(0),
 		},
@@ -163,12 +163,12 @@ func (s *supplyTracer) onBlockStart(ev tracing.BlockEvent) {
 	// Calculate Burn for this block
 	if ev.Block.BaseFee() != nil {
 		burn := new(big.Int).Mul(new(big.Int).SetUint64(ev.Block.GasUsed()), ev.Block.BaseFee())
-		s.delta.Burn.EIP1559 = burn
+		s.delta.Burn.SIP1559 = burn
 	}
 	// Blob burnt gas
 	if blobGas := ev.Block.BlobGasUsed(); blobGas != nil && *blobGas > 0 && ev.Block.ExcessBlobGas() != nil {
 		var (
-			baseFee = eip4844.CalcBlobFee(s.chainConfig, ev.Block.Header())
+			baseFee = sip4844.CalcBlobFee(s.chainConfig, ev.Block.Header())
 			burn    = new(big.Int).Mul(new(big.Int).SetUint64(*blobGas), baseFee)
 		)
 		s.delta.Burn.Blob = burn
@@ -301,8 +301,8 @@ func (s *supplyTracer) write(data any) {
 		supply.Issuance = nil
 	}
 
-	if supply.Burn.EIP1559.Sign() == 0 {
-		supply.Burn.EIP1559 = nil
+	if supply.Burn.SIP1559.Sign() == 0 {
+		supply.Burn.SIP1559 = nil
 	}
 
 	if supply.Burn.Blob.Sign() == 0 {
@@ -313,7 +313,7 @@ func (s *supplyTracer) write(data any) {
 		supply.Burn.Misc = nil
 	}
 
-	if supply.Burn.EIP1559 == nil && supply.Burn.Blob == nil && supply.Burn.Misc == nil {
+	if supply.Burn.SIP1559 == nil && supply.Burn.Blob == nil && supply.Burn.Misc == nil {
 		supply.Burn = nil
 	}
 

@@ -28,7 +28,7 @@ import (
 	"github.com/holiman/uint256"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/common/hexutil"
-	"github.com/sila-org/sila/consensus/misc/eip4844"
+	"github.com/sila-org/sila/consensus/misc/sip4844"
 	"github.com/sila-org/sila/core"
 	"github.com/sila-org/sila/core/types"
 	"github.com/sila-org/sila/crypto/kzg4844"
@@ -199,9 +199,9 @@ func (args *TransactionArgs) setFeeDefaults(ctx context.Context, b Backend, head
 	// This allows users who are not yet synced past London to get defaults for
 	// other tx values. See https://github.com/sila-org/sila/pull/23274
 	// for more information.
-	eip1559ParamsSet := args.MaxFeePerGas != nil && args.MaxPriorityFeePerGas != nil
+	sip1559ParamsSet := args.MaxFeePerGas != nil && args.MaxPriorityFeePerGas != nil
 	// Sanity check the SIP-1559 fee parameters if present.
-	if args.GasPrice == nil && eip1559ParamsSet {
+	if args.GasPrice == nil && sip1559ParamsSet {
 		if args.MaxFeePerGas.ToInt().Sign() == 0 {
 			return errors.New("maxFeePerGas must be non-zero")
 		}
@@ -213,7 +213,7 @@ func (args *TransactionArgs) setFeeDefaults(ctx context.Context, b Backend, head
 
 	// Sanity check the non-SIP-1559 fee parameters.
 	isLondon := b.ChainConfig().IsLondon(head.Number)
-	if args.GasPrice != nil && !eip1559ParamsSet {
+	if args.GasPrice != nil && !sip1559ParamsSet {
 		// Zero gas-price is not allowed after London fork
 		if args.GasPrice.ToInt().Sign() == 0 && isLondon {
 			return errors.New("gasPrice must be non-zero after london fork")
@@ -245,7 +245,7 @@ func (args *TransactionArgs) setFeeDefaults(ctx context.Context, b Backend, head
 func (args *TransactionArgs) setCancunFeeDefaults(config *params.ChainConfig, head *types.Header) {
 	// Set maxFeePerBlobGas if it is missing.
 	if args.BlobHashes != nil && args.BlobFeeCap == nil {
-		blobBaseFee := eip4844.CalcBlobFee(config, head)
+		blobBaseFee := sip4844.CalcBlobFee(config, head)
 		// Set the max fee to be 2 times larger than the previous block's blob base fee.
 		// The additional slack allows the tx to not become invalidated if the base
 		// fee is rising.
@@ -611,7 +611,7 @@ func (args *TransactionArgs) ToTransaction(defaultType int) *types.Transaction {
 	return types.NewTx(data)
 }
 
-// IsEIP4844 returns an indicator if the args contains EIP4844 fields.
-func (args *TransactionArgs) IsEIP4844() bool {
+// IsSIP4844 returns an indicator if the args contains SIP4844 fields.
+func (args *TransactionArgs) IsSIP4844() bool {
 	return args.BlobHashes != nil || args.BlobFeeCap != nil
 }

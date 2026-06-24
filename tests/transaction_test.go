@@ -49,12 +49,12 @@ func TestTransaction(t *testing.T) {
 
 	// The following tests require the tx precheck to be performed
 	// TODO(s1na): expose stateTransition.precheck publicly to be able to run these tests
-	txt.skipLoad("^ttEIP1559/maxPriorityFeePerGass32BytesValue.json")
-	txt.skipLoad("^ttEIP1559/maxPriorityFeePerGasOverflow.json")
-	txt.skipLoad("^ttEIP1559/maxFeePerGas32BytesValue.json")
-	txt.skipLoad("^ttEIP1559/maxFeePerGasOverflow.json")
-	txt.skipLoad("^ttEIP1559/GasLimitPriceProductPlusOneOverflow.json")
-	txt.skipLoad("^ttEIP1559/GasLimitPriceProductOverflow.json")
+	txt.skipLoad("^ttSIP1559/maxPriorityFeePerGass32BytesValue.json")
+	txt.skipLoad("^ttSIP1559/maxPriorityFeePerGasOverflow.json")
+	txt.skipLoad("^ttSIP1559/maxFeePerGas32BytesValue.json")
+	txt.skipLoad("^ttSIP1559/maxFeePerGasOverflow.json")
+	txt.skipLoad("^ttSIP1559/GasLimitPriceProductPlusOneOverflow.json")
+	txt.skipLoad("^ttSIP1559/GasLimitPriceProductOverflow.json")
 
 	txt.walk(t, transactionTestDir, func(t *testing.T, name string, test *TransactionTest) {
 		if err := txt.checkFailure(t, test.Run()); err != nil {

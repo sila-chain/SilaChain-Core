@@ -19,14 +19,14 @@ package core
 import (
 	"math/big"
 
+	"github.com/holiman/uint256"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/consensus"
-	"github.com/sila-org/sila/consensus/misc/eip4844"
+	"github.com/sila-org/sila/consensus/misc/sip4844"
 	"github.com/sila-org/sila/core/tracing"
 	"github.com/sila-org/sila/core/types"
 	"github.com/sila-org/sila/core/vm"
 	"github.com/sila-org/sila/params"
-	"github.com/holiman/uint256"
 )
 
 // ChainContext supports retrieving headers and consensus parameters from the
@@ -58,7 +58,7 @@ func NewEVMBlockContext(header *types.Header, chain ChainContext, author *common
 		baseFee = new(big.Int).Set(header.BaseFee)
 	}
 	if header.ExcessBlobGas != nil {
-		blobBaseFee = eip4844.CalcBlobFee(chain.Config(), header)
+		blobBaseFee = sip4844.CalcBlobFee(chain.Config(), header)
 	}
 	if header.Difficulty.Sign() == 0 {
 		random = &header.MixDigest

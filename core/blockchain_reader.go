@@ -23,7 +23,7 @@ import (
 
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/consensus"
-	"github.com/sila-org/sila/consensus/misc/eip4844"
+	"github.com/sila-org/sila/consensus/misc/sip4844"
 	"github.com/sila-org/sila/core/rawdb"
 	"github.com/sila-org/sila/core/state"
 	"github.com/sila-org/sila/core/state/snapshot"
@@ -236,7 +236,7 @@ func (bc *BlockChain) GetCanonicalReceipt(tx *types.Transaction, blockHash commo
 	}
 	var blobGasPrice *big.Int
 	if header.ExcessBlobGas != nil {
-		blobGasPrice = eip4844.CalcBlobFee(bc.chainConfig, header)
+		blobGasPrice = sip4844.CalcBlobFee(bc.chainConfig, header)
 	}
 	receipt, ctx, err := rawdb.ReadCanonicalRawReceipt(bc.db, blockHash, blockNumber, txIndex)
 	if err != nil {

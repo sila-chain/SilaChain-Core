@@ -25,8 +25,8 @@ import (
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/consensus"
 	"github.com/sila-org/sila/consensus/misc"
-	"github.com/sila-org/sila/consensus/misc/eip1559"
-	"github.com/sila-org/sila/consensus/misc/eip4844"
+	"github.com/sila-org/sila/consensus/misc/sip1559"
+	"github.com/sila-org/sila/consensus/misc/sip4844"
 	"github.com/sila-org/sila/core/rawdb"
 	"github.com/sila-org/sila/core/state"
 	"github.com/sila-org/sila/core/types"
@@ -244,7 +244,7 @@ func (b *BlockGen) AddUncle(h *types.Header) {
 	// The gas limit and price should be derived from the parent
 	h.GasLimit = parent.GasLimit
 	if b.cm.config.IsLondon(h.Number) {
-		h.BaseFee = eip1559.CalcBaseFee(b.cm.config, parent)
+		h.BaseFee = sip1559.CalcBaseFee(b.cm.config, parent)
 		if !b.cm.config.IsLondon(parent.Number) {
 			parentGasLimit := parent.GasLimit * b.cm.config.ElasticityMultiplier()
 			h.GasLimit = CalcGasLimit(parentGasLimit, parentGasLimit)
@@ -466,7 +466,7 @@ func GenerateChain(config *params.ChainConfig, parent *types.Block, silaEngine c
 		}
 		var blobGasPrice *big.Int
 		if block.ExcessBlobGas() != nil {
-			blobGasPrice = eip4844.CalcBlobFee(cm.config, block.Header())
+			blobGasPrice = sip4844.CalcBlobFee(cm.config, block.Header())
 		}
 		if err := receipts.DeriveFields(config, block.Hash(), block.NumberU64(), block.Time(), block.BaseFee(), blobGasPrice, txs); err != nil {
 			panic(err)
@@ -516,14 +516,14 @@ func (cm *chainMaker) makeHeader(parent *types.Block, state *state.StateDB, sila
 	}
 
 	if cm.config.IsLondon(header.Number) {
-		header.BaseFee = eip1559.CalcBaseFee(cm.config, parentHeader)
+		header.BaseFee = sip1559.CalcBaseFee(cm.config, parentHeader)
 		if !cm.config.IsLondon(parent.Number()) {
 			parentGasLimit := parent.GasLimit() * cm.config.ElasticityMultiplier()
 			header.GasLimit = CalcGasLimit(parentGasLimit, parentGasLimit)
 		}
 	}
 	if cm.config.IsCancun(header.Number, header.Time) {
-		excessBlobGas := eip4844.CalcExcessBlobGas(cm.config, parentHeader, time)
+		excessBlobGas := sip4844.CalcExcessBlobGas(cm.config, parentHeader, time)
 		header.ExcessBlobGas = &excessBlobGas
 		header.BlobGasUsed = new(uint64)
 		header.ParentBeaconRoot = new(common.Hash)

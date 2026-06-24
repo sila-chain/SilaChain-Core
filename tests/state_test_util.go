@@ -30,7 +30,7 @@ import (
 	"github.com/sila-org/sila/common/hexutil"
 	"github.com/sila-org/sila/common/math"
 	"github.com/sila-org/sila/consensus"
-	"github.com/sila-org/sila/consensus/misc/eip4844"
+	"github.com/sila-org/sila/consensus/misc/sip4844"
 	"github.com/sila-org/sila/core"
 	"github.com/sila-org/sila/core/rawdb"
 	"github.com/sila-org/sila/core/state"
@@ -292,12 +292,12 @@ func (t *StateTest) RunNoVerify(subtest StateSubtest, vmconfig vm.Config, snapsh
 
 	// Blob transactions may be present after the Cancun fork.
 	// In production,
-	// - the header is verified against the max in eip4844.go:VerifyEIP4844Header
+	// - the header is verified against the max in sip4844.go:VerifySIP4844Header
 	// - the block body is verified against the header in block_validator.go:ValidateBody
 	// Here, we just do this shortcut smaller fix, since state tests do not
 	// utilize those codepaths.
 	if config.IsCancun(new(big.Int), block.Time()) {
-		if len(msg.BlobHashes) > eip4844.MaxBlobsPerBlock(config, block.Time()) {
+		if len(msg.BlobHashes) > sip4844.MaxBlobsPerBlock(config, block.Time()) {
 			return st, common.Hash{}, 0, errors.New("blob gas exceeds maximum")
 		}
 	}
@@ -332,7 +332,7 @@ func (t *StateTest) RunNoVerify(subtest StateSubtest, vmconfig vm.Config, snapsh
 			Time:          block.Time(),
 			ExcessBlobGas: t.json.Env.ExcessBlobGas,
 		}
-		context.BlobBaseFee = eip4844.CalcBlobFee(config, header)
+		context.BlobBaseFee = sip4844.CalcBlobFee(config, header)
 	}
 
 	evm := vm.NewEVM(context, st.StateDB, config, vmconfig)

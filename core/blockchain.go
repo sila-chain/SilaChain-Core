@@ -36,7 +36,7 @@ import (
 	"github.com/sila-org/sila/common/mclock"
 	"github.com/sila-org/sila/common/prque"
 	"github.com/sila-org/sila/consensus"
-	"github.com/sila-org/sila/consensus/misc/eip4844"
+	"github.com/sila-org/sila/consensus/misc/sip4844"
 	"github.com/sila-org/sila/core/history"
 	"github.com/sila-org/sila/core/rawdb"
 	"github.com/sila-org/sila/core/state"
@@ -45,7 +45,6 @@ import (
 	"github.com/sila-org/sila/core/tracing"
 	"github.com/sila-org/sila/core/types"
 	"github.com/sila-org/sila/core/vm"
-	"github.com/sila-org/sila/siladb"
 	"github.com/sila-org/sila/event"
 	"github.com/sila-org/sila/internal/syncx"
 	"github.com/sila-org/sila/internal/telemetry"
@@ -54,6 +53,7 @@ import (
 	"github.com/sila-org/sila/metrics"
 	"github.com/sila-org/sila/params"
 	"github.com/sila-org/sila/rlp"
+	"github.com/sila-org/sila/siladb"
 	"github.com/sila-org/sila/triedb"
 	"github.com/sila-org/sila/triedb/hashdb"
 	"github.com/sila-org/sila/triedb/pathdb"
@@ -322,7 +322,7 @@ type BlockChain struct {
 	chainConfig *params.ChainConfig // Chain & network configuration
 	cfg         *BlockChainConfig   // Blockchain configuration
 
-	db            siladb.Database                   // Low level persistent database to store final content in
+	db            siladb.Database                  // Low level persistent database to store final content in
 	snaps         *snapshot.Tree                   // Snapshot tree for fast trie leaf access
 	triegc        *prque.Prque[int64, common.Hash] // Priority queue mapping block numbers to tries to gc
 	gcproc        time.Duration                    // Accumulates canonical block processing for trie dumping
@@ -365,7 +365,7 @@ type BlockChain struct {
 	stopping      atomic.Bool // false if chain is running, true when stopped
 	procInterrupt atomic.Bool // interrupt signaler for block processing
 
-	silaEngine     consensus.SilaEngine
+	silaEngine consensus.SilaEngine
 	validator  Validator // Block and state validator interface
 	prefetcher Prefetcher
 	processor  Processor // Block transaction processor interface
@@ -421,7 +421,7 @@ func NewBlockChain(db siladb.Database, genesis *Genesis, silaEngine consensus.Si
 		receiptsCache:      lru.NewCache[common.Hash, []*types.Receipt](receiptsCacheLimit),
 		blockCache:         lru.NewCache[common.Hash, *types.Block](blockCacheLimit),
 		txLookupCache:      lru.NewCache[common.Hash, txLookup](txLookupCacheLimit),
-		silaEngine:             silaEngine,
+		silaEngine:         silaEngine,
 		logger:             cfg.VmConfig.Tracer,
 		slowBlockThreshold: cfg.SlowBlockThreshold,
 	}
@@ -2515,7 +2515,7 @@ func (bc *BlockChain) collectLogs(b *types.Block, removed bool) []*types.Log {
 func (bc *BlockChain) collectReceiptsAndLogs(b *types.Block, removed bool) ([]*types.Receipt, []*types.Log) {
 	var blobGasPrice *big.Int
 	if b.ExcessBlobGas() != nil {
-		blobGasPrice = eip4844.CalcBlobFee(bc.chainConfig, b.Header())
+		blobGasPrice = sip4844.CalcBlobFee(bc.chainConfig, b.Header())
 	}
 	receipts := rawdb.ReadRawReceipts(bc.db, b.Hash(), b.NumberU64())
 	if err := receipts.DeriveFields(bc.chainConfig, b.Hash(), b.NumberU64(), b.Time(), b.BaseFee(), blobGasPrice, b.Transactions()); err != nil {

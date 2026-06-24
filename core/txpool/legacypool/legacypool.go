@@ -27,9 +27,10 @@ import (
 	"sync/atomic"
 	"time"
 
+	"github.com/holiman/uint256"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/common/prque"
-	"github.com/sila-org/sila/consensus/misc/eip1559"
+	"github.com/sila-org/sila/consensus/misc/sip1559"
 	"github.com/sila-org/sila/core"
 	"github.com/sila-org/sila/core/state"
 	"github.com/sila-org/sila/core/txpool"
@@ -39,7 +40,6 @@ import (
 	"github.com/sila-org/sila/metrics"
 	"github.com/sila-org/sila/params"
 	"github.com/sila-org/sila/rlp"
-	"github.com/holiman/uint256"
 )
 
 const (
@@ -1261,7 +1261,7 @@ func (pool *LegacyPool) runReorg(done chan struct{}, reset *txpoolResetRequest, 
 		pool.demoteUnexecutables()
 		if reset.newHead != nil {
 			if pool.chainconfig.IsLondon(new(big.Int).Add(reset.newHead.Number, big.NewInt(1))) {
-				pendingBaseFee := eip1559.CalcBaseFee(pool.chainconfig, reset.newHead)
+				pendingBaseFee := sip1559.CalcBaseFee(pool.chainconfig, reset.newHead)
 				pool.priced.SetBaseFee(pendingBaseFee)
 			} else {
 				pool.priced.Reheap()

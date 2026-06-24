@@ -36,8 +36,8 @@ import (
 	"github.com/sila-org/sila/core/types"
 	"github.com/sila-org/sila/core/vm"
 	"github.com/sila-org/sila/crypto"
-	"github.com/sila-org/sila/sila/tracers"
 	"github.com/sila-org/sila/params"
+	"github.com/sila-org/sila/sila/tracers"
 
 	// Force-load live packages, to trigger registration
 	_ "github.com/sila-org/sila/sila/tracers/live"
@@ -50,7 +50,7 @@ type supplyInfoIssuance struct {
 }
 
 type supplyInfoBurn struct {
-	EIP1559 *hexutil.Big `json:"1559,omitempty"`
+	SIP1559 *hexutil.Big `json:"1559,omitempty"`
 	Blob    *hexutil.Big `json:"blob,omitempty"`
 	Misc    *hexutil.Big `json:"misc,omitempty"`
 }
@@ -228,7 +228,7 @@ func TestSupplyEip1559Burn(t *testing.T) {
 
 	signer := types.LatestSigner(gspec.Config)
 
-	eip1559BlockGenerationFunc := func(b *core.BlockGen) {
+	sip1559BlockGenerationFunc := func(b *core.BlockGen) {
 		txdata := &types.DynamicFeeTx{
 			ChainID:   gspec.Config.ChainID,
 			Nonce:     0,
@@ -243,7 +243,7 @@ func TestSupplyEip1559Burn(t *testing.T) {
 		b.AddTx(tx)
 	}
 
-	out, chain, err := testSupplyTracer(t, gspec, eip1559BlockGenerationFunc, 1)
+	out, chain, err := testSupplyTracer(t, gspec, sip1559BlockGenerationFunc, 1)
 	if err != nil {
 		t.Fatalf("failed to test supply tracer: %v", err)
 	}
@@ -256,7 +256,7 @@ func TestSupplyEip1559Burn(t *testing.T) {
 				Reward: (*hexutil.Big)(reward),
 			},
 			Burn: &supplyInfoBurn{
-				EIP1559: (*hexutil.Big)(burn),
+				SIP1559: (*hexutil.Big)(burn),
 			},
 			Number:     1,
 			Hash:       head.Hash(),
@@ -390,7 +390,7 @@ func TestSupplySelfdestruct(t *testing.T) {
 	// Check live trace output
 	expected := supplyInfo{
 		Burn: &supplyInfoBurn{
-			EIP1559: (*hexutil.Big)(big.NewInt(55289500000000)),
+			SIP1559: (*hexutil.Big)(big.NewInt(55289500000000)),
 			Misc:    (*hexutil.Big)(big.NewInt(5000000000)),
 		},
 		Number:     1,
@@ -432,7 +432,7 @@ func TestSupplySelfdestruct(t *testing.T) {
 	head = postCancunChain.CurrentBlock()
 	expected = supplyInfo{
 		Burn: &supplyInfoBurn{
-			EIP1559: (*hexutil.Big)(big.NewInt(55289500000000)),
+			SIP1559: (*hexutil.Big)(big.NewInt(55289500000000)),
 		},
 		Number:     1,
 		Hash:       head.Hash(),
@@ -577,7 +577,7 @@ func TestSupplySelfdestructItselfAndRevert(t *testing.T) {
 
 	expected := supplyInfo{
 		Burn: &supplyInfoBurn{
-			EIP1559: (*hexutil.Big)(new(big.Int).Mul(block.BaseFee(), big.NewInt(int64(block.GasUsed())))),
+			SIP1559: (*hexutil.Big)(new(big.Int).Mul(block.BaseFee(), big.NewInt(int64(block.GasUsed())))),
 			Misc:    (*hexutil.Big)(eth5), // 5ETH burned from contract B
 		},
 		Number:     1,

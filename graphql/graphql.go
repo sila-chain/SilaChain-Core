@@ -30,7 +30,7 @@ import (
 	"github.com/sila-org/sila"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/common/hexutil"
-	"github.com/sila-org/sila/consensus/misc/eip1559"
+	"github.com/sila-org/sila/consensus/misc/sip1559"
 	"github.com/sila-org/sila/core/state"
 	"github.com/sila-org/sila/core/types"
 	"github.com/sila-org/sila/internal/silaapi"
@@ -786,7 +786,7 @@ func (b *Block) NextBaseFeePerGas(ctx context.Context) (*hexutil.Big, error) {
 			return nil, nil
 		}
 	}
-	nextBaseFee := eip1559.CalcBaseFee(chaincfg, header)
+	nextBaseFee := sip1559.CalcBaseFee(chaincfg, header)
 	return (*hexutil.Big)(nextBaseFee), nil
 }
 

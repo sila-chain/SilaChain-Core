@@ -19,7 +19,7 @@
     "proxyAddr": "0x4dc5e971f8b11ace4f21d40b0ede74a07940f356",
     "authorizeTx": "0x64c47531984e4099548b480b5af0bce04ab89d29f2fe7ae36e97ba68d688539f"
   },
-  "tx-emit-eip1559": [
+  "tx-emit-sip1559": [
     {
       "txhash": "0xf3b025eaf924500c53bc0b9f0f5733d56b59b7dade1df336ba8b39c83d92ac57",
       "sender": "0x7435ed30a8b4aeb0877cef0c6e8cffe834eb865f",
@@ -887,7 +887,7 @@
       "logtopic1": "0x48ca1081e747a7f831228b894dd5fc401d64c6496a2b9e578dd3c59b8f0df2cc"
     }
   ],
-  "tx-emit-eip4844": [
+  "tx-emit-sip4844": [
     {
       "txhash": "0x87630fa02828dad0c04ea8ffa7c5d742bf6aac72b8b0a7e72a28b7d2c0d9fdcb",
       "sender": "0x7435ed30a8b4aeb0877cef0c6e8cffe834eb865f",
@@ -1760,7 +1760,7 @@
     "txhash": "0x27d8ca12587f28aa0184966fabcbeb321b438a6495d5e8294dc9c62525f41b8c",
     "block": "0xd"
   },
-  "tx-transfer-eip1559": [
+  "tx-transfer-sip1559": [
     {
       "txhash": "0x4feb87725c3d45aef205359d7d200f523004b2961282c47736c49e3a453a3ab8",
       "sender": "0x7435ed30a8b4aeb0877cef0c6e8cffe834eb865f",

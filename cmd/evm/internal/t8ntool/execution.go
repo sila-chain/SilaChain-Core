@@ -24,12 +24,13 @@ import (
 	"math/big"
 	"os"
 
+	"github.com/holiman/uint256"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/common/hexutil"
 	"github.com/sila-org/sila/common/math"
-	"github.com/sila-org/sila/consensus/silaash"
 	"github.com/sila-org/sila/consensus/misc"
-	"github.com/sila-org/sila/consensus/misc/eip4844"
+	"github.com/sila-org/sila/consensus/misc/sip4844"
+	"github.com/sila-org/sila/consensus/silaash"
 	"github.com/sila-org/sila/core"
 	"github.com/sila-org/sila/core/rawdb"
 	"github.com/sila-org/sila/core/state"
@@ -38,13 +39,12 @@ import (
 	"github.com/sila-org/sila/core/types/bal"
 	"github.com/sila-org/sila/core/vm"
 	"github.com/sila-org/sila/crypto/keccak"
-	"github.com/sila-org/sila/siladb"
 	"github.com/sila-org/sila/log"
 	"github.com/sila-org/sila/params"
 	"github.com/sila-org/sila/rlp"
+	"github.com/sila-org/sila/siladb"
 	"github.com/sila-org/sila/trie"
 	"github.com/sila-org/sila/triedb"
-	"github.com/holiman/uint256"
 )
 
 type Prestate struct {
@@ -213,7 +213,7 @@ func (pre *Prestate) Apply(vmConfig vm.Config, chainConfig *params.ChainConfig, 
 			Time:          pre.Env.Timestamp,
 			ExcessBlobGas: pre.Env.ExcessBlobGas,
 		}
-		vmContext.BlobBaseFee = eip4844.CalcBlobFee(chainConfig, header)
+		vmContext.BlobBaseFee = sip4844.CalcBlobFee(chainConfig, header)
 	} else {
 		// If it is not explicitly defined, but we have the parent values, we try
 		// to calculate it ourselves.
@@ -231,8 +231,8 @@ func (pre *Prestate) Apply(vmConfig vm.Config, chainConfig *params.ChainConfig, 
 				Time:          pre.Env.Timestamp,
 				ExcessBlobGas: &excessBlobGas,
 			}
-			excessBlobGas = eip4844.CalcExcessBlobGas(chainConfig, parent, header.Time)
-			vmContext.BlobBaseFee = eip4844.CalcBlobFee(chainConfig, header)
+			excessBlobGas = sip4844.CalcExcessBlobGas(chainConfig, parent, header.Time)
+			vmContext.BlobBaseFee = sip4844.CalcBlobFee(chainConfig, header)
 		}
 	}
 	// If DAO is supported/enabled, we need to handle it here. In sila 'proper', it's
@@ -275,7 +275,7 @@ func (pre *Prestate) Apply(vmConfig vm.Config, chainConfig *params.ChainConfig, 
 		txBlobGas := uint64(0)
 		if tx.Type() == types.BlobTxType {
 			txBlobGas = uint64(params.BlobTxBlobGasPerBlob * len(tx.BlobHashes()))
-			max := eip4844.MaxBlobGasPerBlock(chainConfig, pre.Env.Timestamp)
+			max := sip4844.MaxBlobGasPerBlock(chainConfig, pre.Env.Timestamp)
 			if used := blobGasUsed + txBlobGas; used > max {
 				err := fmt.Errorf("blob gas (%d) would exceed maximum allowance %d", used, max)
 				log.Warn("rejected tx", "index", i, "err", err)

@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with the sila library. If not, see <http://www.gnu.org/licenses/>.
 
-package eip1559
+package sip1559
 
 import (
 	"math/big"
@@ -95,7 +95,7 @@ func TestBlockGasLimits(t *testing.T) {
 			BaseFee:  initial,
 			Number:   big.NewInt(tc.pNum + 1),
 		}
-		err := VerifyEIP1559Header(config(), parent, header)
+		err := VerifySIP1559Header(config(), parent, header)
 		if tc.ok && err != nil {
 			t.Errorf("test %d: Expected valid header: %s", i, err)
 		}

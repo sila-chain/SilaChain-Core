@@ -24,8 +24,8 @@ import (
 	"github.com/holiman/uint256"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/consensus"
-	"github.com/sila-org/sila/consensus/misc/eip1559"
-	"github.com/sila-org/sila/consensus/misc/eip4844"
+	"github.com/sila-org/sila/consensus/misc/sip1559"
+	"github.com/sila-org/sila/consensus/misc/sip4844"
 	"github.com/sila-org/sila/core/tracing"
 	"github.com/sila-org/sila/core/types"
 	"github.com/sila-org/sila/core/types/bal"
@@ -241,7 +241,7 @@ func (beacon *Beacon) verifyHeader(chain consensus.ChainHeaderReader, header, pa
 		return consensus.ErrInvalidNumber
 	}
 	// Verify the header's SIP-1559 attributes.
-	if err := eip1559.VerifyEIP1559Header(chain.Config(), parent, header); err != nil {
+	if err := sip1559.VerifySIP1559Header(chain.Config(), parent, header); err != nil {
 		return err
 	}
 	// Verify existence / non-existence of withdrawalsHash.
@@ -267,7 +267,7 @@ func (beacon *Beacon) verifyHeader(chain consensus.ChainHeaderReader, header, pa
 		if header.ParentBeaconRoot == nil {
 			return errors.New("header is missing beaconRoot")
 		}
-		if err := eip4844.VerifyEIP4844Header(chain.Config(), parent, header); err != nil {
+		if err := sip4844.VerifySIP4844Header(chain.Config(), parent, header); err != nil {
 			return err
 		}
 	}

@@ -21,10 +21,11 @@ import (
 	"sync"
 	"time"
 
+	"github.com/holiman/uint256"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/common/mclock"
-	"github.com/sila-org/sila/consensus/misc/eip1559"
-	"github.com/sila-org/sila/consensus/misc/eip4844"
+	"github.com/sila-org/sila/consensus/misc/sip1559"
+	"github.com/sila-org/sila/consensus/misc/sip4844"
 	"github.com/sila-org/sila/core/txpool"
 	"github.com/sila-org/sila/core/txpool/txorder"
 	"github.com/sila-org/sila/core/types"
@@ -32,7 +33,6 @@ import (
 	"github.com/sila-org/sila/internal/telemetry"
 	"github.com/sila-org/sila/log"
 	"github.com/sila-org/sila/metrics"
-	"github.com/holiman/uint256"
 )
 
 const (
@@ -370,14 +370,14 @@ func (c *Cache) selectTopTxs() []common.Hash {
 		return nil
 	}
 	config := p.chain.Config()
-	baseFee := eip1559.CalcBaseFee(config, head)
+	baseFee := sip1559.CalcBaseFee(config, head)
 
 	filter := txpool.PendingFilter{
 		BlobTxs: true,
 		BaseFee: uint256.MustFromBig(baseFee),
 	}
 	if head.ExcessBlobGas != nil {
-		filter.BlobFee = uint256.MustFromBig(eip4844.CalcBlobFee(config, head))
+		filter.BlobFee = uint256.MustFromBig(sip4844.CalcBlobFee(config, head))
 	}
 	if config.IsOsaka(head.Number, head.Time) {
 		filter.BlobVersion = types.BlobSidecarVersion1
@@ -391,7 +391,7 @@ func (c *Cache) selectTopTxs() []common.Hash {
 
 	// Bound the selection by the active fork's blob limit so the cache follows
 	// BPO changes to maxBlobsPerBlock.
-	target := uint(eip4844.MaxBlobsPerBlock(config, head.Time))
+	target := uint(sip4844.MaxBlobsPerBlock(config, head.Time))
 
 	var (
 		vhashes []common.Hash

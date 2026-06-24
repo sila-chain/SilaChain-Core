@@ -3248,7 +3248,7 @@ func testEIP2718Transition(t *testing.T, scheme string) {
 	}
 }
 
-// TestEIP1559Transition tests the following:
+// TestSIP1559Transition tests the following:
 //
 //  1. A transaction whose gasFeeCap is greater than the baseFee is valid.
 //  2. Gas accounting for access lists on SIP-1559 transactions is correct.
@@ -3257,12 +3257,12 @@ func testEIP2718Transition(t *testing.T, scheme string) {
 //  5. The coinbase receives only the partially realized tip when
 //     gasFeeCap - gasTipCap < baseFee.
 //  6. Legacy transaction behave as expected (e.g. gasPrice = gasFeeCap = gasTipCap).
-func TestEIP1559Transition(t *testing.T) {
-	testEIP1559Transition(t, rawdb.HashScheme)
-	testEIP1559Transition(t, rawdb.PathScheme)
+func TestSIP1559Transition(t *testing.T) {
+	testSIP1559Transition(t, rawdb.HashScheme)
+	testSIP1559Transition(t, rawdb.PathScheme)
 }
 
-func testEIP1559Transition(t *testing.T, scheme string) {
+func testSIP1559Transition(t *testing.T, scheme string) {
 	var (
 		aa         = common.HexToAddress("0x000000000000000000000000000000000000aaaa")
 		silaEngine = silaash.NewFaker()

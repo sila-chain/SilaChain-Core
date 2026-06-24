@@ -27,8 +27,8 @@ import (
 	"sync/atomic"
 
 	"github.com/sila-org/sila/common"
-	"github.com/sila-org/sila/consensus/misc/eip1559"
-	"github.com/sila-org/sila/consensus/misc/eip4844"
+	"github.com/sila-org/sila/consensus/misc/sip1559"
+	"github.com/sila-org/sila/consensus/misc/sip4844"
 	"github.com/sila-org/sila/core/types"
 	"github.com/sila-org/sila/log"
 	"github.com/sila-org/sila/rpc"
@@ -90,16 +90,16 @@ func (oracle *Oracle) processBlock(bf *blockFees, percentiles []float64) {
 		bf.results.baseFee = new(big.Int)
 	}
 	if config.IsLondon(big.NewInt(int64(bf.blockNumber + 1))) {
-		bf.results.nextBaseFee = eip1559.CalcBaseFee(config, bf.header)
+		bf.results.nextBaseFee = sip1559.CalcBaseFee(config, bf.header)
 	} else {
 		bf.results.nextBaseFee = new(big.Int)
 	}
 	// Fill in blob base fee and next blob base fee.
 	if excessBlobGas := bf.header.ExcessBlobGas; excessBlobGas != nil {
-		bf.results.blobBaseFee = eip4844.CalcBlobFee(config, bf.header)
-		excess := eip4844.CalcExcessBlobGas(config, bf.header, bf.header.Time)
+		bf.results.blobBaseFee = sip4844.CalcBlobFee(config, bf.header)
+		excess := sip4844.CalcExcessBlobGas(config, bf.header, bf.header.Time)
 		next := &types.Header{Number: bf.header.Number, Time: bf.header.Time, ExcessBlobGas: &excess}
-		bf.results.nextBlobBaseFee = eip4844.CalcBlobFee(config, next)
+		bf.results.nextBlobBaseFee = sip4844.CalcBlobFee(config, next)
 	} else {
 		bf.results.blobBaseFee = new(big.Int)
 		bf.results.nextBlobBaseFee = new(big.Int)
@@ -107,7 +107,7 @@ func (oracle *Oracle) processBlock(bf *blockFees, percentiles []float64) {
 	// Compute gas used ratio for normal and blob gas.
 	bf.results.gasUsedRatio = float64(bf.header.GasUsed) / float64(bf.header.GasLimit)
 	if blobGasUsed := bf.header.BlobGasUsed; blobGasUsed != nil {
-		maxBlobGas := eip4844.MaxBlobGasPerBlock(config, bf.header.Time)
+		maxBlobGas := sip4844.MaxBlobGasPerBlock(config, bf.header.Time)
 		if maxBlobGas != 0 {
 			bf.results.blobGasUsedRatio = float64(*blobGasUsed) / float64(maxBlobGas)
 		}

@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with the sila library. If not, see <http://www.gnu.org/licenses/>.
 
-package eip1559
+package sip1559
 
 import (
 	"errors"
@@ -27,10 +27,10 @@ import (
 	"github.com/sila-org/sila/params"
 )
 
-// VerifyEIP1559Header verifies some header attributes which were changed in SIP-1559,
+// VerifySIP1559Header verifies some header attributes which were changed in SIP-1559,
 // - gas limit check
 // - basefee check
-func VerifyEIP1559Header(config *params.ChainConfig, parent, header *types.Header) error {
+func VerifySIP1559Header(config *params.ChainConfig, parent, header *types.Header) error {
 	// Verify that the gas limit remains within allowed bounds
 	parentGasLimit := parent.GasLimit
 	if !config.IsLondon(parent.Number) {

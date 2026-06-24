@@ -33,8 +33,8 @@ import (
 	"github.com/holiman/billy"
 	"github.com/holiman/uint256"
 	"github.com/sila-org/sila/common"
-	"github.com/sila-org/sila/consensus/misc/eip1559"
-	"github.com/sila-org/sila/consensus/misc/eip4844"
+	"github.com/sila-org/sila/consensus/misc/sip1559"
+	"github.com/sila-org/sila/consensus/misc/sip4844"
 	"github.com/sila-org/sila/core"
 	"github.com/sila-org/sila/core/state"
 	"github.com/sila-org/sila/core/txpool"
@@ -635,11 +635,11 @@ func (p *BlobPool) Init(gasTip uint64, head *types.Header, reserver txpool.Reser
 		p.recheck(addr, nil)
 	}
 	var (
-		basefee = uint256.MustFromBig(eip1559.CalcBaseFee(p.chain.Config(), head))
+		basefee = uint256.MustFromBig(sip1559.CalcBaseFee(p.chain.Config(), head))
 		blobfee = uint256.NewInt(params.BlobTxMinBlobGasprice)
 	)
 	if head.ExcessBlobGas != nil {
-		blobfee = uint256.MustFromBig(eip4844.CalcBlobFee(p.chain.Config(), head))
+		blobfee = uint256.MustFromBig(sip4844.CalcBlobFee(p.chain.Config(), head))
 	}
 	p.evict = newPriceHeap(basefee, blobfee, p.index)
 
@@ -1070,11 +1070,11 @@ func (p *BlobPool) Reset(oldHead, newHead *types.Header) {
 	}
 	// Reset the price heap for the new set of basefee/blobfee pairs
 	var (
-		basefee = uint256.MustFromBig(eip1559.CalcBaseFee(p.chain.Config(), newHead))
+		basefee = uint256.MustFromBig(sip1559.CalcBaseFee(p.chain.Config(), newHead))
 		blobfee = uint256.MustFromBig(big.NewInt(params.BlobTxMinBlobGasprice))
 	)
 	if newHead.ExcessBlobGas != nil {
-		blobfee = uint256.MustFromBig(eip4844.CalcBlobFee(p.chain.Config(), newHead))
+		blobfee = uint256.MustFromBig(sip4844.CalcBlobFee(p.chain.Config(), newHead))
 	}
 	p.evict.reinit(basefee, blobfee, false)
 
@@ -2134,7 +2134,7 @@ func (p *BlobPool) updateStorageMetrics() {
 		metrics.GetOrRegisterGauge(fmt.Sprintf(shelfSlotusedGaugeName, shelf.SlotSize/blobSize), nil).Update(int64(shelf.FilledSlots))
 		metrics.GetOrRegisterGauge(fmt.Sprintf(shelfSlotgapsGaugeName, shelf.SlotSize/blobSize), nil).Update(int64(shelf.GappedSlots))
 
-		maxBlobs := eip4844.LatestMaxBlobsPerBlock(p.chain.Config())
+		maxBlobs := sip4844.LatestMaxBlobsPerBlock(p.chain.Config())
 		if shelf.SlotSize/blobSize > uint32(maxBlobs) {
 			oversizedDataused += slotDataused
 			oversizedDatagaps += slotDatagaps
@@ -2359,7 +2359,7 @@ func (p *BlobPool) Clear() {
 	p.gappedSource = make(map[common.Hash]common.Address)
 
 	var (
-		basefee = uint256.MustFromBig(eip1559.CalcBaseFee(p.chain.Config(), p.head.Load()))
+		basefee = uint256.MustFromBig(sip1559.CalcBaseFee(p.chain.Config(), p.head.Load()))
 		blobfee = uint256.NewInt(params.BlobTxMinBlobGasprice)
 	)
 	p.evict = newPriceHeap(basefee, blobfee, p.index)

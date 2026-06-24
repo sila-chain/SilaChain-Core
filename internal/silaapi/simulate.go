@@ -28,8 +28,8 @@ import (
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/common/hexutil"
 	"github.com/sila-org/sila/consensus"
-	"github.com/sila-org/sila/consensus/misc/eip1559"
-	"github.com/sila-org/sila/consensus/misc/eip4844"
+	"github.com/sila-org/sila/consensus/misc/sip1559"
+	"github.com/sila-org/sila/consensus/misc/sip4844"
 	"github.com/sila-org/sila/core"
 	"github.com/sila-org/sila/core/state"
 	"github.com/sila-org/sila/core/types"
@@ -266,7 +266,7 @@ func (sim *simulator) processBlock(ctx context.Context, block *simBlock, header,
 		// Base fee could have been overridden.
 		if header.BaseFee == nil {
 			if sim.validate {
-				header.BaseFee = eip1559.CalcBaseFee(sim.chainConfig, parent)
+				header.BaseFee = sip1559.CalcBaseFee(sim.chainConfig, parent)
 			} else {
 				header.BaseFee = big.NewInt(0)
 			}
@@ -275,7 +275,7 @@ func (sim *simulator) processBlock(ctx context.Context, block *simBlock, header,
 	if sim.chainConfig.IsCancun(header.Number, header.Time) {
 		var excess uint64
 		if sim.chainConfig.IsCancun(parent.Number, parent.Time) {
-			excess = eip4844.CalcExcessBlobGas(sim.chainConfig, parent, header.Time)
+			excess = sip4844.CalcExcessBlobGas(sim.chainConfig, parent, header.Time)
 		}
 		header.ExcessBlobGas = &excess
 	}

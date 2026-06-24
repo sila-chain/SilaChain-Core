@@ -29,7 +29,7 @@ import (
 	"github.com/holiman/uint256"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/common/hexutil"
-	"github.com/sila-org/sila/consensus/misc/eip1559"
+	"github.com/sila-org/sila/consensus/misc/sip1559"
 	"github.com/sila-org/sila/core"
 	"github.com/sila-org/sila/core/overlay"
 	"github.com/sila-org/sila/core/rawdb"
@@ -330,7 +330,7 @@ func applyLondonChecks(env *stEnv, chainConfig *params.ChainConfig) error {
 	if env.ParentBaseFee == nil || env.Number == 0 {
 		return NewError(ErrorConfig, errors.New("SIP-1559 config but missing 'parentBaseFee' in env section"))
 	}
-	env.BaseFee = eip1559.CalcBaseFee(chainConfig, &types.Header{
+	env.BaseFee = sip1559.CalcBaseFee(chainConfig, &types.Header{
 		Number:   new(big.Int).SetUint64(env.Number - 1),
 		BaseFee:  env.ParentBaseFee,
 		GasUsed:  env.ParentGasUsed,

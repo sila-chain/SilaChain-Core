@@ -27,7 +27,7 @@ import (
 
 	"github.com/holiman/uint256"
 	"github.com/sila-org/sila/common"
-	"github.com/sila-org/sila/consensus/misc/eip4844"
+	"github.com/sila-org/sila/consensus/misc/sip4844"
 	"github.com/sila-org/sila/core/types"
 	"github.com/sila-org/sila/crypto"
 	"github.com/sila-org/sila/crypto/kzg4844"
@@ -1035,7 +1035,7 @@ func (s *Suite) makeBlobTxs(count, blobs int, discriminator byte) (txs types.Tra
 			GasTipCap:  uint256.NewInt(1),
 			GasFeeCap:  uint256.MustFromBig(s.chain.Head().BaseFee()),
 			Gas:        100000,
-			BlobFeeCap: uint256.MustFromBig(eip4844.CalcBlobFee(s.chain.config, s.chain.Head().Header())),
+			BlobFeeCap: uint256.MustFromBig(sip4844.CalcBlobFee(s.chain.config, s.chain.Head().Header())),
 			BlobHashes: makeSidecar(blobdata...).BlobHashes(),
 			Sidecar:    makeSidecar(blobdata...),
 		}

@@ -26,8 +26,8 @@ import (
 
 	"github.com/holiman/uint256"
 	"github.com/sila-org/sila/common"
-	"github.com/sila-org/sila/consensus/misc/eip1559"
-	"github.com/sila-org/sila/consensus/misc/eip4844"
+	"github.com/sila-org/sila/consensus/misc/sip1559"
+	"github.com/sila-org/sila/consensus/misc/sip4844"
 	"github.com/sila-org/sila/core"
 	"github.com/sila-org/sila/core/state"
 	"github.com/sila-org/sila/core/stateless"
@@ -50,7 +50,7 @@ var (
 // maxBlobsPerBlock returns the maximum number of blobs per block.
 // Users can specify the maximum number of blobs per block if necessary.
 func (miner *Miner) maxBlobsPerBlock(time uint64) int {
-	maxBlobs := eip4844.MaxBlobsPerBlock(miner.chainConfig, time)
+	maxBlobs := sip4844.MaxBlobsPerBlock(miner.chainConfig, time)
 	if miner.config.MaxBlobsPerBlock != 0 {
 		maxBlobs = miner.config.MaxBlobsPerBlock
 	}
@@ -288,7 +288,7 @@ func (miner *Miner) prepareWork(ctx context.Context, genParams *generateParams, 
 	}
 	// Set baseFee and GasLimit if we are on an SIP-1559 chain
 	if miner.chainConfig.IsLondon(header.Number) {
-		header.BaseFee = eip1559.CalcBaseFee(miner.chainConfig, parent)
+		header.BaseFee = sip1559.CalcBaseFee(miner.chainConfig, parent)
 		if !miner.chainConfig.IsLondon(parent.Number) {
 			parentGasLimit := parent.GasLimit * miner.chainConfig.ElasticityMultiplier()
 			header.GasLimit = core.CalcGasLimit(parentGasLimit, miner.config.GasCeil)
@@ -304,7 +304,7 @@ func (miner *Miner) prepareWork(ctx context.Context, genParams *generateParams, 
 	if miner.chainConfig.IsCancun(header.Number, header.Time) {
 		var excessBlobGas uint64
 		if miner.chainConfig.IsCancun(parent.Number, parent.Time) {
-			excessBlobGas = eip4844.CalcExcessBlobGas(miner.chainConfig, parent, timestamp)
+			excessBlobGas = sip4844.CalcExcessBlobGas(miner.chainConfig, parent, timestamp)
 		}
 		header.BlobGasUsed = new(uint64)
 		header.ExcessBlobGas = &excessBlobGas
@@ -557,7 +557,7 @@ func (miner *Miner) fillTransactions(ctx context.Context, interrupt *atomic.Int3
 		filter.BaseFee = uint256.MustFromBig(env.header.BaseFee)
 	}
 	if env.header.ExcessBlobGas != nil {
-		filter.BlobFee = uint256.MustFromBig(eip4844.CalcBlobFee(miner.chainConfig, env.header))
+		filter.BlobFee = uint256.MustFromBig(sip4844.CalcBlobFee(miner.chainConfig, env.header))
 	}
 	if miner.chainConfig.IsOsaka(env.header.Number, env.header.Time) && !miner.chainConfig.IsAmsterdam(env.header.Number, env.header.Time) {
 		filter.GasLimitCap = params.MaxTxGas

@@ -26,8 +26,8 @@ import (
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/consensus"
 	"github.com/sila-org/sila/consensus/beacon"
-	"github.com/sila-org/sila/consensus/misc/eip1559"
-	"github.com/sila-org/sila/consensus/misc/eip4844"
+	"github.com/sila-org/sila/consensus/misc/sip1559"
+	"github.com/sila-org/sila/consensus/misc/sip4844"
 	"github.com/sila-org/sila/consensus/silaash"
 	"github.com/sila-org/sila/core/rawdb"
 	"github.com/sila-org/sila/core/types"
@@ -390,7 +390,7 @@ func GenerateBadBlock(parent *types.Block, silaEngine consensus.SilaEngine, txs 
 		UncleHash:  types.EmptyUncleHash,
 	}
 	if config.IsLondon(header.Number) {
-		header.BaseFee = eip1559.CalcBaseFee(config, parent.Header())
+		header.BaseFee = sip1559.CalcBaseFee(config, parent.Header())
 	}
 	if config.IsShanghai(header.Number, header.Time) {
 		header.WithdrawalsHash = &types.EmptyWithdrawalsHash
@@ -414,7 +414,7 @@ func GenerateBadBlock(parent *types.Block, silaEngine consensus.SilaEngine, txs 
 	}
 	header.Root = common.BytesToHash(hasher.Sum(nil))
 	if config.IsCancun(header.Number, header.Time) {
-		excess := eip4844.CalcExcessBlobGas(config, parent.Header(), header.Time)
+		excess := sip4844.CalcExcessBlobGas(config, parent.Header(), header.Time)
 		used := uint64(nBlobs * params.BlobTxBlobGasPerBlob)
 		header.ExcessBlobGas = &excess
 		header.BlobGasUsed = &used

@@ -32,9 +32,11 @@ import (
 	"sync"
 	"testing"
 
+	"github.com/holiman/billy"
+	"github.com/holiman/uint256"
 	"github.com/sila-org/sila/common"
-	"github.com/sila-org/sila/consensus/misc/eip1559"
-	"github.com/sila-org/sila/consensus/misc/eip4844"
+	"github.com/sila-org/sila/consensus/misc/sip1559"
+	"github.com/sila-org/sila/consensus/misc/sip4844"
 	"github.com/sila-org/sila/core"
 	"github.com/sila-org/sila/core/state"
 	"github.com/sila-org/sila/core/tracing"
@@ -46,8 +48,6 @@ import (
 	"github.com/sila-org/sila/params"
 	"github.com/sila-org/sila/rlp"
 	"github.com/sila-org/sila/trie"
-	"github.com/holiman/billy"
-	"github.com/holiman/uint256"
 )
 
 var (
@@ -115,7 +115,7 @@ func (bc *testBlockChain) CurrentBlock() *types.Header {
 		mid := new(big.Int).Add(lo, hi)
 		mid.Div(mid, big.NewInt(2))
 
-		if eip1559.CalcBaseFee(bc.config, &types.Header{
+		if sip1559.CalcBaseFee(bc.config, &types.Header{
 			Number:   blockNumber,
 			GasLimit: gasLimit,
 			GasUsed:  0,
@@ -138,7 +138,7 @@ func (bc *testBlockChain) CurrentBlock() *types.Header {
 		mid.Div(mid, big.NewInt(2))
 
 		tmp := mid.Uint64()
-		if eip4844.CalcBlobFee(bc.Config(), &types.Header{
+		if sip4844.CalcBlobFee(bc.Config(), &types.Header{
 			Number:        blockNumber,
 			Time:          blockTime,
 			ExcessBlobGas: &tmp,

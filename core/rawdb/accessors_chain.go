@@ -24,14 +24,14 @@ import (
 	"slices"
 
 	"github.com/sila-org/sila/common"
-	"github.com/sila-org/sila/consensus/misc/eip4844"
+	"github.com/sila-org/sila/consensus/misc/sip4844"
 	"github.com/sila-org/sila/core/types"
 	"github.com/sila-org/sila/core/types/bal"
 	"github.com/sila-org/sila/crypto"
-	"github.com/sila-org/sila/siladb"
 	"github.com/sila-org/sila/log"
 	"github.com/sila-org/sila/params"
 	"github.com/sila-org/sila/rlp"
+	"github.com/sila-org/sila/siladb"
 )
 
 // ReadCanonicalHash retrieves the hash assigned to a canonical block number.
@@ -567,7 +567,7 @@ func ReadReceipts(db siladb.Reader, hash common.Hash, number uint64, time uint64
 	// Compute effective blob gas price.
 	var blobGasPrice *big.Int
 	if header != nil && header.ExcessBlobGas != nil {
-		blobGasPrice = eip4844.CalcBlobFee(config, header)
+		blobGasPrice = sip4844.CalcBlobFee(config, header)
 	}
 	if err := receipts.DeriveFields(config, hash, number, time, baseFee, blobGasPrice, body.Transactions); err != nil {
 		log.Error("Failed to derive block receipts fields", "hash", hash, "number", number, "err", err)

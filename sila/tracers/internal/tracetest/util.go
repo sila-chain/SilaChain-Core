@@ -24,7 +24,7 @@ import (
 
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/common/math"
-	"github.com/sila-org/sila/consensus/misc/eip4844"
+	"github.com/sila-org/sila/consensus/misc/sip4844"
 	"github.com/sila-org/sila/core"
 	"github.com/sila-org/sila/core/types"
 	"github.com/sila-org/sila/core/vm"
@@ -73,9 +73,9 @@ func (c *traceContext) toBlockContext(genesis *core.Genesis) vm.BlockContext {
 
 	if genesis.ExcessBlobGas != nil && genesis.BlobGasUsed != nil {
 		header := &types.Header{Number: genesis.Config.LondonBlock, Time: *genesis.Config.CancunTime}
-		excess := eip4844.CalcExcessBlobGas(genesis.Config, header, genesis.Timestamp)
+		excess := sip4844.CalcExcessBlobGas(genesis.Config, header, genesis.Timestamp)
 		header.ExcessBlobGas = &excess
-		context.BlobBaseFee = eip4844.CalcBlobFee(genesis.Config, header)
+		context.BlobBaseFee = sip4844.CalcBlobFee(genesis.Config, header)
 	}
 	return context
 }
