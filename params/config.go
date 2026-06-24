@@ -28,10 +28,10 @@ import (
 
 // Genesis hashes to enforce below configs on.
 var (
-	MainnetGenesisHash = common.HexToHash("0xd4e56740f876aef8c010b86a40d5f56745a118d0906a34e69aec8c0db1cb8fa3")
-	HoleskyGenesisHash = common.HexToHash("0xb5f7f912443c940f21fd611f12828d75b534364ed9e95ca4e307729a4661bde4")
-	SepoliaGenesisHash = common.HexToHash("0x25a5cc106eea7138acab33231d7160d69cb777ee0c2c553fcddf5138993e6dd9")
-	HoodiGenesisHash   = common.HexToHash("0xbbe312868b376a3001692a646dd2d7d1e4406380dfd86b98aa8a34d1557c971b")
+	SilaMainnetGenesisHash        = common.HexToHash("0xd4e56740f876aef8c010b86a40d5f56745a118d0906a34e69aec8c0db1cb8fa3")
+	SilaStagingTestnetGenesisHash = common.HexToHash("0xb5f7f912443c940f21fd611f12828d75b534364ed9e95ca4e307729a4661bde4")
+	SilaPublicTestnetGenesisHash  = common.HexToHash("0x25a5cc106eea7138acab33231d7160d69cb777ee0c2c553fcddf5138993e6dd9")
+	SilaDevTestnetGenesisHash     = common.HexToHash("0xbbe312868b376a3001692a646dd2d7d1e4406380dfd86b98aa8a34d1557c971b")
 )
 
 func newUint64(val uint64) *uint64 { return &val }
@@ -39,8 +39,8 @@ func newUint64(val uint64) *uint64 { return &val }
 var (
 	MainnetTerminalTotalDifficulty, _ = new(big.Int).SetString("58_750_000_000_000_000_000_000", 0)
 
-	// MainnetChainConfig is the chain parameters to run a node on the main network.
-	MainnetChainConfig = &ChainConfig{
+	// SilaMainnetChainConfig is the chain parameters to run a node on the main network.
+	SilaMainnetChainConfig = &ChainConfig{
 		ChainID:                 big.NewInt(1),
 		HomesteadBlock:          big.NewInt(1_150_000),
 		DAOForkBlock:            big.NewInt(1_920_000),
@@ -74,8 +74,8 @@ var (
 			BPO2:   DefaultBPO2BlobConfig,
 		},
 	}
-	// HoleskyChainConfig contains the chain parameters to run a node on the Holesky test network.
-	HoleskyChainConfig = &ChainConfig{
+	// SilaStagingTestnetChainConfig contains the chain parameters to run a node on the SilaStagingTestnet test network.
+	SilaStagingTestnetChainConfig = &ChainConfig{
 		ChainID:                 big.NewInt(17000),
 		HomesteadBlock:          big.NewInt(0),
 		DAOForkBlock:            nil,
@@ -110,8 +110,8 @@ var (
 			BPO2:   DefaultBPO2BlobConfig,
 		},
 	}
-	// SepoliaChainConfig contains the chain parameters to run a node on the Sepolia test network.
-	SepoliaChainConfig = &ChainConfig{
+	// SilaPublicTestnetChainConfig contains the chain parameters to run a node on the SilaPublicTestnet test network.
+	SilaPublicTestnetChainConfig = &ChainConfig{
 		ChainID:                 big.NewInt(11155111),
 		HomesteadBlock:          big.NewInt(0),
 		DAOForkBlock:            nil,
@@ -146,8 +146,8 @@ var (
 			BPO2:   DefaultBPO2BlobConfig,
 		},
 	}
-	// HoodiChainConfig contains the chain parameters to run a node on the Hoodi test network.
-	HoodiChainConfig = &ChainConfig{
+	// SilaDevTestnetChainConfig contains the chain parameters to run a node on the SilaDevTestnet test network.
+	SilaDevTestnetChainConfig = &ChainConfig{
 		ChainID:                 big.NewInt(560048),
 		HomesteadBlock:          big.NewInt(0),
 		DAOForkBlock:            nil,
@@ -419,10 +419,10 @@ var (
 
 // NetworkNames are user friendly names to use in the chain spec banner.
 var NetworkNames = map[string]string{
-	MainnetChainConfig.ChainID.String(): "mainnet",
-	SepoliaChainConfig.ChainID.String(): "sepolia",
-	HoleskyChainConfig.ChainID.String(): "holesky",
-	HoodiChainConfig.ChainID.String():   "hoodi",
+	SilaMainnetChainConfig.ChainID.String():        "sila-mainnet",
+	SilaPublicTestnetChainConfig.ChainID.String():  "sila-public-testnet",
+	SilaStagingTestnetChainConfig.ChainID.String(): "sila-staging-testnet",
+	SilaDevTestnetChainConfig.ChainID.String():     "sila-dev-testnet",
 }
 
 // ChainConfig is the core config which determines the blockchain settings.
