@@ -66,7 +66,7 @@ type logMarshaling struct {
 }
 
 // SilaTransferLog creates and SILA transfer log according to SIP-7708.
-// Specification: https://sips.sila.org/SIPS/eip-7708
+// Specification: https://sips.sila.org/SIPS/sip-7708
 func SilaTransferLog(from, to common.Address, amount *uint256.Int) *Log {
 	amount32 := amount.Bytes32()
 	return &Log{
@@ -81,7 +81,7 @@ func SilaTransferLog(from, to common.Address, amount *uint256.Int) *Log {
 }
 
 // SilaBurnLog creates an SILA burn log according to SIP-7708.
-// Specification: https://sips.sila.org/SIPS/eip-7708
+// Specification: https://sips.sila.org/SIPS/sip-7708
 func SilaBurnLog(from common.Address, amount *uint256.Int) *Log {
 	amount32 := amount.Bytes32()
 	return &Log{

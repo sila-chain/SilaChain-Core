@@ -741,8 +741,8 @@ func (c *ChainConfig) IsEIP150(num *big.Int) bool {
 	return isBlockForked(c.SIP150Block, num)
 }
 
-// IsEIP155 returns whether num is either equal to the SIP155 fork block or greater.
-func (c *ChainConfig) IsEIP155(num *big.Int) bool {
+// IsSIP155 returns whether num is either equal to the SIP155 fork block or greater.
+func (c *ChainConfig) IsSIP155(num *big.Int) bool {
 	return isBlockForked(c.SIP155Block, num)
 }
 
@@ -1375,7 +1375,7 @@ func (err *ConfigCompatError) Error() string {
 // Rules is a one time interface meaning that it shouldn't be used in between transition
 // phases.
 type Rules struct {
-	IsHomestead, IsEIP150, IsEIP155, IsEIP158               bool
+	IsHomestead, IsEIP150, IsSIP155, IsEIP158               bool
 	IsEIP2929, IsEIP4762                                    bool
 	IsByzantium, IsConstantinople, IsPetersburg, IsIstanbul bool
 	IsBerlin, IsLondon                                      bool
@@ -1391,7 +1391,7 @@ func (c *ChainConfig) Rules(num *big.Int, isMerge bool, timestamp uint64) Rules 
 	return Rules{
 		IsHomestead:      c.IsHomestead(num),
 		IsEIP150:         c.IsEIP150(num),
-		IsEIP155:         c.IsEIP155(num),
+		IsSIP155:         c.IsSIP155(num),
 		IsEIP158:         c.IsEIP158(num),
 		IsByzantium:      c.IsByzantium(num),
 		IsConstantinople: c.IsConstantinople(num),

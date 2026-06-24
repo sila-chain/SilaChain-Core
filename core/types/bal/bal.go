@@ -20,8 +20,8 @@ import (
 	"bytes"
 	"maps"
 
-	"github.com/sila-org/sila/common"
 	"github.com/holiman/uint256"
+	"github.com/sila-org/sila/common"
 )
 
 // ConstructionAccountAccess contains post-block account state for mutations as well as

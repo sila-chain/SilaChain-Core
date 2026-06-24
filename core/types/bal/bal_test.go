@@ -24,11 +24,11 @@ import (
 	"slices"
 	"testing"
 
+	"github.com/holiman/uint256"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/internal/testrand"
 	"github.com/sila-org/sila/params"
 	"github.com/sila-org/sila/rlp"
-	"github.com/holiman/uint256"
 )
 
 func makeTestConstructionBAL() *ConstructionBlockAccessList {

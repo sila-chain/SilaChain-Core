@@ -5,9 +5,9 @@ package bal
 import (
 	"encoding/json"
 
+	"github.com/holiman/uint256"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/common/hexutil"
-	"github.com/holiman/uint256"
 )
 
 var _ = (*accountAccessMarshaling)(nil)

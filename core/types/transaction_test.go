@@ -58,7 +58,7 @@ var (
 		common.Hex2Bytes("98ff921201554726367d2be8c804a7ff89ccf285ebc57dff8ae4c44b9c19ac4a8887321be575c8095f789dd4c743dfe42c1820f9231f98a962b210e3ac2452a301"),
 	)
 
-	emptyEip2718Tx = NewTx(&AccessListTx{
+	emptySip2718Tx = NewTx(&AccessListTx{
 		ChainID:  big.NewInt(1),
 		Nonce:    3,
 		To:       &testAddr,
@@ -68,8 +68,8 @@ var (
 		Data:     common.FromHex("5544"),
 	})
 
-	signedEip2718Tx, _ = emptyEip2718Tx.WithSignature(
-		NewEIP2930Signer(big.NewInt(1)),
+	signedSip2718Tx, _ = emptySip2718Tx.WithSignature(
+		NewSIP2930Signer(big.NewInt(1)),
 		common.Hex2Bytes("c9519f4f2b30335884581971573fadf60c6204f59a911df35ee8a540456b266032f1e8e2c5dd761f9e4f88f41c8310aeaba26a8bfcdacfedfa12ec3862d3752101"),
 	)
 )
@@ -104,23 +104,23 @@ func TestTransactionEncode(t *testing.T) {
 	}
 }
 
-func TestEIP2718TransactionSigHash(t *testing.T) {
-	s := NewEIP2930Signer(big.NewInt(1))
-	if s.Hash(emptyEip2718Tx) != common.HexToHash("49b486f0ec0a60dfbbca2d30cb07c9e8ffb2a2ff41f29a1ab6737475f6ff69f3") {
-		t.Errorf("empty SIP-2718 transaction hash mismatch, got %x", s.Hash(emptyEip2718Tx))
+func TestSIP2718TransactionSigHash(t *testing.T) {
+	s := NewSIP2930Signer(big.NewInt(1))
+	if s.Hash(emptySip2718Tx) != common.HexToHash("49b486f0ec0a60dfbbca2d30cb07c9e8ffb2a2ff41f29a1ab6737475f6ff69f3") {
+		t.Errorf("empty SIP-2718 transaction hash mismatch, got %x", s.Hash(emptySip2718Tx))
 	}
-	if s.Hash(signedEip2718Tx) != common.HexToHash("49b486f0ec0a60dfbbca2d30cb07c9e8ffb2a2ff41f29a1ab6737475f6ff69f3") {
-		t.Errorf("signed SIP-2718 transaction hash mismatch, got %x", s.Hash(signedEip2718Tx))
+	if s.Hash(signedSip2718Tx) != common.HexToHash("49b486f0ec0a60dfbbca2d30cb07c9e8ffb2a2ff41f29a1ab6737475f6ff69f3") {
+		t.Errorf("signed SIP-2718 transaction hash mismatch, got %x", s.Hash(signedSip2718Tx))
 	}
 }
 
 // This test checks signature operations on access list transactions.
-func TestEIP2930Signer(t *testing.T) {
+func TestSIP2930Signer(t *testing.T) {
 	var (
 		key, _  = crypto.HexToECDSA("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
 		keyAddr = crypto.PubkeyToAddress(key.PublicKey)
-		signer1 = NewEIP2930Signer(big.NewInt(1))
-		signer2 = NewEIP2930Signer(big.NewInt(2))
+		signer1 = NewSIP2930Signer(big.NewInt(1))
+		signer2 = NewSIP2930Signer(big.NewInt(2))
 		tx0     = NewTx(&AccessListTx{Nonce: 1})
 		tx1     = NewTx(&AccessListTx{ChainID: big.NewInt(1), Nonce: 1})
 		tx2, _  = SignNewTx(key, signer2, &AccessListTx{ChainID: big.NewInt(2), Nonce: 1})
@@ -190,10 +190,10 @@ func TestEIP2930Signer(t *testing.T) {
 	}
 }
 
-func TestEIP2718TransactionEncode(t *testing.T) {
+func TestSIP2718TransactionEncode(t *testing.T) {
 	// RLP representation
 	{
-		have, err := rlp.EncodeToBytes(signedEip2718Tx)
+		have, err := rlp.EncodeToBytes(signedSip2718Tx)
 		if err != nil {
 			t.Fatalf("encode error: %v", err)
 		}
@@ -204,7 +204,7 @@ func TestEIP2718TransactionEncode(t *testing.T) {
 	}
 	// Binary representation
 	{
-		have, err := signedEip2718Tx.MarshalBinary()
+		have, err := signedSip2718Tx.MarshalBinary()
 		if err != nil {
 			t.Fatalf("encode error: %v", err)
 		}
@@ -267,7 +267,7 @@ func TestTransactionCoding(t *testing.T) {
 		t.Fatalf("could not generate key: %v", err)
 	}
 	var (
-		signer    = NewEIP2930Signer(common.Big1)
+		signer    = NewSIP2930Signer(common.Big1)
 		addr      = common.HexToAddress("0x0000000000000000000000000000000000000001")
 		recipient = common.HexToAddress("095e7baea6a6c7c4c2dfeb977efac326af552d87")
 		accesses  = AccessList{{Address: addr, StorageKeys: []common.Hash{{0}}}}
@@ -362,7 +362,7 @@ func TestLegacyTransaction_ConsistentV_LargeChainIds(t *testing.T) {
 		t.Fatalf("could not generate key: %v", err)
 	}
 
-	tx, err := SignNewTx(key, NewEIP2930Signer(chainId), txdata)
+	tx, err := SignNewTx(key, NewSIP2930Signer(chainId), txdata)
 	if err != nil {
 		t.Fatalf("could not sign transaction: %v", err)
 	}

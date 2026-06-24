@@ -6,9 +6,9 @@ import (
 	"encoding/json"
 	"errors"
 
+	"github.com/holiman/uint256"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/common/hexutil"
-	"github.com/holiman/uint256"
 )
 
 var _ = (*authorizationMarshaling)(nil)

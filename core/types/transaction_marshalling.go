@@ -21,10 +21,10 @@ import (
 	"errors"
 	"math/big"
 
+	"github.com/holiman/uint256"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/common/hexutil"
 	"github.com/sila-org/sila/crypto/kzg4844"
-	"github.com/holiman/uint256"
 )
 
 // txJSON is the JSON representation of transactions.

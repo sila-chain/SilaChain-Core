@@ -29,7 +29,7 @@ import (
 	"github.com/sila-org/sila/rlp"
 )
 
-func TestEIP155Signing(t *testing.T) {
+func TestSIP155Signing(t *testing.T) {
 	key, _ := crypto.GenerateKey()
 	addr := crypto.PubkeyToAddress(key.PublicKey)
 
@@ -48,7 +48,7 @@ func TestEIP155Signing(t *testing.T) {
 	}
 }
 
-func TestEIP155ChainId(t *testing.T) {
+func TestSIP155ChainId(t *testing.T) {
 	key, _ := crypto.GenerateKey()
 	addr := crypto.PubkeyToAddress(key.PublicKey)
 
@@ -80,7 +80,7 @@ func TestEIP155ChainId(t *testing.T) {
 	}
 }
 
-func TestEIP155SigningVitalik(t *testing.T) {
+func TestSIP155SigningVitalik(t *testing.T) {
 	// Test vectors come from http://vitalik.ca/files/sip155_testvec.txt
 	for i, test := range []struct {
 		txRlp, addr string

@@ -51,8 +51,8 @@ func TestDeriveSha(t *testing.T) {
 	}
 }
 
-// TestEIP2718DeriveSha tests that the input to the DeriveSha function is correct.
-func TestEIP2718DeriveSha(t *testing.T) {
+// TestSIP2718DeriveSha tests that the input to the DeriveSha function is correct.
+func TestSIP2718DeriveSha(t *testing.T) {
 	for _, tc := range []struct {
 		rlpData string
 		exp     string

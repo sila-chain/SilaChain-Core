@@ -48,8 +48,8 @@ func MakeSigner(config *params.ChainConfig, blockNumber *big.Int, blockTime uint
 	case config.IsLondon(blockNumber):
 		signer = NewLondonSigner(config.ChainID)
 	case config.IsBerlin(blockNumber):
-		signer = NewEIP2930Signer(config.ChainID)
-	case config.IsEIP155(blockNumber):
+		signer = NewSIP2930Signer(config.ChainID)
+	case config.IsSIP155(blockNumber):
 		signer = NewSIP155Signer(config.ChainID)
 	case config.IsHomestead(blockNumber):
 		signer = HomesteadSigner{}
@@ -77,7 +77,7 @@ func LatestSigner(config *params.ChainConfig) Signer {
 		case config.LondonBlock != nil:
 			signer = NewLondonSigner(config.ChainID)
 		case config.BerlinBlock != nil:
-			signer = NewEIP2930Signer(config.ChainID)
+			signer = NewSIP2930Signer(config.ChainID)
 		case config.SIP155Block != nil:
 			signer = NewSIP155Signer(config.ChainID)
 		default:
@@ -320,9 +320,9 @@ func NewLondonSigner(chainId *big.Int) Signer {
 	return newModernSigner(chainId, forks.London)
 }
 
-// NewEIP2930Signer returns a signer that accepts SIP-2930 access list transactions,
+// NewSIP2930Signer returns a signer that accepts SIP-2930 access list transactions,
 // SIP-155 replay protected transactions, and legacy Homestead transactions.
-func NewEIP2930Signer(chainId *big.Int) Signer {
+func NewSIP2930Signer(chainId *big.Int) Signer {
 	return newModernSigner(chainId, forks.Berlin)
 }
 
