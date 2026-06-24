@@ -20,37 +20,37 @@ import (
 	"errors"
 	"time"
 
-	"github.com/sila-org/sila"
+	silaapi "github.com/sila-org/sila"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/core"
 	"github.com/sila-org/sila/core/types"
-	"github.com/sila-org/sila/sila"
-	"github.com/sila-org/sila/sila/catalyst"
-	"github.com/sila-org/sila/sila/silaconfig"
-	"github.com/sila-org/sila/sila/filters"
-	"github.com/sila-org/sila/silaclient"
 	"github.com/sila-org/sila/node"
 	"github.com/sila-org/sila/p2p"
 	"github.com/sila-org/sila/params"
 	"github.com/sila-org/sila/rpc"
+	silabackend "github.com/sila-org/sila/sila"
+	"github.com/sila-org/sila/sila/catalyst"
+	"github.com/sila-org/sila/sila/filters"
+	"github.com/sila-org/sila/sila/silaconfig"
+	"github.com/sila-org/sila/silaclient"
 )
 
 // Client exposes the methods provided by the Sila RPC client.
 type Client interface {
-	sila.BlockNumberReader
-	sila.ChainReader
-	sila.ChainStateReader
-	sila.ContractCaller
-	sila.GasEstimator
-	sila.GasPricer
-	sila.GasPricer1559
-	sila.FeeHistoryReader
-	sila.LogFilterer
-	sila.PendingStateReader
-	sila.PendingContractCaller
-	sila.TransactionReader
-	sila.TransactionSender
-	sila.ChainIDReader
+	silaapi.BlockNumberReader
+	silaapi.ChainReader
+	silaapi.ChainStateReader
+	silaapi.ContractCaller
+	silaapi.GasEstimator
+	silaapi.GasPricer
+	silaapi.GasPricer1559
+	silaapi.FeeHistoryReader
+	silaapi.LogFilterer
+	silaapi.PendingStateReader
+	silaapi.PendingContractCaller
+	silaapi.TransactionReader
+	silaapi.TransactionSender
+	silaapi.ChainIDReader
 }
 
 // simClient wraps silaclient. This exists to prevent extracting silaclient.Client
@@ -106,8 +106,8 @@ func NewBackend(alloc types.GenesisAlloc, options ...func(nodeConf *node.Config,
 
 // newWithNode sets up a simulated backend on an existing node. The provided node
 // must not be started and will be started by this method.
-func newWithNode(stack *node.Node, conf *sila.Config, blockPeriod uint64) (*Backend, error) {
-	backend, err := sila.New(stack, conf)
+func newWithNode(stack *node.Node, conf *silabackend.Config, blockPeriod uint64) (*Backend, error) {
+	backend, err := silabackend.New(stack, conf)
 	if err != nil {
 		return nil, err
 	}
