@@ -441,7 +441,7 @@ func (miner *Miner) commitTransactions(ctx context.Context, env *environment, pl
 			break
 		}
 		// If we don't have enough blob space for any further blob transactions,
-		// skip that list altosilaer
+		// skip that list altogether
 		if !blobTxs.Empty() && env.blobs >= miner.maxBlobsPerBlock(env.header.Time) {
 			log.Trace("Not enough blob space for further blob transactions")
 			blobTxs.Clear()
