@@ -33,7 +33,7 @@ var (
 )
 
 // tracer is a simple tracer that records all logs and
-// ether transfers. Transfers are recorded as if they
+// sila transfers. Transfers are recorded as if they
 // were logs. Transfer events include:
 // - tx value
 // - call value

@@ -28,9 +28,9 @@ import (
 	"testing"
 
 	"github.com/sila-org/sila/crypto"
-	"github.com/sila-org/sila/siladb"
 	"github.com/sila-org/sila/p2p"
 	"github.com/sila-org/sila/rpc"
+	"github.com/sila-org/sila/siladb"
 
 	"github.com/stretchr/testify/assert"
 )

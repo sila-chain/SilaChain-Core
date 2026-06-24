@@ -22,8 +22,8 @@ import (
 	"math/big"
 	"slices"
 
-	"github.com/sila-org/sila/common"
 	ssz "github.com/ferranbt/fastssz"
+	"github.com/sila-org/sila/common"
 )
 
 // ComputeAccumulator calculates the SSZ hash tree root of the Era1

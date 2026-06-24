@@ -44,8 +44,8 @@ func (n *Node) apis() []rpc.API {
 			Namespace: "debug",
 			Service:   &p2pDebugAPI{n},
 		}, {
-			Namespace: "web3",
-			Service:   &web3API{n},
+			Namespace: "silaWeb3",
+			Service:   &silaWeb3API{n},
 		},
 	}
 }
@@ -322,19 +322,19 @@ func (api *adminAPI) Datadir() string {
 	return api.node.DataDir()
 }
 
-// web3API offers helper utils
-type web3API struct {
+// silaWeb3API offers helper utils
+type silaWeb3API struct {
 	stack *Node
 }
 
 // ClientVersion returns the node name
-func (s *web3API) ClientVersion() string {
+func (s *silaWeb3API) ClientVersion() string {
 	return s.stack.Server().Name
 }
 
 // Sha3 applies the sila sha3 implementation on the input.
 // It assumes the input is hex encoded.
-func (s *web3API) Sha3(input hexutil.Bytes) hexutil.Bytes {
+func (s *silaWeb3API) Sha3(input hexutil.Bytes) hexutil.Bytes {
 	return crypto.Keccak256(input)
 }
 

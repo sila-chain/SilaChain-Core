@@ -31,9 +31,9 @@ import (
 	"sync/atomic"
 	"time"
 
+	"github.com/rs/cors"
 	"github.com/sila-org/sila/log"
 	"github.com/sila-org/sila/rpc"
-	"github.com/rs/cors"
 )
 
 // httpConfig is the JSON-RPC/HTTP configuration.

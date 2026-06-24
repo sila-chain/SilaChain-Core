@@ -20,9 +20,9 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/grafana/pyroscope-go"
 	"github.com/sila-org/sila/internal/flags"
 	"github.com/sila-org/sila/log"
-	"github.com/grafana/pyroscope-go"
 	"github.com/urfave/cli/v2"
 )
 

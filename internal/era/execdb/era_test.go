@@ -27,12 +27,12 @@ import (
 	"slices"
 	"testing"
 
+	"github.com/golang/snappy"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/core/types"
 	"github.com/sila-org/sila/internal/era"
 	"github.com/sila-org/sila/internal/era/e2store"
 	"github.com/sila-org/sila/rlp"
-	"github.com/golang/snappy"
 )
 
 func TestEre(t *testing.T) {

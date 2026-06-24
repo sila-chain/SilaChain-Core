@@ -116,7 +116,7 @@ type jsonrpcCall struct {
 	Params []interface{}
 }
 
-// Send implements the web3 provider "send" method.
+// Send implements the silaWeb3 provider "send" method.
 func (b *bridge) Send(call jsre.Call) (goja.Value, error) {
 	// Remarshal the request into a Go value.
 	reqVal, err := call.Argument(0).ToObject(call.VM).MarshalJSON()

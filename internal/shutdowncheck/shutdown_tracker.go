@@ -21,8 +21,8 @@ import (
 
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/core/rawdb"
-	"github.com/sila-org/sila/siladb"
 	"github.com/sila-org/sila/log"
+	"github.com/sila-org/sila/siladb"
 )
 
 // ShutdownTracker is a service that reports previous unclean shutdowns

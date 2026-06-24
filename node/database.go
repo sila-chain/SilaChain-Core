@@ -20,10 +20,10 @@ import (
 	"fmt"
 
 	"github.com/sila-org/sila/core/rawdb"
+	"github.com/sila-org/sila/log"
 	"github.com/sila-org/sila/siladb"
 	"github.com/sila-org/sila/siladb/leveldb"
 	"github.com/sila-org/sila/siladb/pebble"
-	"github.com/sila-org/sila/log"
 )
 
 // DatabaseOptions contains the options to apply when opening a database.

@@ -75,7 +75,7 @@ func getCompletions(vm *goja.Runtime, line string) (results []string) {
 	// if the line itself is the only completion.
 	if len(results) == 1 && results[0] == line {
 		// Accessing the property will cause it to be evaluated.
-		// This can cause an error, e.g. in case of web3.sila.protocolVersion
+		// This can cause an error, e.g. in case of silaWeb3.sila.protocolVersion
 		// which has been dropped from sila. Ignore the error for autocompletion
 		// purposes.
 		obj := SafeGet(obj, parts[len(parts)-1])

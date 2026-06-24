@@ -21,8 +21,8 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/sila-org/sila/rpc"
 	"github.com/golang-jwt/jwt/v4"
+	"github.com/sila-org/sila/rpc"
 )
 
 // NewJWTAuth creates an rpc client authentication provider that uses JWT. The

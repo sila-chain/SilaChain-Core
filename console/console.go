@@ -30,14 +30,14 @@ import (
 	"syscall"
 
 	"github.com/dop251/goja"
+	"github.com/mattn/go-colorable"
+	"github.com/peterh/liner"
 	"github.com/sila-org/sila/console/prompt"
 	"github.com/sila-org/sila/internal/jsre"
 	"github.com/sila-org/sila/internal/jsre/deps"
-	"github.com/sila-org/sila/internal/web3ext"
+	"github.com/sila-org/sila/internal/silaweb3ext"
 	"github.com/sila-org/sila/log"
 	"github.com/sila-org/sila/rpc"
-	"github.com/mattn/go-colorable"
-	"github.com/peterh/liner"
 )
 
 var (
@@ -132,14 +132,14 @@ func (c *Console) init(preload []string) error {
 
 	// Initialize the JavaScript <-> Go RPC bridge.
 	bridge := newBridge(c.client, c.prompter, c.printer)
-	if err := c.initWeb3(bridge); err != nil {
+	if err := c.initSilaWeb3(bridge); err != nil {
 		return err
 	}
 	if err := c.initExtensions(); err != nil {
 		return err
 	}
 
-	// Add bridge overrides for web3.js functionality.
+	// Add bridge overrides for silaweb3.js functionality.
 	c.jsre.Do(func(vm *goja.Runtime) {
 		c.initAdmin(vm, bridge)
 	})
@@ -177,30 +177,30 @@ func (c *Console) initConsoleObject() {
 	})
 }
 
-func (c *Console) initWeb3(bridge *bridge) error {
+func (c *Console) initSilaWeb3(bridge *bridge) error {
 	if err := c.jsre.Compile("bignumber.js", deps.BigNumberJS); err != nil {
 		return fmt.Errorf("bignumber.js: %v", err)
 	}
-	if err := c.jsre.Compile("web3.js", deps.Web3JS); err != nil {
-		return fmt.Errorf("web3.js: %v", err)
+	if err := c.jsre.Compile("silaweb3.js", deps.SilaWeb3JS); err != nil {
+		return fmt.Errorf("silaweb3.js: %v", err)
 	}
-	if _, err := c.jsre.Run("var Web3 = require('web3');"); err != nil {
-		return fmt.Errorf("web3 require: %v", err)
+	if _, err := c.jsre.Run("var SilaWeb3 = require('silaweb3');"); err != nil {
+		return fmt.Errorf("silaweb3 require: %v", err)
 	}
 	var err error
 	c.jsre.Do(func(vm *goja.Runtime) {
 		transport := vm.NewObject()
 		transport.Set("send", jsre.MakeCallback(vm, bridge.Send))
 		transport.Set("sendAsync", jsre.MakeCallback(vm, bridge.Send))
-		vm.Set("_consoleWeb3Transport", transport)
-		_, err = vm.RunString("var web3 = new Web3(_consoleWeb3Transport)")
+		vm.Set("_consoleSilaWeb3Transport", transport)
+		_, err = vm.RunString("var silaWeb3 = new SilaWeb3(_consoleSilaWeb3Transport)")
 	})
 	return err
 }
 
 var defaultAPIs = map[string]string{"sila": "1.0", "net": "1.0", "debug": "1.0"}
 
-// initExtensions loads and registers web3.js extensions.
+// initExtensions loads and registers silaweb3.js extensions.
 func (c *Console) initExtensions() error {
 	const methodNotFound = -32601
 	apis, err := c.client.SupportedModules()
@@ -216,11 +216,11 @@ func (c *Console) initExtensions() error {
 	// Compute aliases from server-provided modules.
 	aliases := map[string]struct{}{"sila": {}}
 	for api := range apis {
-		if api == "web3" {
+		if api == "silaWeb3" {
 			continue
 		}
 		aliases[api] = struct{}{}
-		if file, ok := web3ext.Modules[api]; ok {
+		if file, ok := silaweb3ext.Modules[api]; ok {
 			if err = c.jsre.Compile(api+".js", file); err != nil {
 				return fmt.Errorf("%s.js: %v", api, err)
 			}
@@ -229,9 +229,9 @@ func (c *Console) initExtensions() error {
 
 	// Apply aliases.
 	c.jsre.Do(func(vm *goja.Runtime) {
-		web3 := getObject(vm, "web3")
+		silaWeb3Obj := getObject(vm, "silaWeb3")
 		for name := range aliases {
-			if v := web3.Get(name); v != nil {
+			if v := silaWeb3Obj.Get(name); v != nil {
 				vm.Set(name, v)
 			}
 		}
@@ -299,7 +299,7 @@ func (c *Console) Welcome() {
 
 	// Print some generic Sila metadata
 	if res, err := c.jsre.Run(`
-		var message = "instance: " + web3.version.node + "\n";
+		var message = "instance: " + silaWeb3.version.node + "\n";
 		message += "at block: " + sila.blockNumber + " (" + new Date(1000 * sila.getBlock(sila.blockNumber).timestamp) + ")\n";
 		try {
 			message += " datadir: " + admin.datadir + "\n";
