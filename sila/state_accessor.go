@@ -270,7 +270,7 @@ func (sila *Sila) stateAtTransaction(ctx context.Context, block *types.Block, tx
 			return nil, vm.BlockContext{}, nil, nil, fmt.Errorf("transaction %#x failed: %v", tx.Hash(), err)
 		}
 		// Ensure any modifications are committed to the state
-		// Only delete empty objects if EIP158/161 (a.k.a Spurious Dragon) is in effect
+		// Only delete empty objects if SIP158/161 (a.k.a Spurious Dragon) is in effect
 		statedb.Finalise(evm.ChainConfig().IsEIP158(block.Number()))
 	}
 	return nil, vm.BlockContext{}, nil, nil, fmt.Errorf("transaction index %d out of range for block %#x", txIndex, block.Hash())

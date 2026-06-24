@@ -484,7 +484,7 @@ func (s *stateObject) commit() (*AccountUpdate, *trienode.NodeSet, error) {
 // It is used to add funds to the destination account of a transfer.
 // returns the previous balance
 func (s *stateObject) AddBalance(amount *uint256.Int) uint256.Int {
-	// EIP161: We must check emptiness for the objects such that the account
+	// SIP161: We must check emptiness for the objects such that the account
 	// clearing (0,0,0 objects) can take effect.
 	if amount.IsZero() {
 		if s.empty() {

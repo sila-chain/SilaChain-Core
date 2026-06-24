@@ -167,7 +167,7 @@ func gasSStore(evm *EVM, contract *Contract, stack *Stack, mem *Memory, memorySi
 	return GasCosts{RegularGas: params.NetSstoreDirtyGas}, nil
 }
 
-// Here come the EIP2200 rules:
+// Here come the SIP2200 rules:
 //
 //	(0.) If *gasleft* is less than or equal to 2300, fail the current call.
 //	(1.) If current value equals new value (this is a no-op), SLOAD_GAS is deducted.
@@ -499,7 +499,7 @@ func gasSelfdestruct(evm *EVM, contract *Contract, stack *Stack, mem *Memory, me
 		return GasCosts{}, ErrWriteProtection
 	}
 	var gas uint64
-	// EIP150 homestead gas reprice fork:
+	// SIP150 homestead gas reprice fork:
 	if evm.chainRules.IsEIP150 {
 		gas = params.SelfdestructGasEIP150
 		var address = common.Address(stack.back(0).Bytes20())
@@ -612,8 +612,8 @@ func stateGasCall8037(evm *EVM, contract *Contract, stack *Stack) (uint64, error
 		transfersValue = !stack.back(2).IsZero()
 		address        = common.Address(stack.back(1).Bytes20())
 	)
-	// TODO(rjl, marius), can EIP8037 implicitly means the EIP158 is also activated?
-	// It's technically possible to skip the EIP158 but very unlikely in practice.
+	// TODO(rjl, marius), can SIP8037 implicitly means the SIP158 is also activated?
+	// It's technically possible to skip the SIP158 but very unlikely in practice.
 	if evm.chainRules.IsEIP158 {
 		// Important: use StateDB.Empty instead of !StateDB.Exist. An account may exist
 		// in the current state yet still be considered non-existent by SIP-161 if its

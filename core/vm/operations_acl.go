@@ -288,8 +288,8 @@ func gasCallEIP8037(evm *EVM, contract *Contract, stack *Stack, mem *Memory, mem
 func makeCallVariantGasCallEIP7702(intrinsicFunc intrinsicGasFunc) gasFunc {
 	return func(evm *EVM, contract *Contract, stack *Stack, mem *Memory, memorySize uint64) (GasCosts, error) {
 		var (
-			eip2929Cost uint64
-			eip7702Cost uint64
+			sip2929Cost uint64
+			sip7702Cost uint64
 			addr        = common.Address(stack.back(1).Bytes20())
 		)
 		// Perform SIP-2929 checks (stateless), checking address presence
@@ -300,11 +300,11 @@ func makeCallVariantGasCallEIP7702(intrinsicFunc intrinsicGasFunc) gasFunc {
 			// The WarmStorageReadCostEIP2929 (100) is already deducted in the form
 			// of a constant cost, so the cost to charge for cold access, if any,
 			// is Cold - Warm
-			eip2929Cost = params.ColdAccountAccessCostEIP2929 - params.WarmStorageReadCostEIP2929
+			sip2929Cost = params.ColdAccountAccessCostEIP2929 - params.WarmStorageReadCostEIP2929
 
 			// Charge the remaining difference here already, to correctly calculate
 			// available gas for call
-			if !contract.chargeRegular(eip2929Cost, evm.Config.Tracer, tracing.GasChangeCallStorageColdAccess) {
+			if !contract.chargeRegular(sip2929Cost, evm.Config.Tracer, tracing.GasChangeCallStorageColdAccess) {
 				return GasCosts{}, ErrOutOfGas
 			}
 		}
@@ -328,12 +328,12 @@ func makeCallVariantGasCallEIP7702(intrinsicFunc intrinsicGasFunc) gasFunc {
 		// Check if code is a delegation and if so, charge for resolution.
 		if target, ok := types.ParseDelegation(evm.StateDB.GetCode(addr)); ok {
 			if evm.StateDB.AddressInAccessList(target) {
-				eip7702Cost = params.WarmStorageReadCostEIP2929
+				sip7702Cost = params.WarmStorageReadCostEIP2929
 			} else {
 				evm.StateDB.AddAddressToAccessList(target)
-				eip7702Cost = params.ColdAccountAccessCostEIP2929
+				sip7702Cost = params.ColdAccountAccessCostEIP2929
 			}
-			if !contract.chargeRegular(eip7702Cost, evm.Config.Tracer, tracing.GasChangeCallStorageColdAccess) {
+			if !contract.chargeRegular(sip7702Cost, evm.Config.Tracer, tracing.GasChangeCallStorageColdAccess) {
 				return GasCosts{}, ErrOutOfGas
 			}
 		}
@@ -347,11 +347,11 @@ func makeCallVariantGasCallEIP7702(intrinsicFunc intrinsicGasFunc) gasFunc {
 		// adding it to the return, it will be charged outside of this function, as
 		// part of the dynamic gas. This will ensure it is correctly reported to
 		// tracers.
-		contract.Gas.RegularGas += eip2929Cost + eip7702Cost
+		contract.Gas.RegularGas += sip2929Cost + sip7702Cost
 		// Undo the RegularGasUsed increments from the direct UseGas charges,
 		// since this gas will be re-charged via the returned cost.
-		contract.Gas.UsedRegularGas -= eip2929Cost
-		contract.Gas.UsedRegularGas -= eip7702Cost
+		contract.Gas.UsedRegularGas -= sip2929Cost
+		contract.Gas.UsedRegularGas -= sip7702Cost
 
 		// Aggregate the gas costs from all components, including SIP-2929, SIP-7702,
 		// the CALL opcode itself, and the cost incurred by nested calls.
@@ -359,7 +359,7 @@ func makeCallVariantGasCallEIP7702(intrinsicFunc intrinsicGasFunc) gasFunc {
 			overflow  bool
 			totalCost uint64
 		)
-		if totalCost, overflow = math.SafeAdd(eip2929Cost, eip7702Cost); overflow {
+		if totalCost, overflow = math.SafeAdd(sip2929Cost, sip7702Cost); overflow {
 			return GasCosts{}, ErrGasUintOverflow
 		}
 		if totalCost, overflow = math.SafeAdd(totalCost, intrinsicCost); overflow {
@@ -379,15 +379,15 @@ func makeCallVariantGasCallEIP7702(intrinsicFunc intrinsicGasFunc) gasFunc {
 func makeCallVariantGasCallEIP8037(regularFunc regularGasFunc, stateGasFunc stateGasFunc) gasFunc {
 	return func(evm *EVM, contract *Contract, stack *Stack, mem *Memory, memorySize uint64) (GasCosts, error) {
 		var (
-			eip2929Cost uint64
-			eip7702Cost uint64
+			sip2929Cost uint64
+			sip7702Cost uint64
 			addr        = common.Address(stack.back(1).Bytes20())
 		)
 		// SIP-2929 cold access check.
 		if !evm.StateDB.AddressInAccessList(addr) {
 			evm.StateDB.AddAddressToAccessList(addr)
-			eip2929Cost = params.ColdAccountAccessCostEIP2929 - params.WarmStorageReadCostEIP2929
-			if !contract.chargeRegular(eip2929Cost, evm.Config.Tracer, tracing.GasChangeCallStorageColdAccess) {
+			sip2929Cost = params.ColdAccountAccessCostEIP2929 - params.WarmStorageReadCostEIP2929
+			if !contract.chargeRegular(sip2929Cost, evm.Config.Tracer, tracing.GasChangeCallStorageColdAccess) {
 				return GasCosts{}, ErrOutOfGas
 			}
 		}
@@ -408,12 +408,12 @@ func makeCallVariantGasCallEIP8037(regularFunc regularGasFunc, stateGasFunc stat
 		// SIP-7702 delegation check.
 		if target, ok := types.ParseDelegation(evm.StateDB.GetCode(addr)); ok {
 			if evm.StateDB.AddressInAccessList(target) {
-				eip7702Cost = params.WarmStorageReadCostEIP2929
+				sip7702Cost = params.WarmStorageReadCostEIP2929
 			} else {
 				evm.StateDB.AddAddressToAccessList(target)
-				eip7702Cost = params.ColdAccountAccessCostEIP2929
+				sip7702Cost = params.ColdAccountAccessCostEIP2929
 			}
-			if !contract.chargeRegular(eip7702Cost, evm.Config.Tracer, tracing.GasChangeCallStorageColdAccess) {
+			if !contract.chargeRegular(sip7702Cost, evm.Config.Tracer, tracing.GasChangeCallStorageColdAccess) {
 				return GasCosts{}, ErrOutOfGas
 			}
 		}
@@ -437,15 +437,15 @@ func makeCallVariantGasCallEIP8037(regularFunc regularGasFunc, stateGasFunc stat
 
 		// Temporarily undo direct regular charges for tracer reporting.
 		// The interpreter will charge the returned totalCost.
-		contract.Gas.RegularGas += eip2929Cost + eip7702Cost + regularCost
-		contract.Gas.UsedRegularGas -= eip2929Cost + eip7702Cost + regularCost
+		contract.Gas.RegularGas += sip2929Cost + sip7702Cost + regularCost
+		contract.Gas.UsedRegularGas -= sip2929Cost + sip7702Cost + regularCost
 
 		// Aggregate total cost.
 		var (
 			overflow  bool
 			totalCost uint64
 		)
-		if totalCost, overflow = math.SafeAdd(eip2929Cost, eip7702Cost); overflow {
+		if totalCost, overflow = math.SafeAdd(sip2929Cost, sip7702Cost); overflow {
 			return GasCosts{}, ErrGasUintOverflow
 		}
 		if totalCost, overflow = math.SafeAdd(totalCost, regularCost); overflow {

@@ -35,9 +35,9 @@
     "config": {
       "byzantiumBlock": 1700000,
       "chainId": 3,
-      "eip150Block": 0,
-      "eip155Block": 10,
-      "eip158Block": 10,
+      "sip150Block": 0,
+      "sip155Block": 10,
+      "sip158Block": 10,
       "silaash": {},
       "homesteadBlock": 0
     },

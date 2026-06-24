@@ -210,8 +210,8 @@ the expected order for the overlay tree migration.
 			},
 			{
 				Name:    "list-eip-7610-accounts",
-				Aliases: []string{"eip7610"},
-				Usage:   "list EIP7610 eligible accounts",
+				Aliases: []string{"sip7610"},
+				Usage:   "list SIP7610 eligible accounts",
 				Action:  listEIP7610EligibleAccounts,
 				Flags:   slices.Concat(utils.NetworkFlags, utils.DatabaseFlags),
 				Description: `
@@ -1038,7 +1038,7 @@ func listEIP7610EligibleAccounts(ctx *cli.Context) error {
 		return err
 	}
 	if !config.IsEIP158(headBlock.Number()) {
-		log.Info("Local head is prior to SIP-161", "head", headBlock.Number(), "eip-161", *config.EIP158Block)
+		log.Info("Local head is prior to SIP-161", "head", headBlock.Number(), "eip-161", *config.SIP158Block)
 		return nil
 	}
 	triedb := utils.MakeTrieDatabase(ctx, stack, chaindb, false, true, false)

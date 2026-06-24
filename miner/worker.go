@@ -506,10 +506,10 @@ func (miner *Miner) commitTransactions(ctx context.Context, env *environment, pl
 		// during transaction acceptance in the transaction pool.
 		from, _ := types.Sender(env.signer, tx)
 
-		// Check whether the tx is replay protected. If we're not in the EIP155 hf
+		// Check whether the tx is replay protected. If we're not in the SIP155 hf
 		// phase, start ignoring the sender until we do.
 		if tx.Protected() && !miner.chainConfig.IsEIP155(env.header.Number) {
-			log.Trace("Ignoring replay protected transaction", "hash", ltx.Hash, "eip155", miner.chainConfig.EIP155Block)
+			log.Trace("Ignoring replay protected transaction", "hash", ltx.Hash, "sip155", miner.chainConfig.SIP155Block)
 			txs.Pop()
 			continue
 		}

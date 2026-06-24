@@ -28,6 +28,7 @@ import (
 	"time"
 
 	"github.com/davecgh/go-spew/spew"
+	"github.com/holiman/uint256"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/consensus/beacon"
 	"github.com/sila-org/sila/consensus/silaash"
@@ -40,13 +41,12 @@ import (
 	"github.com/sila-org/sila/core/types/bal"
 	"github.com/sila-org/sila/crypto"
 	"github.com/sila-org/sila/crypto/kzg4844"
-	"github.com/sila-org/sila/siladb"
 	"github.com/sila-org/sila/p2p"
 	"github.com/sila-org/sila/p2p/enode"
 	"github.com/sila-org/sila/params"
 	"github.com/sila-org/sila/rlp"
+	"github.com/sila-org/sila/siladb"
 	"github.com/sila-org/sila/trie"
-	"github.com/holiman/uint256"
 )
 
 var (
@@ -78,8 +78,8 @@ func newTestBackend(blocks int) *testBackend {
 func newTestBackendWithGenerator(blocks int, shanghai bool, cancun bool, generator func(int, *core.BlockGen)) *testBackend {
 	var (
 		// Create a database pre-initialize with a genesis block
-		db     = rawdb.NewMemoryDatabase()
-		config = params.TestChainConfig
+		db         = rawdb.NewMemoryDatabase()
+		config     = params.TestChainConfig
 		silaEngine = beacon.New(silaash.NewFaker())
 	)
 	if shanghai {
@@ -88,9 +88,9 @@ func newTestBackendWithGenerator(blocks int, shanghai bool, cancun bool, generat
 			HomesteadBlock:          big.NewInt(0),
 			DAOForkBlock:            nil,
 			DAOForkSupport:          true,
-			EIP150Block:             big.NewInt(0),
-			EIP155Block:             big.NewInt(0),
-			EIP158Block:             big.NewInt(0),
+			SIP150Block:             big.NewInt(0),
+			SIP155Block:             big.NewInt(0),
+			SIP158Block:             big.NewInt(0),
 			ByzantiumBlock:          big.NewInt(0),
 			ConstantinopleBlock:     big.NewInt(0),
 			PetersburgBlock:         big.NewInt(0),
@@ -103,7 +103,7 @@ func newTestBackendWithGenerator(blocks int, shanghai bool, cancun bool, generat
 			MergeNetsplitBlock:      big.NewInt(0),
 			ShanghaiTime:            u64(0),
 			TerminalTotalDifficulty: big.NewInt(0),
-			Silaash:                  new(params.SilaashConfig),
+			Silaash:                 new(params.SilaashConfig),
 		}
 	}
 

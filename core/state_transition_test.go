@@ -184,7 +184,7 @@ func TestIntrinsicGas(t *testing.T) {
 			name:      "istanbul/non-zero-data",
 			data:      bytes.Repeat([]byte{0xff}, 100),
 			isEIP2028: true,
-			// 100 nz bytes * 16 (post-EIP2028)
+			// 100 nz bytes * 16 (post-SIP2028)
 			want: vm.GasCosts{RegularGas: params.TxGas + 100*params.TxDataNonZeroGasEIP2028},
 		},
 		{

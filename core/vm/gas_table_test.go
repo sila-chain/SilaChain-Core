@@ -24,13 +24,13 @@ import (
 	"sort"
 	"testing"
 
+	"github.com/holiman/uint256"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/common/hexutil"
 	"github.com/sila-org/sila/core/state"
 	"github.com/sila-org/sila/core/tracing"
 	"github.com/sila-org/sila/core/types"
 	"github.com/sila-org/sila/params"
-	"github.com/holiman/uint256"
 )
 
 func TestMemoryGasCost(t *testing.T) {
@@ -53,7 +53,7 @@ func TestMemoryGasCost(t *testing.T) {
 	}
 }
 
-var eip2200Tests = []struct {
+var sip2200Tests = []struct {
 	original byte
 	gaspool  uint64
 	input    string
@@ -83,7 +83,7 @@ var eip2200Tests = []struct {
 }
 
 func TestEIP2200(t *testing.T) {
-	for i, tt := range eip2200Tests {
+	for i, tt := range sip2200Tests {
 		address := common.BytesToAddress([]byte("contract"))
 
 		statedb, _ := state.New(types.EmptyRootHash, state.NewDatabaseForTesting())
@@ -96,7 +96,7 @@ func TestEIP2200(t *testing.T) {
 			CanTransfer: func(StateDB, common.Address, *uint256.Int) bool { return true },
 			Transfer:    func(StateDB, common.Address, common.Address, *uint256.Int, *params.Rules) {},
 		}
-		evm := NewEVM(vmctx, statedb, params.AllSilaashProtocolChanges, Config{ExtraEips: []int{2200}})
+		evm := NewEVM(vmctx, statedb, params.AllSilaashProtocolChanges, Config{ExtraSips: []int{2200}})
 		initialGas := NewGasBudget(tt.gaspool, 0)
 		_, result, err := evm.Call(common.Address{}, address, nil, initialGas, new(uint256.Int))
 		if !errors.Is(err, tt.failure) {
@@ -113,7 +113,7 @@ func TestEIP2200(t *testing.T) {
 
 var createGasTests = []struct {
 	code       string
-	eip3860    bool
+	sip3860    bool
 	gasUsed    uint64
 	minimumGas uint64
 }{
@@ -149,8 +149,8 @@ func TestCreateGas(t *testing.T) {
 			}
 			config := Config{}
 			chainConfig := params.AllSilaashProtocolChanges
-			if tt.eip3860 {
-				config.ExtraEips = []int{3860}
+			if tt.sip3860 {
+				config.ExtraSips = []int{3860}
 				vmctx.Random = new(common.Hash)
 
 				chainConfig = params.MergedTestChainConfig

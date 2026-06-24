@@ -24,7 +24,7 @@ import (
 	"github.com/sila-org/sila/core/types/bal"
 )
 
-// The EIP27928 reader utilizes a hierarchical architecture to optimize state
+// The SIP27928 reader utilizes a hierarchical architecture to optimize state
 // access during block execution:
 //
 // - Base layer: The reader is initialized with the pre-transition state root,

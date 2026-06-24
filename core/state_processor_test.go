@@ -283,9 +283,9 @@ func TestStateProcessorErrors(t *testing.T) {
 				Config: &params.ChainConfig{
 					ChainID:             big.NewInt(1),
 					HomesteadBlock:      big.NewInt(0),
-					EIP150Block:         big.NewInt(0),
-					EIP155Block:         big.NewInt(0),
-					EIP158Block:         big.NewInt(0),
+					SIP150Block:         big.NewInt(0),
+					SIP155Block:         big.NewInt(0),
+					SIP158Block:         big.NewInt(0),
 					ByzantiumBlock:      big.NewInt(0),
 					ConstantinopleBlock: big.NewInt(0),
 					PetersburgBlock:     big.NewInt(0),

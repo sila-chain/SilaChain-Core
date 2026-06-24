@@ -425,9 +425,9 @@ func TestTimeBasedForkInGenesis(t *testing.T) {
 				HomesteadBlock:          big.NewInt(0),
 				DAOForkBlock:            nil,
 				DAOForkSupport:          true,
-				EIP150Block:             big.NewInt(0),
-				EIP155Block:             big.NewInt(0),
-				EIP158Block:             big.NewInt(0),
+				SIP150Block:             big.NewInt(0),
+				SIP155Block:             big.NewInt(0),
+				SIP158Block:             big.NewInt(0),
 				ByzantiumBlock:          big.NewInt(0),
 				ConstantinopleBlock:     big.NewInt(0),
 				PetersburgBlock:         big.NewInt(0),
@@ -439,7 +439,7 @@ func TestTimeBasedForkInGenesis(t *testing.T) {
 				MergeNetsplitBlock:      big.NewInt(0),
 				ShanghaiTime:            &shanghai,
 				CancunTime:              &cancun,
-				Silaash:                  new(params.SilaashConfig),
+				Silaash:                 new(params.SilaashConfig),
 			}
 		}
 	)

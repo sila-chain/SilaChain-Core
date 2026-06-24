@@ -25,7 +25,7 @@ import (
 )
 
 func Example_mainnetEIP7610Accounts() {
-	list := slices.Clone(eip7610Accounts[params.MainnetChainConfig.ChainID.Uint64()])
+	list := slices.Clone(sip7610Accounts[params.MainnetChainConfig.ChainID.Uint64()])
 	slices.SortFunc(list, common.Address.Cmp)
 	for _, addr := range list {
 		fmt.Println(addr.Hex())

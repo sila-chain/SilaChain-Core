@@ -197,9 +197,9 @@ func benchmarkEVM_Create(bench *testing.B, code string) {
 			ConstantinopleBlock: new(big.Int),
 			DAOForkBlock:        new(big.Int),
 			DAOForkSupport:      false,
-			EIP150Block:         new(big.Int),
-			EIP155Block:         new(big.Int),
-			EIP158Block:         new(big.Int),
+			SIP150Block:         new(big.Int),
+			SIP155Block:         new(big.Int),
+			SIP158Block:         new(big.Int),
 		},
 		EVMConfig: vm.Config{},
 	}
@@ -535,7 +535,7 @@ func TestEip2929Cases(t *testing.T) {
 		Execute(code, nil, &Config{
 			EVMConfig: vm.Config{
 				Tracer:    logger.NewMarkdownLogger(nil, os.Stdout).Hooks(),
-				ExtraEips: []int{2929},
+				ExtraSips: []int{2929},
 			},
 		})
 	}

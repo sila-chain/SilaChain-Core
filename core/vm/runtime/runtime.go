@@ -20,6 +20,7 @@ import (
 	"math"
 	"math/big"
 
+	"github.com/holiman/uint256"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/core/state"
 	"github.com/sila-org/sila/core/tracing"
@@ -27,7 +28,6 @@ import (
 	"github.com/sila-org/sila/core/vm"
 	"github.com/sila-org/sila/crypto"
 	"github.com/sila-org/sila/params"
-	"github.com/holiman/uint256"
 )
 
 // Config is a basic type specifying certain configuration flags for running
@@ -66,9 +66,9 @@ func setDefaults(cfg *Config) {
 			HomesteadBlock:          new(big.Int),
 			DAOForkBlock:            new(big.Int),
 			DAOForkSupport:          false,
-			EIP150Block:             new(big.Int),
-			EIP155Block:             new(big.Int),
-			EIP158Block:             new(big.Int),
+			SIP150Block:             new(big.Int),
+			SIP155Block:             new(big.Int),
+			SIP158Block:             new(big.Int),
 			ByzantiumBlock:          new(big.Int),
 			ConstantinopleBlock:     new(big.Int),
 			PetersburgBlock:         new(big.Int),

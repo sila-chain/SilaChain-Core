@@ -270,7 +270,7 @@ func (t *StateTest) RunNoVerify(subtest StateSubtest, vmconfig vm.Config, snapsh
 	if err != nil {
 		return st, common.Hash{}, 0, UnsupportedForkError{subtest.Fork}
 	}
-	vmconfig.ExtraEips = eips
+	vmconfig.ExtraSips = eips
 
 	block := t.genesis(config).ToBlock()
 	st = MakePreState(rawdb.NewMemoryDatabase(), t.json.Pre, snapshotter, scheme)

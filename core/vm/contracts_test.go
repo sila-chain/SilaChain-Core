@@ -51,9 +51,9 @@ var allPrecompiles = map[common.Address]PrecompiledContract{
 	common.BytesToAddress([]byte{2}):    &sha256hash{},
 	common.BytesToAddress([]byte{3}):    &ripemd160hash{},
 	common.BytesToAddress([]byte{4}):    &dataCopy{},
-	common.BytesToAddress([]byte{5}):    &bigModExp{eip2565: false, eip7883: false},
-	common.BytesToAddress([]byte{0xf5}): &bigModExp{eip2565: true, eip7883: false},
-	common.BytesToAddress([]byte{0xf6}): &bigModExp{eip2565: true, eip7883: true},
+	common.BytesToAddress([]byte{5}):    &bigModExp{sip2565: false, sip7883: false},
+	common.BytesToAddress([]byte{0xf5}): &bigModExp{sip2565: true, sip7883: false},
+	common.BytesToAddress([]byte{0xf6}): &bigModExp{sip2565: true, sip7883: true},
 	common.BytesToAddress([]byte{6}):    &bn256AddIstanbul{},
 	common.BytesToAddress([]byte{7}):    &bn256ScalarMulIstanbul{},
 	common.BytesToAddress([]byte{8}):    &bn256PairingIstanbul{},
@@ -237,11 +237,11 @@ func BenchmarkPrecompiledIdentity(bench *testing.B) {
 func TestPrecompiledModExp(t *testing.T)      { testJson("modexp", "05", t) }
 func BenchmarkPrecompiledModExp(b *testing.B) { benchJson("modexp", "05", b) }
 
-func TestPrecompiledModExpEip2565(t *testing.T)      { testJson("modexp_eip2565", "f5", t) }
-func BenchmarkPrecompiledModExpEip2565(b *testing.B) { benchJson("modexp_eip2565", "f5", b) }
+func TestPrecompiledModExpEip2565(t *testing.T)      { testJson("modexp_sip2565", "f5", t) }
+func BenchmarkPrecompiledModExpEip2565(b *testing.B) { benchJson("modexp_sip2565", "f5", b) }
 
-func TestPrecompiledModExpEip7883(t *testing.T)      { testJson("modexp_eip7883", "f6", t) }
-func BenchmarkPrecompiledModExpEip7883(b *testing.B) { benchJson("modexp_eip7883", "f6", b) }
+func TestPrecompiledModExpEip7883(t *testing.T)      { testJson("modexp_sip7883", "f6", t) }
+func BenchmarkPrecompiledModExpEip7883(b *testing.B) { benchJson("modexp_sip7883", "f6", b) }
 
 // Tests the sample inputs from the elliptic curve addition SIP 213.
 func TestPrecompiledBn256Add(t *testing.T)      { testJson("bn256Add", "06", t) }
@@ -256,14 +256,14 @@ func TestPrecompiledModExpOOG(t *testing.T) {
 	for _, test := range modexpTests {
 		testPrecompiledOOG("05", test, t)
 	}
-	modexpTestsEIP2565, err := loadJson("modexp_eip2565")
+	modexpTestsEIP2565, err := loadJson("modexp_sip2565")
 	if err != nil {
 		t.Fatal(err)
 	}
 	for _, test := range modexpTestsEIP2565 {
 		testPrecompiledOOG("f5", test, t)
 	}
-	modexpTestsEIP7883, err := loadJson("modexp_eip7883")
+	modexpTestsEIP7883, err := loadJson("modexp_sip7883")
 	if err != nil {
 		t.Fatal(err)
 	}

@@ -142,11 +142,11 @@ func Transition(ctx *cli.Context) error {
 	vmConfig := vm.Config{}
 	// Construct the chainconfig
 	var chainConfig *params.ChainConfig
-	if cConf, extraEips, err := tests.GetChainConfig(ctx.String(ForknameFlag.Name)); err != nil {
+	if cConf, extraSips, err := tests.GetChainConfig(ctx.String(ForknameFlag.Name)); err != nil {
 		return NewError(ErrorConfig, fmt.Errorf("failed constructing chain configuration: %v", err))
 	} else {
 		chainConfig = cConf
-		vmConfig.ExtraEips = extraEips
+		vmConfig.ExtraSips = extraSips
 	}
 
 	// Set the chain id

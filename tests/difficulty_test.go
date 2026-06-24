@@ -29,9 +29,9 @@ var (
 		HomesteadBlock: big.NewInt(1150000),
 		DAOForkBlock:   big.NewInt(1920000),
 		DAOForkSupport: true,
-		EIP150Block:    big.NewInt(2463000),
-		EIP155Block:    big.NewInt(2675000),
-		EIP158Block:    big.NewInt(2675000),
+		SIP150Block:    big.NewInt(2463000),
+		SIP155Block:    big.NewInt(2675000),
+		SIP158Block:    big.NewInt(2675000),
 		ByzantiumBlock: big.NewInt(4370000),
 	}
 
@@ -40,9 +40,9 @@ var (
 		HomesteadBlock:          big.NewInt(0),
 		DAOForkBlock:            nil,
 		DAOForkSupport:          true,
-		EIP150Block:             big.NewInt(0),
-		EIP155Block:             big.NewInt(10),
-		EIP158Block:             big.NewInt(10),
+		SIP150Block:             big.NewInt(0),
+		SIP155Block:             big.NewInt(10),
+		SIP158Block:             big.NewInt(10),
 		ByzantiumBlock:          big.NewInt(1_700_000),
 		ConstantinopleBlock:     big.NewInt(4_230_000),
 		PetersburgBlock:         big.NewInt(4_939_394),
@@ -86,13 +86,13 @@ func TestDifficulty(t *testing.T) {
 	dt.config("Constantinople", params.ChainConfig{
 		ConstantinopleBlock: big.NewInt(0),
 	})
-	dt.config("EIP2384", params.ChainConfig{
+	dt.config("SIP2384", params.ChainConfig{
 		MuirGlacierBlock: big.NewInt(0),
 	})
-	dt.config("EIP4345", params.ChainConfig{
+	dt.config("SIP4345", params.ChainConfig{
 		ArrowGlacierBlock: big.NewInt(0),
 	})
-	dt.config("EIP5133", params.ChainConfig{
+	dt.config("SIP5133", params.ChainConfig{
 		GrayGlacierBlock: big.NewInt(0),
 	})
 	dt.config("difficulty.json", mainnetChainConfig)

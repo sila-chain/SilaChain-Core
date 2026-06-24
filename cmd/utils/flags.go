@@ -841,7 +841,7 @@ var (
 	}
 	AllowUnprotectedTxs = &cli.BoolFlag{
 		Name:     "rpc.allow-unprotected-txs",
-		Usage:    "Allow for unprotected (non EIP155 signed) transactions to be submitted via RPC",
+		Usage:    "Allow for unprotected (non SIP155 signed) transactions to be submitted via RPC",
 		Category: flags.APICategory,
 	}
 	BatchRequestLimit = &cli.IntFlag{

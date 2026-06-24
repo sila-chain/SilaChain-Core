@@ -195,7 +195,7 @@ func (r *Receipt) UnmarshalBinary(b []byte) error {
 		r.Type = LegacyTxType
 		return r.setFromRLP(data)
 	}
-	// It's an EIP2718 typed transaction envelope.
+	// It's an SIP2718 typed transaction envelope.
 	return r.decodeTyped(b)
 }
 

@@ -31,10 +31,10 @@ import (
 	"github.com/sila-org/sila/core/state"
 	"github.com/sila-org/sila/core/types"
 	"github.com/sila-org/sila/core/vm"
-	"github.com/sila-org/sila/siladb"
 	"github.com/sila-org/sila/event"
 	"github.com/sila-org/sila/params"
 	"github.com/sila-org/sila/rpc"
+	"github.com/sila-org/sila/siladb"
 )
 
 // Backend interface provides the common API services (that are provided by
@@ -53,7 +53,7 @@ type Backend interface {
 	RPCGasCap() uint64            // global gas cap for sila_call over rpc: DoS protection
 	RPCEVMTimeout() time.Duration // global timeout for sila_call over rpc: DoS protection
 	RPCTxFeeCap() float64         // global tx fee cap for all transaction related APIs
-	UnprotectedAllowed() bool     // allows only for EIP155 transactions.
+	UnprotectedAllowed() bool     // allows only for SIP155 transactions.
 	RPCTxSyncDefaultTimeout() time.Duration
 	RPCTxSyncMaxTimeout() time.Duration
 

@@ -109,8 +109,8 @@ func (tt *TransactionTest) Run() error {
 	}{
 		{"Frontier", false},
 		{"Homestead", false},
-		{"EIP150", false},
-		{"EIP158", false},
+		{"SIP150", false},
+		{"SIP158", false},
 		{"Byzantium", false},
 		{"Constantinople", false},
 		{"Istanbul", false},

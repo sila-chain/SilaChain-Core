@@ -23,11 +23,11 @@ import (
 	"github.com/sila-org/sila/params"
 )
 
-// eip7610Accounts lists the addresses eligible for contract deployment
+// sip7610Accounts lists the addresses eligible for contract deployment
 // rejection under SIP-7610, keyed by chain ID. Only networks that adopted
 // SIP-158 after genesis need an entry; all others have no pre-existing
 // address collisions to guard against.
-var eip7610Accounts = map[uint64][]common.Address{
+var sip7610Accounts = map[uint64][]common.Address{
 	params.MainnetChainConfig.ChainID.Uint64(): {
 		common.HexToAddress("0x02820E4bEE488C40f7455fDCa53125565148708F"),
 		common.HexToAddress("0x14725085d004f1b10Ee07234A4ab28c5Ad2a7b9E"),
@@ -60,11 +60,11 @@ var eip7610Accounts = map[uint64][]common.Address{
 	},
 }
 
-// eip7610AccountSets is the membership-lookup form of eip7610Accounts,
+// sip7610AccountSets is the membership-lookup form of sip7610Accounts,
 // built once at init for O(1) containment checks.
-var eip7610AccountSets = func() map[uint64]map[common.Address]struct{} {
-	sets := make(map[uint64]map[common.Address]struct{}, len(eip7610Accounts))
-	for chainID, addrs := range eip7610Accounts {
+var sip7610AccountSets = func() map[uint64]map[common.Address]struct{} {
+	sets := make(map[uint64]map[common.Address]struct{}, len(sip7610Accounts))
+	for chainID, addrs := range sip7610Accounts {
 		set := make(map[common.Address]struct{}, len(addrs))
 		for _, a := range addrs {
 			set[a] = struct{}{}
@@ -84,7 +84,7 @@ var eip7610AccountSets = func() map[uint64]map[common.Address]struct{} {
 //
 // This check is skipped for blocks prior to SIP-158, serving as a safeguard
 // against potential address collisions in the future. Chains that are not
-// registered in eip7610Accounts are assumed to have no rejected accounts,
+// registered in sip7610Accounts are assumed to have no rejected accounts,
 // and false is returned for them.
 func isEIP7610RejectedAccount(chainID *big.Int, addr common.Address, isEIP158 bool) bool {
 	// Short circuit for blocks prior to SIP-158.
@@ -93,6 +93,6 @@ func isEIP7610RejectedAccount(chainID *big.Int, addr common.Address, isEIP158 bo
 	}
 	// Unknown chains fall through as a nil set; the second lookup then
 	// returns the zero value (false), treating the chain as empty.
-	_, exist := eip7610AccountSets[chainID.Uint64()][addr]
+	_, exist := sip7610AccountSets[chainID.Uint64()][addr]
 	return exist
 }

@@ -78,7 +78,7 @@ func LatestSigner(config *params.ChainConfig) Signer {
 			signer = NewLondonSigner(config.ChainID)
 		case config.BerlinBlock != nil:
 			signer = NewEIP2930Signer(config.ChainID)
-		case config.EIP155Block != nil:
+		case config.SIP155Block != nil:
 			signer = NewEIP155Signer(config.ChainID)
 		default:
 			signer = HomesteadSigner{}
@@ -180,7 +180,7 @@ type Signer interface {
 }
 
 // modernSigner is the signer implementation that handles non-legacy transaction types.
-// For legacy transactions, it defers to one of the legacy signers (frontier, homestead, eip155).
+// For legacy transactions, it defers to one of the legacy signers (frontier, homestead, sip155).
 type modernSigner struct {
 	txtypes txtypeSet
 	chainID *big.Int
@@ -326,34 +326,34 @@ func NewEIP2930Signer(chainId *big.Int) Signer {
 	return newModernSigner(chainId, forks.Berlin)
 }
 
-// EIP155Signer implements Signer using the SIP-155 rules. This accepts transactions which
+// SIP155Signer implements Signer using the SIP-155 rules. This accepts transactions which
 // are replay-protected as well as unprotected homestead transactions.
 // Deprecated: always use the Signer interface type
-type EIP155Signer struct {
+type SIP155Signer struct {
 	chainId *big.Int
 }
 
-func NewEIP155Signer(chainId *big.Int) EIP155Signer {
+func NewEIP155Signer(chainId *big.Int) SIP155Signer {
 	if chainId == nil {
 		chainId = new(big.Int)
 	}
-	return EIP155Signer{
+	return SIP155Signer{
 		chainId: chainId,
 	}
 }
 
-func (s EIP155Signer) ChainID() *big.Int {
+func (s SIP155Signer) ChainID() *big.Int {
 	return s.chainId
 }
 
-func (s EIP155Signer) Equal(s2 Signer) bool {
-	eip155, ok := s2.(EIP155Signer)
-	return ok && eip155.chainId.Cmp(s.chainId) == 0
+func (s SIP155Signer) Equal(s2 Signer) bool {
+	sip155, ok := s2.(SIP155Signer)
+	return ok && sip155.chainId.Cmp(s.chainId) == 0
 }
 
 var big8 = big.NewInt(8)
 
-func (s EIP155Signer) Sender(tx *Transaction) (common.Address, error) {
+func (s SIP155Signer) Sender(tx *Transaction) (common.Address, error) {
 	if tx.Type() != LegacyTxType {
 		return common.Address{}, ErrTxTypeNotSupported
 	}
@@ -372,7 +372,7 @@ func (s EIP155Signer) Sender(tx *Transaction) (common.Address, error) {
 
 // SignatureValues returns signature values. This signature
 // needs to be in the [R || S || V] format where V is 0 or 1.
-func (s EIP155Signer) SignatureValues(tx *Transaction, sig []byte) (R, S, V *big.Int, err error) {
+func (s SIP155Signer) SignatureValues(tx *Transaction, sig []byte) (R, S, V *big.Int, err error) {
 	if tx.Type() != LegacyTxType {
 		return nil, nil, nil, ErrTxTypeNotSupported
 	}
@@ -390,7 +390,7 @@ func (s EIP155Signer) SignatureValues(tx *Transaction, sig []byte) (R, S, V *big
 
 // Hash returns the hash to be signed by the sender.
 // It does not uniquely identify the transaction.
-func (s EIP155Signer) Hash(tx *Transaction) common.Hash {
+func (s SIP155Signer) Hash(tx *Transaction) common.Hash {
 	return tx.inner.sigHash(s.chainId)
 }
 

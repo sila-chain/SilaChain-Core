@@ -224,7 +224,7 @@ func TestT8n(t *testing.T) {
 			output: t8nOutput{result: true},
 			expOut: "exp_grayglacier.json",
 		},
-		{ // Sign unprotected (pre-EIP155) transaction
+		{ // Sign unprotected (pre-SIP155) transaction
 			base: "./testdata/23",
 			input: t8nInput{
 				"alloc.json", "txs.json", "env.json", "Berlin", "",

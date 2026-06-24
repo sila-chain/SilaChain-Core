@@ -172,7 +172,7 @@ type handshakeAuthTest struct {
 	wantRest    []rlp.RawValue
 }
 
-var eip8HandshakeAuthTests = []handshakeAuthTest{
+var sip8HandshakeAuthTests = []handshakeAuthTest{
 	// (Auth₂) SIP-8 encoding
 	{
 		input: `
@@ -218,7 +218,7 @@ type handshakeAckTest struct {
 	wantRest    []rlp.RawValue
 }
 
-var eip8HandshakeRespTests = []handshakeAckTest{
+var sip8HandshakeRespTests = []handshakeAckTest{
 	// (Ack₂) SIP-8 encoding
 	{
 		input: `
@@ -295,7 +295,7 @@ func TestHandshakeForwardCompatibility(t *testing.T) {
 	}
 
 	// check auth msg parsing
-	for _, test := range eip8HandshakeAuthTests {
+	for _, test := range sip8HandshakeAuthTests {
 		var h handshakeState
 		r := bytes.NewReader(unhex(test.input))
 		msg := new(authMsgV4)
@@ -314,7 +314,7 @@ func TestHandshakeForwardCompatibility(t *testing.T) {
 	}
 
 	// check auth resp parsing
-	for _, test := range eip8HandshakeRespTests {
+	for _, test := range sip8HandshakeRespTests {
 		var h handshakeState
 		input := unhex(test.input)
 		r := bytes.NewReader(input)
@@ -340,9 +340,9 @@ func TestHandshakeForwardCompatibility(t *testing.T) {
 			respNonce:     nonceB,
 			randomPrivKey: ecies.ImportECDSA(ephB),
 		}
-		authCiphertext     = unhex(eip8HandshakeAuthTests[0].input)
-		authRespCiphertext = unhex(eip8HandshakeRespTests[0].input)
-		authMsg            = makeAuth(eip8HandshakeAuthTests[0])
+		authCiphertext     = unhex(sip8HandshakeAuthTests[0].input)
+		authRespCiphertext = unhex(sip8HandshakeRespTests[0].input)
+		authMsg            = makeAuth(sip8HandshakeAuthTests[0])
 		wantAES            = unhex("80e8632c05fed6fc2a13b0f8d31a3cf645366239170ea067065aba8e28bac487")
 		wantMAC            = unhex("2ea74ec5dae199227dff1af715362700e989d889d7a493cb0639691efb8e5f98")
 		wantFooIngressHash = unhex("0c7ec6340062cc46f5e9f1e3cf86f8c8c403c5a0964f5df0ebd34a75ddc86db5")
@@ -368,7 +368,7 @@ func TestHandshakeForwardCompatibility(t *testing.T) {
 }
 
 func BenchmarkHandshakeRead(b *testing.B) {
-	var input = unhex(eip8HandshakeAuthTests[0].input)
+	var input = unhex(sip8HandshakeAuthTests[0].input)
 	for b.Loop() {
 		var (
 			h   handshakeState

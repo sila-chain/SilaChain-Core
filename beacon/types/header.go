@@ -21,10 +21,10 @@ import (
 	"crypto/sha256"
 	"encoding/binary"
 
+	zrntcommon "github.com/sila-chain/zrnt/sila/beacon/common"
 	"github.com/sila-org/sila/beacon/merkle"
 	"github.com/sila-org/sila/beacon/params"
 	"github.com/sila-org/sila/common"
-	zrntcommon "github.com/protolambda/zrnt/sila/beacon/common"
 )
 
 //go:generate go run github.com/fjl/gencodec -type Header -field-override headerMarshaling -out gen_header_json.go

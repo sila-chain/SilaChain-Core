@@ -47,9 +47,9 @@
     "config": {
         "chainId": 1337,
         "homesteadBlock": 0,
-        "eip150Block": 0,
-        "eip155Block": 0,
-        "eip158Block": 0,
+        "sip150Block": 0,
+        "sip155Block": 0,
+        "sip158Block": 0,
         "rip7560block": 0,
         "rip7712block": 0,
         "byzantiumBlock": 0,

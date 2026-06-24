@@ -276,7 +276,7 @@ func TestTypedDataArrayValidate(t *testing.T) {
 				Message:     tc.Message,
 			}
 
-			domainSeparator, tErr := td.HashStruct("EIP712Domain", td.Domain.Map())
+			domainSeparator, tErr := td.HashStruct("SIP712Domain", td.Domain.Map())
 			assert.NoError(t, tErr, "failed to hash domain separator: %v", tErr)
 
 			messageHash, tErr := td.HashStruct(td.PrimaryType, td.Message)

@@ -388,7 +388,7 @@ type TypedDataDomain struct {
 //
 // This gives context to the signed typed data and prevents signing of transactions.
 func TypedDataAndHash(typedData TypedData) ([]byte, string, error) {
-	domainSeparator, err := typedData.HashStruct("EIP712Domain", typedData.Domain.Map())
+	domainSeparator, err := typedData.HashStruct("SIP712Domain", typedData.Domain.Map())
 	if err != nil {
 		return nil, "", err
 	}
@@ -761,7 +761,7 @@ func (typedData *TypedData) Map() map[string]interface{} {
 // Format returns a representation of typedData, which can be easily displayed by a user-interface
 // without in-depth knowledge about 712 rules
 func (typedData *TypedData) Format() ([]*NameValueType, error) {
-	domain, err := typedData.formatData("EIP712Domain", typedData.Domain.Map())
+	domain, err := typedData.formatData("SIP712Domain", typedData.Domain.Map())
 	if err != nil {
 		return nil, err
 	}
@@ -771,7 +771,7 @@ func (typedData *TypedData) Format() ([]*NameValueType, error) {
 	}
 	var nvts []*NameValueType
 	nvts = append(nvts, &NameValueType{
-		Name:  "EIP712Domain",
+		Name:  "SIP712Domain",
 		Value: domain,
 		Typ:   "domain",
 	})

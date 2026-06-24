@@ -217,7 +217,7 @@ func (config *Config) sanitize() Config {
 // two states over time as they are received and processed.
 //
 // In addition to tracking transactions, the pool also tracks a set of pending SetCode
-// authorizations (EIP7702). This helps minimize number of transactions that can be
+// authorizations (SIP7702). This helps minimize number of transactions that can be
 // trivially churned in the pool. As a standard rule, any account with a deployed
 // delegation or an in-flight authorization to deploy a delegation will only be allowed a
 // single transaction slot instead of the standard number. This is due to the possibility

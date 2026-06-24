@@ -3,11 +3,14 @@
     "name": "random-0",
     "domain": {
       "name": "Moo é🚀ooéééMooooM🚀 o🚀🚀o  M  oM🚀éo 🚀🚀🚀🚀éoMoéo🚀o",
-      "version": "28.44.13"
+      "version": "28.44.13",
+      "chainId": null,
+      "verifyingContract": "",
+      "salt": ""
     },
     "primaryType": "Struct3",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "name",
           "type": "string"
@@ -28,19 +31,20 @@
       "param2": "0xdce44ca98616ee629199215ae5401c97040664637c48"
     },
     "encoded": "0xcdf7d44b9a42bfc5a90b1624215e30c70425b44f1c62f94244b32551826d2dd995cff8fcf943ffa581b017b61b02703628c843642652c382dd15c9a471fe28d9",
-    "digest": "0xf1a2769507736a9aa306204169e6862f4416e055035d7d2cc9ab6f1921604905"
+    "digest": "0xd0b5466456336ea810a68733def0afb50d4b79ccf6780813d87dcf1aacae4bf5"
   },
   {
     "name": "random-1",
     "domain": {
       "name": "Moo é🚀éoMo🚀 oé🚀🚀🚀MéooMéooo éo oé  🚀M🚀  🚀 o",
       "version": "22.43.44",
-      "chainId": 1268,
+      "chainId": "0x4f4",
+      "verifyingContract": "",
       "salt": "0x6ebb306942854acbb10134c9dee015937042c39da2ee124eb926ad77df52dbe0"
     },
     "primaryType": "Struct6",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "name",
           "type": "string"
@@ -84,16 +88,20 @@
       "param5": "Moo é🚀MoM🚀éoMMooM🚀ooéM Mééo"
     },
     "encoded": "0xda8977a44f657114a662894ef7761924845f9e7530ec21622e1a6d5526de0d1ec611cbc6650fb22a47f359606312a4412acbc7b648fa712da2d0e65a00e44f8990166c1d5cf7f1be5e453500000000000000000000000000000000000000000082609c13a160a82264f3293420c066ad847fc2c658862f6282c13848e7c2bfa3c422f8f8d57a0d73e4448edcb393d45cd1969652b199e87011a5c54171f7a548",
-    "digest": "0xdca475186d6626bdd727f5a216758f6351c56b36ae77683f3b381c5b296d1099"
+    "digest": "0xbbec3e18b4d1c770d5477d0208fcf36293fa8ad0bb7d497f53504ffdd9b9060a"
   },
   {
     "name": "random-2",
     "domain": {
-      "verifyingContract": "0xb98ccb3b2f1843cdd391295779890c162f2833ea"
+      "name": "",
+      "version": "",
+      "chainId": null,
+      "verifyingContract": "0xb98ccb3b2f1843cdd391295779890c162f2833ea",
+      "salt": ""
     },
     "primaryType": "Struct6",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "verifyingContract",
           "type": "address"
@@ -124,18 +132,20 @@
       "param5": "0xd5cf50b584016c19732d845cc9c8d3a43ce41362"
     },
     "encoded": "0x67fb8e8c0399ea6a53c5be40a9cc57f8682c0e4887d4e92733d7e77e358fb473ffffffffffffffffffffffffffffffffffffffffffffffffffffffffce9c451142865dc16e0353e94811b8b8df478cf0a5714219aa578dd5881f162ef224cb2c000000000000000000000000d5cf50b584016c19732d845cc9c8d3a43ce41362",
-    "digest": "0x6c32dc60957ea693087837ae10ba9d9e31febf7a0c2ed00f6b57ac02f4d4b37e"
+    "digest": "0x0610dc261b6cd9926aaa81d5a9297471444f47737768e221dc754da76bd0fed3"
   },
   {
     "name": "random-3",
     "domain": {
       "name": "Moo é🚀M oMoo🚀éoo🚀ooo ooéééo🚀éMoo🚀o o  oo 🚀oooM ",
       "version": "31.7.9",
-      "chainId": 793
+      "chainId": "0x319",
+      "verifyingContract": "",
+      "salt": ""
     },
     "primaryType": "Struct5",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "name",
           "type": "string"
@@ -170,18 +180,20 @@
       "param4": "Moo é🚀 ooo🚀🚀o🚀ooéé oé"
     },
     "encoded": "0xb294e832799f75dfe653c1529c1464de82ad988a243b4cd2dad2e8231ce02ac8f98e5673d8c98474e896eb51f7710e3096ac480f57c343aa4b6940f14ba864cfc9825dc5acadefe8114be8b3b40ff1735c38ce7a2bd1af26b8f896f448f71b2d92ca886c2f1728e95855af472331fec2b8cbcb28901e0b5e5e7c0fcdfb82df75",
-    "digest": "0x29afbb5d796c6d1b9e79071d245061a8d284ffabf3138483d13736a61780ccdd"
+    "digest": "0xe54b49038473cf1e1239507a2638eb0fed5e9dd433d72b2620bed217a521979b"
   },
   {
     "name": "random-4",
     "domain": {
       "name": "Moo é🚀oo ",
-      "chainId": 1190,
+      "version": "",
+      "chainId": "0x4a6",
+      "verifyingContract": "",
       "salt": "0x1f37012abd2887491b2dc97283565221433f671fe1e39aa52501bfb6aa8b93c3"
     },
     "primaryType": "Struct6",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "name",
           "type": "string"
@@ -218,16 +230,20 @@
       "param5": "0x87522812e1a8337045160896fb3e61f869b4154b737a082b3dfeb7"
     },
     "encoded": "0xd6c2b6107cccf91b779f9954f2110d1b60cbc77e11fba6eaea01e944fd9cf1779bb8048b699386b2453900000000000000000000000000000000000000000000efd410fd47fe79acfda00711d702442f7cf6312190754acb4613b1c2aca0dec187522812e1a8337045160896fb3e61f869b4154b737a082b3dfeb70000000000",
-    "digest": "0xf4f1328085f730d46a20fa49f6e7ac254f35447282c91a7530242a3a14474116"
+    "digest": "0x3db841e775e7239f00eef75662e7242be9d7e7e48ce2aed314534e7222313226"
   },
   {
     "name": "random-5",
     "domain": {
-      "version": "7.9.9"
+      "name": "",
+      "version": "7.9.9",
+      "chainId": null,
+      "verifyingContract": "",
+      "salt": ""
     },
     "primaryType": "Struct4",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "version",
           "type": "string"
@@ -249,18 +265,20 @@
       "param3": "-1117663001459922125771233981131891587208615016687544676675378200714"
     },
     "encoded": "0xded571df13886530cfad8a76abc529603094afe8d4763a3c714a8a86241c16b10000000000000000000000002f89d3d2d83f46d0147efc081e3a3f1012406c69fffffffff5631c9b4cdb160013e3cedb0d8e15ad26177e422ad39cfdf0483f76",
-    "digest": "0x1f4896667fd2210e54760bd5f00b964447be3c0a20d9d64f8324821a44dbe9a8"
+    "digest": "0x7c00264507d82edcd30f3b66e7c3e029b2bb76f19c2c5abf8c024848f55f25aa"
   },
   {
     "name": "random-6",
     "domain": {
       "name": "Moo é🚀",
+      "version": "",
+      "chainId": null,
       "verifyingContract": "0x501809f11ffb4ec90411dca095641b87f3229df9",
       "salt": "0x613b2e73477c57fc4e28b4c06f436f9825b5aa4d839c3d07a89179ef2774f76e"
     },
     "primaryType": "Struct6",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "name",
           "type": "string"
@@ -300,17 +318,20 @@
       "param5": "0x083e80e0d94dbb979ce2c44a2c746ecfa1fca9f1"
     },
     "encoded": "0xe5b40a524086d02c883ca8067a58dc9b784c44542de0bc37d5769a0dbeca31dfdcd5d1450de8a86034460ed9842ded280ce4faa8919759337539cca0876a7da6c95d6f26124f374b1007778a627aabfe799b09620b14cd82e0ce2dc27b5b4aba0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000083e80e0d94dbb979ce2c44a2c746ecfa1fca9f1",
-    "digest": "0x77f779953f0ad6e059d13f714999b8f2e0916f3c4263db272606efa34c18c4eb"
+    "digest": "0xbe5bd2be25296378c0b7638dfd21ecaf6750bb5947c7e6e8ccf64924466ef80d"
   },
   {
     "name": "random-7",
     "domain": {
+      "name": "",
       "version": "29.42.9",
-      "verifyingContract": "0xa2f34b603e4ee3de26502a40c8dc33886c1bb7e0"
+      "chainId": null,
+      "verifyingContract": "0xa2f34b603e4ee3de26502a40c8dc33886c1bb7e0",
+      "salt": ""
     },
     "primaryType": "Struct6",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "version",
           "type": "string"
@@ -344,16 +365,20 @@
       "param5": "Moo é🚀ooooM🚀 oMééM éé🚀🚀oMé 🚀 é  éé"
     },
     "encoded": "0xcf3bbe1dcf56fb9655824a3f90f1953ea791787867fb34004275382e4f47a2bb1c88290b2a99cb28a10db644f89833ecc797c9d2d9c142a5b633939e1c8819bc58bf6d520785f87bcfe82d2eab0d7ba35d93478d835dd7de28c44e0dccc8619c45dd7a5ec721fb2064788313d7807140e33459ce08dbf30bceb4d093096db6f3",
-    "digest": "0x446d1bab14cbf7b0bc6dad1cf30aeb89585df7150e0a19d809ea23c7bc4d0908"
+    "digest": "0x888302804f21d4d5bd7c03232f6c3659f664e63be153df67b98d97b839af74b4"
   },
   {
     "name": "random-8",
     "domain": {
-      "name": "Moo é🚀oo Moé🚀oMM🚀🚀o  oéoéooé é"
+      "name": "Moo é🚀oo Moé🚀oMM🚀🚀o  oéoéooé é",
+      "version": "",
+      "chainId": null,
+      "verifyingContract": "",
+      "salt": ""
     },
     "primaryType": "Struct12",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "name",
           "type": "string"
@@ -409,16 +434,20 @@
       }
     },
     "encoded": "0xb791414599e8b56f4b0391cb8b4d422bcf755603c5ddd6e103893a71ceba46241f5744b35eb3f3ef0a6e8cab59bf3b8b6a6691dd30ebf8939d36dd52b98acaea10c8cdc69e509a68998f2d5e30e095c9849a68b644b21c3dfcfd30ffc502114735c68a72cc994a00000000000000000000000000000000000000000000000000",
-    "digest": "0x8694ca7a01c36837d2449232907509801ed64e23dc023fcf736315f5eec1053c"
+    "digest": "0xb061c8632d9eec2359c0cd67fd49f3ae04e2434d2cc49b2c7d6fb1f91fe5b582"
   },
   {
     "name": "random-9",
     "domain": {
-      "chainId": 437
+      "name": "",
+      "version": "",
+      "chainId": "0x1b5",
+      "verifyingContract": "",
+      "salt": ""
     },
     "primaryType": "Struct4",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "chainId",
           "type": "uint256"
@@ -440,17 +469,20 @@
       "param3": "0xc4737eceba804e84"
     },
     "encoded": "0x979ff42839e8663fdf777083b1648c659b691503a28c6a2910d1d7cd162a3aa17bcd164aa59dabcd7c3be7e32492e7fe4a48e70aee5b964137249e361ebc9a41c4737eceba804e84000000000000000000000000000000000000000000000000",
-    "digest": "0x32e8f650680b00d4b5515e9de9684995c3245b4761046780b33ef9f6ee05362c"
+    "digest": "0xd52eda3223c534873514374a82ca47818b4ad9b118aa4d83bb41342b9821befd"
   },
   {
     "name": "random-10",
     "domain": {
       "name": "Moo é🚀 o éé  Mé🚀éoo 🚀oéM MM🚀é 🚀éMM🚀éMo  M oé🚀MMoo é o é 🚀o🚀ooo",
-      "version": "45.0.46"
+      "version": "45.0.46",
+      "chainId": null,
+      "verifyingContract": "",
+      "salt": ""
     },
     "primaryType": "Struct8",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "name",
           "type": "string"
@@ -491,16 +523,20 @@
       ]
     },
     "encoded": "0x9ca5f56281a4926287c930891cd4218d7e9d7e5bd6f8f35ca52190b2a54c5989dc7700000000000000000000000000000000000000000000000000000000000050b4d189d5c6d2e1fe9f152de6692da9fc34d41324dab5ced8a52397fa5ebfff5bb6e21b54c9b4e7f21b6cfe5999121f5dec6f1101cd5e0fb73a634001e5f2ea",
-    "digest": "0x59c2336278c748fca8889f8b98d6c386f1badb72f28668a5c760c3aff20a922a"
+    "digest": "0x3489f470628f37e82ac508b52b643ce2be34feacaf8dada39646a52f1e0999bc"
   },
   {
     "name": "random-11",
     "domain": {
+      "name": "",
+      "version": "",
+      "chainId": null,
+      "verifyingContract": "",
       "salt": "0x60a7ef7f891f64c8c659e7b3f448e0e82939483d467088aae991d873c2371932"
     },
     "primaryType": "Struct3",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "salt",
           "type": "bytes32"
@@ -517,18 +553,20 @@
       "param2": "-109147385638873134356016336"
     },
     "encoded": "0x22f16ecbd883f7cd7823cc5ec368999cf3bf08546bbd7c708ca231a54353cb86ffffffffffffffffffffffffffffffffffffffffffa5b7245e537649c9e75330",
-    "digest": "0x1c1c3e593358ec697d2f26c497abc72af68d617441a9825b6cb7c79e92bb2a01"
+    "digest": "0xff90a8bc125fcc2a20b2c17ef0b8cabd426e10c01424dbf60331eb1b40776680"
   },
   {
     "name": "random-12",
     "domain": {
       "name": "Moo é🚀oéé🚀🚀🚀o🚀é    MoéoMooooo🚀 MMo Moo 🚀  ééo",
       "version": "13.24.35",
+      "chainId": null,
+      "verifyingContract": "",
       "salt": "0x9f4a7cb7e30809076edbb99bcbc310ec27d7a563cbc24cddd0a2ae6d275677ef"
     },
     "primaryType": "Struct3",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "name",
           "type": "string"
@@ -553,18 +591,20 @@
       "param2": "0xff4d2657142a58d3cc787e089ca7f20a6b66776e"
     },
     "encoded": "0x98edda54668461e736d24a4033f2d11540bceac48ea14c7da0fea73b8b9a55db000000000000000000000000ff4d2657142a58d3cc787e089ca7f20a6b66776e",
-    "digest": "0xf73e0203cb874ce615b0ceb1c8c8358eb44719bbab11ebe963e00a914434ce62"
+    "digest": "0xc6f5f5d307ba648437d8837d79773ba06dda5862cd4953fa67a1f9c6222e60a1"
   },
   {
     "name": "random-13",
     "domain": {
       "name": "Moo é🚀",
-      "chainId": 348,
+      "version": "",
+      "chainId": "0x15c",
+      "verifyingContract": "",
       "salt": "0xc70f3b18e636eee4a800a307d1b38bf2cf6fbb923a5c3ae3b14becbfc2ce1f9b"
     },
     "primaryType": "Struct4",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "name",
           "type": "string"
@@ -594,17 +634,20 @@
       "param3": "0xc3e57dbac4c0a82334953baa752df10cffd5a75a2edcbe00c7f2"
     },
     "encoded": "0x4d0024736263d208aca6e84c7bb7336060a12a4693f70ea14290ed4308d052e5eb273f8d13bbd23d14b25bd00e006757fa7de6d637f4c49e5fdcf4a07f024aea1f53f499e56140df7f6326e0c99cd10d9a7ceac70c4f9343111769b6ac62e1ed",
-    "digest": "0x407d6005ebd258cd798e326e17786b0b61a927309b8584db513bdb62f4f5ee3f"
+    "digest": "0xda60f321e7ffd8fa8fab3b64eaf737dbe3371cc6344e95c43db7272d4e257157"
   },
   {
     "name": "random-14",
     "domain": {
+      "name": "",
       "version": "25.49.7",
-      "verifyingContract": "0xb0e0d9999c8c74a0d4ed79414a9f8bf363e9caaa"
+      "chainId": null,
+      "verifyingContract": "0xb0e0d9999c8c74a0d4ed79414a9f8bf363e9caaa",
+      "salt": ""
     },
     "primaryType": "Struct5",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "version",
           "type": "string"
@@ -633,16 +676,20 @@
       ]
     },
     "encoded": "0x8a9a6129ffa166123d1ac6c76c2bfc752f7cf2e64b76b36df081cfc7c032a75b0000000000000000000000000000000000000000000000000000000000000001e8da1f36005f78d7a373d2f0da3b4215c9b2ab40e5a8d62e8ab338374600329f",
-    "digest": "0x0b1d8e9823e30d163cbd911aea02c15a62bd0bbc0168183ccd2965a8b601a40b"
+    "digest": "0xe06ae2a2236e34d436cce766d0b9253d3977d2f137a63c0eaa5fae10b01d7e35"
   },
   {
     "name": "random-15",
     "domain": {
-      "verifyingContract": "0x6f5c960aebe912340a5a72935aa334afa8fbfe58"
+      "name": "",
+      "version": "",
+      "chainId": null,
+      "verifyingContract": "0x6f5c960aebe912340a5a72935aa334afa8fbfe58",
+      "salt": ""
     },
     "primaryType": "Struct6",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "verifyingContract",
           "type": "address"
@@ -674,19 +721,20 @@
       "param5": "Moo é🚀M🚀éééé oooMé🚀ooM🚀 o🚀oMMooMé🚀é 🚀oMoé🚀"
     },
     "encoded": "0x195b09fb47455d098743f9c930f4078d642ea0a6f994b66198c7213629164dc250d60588d6db4ae7e3b0d4d8f93aed4781b86403d576fb4e374af761f1238cc38d48a6cc9e0c92080dec2155382a276181f25c746da97f8199f3a84642118000b165a49183e897da692ca460c5c88a0597e5e4ad7b43471bac25bfd9a780e000a315cbc15f8ad1d34c761a0523412f8bd958f3b121ab055ad39eed2d1c894c3c",
-    "digest": "0x859f85bc1d34695b4db0f3650dc448e4f26e1310bbf4386a47154dd0ff2f7134"
+    "digest": "0x101b5c2c51eca0533a27782bba130ec431f8b5b1fec01ca8789bcf6a83680053"
   },
   {
     "name": "random-16",
     "domain": {
+      "name": "",
       "version": "46.37.5",
-      "chainId": 398,
+      "chainId": "0x18e",
       "verifyingContract": "0x7d5c6babf358d15f834e4e66fb38f47029692f45",
       "salt": "0xf631d7b0a81f0bb5d43c5c6cbe06f0c46868590f0951afc1b55f38598f5caf4d"
     },
     "primaryType": "Struct4",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "version",
           "type": "string"
@@ -720,17 +768,20 @@
       "param3": "1793643122398654278545911502385423630752811461294794060392"
     },
     "encoded": "0xc905891cccd69edb3dcead4f2229a9b1c0f7ad0264bd9e32ca83cf8d4835ca94000000000000008fdad31cff441c443d69458e4033c11eeb0b4928ce9452c5a100000000000000004926820a408021ed575bd94e89af5672c9c4faaa93adb268",
-    "digest": "0xa8ca54bd8b0380e9680fee86021be77dd65fe79954ca8aace6708fda1e62d959"
+    "digest": "0xa988ee2d94cef4e274d844c8346054c79dfe25648f3489e3070d20eddccdd065"
   },
   {
     "name": "random-17",
     "domain": {
+      "name": "",
       "version": "13.22.4",
+      "chainId": null,
+      "verifyingContract": "",
       "salt": "0x9a939ab1fd21216c5fcfed335f5d6ad5e83f7815e6bf7d521dd0341e9445415a"
     },
     "primaryType": "Struct4",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "version",
           "type": "string"
@@ -756,16 +807,20 @@
       "param3": "Moo é🚀 oooéMo é🚀o🚀MM 🚀o MMMoMoooooooo o🚀éoM"
     },
     "encoded": "0x686167f4c27dbc607c8b7b3febaeb35fa7dbcccbfac18ae20803b8e2bfc040fb053664f618ae8de97996df7189f0b8b97619489a71e0b0e370e6ef9b581df98208744de9ee650d2089505fa1d121e39ff8bd12472e14e192ad7a450cce4feb3b",
-    "digest": "0x0b5413c0bce8ba1599a5415a0a8729659df2c4dbfc6f71655c228101a523126b"
+    "digest": "0xa7b3b1aae60420c2d320ace3bcb7ac9a91611f7bf2b6a6b3383c5e47c1fe2ccd"
   },
   {
     "name": "random-18",
     "domain": {
-      "chainId": 1154
+      "name": "",
+      "version": "",
+      "chainId": "0x482",
+      "verifyingContract": "",
+      "salt": ""
     },
     "primaryType": "Struct6",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "chainId",
           "type": "uint256"
@@ -797,18 +852,20 @@
       "param5": "0xae09d2fea99189d5171ddcd7c90e4ba4902e9df3"
     },
     "encoded": "0x7a78c404a07e9f6956aaff71efb4b16130954663e72d5ee2de28e982b75d86675f7bd6650aedd689f688617f00000000000000000000000000000000000000009d8ca86236fa8ca5e654b767c43bc31e4e2be542b128000000000000000000000fb03f67aff6a2b40a0dbb1b99236c9ca92063bb9c1a604b32893a7f03e9364f000000000000000000000000ae09d2fea99189d5171ddcd7c90e4ba4902e9df3",
-    "digest": "0x680060a5f5fc62a31a89bfa6ee31116827439b3a46de888d9d43b1251fb8a3f2"
+    "digest": "0xfe82f2a45d2b263d110d40d51027e4b0291ed67b0b266a30eeef0e23a8bd1cc7"
   },
   {
     "name": "random-19",
     "domain": {
-      "chainId": 1013,
+      "name": "",
+      "version": "",
+      "chainId": "0x3f5",
       "verifyingContract": "0x9b76aa9473e60427cbc99f4161665fc37a013015",
       "salt": "0xb99a959f6fcb296e9be34584a14761c7b4ce82e99d4394a5f109ed1c55cde477"
     },
     "primaryType": "Struct3",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "chainId",
           "type": "uint256"
@@ -833,16 +890,20 @@
       "param2": "0x010d8955e5cecc6705b73064baa37a703d65cb97"
     },
     "encoded": "0x98edda54668461e736d24a4033f2d11540bceac48ea14c7da0fea73b8b9a55db000000000000000000000000010d8955e5cecc6705b73064baa37a703d65cb97",
-    "digest": "0x8ca2e0e8b9d5ce1c66d5ea245d6a9c653e10adc303e7440d4298c331b011c503"
+    "digest": "0x2e5f33f134f1fc4d3a8c4265631fe99645f2c8676ee01e2b6bb8813b1a73a416"
   },
   {
     "name": "random-20",
     "domain": {
-      "chainId": 888
+      "name": "",
+      "version": "",
+      "chainId": "0x378",
+      "verifyingContract": "",
+      "salt": ""
     },
     "primaryType": "Struct4",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "chainId",
           "type": "uint256"
@@ -864,19 +925,20 @@
       "param3": true
     },
     "encoded": "0x889d1fd6a543c2550a4d6fbf451f7004ee9509e508b7627d82b578e77ed3541a1d8c4d6a1c1c4c8ed69df55267e53b5289aca47b178f775978694815b4f990640000000000000000000000000000000000000000000000000000000000000001",
-    "digest": "0xc1319be39e82c2e51795b588e89ae2ffa116d8e6e5e0aaff6c9a42379e18e35d"
+    "digest": "0xbd9b28a42c642dac8b5e09e6a1f0378b71b23d453fa4f932ca05fb136652f7b3"
   },
   {
     "name": "random-21",
     "domain": {
       "name": "Moo é🚀éM",
-      "chainId": 1189,
+      "version": "",
+      "chainId": "0x4a5",
       "verifyingContract": "0x20595d9bc36f43302fc02a5b8b1afcd8751ec829",
       "salt": "0x616e7f89169e2cc84d244f9e3fe0e03661dfd04909f43f379752069848cccf7e"
     },
     "primaryType": "Struct8",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "name",
           "type": "string"
@@ -926,18 +988,20 @@
       }
     },
     "encoded": "0xc870a8ea20ea5a0e48665e1cceac4d0911ebdd5211d9bbe9ea6b02742610630c2274465ff0a09b20e8e027da59fb88f7c11871f7ecd6354e3ed5099296cfd04be1885a775bd5e9fe96ba4a0d693d8c0ff869e2956d2445c820173815e807f2e9",
-    "digest": "0xfe17ec225aeca7f68177514dcf12e22fb0b39840aa6a6c22c26f59dd033ec5c7"
+    "digest": "0x0e0ca8977c5b7e6b4cbaf3e0eafd56bf507ac8da6470974c9a9334ef45baca7e"
   },
   {
     "name": "random-22",
     "domain": {
       "name": "Moo é🚀M M🚀ééoMoMo o é oMéé🚀",
-      "chainId": 941,
+      "version": "",
+      "chainId": "0x3ad",
+      "verifyingContract": "",
       "salt": "0x504bcce324addceda39d36f209fbfcb3b14f834e21f104979f550ea5c6f9917b"
     },
     "primaryType": "Struct4",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "name",
           "type": "string"
@@ -967,17 +1031,20 @@
       "param3": "0x0e"
     },
     "encoded": "0x424c0018d1cc135145554306c5c9e3e9e8a4cca8848cfa101804ff94674c8d6c0000000000000000000000007d44e5363b38914b63ccfe012685ce3d2e65121a7d74985e988688526ac76b8ff8f86df2934c34abd4c430c49bf3b8a821b4e87e",
-    "digest": "0xb701808badfe14419c62c8108a8123a1531555b8d6c40bd0aea773e4cc7faff5"
+    "digest": "0xdcf697e531010a7520b25a553112c2de6440cf49caee559adc279c43ca6db5ca"
   },
   {
     "name": "random-23",
     "domain": {
       "name": "Moo é🚀éé oé🚀🚀éoo 🚀o🚀🚀 M🚀éo🚀é🚀   o",
-      "verifyingContract": "0x4b290dacba7bd6da6bb491d627c27c59abcd55c8"
+      "version": "",
+      "chainId": null,
+      "verifyingContract": "0x4b290dacba7bd6da6bb491d627c27c59abcd55c8",
+      "salt": ""
     },
     "primaryType": "Struct5",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "name",
           "type": "string"
@@ -1008,17 +1075,20 @@
       "param4": "0x0526eab9"
     },
     "encoded": "0x381b9d935686d6436962f0aa124ec705db0c223f0aa58c87e2e87a502e83b175cdd03bb0b8d5f0ab36918e793771d1a727264b826e6d52705aa7d8ac060af095b72fa668214dee979e4ab0b212697763c7a644140a47417af60c4b00000000005315d4abcf9b7169289f8f9fb986abe1e1648425138878b59807cf047bdcf743",
-    "digest": "0x9d78aed8da7518e44916c6da939b27f32296254456d1d12317f9d8d49414f704"
+    "digest": "0x3550ebbc72f9b6a463e0442d8d12134d62a5a1af8ea4a8b738e02a5706da8c13"
   },
   {
     "name": "random-24",
     "domain": {
+      "name": "",
       "version": "33.33.10",
+      "chainId": null,
+      "verifyingContract": "",
       "salt": "0xa465767278b9436adbcda02c178d53ced5ad9a5063042056fafac91f3eb256aa"
     },
     "primaryType": "Struct6",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "version",
           "type": "string"
@@ -1054,17 +1124,20 @@
       "param5": "Moo é🚀"
     },
     "encoded": "0x3406cf367962412603498937e52eb1fae44b403ffce6931f487e0191dc1da76e000000000000000000000000a41a2812f302436d74f6322e3d24f7d0894d445bfbd8fa19905015b516f07997d9ee9ef2a3e70acb6a5cef4d58d25ae9a6000000000000000000000000000000f8f1b9b200727a131c0868f5b0d5224e91acdd4973afb58374689378893745fc96a2fc65d1568ee4015275cae05c7ad1ba4ee814",
-    "digest": "0x776fdda1fd58d3c90228f4bfe52e9243a6a0c1b8804f91ecf7570b51038090f4"
+    "digest": "0xa910df5e965c1f7fe6e0b2204908cfdcd351a474cba4089390e2e74392d23c59"
   },
   {
     "name": "random-25",
     "domain": {
-      "chainId": 725,
+      "name": "",
+      "version": "",
+      "chainId": "0x2d5",
+      "verifyingContract": "",
       "salt": "0xc2de9b40a3c72c4b8080784d0abe7e2a81ee8c6d00ade54cbfa186d05b80a30f"
     },
     "primaryType": "Struct10",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "chainId",
           "type": "uint256"
@@ -1118,16 +1191,20 @@
       }
     },
     "encoded": "0xda5e84ad82b98296cf11f22beffa9ac554199abd2907793cf612a0cde3a3a6e00000000000000000000000000e1c5e8d98e793c508605de14b557517086a154a0000000000000000000000004643f9f0fff83c5992655ea60b4ee4d87962402cb5c868e1fa67a6af58ad2de258728150a4257a8fc3a0e8b1cd0c693a9154e78a19b8a5510cc83eb41b72cdb218809b5fb097d4f56a210465d7e4434ae4f93ae2",
-    "digest": "0x20c6d3b7d3a08127d2675417f10192a19404eb7f2b4a7cc826291c200d059c51"
+    "digest": "0xb672ead429dfc1f57deda5a0246a1fc033acf8feb2e596266c0a273145723dea"
   },
   {
     "name": "random-26",
     "domain": {
+      "name": "",
+      "version": "",
+      "chainId": null,
+      "verifyingContract": "",
       "salt": "0x84ecb12e99120d7e16d5ea8b41f3a1712b04779027244978e3c14e6b779bff43"
     },
     "primaryType": "Struct3",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "salt",
           "type": "bytes32"
@@ -1144,17 +1221,20 @@
       "param2": "0xd9d920215e9cef3f5d2c992b29d02c"
     },
     "encoded": "0x3124ca50b2729655ab7183f9cdc9ce21f39c5f9af1539ebbebddafd8d5124eebd9d920215e9cef3f5d2c992b29d02c0000000000000000000000000000000000",
-    "digest": "0x98647f029b556997bd7cf686927a1075276cdeb949c7324cb258265daa43e9d0"
+    "digest": "0x783039c1e70d82f0f95d825e87e40448c34335ee08403d7d53099a2b60b53d87"
   },
   {
     "name": "random-27",
     "domain": {
       "name": "Moo é🚀Mo🚀o M ééoééoMéMoMooooéoéoo o🚀oM🚀 oMo o🚀  Mo  oé",
-      "verifyingContract": "0xa25337ce36273880f4e9e61f7d6e42cdf375343e"
+      "version": "",
+      "chainId": null,
+      "verifyingContract": "0xa25337ce36273880f4e9e61f7d6e42cdf375343e",
+      "salt": ""
     },
     "primaryType": "Struct9",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "name",
           "type": "string"
@@ -1203,18 +1283,20 @@
       "param8": "Moo é🚀🚀M é🚀🚀oMo oo🚀éoooéMo"
     },
     "encoded": "0x5ed3e5cf198704fbd48783461bff2bf9894ce18fa02dfd09804f85f9897fe3b6457fa76bc117d82ca5c78822611af029603b99095c728469d2b6e0db0d38430dab622c3246af0064a7ca87eee9696c6f580b5b628a1c3ccc7ca8ccb5d099b5b30000000000000000000000000000f8dddf8de4ce294ba243327c1bb5c1bd7b7017c8ef26c2ec6558fcdaa26969c050886d3cd13aa63fd7c1b4c951a029775a19",
-    "digest": "0xc01ab63f5b6821f38672244e3f54b38b1f997cfa987996d97c2d0b45e4378116"
+    "digest": "0x58aad1c76596ded796712569e3184e90112ee31b92374f49966b4d943256210e"
   },
   {
     "name": "random-28",
     "domain": {
       "name": "Moo é🚀Moéo oéMMéMé o ooo 🚀o o  éMo🚀M 🚀oo🚀🚀oM🚀éM🚀🚀ooM ooooé",
       "version": "6.36.29",
-      "verifyingContract": "0xbda80f1b5ee3f31847bfab9e1f2d577a736ae9ae"
+      "chainId": null,
+      "verifyingContract": "0xbda80f1b5ee3f31847bfab9e1f2d577a736ae9ae",
+      "salt": ""
     },
     "primaryType": "Struct16",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "name",
           "type": "string"
@@ -1297,18 +1379,20 @@
       "param9": "-728201913157045709305151288883895292116444273394221376510603682943551543"
     },
     "encoded": "0xdb90bb6421637471a75a3d7bc8dc38f85ab6d86fe66817a5c5e52e1582dc9d8d05eae0968871a1fb36bb967307259c285125d151dee777d1b9bba85ec0c5924ab953967c8b9dd2e0f5cd1fe230ad4ddf4fa6f38f5286db1d29957c90a18c2d8bffff967d7d66a999668fc7fbff14f873fe30522876aee45bc8ad4fbc9c24b7c936513d68064480110d163aeea34e925427d939bc37d8892caa329a9d3558c51e",
-    "digest": "0x4f9a08cb3212e843a37e628e8a3899c9632ba8fe184f4955aabfd568690c8cbc"
+    "digest": "0x1071580b9cae9d82881d65250bbc48e5ef3aefe3a83a6e72177ef1f243354017"
   },
   {
     "name": "random-29",
     "domain": {
-      "chainId": 356,
+      "name": "",
+      "version": "",
+      "chainId": "0x164",
       "verifyingContract": "0xa2cb255c54cb952b1d29aa906d0db8a0369b07ac",
       "salt": "0xa747cdaee63c094c448b58b76e9b7555459bf28fe41e33d8e485334b3955dee3"
     },
     "primaryType": "Struct3",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "chainId",
           "type": "uint256"
@@ -1333,17 +1417,20 @@
       "param2": "Moo é🚀ééé🚀o M🚀🚀  🚀🚀🚀oM🚀oé🚀🚀oéoM  éM🚀éMé o🚀 "
     },
     "encoded": "0x5927d86a0ef9a01a131f7a41d2a9c89a8c82e0f454d6b4502f955f90f152eb512a656f0bd407a79f684b714713b1e71478383b1f47d7c72f652658ece534dd0b",
-    "digest": "0x8f21c436df4d7b8ea1470f3f4cac3d756774982b25a60bd7e76587c6b519df6a"
+    "digest": "0x8d87baa55e749244987539baeba2e5e6b28eafd1f6fc1329b225a89da1477cfb"
   },
   {
     "name": "random-30",
     "domain": {
+      "name": "",
       "version": "1.46.13",
+      "chainId": null,
+      "verifyingContract": "",
       "salt": "0x13ae4c3150715b5ad9a1e19f9e5d7acb57041c056751bf3517085406225bc939"
     },
     "primaryType": "Struct4",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "version",
           "type": "string"
@@ -1366,17 +1453,20 @@
       ]
     },
     "encoded": "0x4d74029cfac37baeca9753d910ae221b711f6f012a1bea4dab197ee55395b8c7639803471fd3db6691ea1e09d239e931d1e355db6dd3a8e271e91cd893cfb588",
-    "digest": "0xb6546c223ab20fefa301d938ffbc21f17128f0620fd926a149725887b3cccf4a"
+    "digest": "0x6d66e68bd266f2a4f04ae6255fb5957bf26beaa7b974a7d5bb31a86b68c36e66"
   },
   {
     "name": "random-31",
     "domain": {
       "name": "Moo é🚀 o 🚀 🚀M M oooMM ",
-      "chainId": 908
+      "version": "",
+      "chainId": "0x38c",
+      "verifyingContract": "",
+      "salt": ""
     },
     "primaryType": "Struct6",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "name",
           "type": "string"
@@ -1412,18 +1502,20 @@
       "param5": "0x4e35a3945fb38294c8acf415464978b576dddadd"
     },
     "encoded": "0x7f6d973155b0bcc8d11dd8547d4396f95e47a6b1663de76876af0dd85aa48b3f0000000000000000000000004ede0deacb3773e5137435f4d889ed859498566a84c9e1c43faf98cea6c5fcbc1fd1dd44de98d2a6fd8094cd3379479cf19d02d3f60e96d7ac3d6507f6e8030df384f326924853ce6a85f91dfae3efb3d566f6170000000000000000000000004e35a3945fb38294c8acf415464978b576dddadd",
-    "digest": "0xb6efd1b092fc83b8ad6f1562b7b87e3d06f28ff1ad2287008b557a4b325e4c94"
+    "digest": "0xf121a42f0d1653223c2b4f4886ead40cc9a8f176b566ec0168de2a079ce4fa70"
   },
   {
     "name": "random-32",
     "domain": {
+      "name": "",
       "version": "28.18.35",
+      "chainId": null,
       "verifyingContract": "0x860a0e50434a1e67fea76e2ecaadd0f7a34606a5",
       "salt": "0xa79039bbd2738722f49a7a10b34a89be4701d18545207a60ed7b1a0d647d3ede"
     },
     "primaryType": "Struct6",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "version",
           "type": "string"
@@ -1463,20 +1555,20 @@
       "param5": "0x9bb5cc4641fd491758c28f1334074c4fd8c30d"
     },
     "encoded": "0x1cf4f0e08a7941dbcc88554ec00340e272c27c135e2814a9aa84b7a0cb59090ac3fc89c9396771c6833539097c737e43749df63d9374e94038e87806138dbf3e00000000000000000000000047fe050a8243b24324599b07443a44409ae0ae5f0000000000000000000000004e9cfb53ea5657c6f71a9f6d180ef603b14915939bb5cc4641fd491758c28f1334074c4fd8c30d00000000000000000000000000",
-    "digest": "0x44170d64ef7cf254e72fa3a1fce021939881e52ddc6b53804b7ed17c3cc2cf4b"
+    "digest": "0x3924494a2158014de93b8f7fdda325e06bd44d403a73b7b29fd890e6324819e8"
   },
   {
     "name": "random-34",
     "domain": {
       "name": "Moo é🚀 é 🚀oé🚀o🚀é éoMMo🚀oooéo é MMoo   🚀 é  🚀MM🚀o🚀oo Moo",
       "version": "13.20.41",
-      "chainId": 168,
+      "chainId": "0xa8",
       "verifyingContract": "0x4cb0f9a774003fde250f9498bf59af14a58a4ba6",
       "salt": "0xd10a489e053686f001e06c5f95be04abf66384251beee98aac3352a576309497"
     },
     "primaryType": "Struct11",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "name",
           "type": "string"
@@ -1547,17 +1639,20 @@
       "param9": "0xd4116d1167d22db322c0f7ea24958097646ee98c"
     },
     "encoded": "0x8d56be8d93acc8d9b7c480a48b942024d438e759597af81d8ce0c269bbfd7ba148f76de9e7e52c7befac76d291947c16f2d706470cb5a7fa41f654e7a6515feab9ae4544a83872d12bd236f00a1e723895219ed2e761b1451b728f7da4c07fea000000000000000000000000d4116d1167d22db322c0f7ea24958097646ee98c57aea085c98b9350d480022e6d063faa8011110987c0cd42488d34ffaad7596f",
-    "digest": "0xd916f454522d064210bb959fdb97edfc71ed9d6493f69ef3aa59ac602a4cb557"
+    "digest": "0x5aed677234ad5e62332b0cab4ab17fe4d871806d66b33944bf90bc82e1827488"
   },
   {
     "name": "random-35",
     "domain": {
+      "name": "",
       "version": "18.1.21",
+      "chainId": null,
+      "verifyingContract": "",
       "salt": "0xa30efc1f7cb3062cc649929f0661f023168871c712710e3e2bcfb86cea245bfa"
     },
     "primaryType": "Struct6",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "version",
           "type": "string"
@@ -1588,18 +1683,20 @@
       "param4": []
     },
     "encoded": "0x3196893d5e65faa04abf32b95ea06dd0d6c08930740797c9505a8db7c0dd8d783c9347e5b56b01554824ad8ab3894c26f214fefd98de34e7c5ca8fe394ab16040000000000000000000000000000000000000000000000000000000000000000c5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470",
-    "digest": "0x55d568f5b6d8fcb20a1daf9434f22bef6f84008a548c2011c428c3fefa5f5ecf"
+    "digest": "0xa458f4d3a8d2e453a2dfd17834940e80395fd13cf777c53b96da300dd7588554"
   },
   {
     "name": "random-36",
     "domain": {
       "name": "Moo é🚀o🚀MMoM ooé🚀MMM 🚀éooo🚀o🚀oo🚀 oM ",
-      "chainId": 640,
-      "verifyingContract": "0xd83848a872fece3b3d46e7db4c2b77d3f860e293"
+      "version": "",
+      "chainId": "0x280",
+      "verifyingContract": "0xd83848a872fece3b3d46e7db4c2b77d3f860e293",
+      "salt": ""
     },
     "primaryType": "Struct6",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "name",
           "type": "string"
@@ -1637,19 +1734,20 @@
       "param5": false
     },
     "encoded": "0xd9c78b76c5945cdad51cc594f4f98013082d5b29c5acd60ecaae6e197d0282175d5d216ebd03b033f8465a6ad96f1018494e4217e6f613aafe8b727c911047170000000000000000000000000000000000000000000000000000000000000000",
-    "digest": "0x199e8bfe6ee9ef6a4a030554635b74168da0c20cf8c5a19ec689aa5df1161795"
+    "digest": "0xb11ffe2b261c1ec253e5a0e46791b66d7248b7c3654500f3c6384e3192bc8585"
   },
   {
     "name": "random-37",
     "domain": {
       "name": "Moo é🚀🚀  o🚀oéooMMo éMM é",
       "version": "28.27.34",
+      "chainId": null,
       "verifyingContract": "0x7eabc8de425d63e9221ab1d30fa6dd0cefc081a3",
       "salt": "0xe0523cb396cb9dc27ff363d713948ac735f273623989b6af7612f2fcd2ff6d2b"
     },
     "primaryType": "Struct4",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "name",
           "type": "string"
@@ -1683,18 +1781,20 @@
       "param3": "0xed41029f84e192af5415531ee38e17f30d120a88"
     },
     "encoded": "0xfa093f4ea3bf0aa4213f3f060eac93ca7ab21ae17ace77be8dc0692eb11b3bf8ffffffffffffffb9380bd11977ced6065cd29a646828eb18b6e6f2b19f3c259a000000000000000000000000ed41029f84e192af5415531ee38e17f30d120a88",
-    "digest": "0x863b7af213ea9f4d6e5bddd79a651e5868a89780ea3fe954aa60bc4265ed20d7"
+    "digest": "0x0ef8cc0821b005667a82e811bb1efc5c39dadde5b1337c16e2351755dd42668b"
   },
   {
     "name": "random-38",
     "domain": {
       "name": "Moo é🚀o🚀é🚀 oo Mé o",
-      "chainId": 1268,
-      "verifyingContract": "0x929fa2120c0710256df5b8617b56ab4e970ecb45"
+      "version": "",
+      "chainId": "0x4f4",
+      "verifyingContract": "0x929fa2120c0710256df5b8617b56ab4e970ecb45",
+      "salt": ""
     },
     "primaryType": "Struct5",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "name",
           "type": "string"
@@ -1729,17 +1829,20 @@
       "param4": "0x7909af95849ea0e6482d4979aa97b6de40184c5a"
     },
     "encoded": "0xd76e74eec5c6ba52563c5d6c259dd7ab7b3c1c568662d8e52ee9e9eb1fb3b08f0000000000000000000000006271d301aedc2d2eace8d5c39530cb69fa33c087d37b7d384539b90a02ac9a5fcdffb5ea5e19dcd612cac7a8d08e701244f586f10000000000000000000000007909af95849ea0e6482d4979aa97b6de40184c5a",
-    "digest": "0x7fa9e8243fd155df5677ac9c26861ade73b0a6ab52e98999956cbef093e96249"
+    "digest": "0xaabcb39e4e326ec26cc3bd56d41924f6bfe94b4a4e447fa71aa409c09dc1085e"
   },
   {
     "name": "random-39",
     "domain": {
+      "name": "",
+      "version": "",
+      "chainId": null,
       "verifyingContract": "0xe3ac435708684db0ae31e22bbefb1e44317338c4",
       "salt": "0xe26aafa719c7da18b0ded1aa1520a9366af0fb6b459916877728cb9a5c87a7d6"
     },
     "primaryType": "Struct5",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "verifyingContract",
           "type": "address"
@@ -1770,18 +1873,20 @@
       "param4": "0xb72dc336b24a1bbf207488efe80ffcb2fcac731fd7663809b3d2fc49ba7dfc41"
     },
     "encoded": "0x7dfa18ea85b7f90d6621faeda9cf913de2386da0479309954a0255dc716d1597813bc527d887adf055ba505a819f5c99c5959f37552f3546a3621eecdbab9fa9dc0aa250b183fce60762c98a54246dd7b9bb956bd6341da3e3b8000000000000b72dc336b24a1bbf207488efe80ffcb2fcac731fd7663809b3d2fc49ba7dfc41",
-    "digest": "0x657847e82a36f749a49a0249eb01d42a8f84e155799a89a361326c7e059f4857"
+    "digest": "0x4b747c3d59a291315c500eeb62e8c5c78a857f9a5f67d78f87042cf34de6a36b"
   },
   {
     "name": "random-40",
     "domain": {
+      "name": "",
       "version": "27.48.40",
+      "chainId": null,
       "verifyingContract": "0xb01dee94f0bffe39c63b53c94d0a9fcbc1384c7d",
       "salt": "0x2d69edf19eed3feff59d5ff3d202299b0a2f7cfd471953c708c84ff2c8ef15e3"
     },
     "primaryType": "Struct4",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "version",
           "type": "string"
@@ -1811,18 +1916,20 @@
       "param3": "0xaf4961b17878b5ba9013de1d9fd0f3642f1e7294"
     },
     "encoded": "0x08b05ab3afcc030e7935ce6c66d5d4b79136f50d1f567b347bde3906d91197e800000000000000000000000000000000000000000000000000000000000000007a9bca0401d98432dd02eb0e29aa6b8a2d7db41d77d60789e3f2a6b4672eb697",
-    "digest": "0xe8d2de50871488e0d941f58e407218d0e53232673e4f0c087c4ddc60f4b12997"
+    "digest": "0x4edda76d747141802c30342052478004c80072b25cdc1b7b1e6b0a7d4db169ec"
   },
   {
     "name": "random-41",
     "domain": {
-      "chainId": 1047,
+      "name": "",
+      "version": "",
+      "chainId": "0x417",
       "verifyingContract": "0x374b2b8301b1edbcc86612a691376d7ac3ced722",
       "salt": "0x35b3516e1c75b47e8c6c9e67c454eeb7ee4bdfdce3bff554800152182ef7c097"
     },
     "primaryType": "Struct7",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "chainId",
           "type": "uint256"
@@ -1865,18 +1972,20 @@
       "param6": "0x5aedc9f9"
     },
     "encoded": "0x9ca37edfac674c2ff136c55e6301a602590e506fcacca5c9b6b9620af18ee3d60000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000628703dd9fee4a7a6caada5013122d395ba3c54772283fb069b10426056ef8ca54750cb9bb552a59e7d5aedc9f900000000000000000000000000000000000000000000000000000000",
-    "digest": "0x6c6d10e7a34cd9b044d3ef2f2ed2d4333e2822ac7d10b38eb6d99bb8b1771bed"
+    "digest": "0x4ecfed2474e22a5c77196837fe090d2f2d55ab9fc2fb737c74c1896594f1a387"
   },
   {
     "name": "random-42",
     "domain": {
+      "name": "",
       "version": "5.35.42",
+      "chainId": null,
       "verifyingContract": "0x43b33fe40f841899d259fa0c36dea65ec8fde1d3",
       "salt": "0x081bea430df1ade6eb0b35829797621ef878f32df1dc4b9d0c53cb94d441390b"
     },
     "primaryType": "Struct7",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "version",
           "type": "string"
@@ -1918,16 +2027,20 @@
       "param6": "0x0ca1fb3d6077a402783877ceff53"
     },
     "encoded": "0x853568bcfdf9ba7ef41211e721fea9318ec93b8bf70306ce21829c25ba577bbd6865c9161273dd536df66549067730a5b9d1f65060fad8a53e1ac0f39ccdaa52f571a282e60d64a3ded8eaa67254087841c598a176a7cd626f00d50732f7f95f0000000000000000000000000109f2064fb32e6c22911ac905fb319ef0cee5a4c435cc0d815f1d138a42be987d6cc47160918ac555121a5bd5278c32fd472060",
-    "digest": "0x804d08480ce1b1d7ddf3646c58bf0a49a114f62d28e81ec9210e03f4f9f3a617"
+    "digest": "0xa98b72d44ec5f36ebb83835f2ca31d4727d50a30bf8e4824604c789c25e8e290"
   },
   {
     "name": "random-43",
     "domain": {
-      "version": "24.21.37"
+      "name": "",
+      "version": "24.21.37",
+      "chainId": null,
+      "verifyingContract": "",
+      "salt": ""
     },
     "primaryType": "Struct5",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "version",
           "type": "string"
@@ -1954,16 +2067,20 @@
       "param4": "0x13a081fac5b7be3ce686e044bf4da3abef57fe9b"
     },
     "encoded": "0xd9df0580bd644a74f3c333bfcc151b8847cff76c671a86edc3130dbf71458cfb000000000000000000000000fe1827974ce7e150af244d1b889f747c8f0a776e000000000000000000000000000000000000000000000000000000000000000100000000000000000000000013a081fac5b7be3ce686e044bf4da3abef57fe9b",
-    "digest": "0xced726b5f99a87ac8035856b471812b2d20ad43e8e600fe5ef6e82ef52f1d653"
+    "digest": "0x3d750a6881727a3faa8c95eed91dd7d7ed253af265a154534e77eafdebf9ee55"
   },
   {
     "name": "random-44",
     "domain": {
-      "chainId": 437
+      "name": "",
+      "version": "",
+      "chainId": "0x1b5",
+      "verifyingContract": "",
+      "salt": ""
     },
     "primaryType": "Struct10",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "chainId",
           "type": "uint256"
@@ -2013,18 +2130,20 @@
       }
     },
     "encoded": "0x52230b1722ba9fa8df5a2874a719206cde8f49cae1cc265121e414b677873a98fb6852300dd5f88a8abd38b78e451c8cb00c5a9868c44b7df99b4a2f1c2d25620000000000000000000000000000000000000000000000000000000022b851341e0d5386101b1d456726a186dea7a1d769e76ac7dcf595f563d047ae9d74727d",
-    "digest": "0x205d02e271ba4c6b9f25c8f47ee1d77575d64cd4f00e63fffdc59472397d92e1"
+    "digest": "0x95c91539f10ef0a5b63c34c8cf069355f7ea5ff21a7260ddb4755d631da50624"
   },
   {
     "name": "random-45",
     "domain": {
+      "name": "",
       "version": "47.45.42",
-      "chainId": 1206,
-      "verifyingContract": "0xf947022a0e71d11aab373afabfe9befd44681e93"
+      "chainId": "0x4b6",
+      "verifyingContract": "0xf947022a0e71d11aab373afabfe9befd44681e93",
+      "salt": ""
     },
     "primaryType": "Struct6",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "version",
           "type": "string"
@@ -2063,18 +2182,20 @@
       ]
     },
     "encoded": "0x3ae8fde34490f7400f057134dfa1b5e09466c9c820ae931d27906d7f0ad91c9c8bc51a1cd258fe6d63ac29ace059b760205588a0a9161c84c856c159f7000000283f4a8f7f4aa0508213c3acfea1b9eadcc0134f291f7062983fb7b5faa4c0433ce102fe157fdae81a22e96b212ccdb916af0903abd81ed9dede694888ad8069",
-    "digest": "0x594e4bf0d590269799cca8859ba0a0bbdc1f50f79b62484b426596dd352185eb"
+    "digest": "0x90cfb131b9b03da830129cb332f51d270fb4ba2807ff0926244b0011b63daec8"
   },
   {
     "name": "random-46",
     "domain": {
+      "name": "",
       "version": "20.6.0",
-      "chainId": 1182,
-      "verifyingContract": "0x48828af2bff4cea1847888835dd26ef645440919"
+      "chainId": "0x49e",
+      "verifyingContract": "0x48828af2bff4cea1847888835dd26ef645440919",
+      "salt": ""
     },
     "primaryType": "Struct3",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "version",
           "type": "string"
@@ -2099,17 +2220,20 @@
       "param2": false
     },
     "encoded": "0xd827c65b54cb667b8cb0c84a4aa21ffe3d188aa9cdaede527a285c318ad7274e0000000000000000000000000000000000000000000000000000000000000000",
-    "digest": "0x95645087033defeaf6a222f850ccd5f3f6ff9d051aeb02dd2c25cc7e237f38d9"
+    "digest": "0x3103efa0b712886e397bf688461e19e12169d8d7eae4bc03c90c60d89ccb9c4f"
   },
   {
     "name": "random-47",
     "domain": {
       "name": "Moo é🚀",
-      "version": "17.27.18"
+      "version": "17.27.18",
+      "chainId": null,
+      "verifyingContract": "",
+      "salt": ""
     },
     "primaryType": "Struct19",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "name",
           "type": "string"
@@ -2200,17 +2324,20 @@
       }
     },
     "encoded": "0xa2503d8dab2dd52492c8bd1e75e197a963b1be16d8704f24b034c5c3ebb5ae22ab435560740a636c972580194f75d3a1a37686a2281bff1c37e9ca6ccc1c69bebed7f0eb879274b19967141ea60f229549d8509e8c2719506fca12599149d972",
-    "digest": "0xf87ee3f08c482046207edfd23e1303358eb48bd840500f424192948eed97c044"
+    "digest": "0x2493dd8edfbfe1d4980ccf2f8c9819a04a3369adc06422f40214cf7f1c231695"
   },
   {
     "name": "random-48",
     "domain": {
       "name": "Moo é🚀Méoooo🚀 🚀🚀ééMMo o MM 🚀o é  o",
+      "version": "",
+      "chainId": null,
+      "verifyingContract": "",
       "salt": "0xc03f10b7364e134ddc9de679561060f22c44058fc7abab3b8a06eeff8a0cda3e"
     },
     "primaryType": "Struct4",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "name",
           "type": "string"
@@ -2236,18 +2363,20 @@
       "param3": "0x48c2efb8ba7ee5d877ba4641d56d960ef4857d19b913c44af5c4b9bda9cfa25179"
     },
     "encoded": "0x39b0d4be9d0cd319e0a49b11a9725cad68c2545bda0a2875a0510a5846e63ce43b716dc9026fa5a0f9d7f44f4f87e3bf20d3ba1c57dc9820987bf547c9cd1c92caefa7da9321f9199f0d71f17e36c56f1ec520e39306893bb0216f64129f029d",
-    "digest": "0x32e5e620ebdc87817f3c8028e2e1dfa11bc8281ce740d373ec1d3e6944eb795d"
+    "digest": "0xcf40dd5036f6d730d81862496fe0cabc3f823fa9d683121613f43649375107b0"
   },
   {
     "name": "random-49",
     "domain": {
       "name": "Moo é🚀o",
-      "chainId": 103,
+      "version": "",
+      "chainId": "0x67",
+      "verifyingContract": "",
       "salt": "0x3a5a1eb3351d1a1688d37b0d12422c89298146d8fb17ba3c25fb4b5c86c4bac9"
     },
     "primaryType": "Struct5",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "name",
           "type": "string"
@@ -2282,19 +2411,20 @@
       "param4": false
     },
     "encoded": "0xbb972fe1a70ee0d67e7cacbc55c17b51b6f3a17a25f4f86f5941e8562149d8baf133a0ff1f13504e6c624d2de18b24dcea844936d869bcec139368394b038fd1dd59271cb718f83ded679ab9a17cd95cf12c4045bddd47bb221f8ba9f1d192320000000000000000000000000000000000000000000000000000000000000000",
-    "digest": "0xf5f4417e3f7452c53925e17a8d761742c795a21d1399bbdbcc6655d28ae01898"
+    "digest": "0x2970fd991f432198288be0abd6ea1c51e61603bd04acb8ee7a624241c27c7e22"
   },
   {
     "name": "random-50",
     "domain": {
+      "name": "",
       "version": "29.42.1",
-      "chainId": 1327,
+      "chainId": "0x52f",
       "verifyingContract": "0xfa7dc57fcaae354b92e4116c0bdd2cf47d8f689b",
       "salt": "0x03da468bb06a9b9dab725571b916aff5422068b4ed5447355b3c5f70bc15171f"
     },
     "primaryType": "Struct3",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "version",
           "type": "string"
@@ -2323,19 +2453,20 @@
       "param2": "Moo é🚀ooé MM🚀o🚀éoéé🚀oM éoMMMMoo 🚀 o"
     },
     "encoded": "0x5927d86a0ef9a01a131f7a41d2a9c89a8c82e0f454d6b4502f955f90f152eb51cb99a22ed97e79bbd189fcbf151341d2ba13a10693a9f98ff01bde8e4b54b0ed",
-    "digest": "0xd10b65f29d8c77544a7a31a419b8158854a6efdbd142c11b13e5e914720eab09"
+    "digest": "0x8ccb6a8f8444998de0c050770340dde27eb97748cf89e3bd0e35c83e62cc3f38"
   },
   {
     "name": "random-51",
     "domain": {
       "name": "Moo é🚀éMMoéMéMoooo oo🚀 é🚀é ",
       "version": "17.12.32",
-      "chainId": 850,
-      "verifyingContract": "0xee57c317107b6016ee17355d870066437b91cfc4"
+      "chainId": "0x352",
+      "verifyingContract": "0xee57c317107b6016ee17355d870066437b91cfc4",
+      "salt": ""
     },
     "primaryType": "Struct9",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "name",
           "type": "string"
@@ -2391,18 +2522,20 @@
       }
     },
     "encoded": "0x6b5499a7890f6a8255933b37decd0f637928da8bd61d925b3fc04f155551707200000000000000000000700edea808dc2e1e1937df49f85355a1244560c5d450fb8722e70eec19fe4a54da68f47326495d284ae333f3f2db8057ec987bb743b0",
-    "digest": "0x95199a1c903ef5b161ea35770728ff9753d9fe4cf63a68001bd910bfd7cd8930"
+    "digest": "0x3a2429a00686fee6f436a84de2b3a169472e177a2b84ee32f5e0a61bfceeedd7"
   },
   {
     "name": "random-52",
     "domain": {
       "name": "Moo é🚀éo oéé é M é 🚀🚀oo🚀Mo  🚀oooéMé",
-      "chainId": 1092,
+      "version": "",
+      "chainId": "0x444",
+      "verifyingContract": "",
       "salt": "0xab35002bd126820952bb44438b2a342cefd29a7e41533cf101af42d980f231e5"
     },
     "primaryType": "Struct4",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "name",
           "type": "string"
@@ -2431,19 +2564,20 @@
       ]
     },
     "encoded": "0x9c928539a37b7c8e4f1ce136ca12eba2a05b8ae934748884491b03ad7547973a0a839d9c631d1e54947847568fb9b7170b4c91ff638a57cd7bdee89b100734ae",
-    "digest": "0xf56d12fc86d9c13a69e7e53913981ae56a0bfdc19f6c1693cb3a808aef256f80"
+    "digest": "0xf276060c405621c7ff243e9fc7f29bd0120348d4b9c0f9d02855e04427fec551"
   },
   {
     "name": "random-53",
     "domain": {
       "name": "Moo é🚀oooo🚀éoooéoéoé🚀é é Moéo oooMo   ooo",
       "version": "13.16.19",
-      "chainId": 568,
-      "verifyingContract": "0x1c60b5eb2fef17a1cdd14f962e6f7d3b3b6d6500"
+      "chainId": "0x238",
+      "verifyingContract": "0x1c60b5eb2fef17a1cdd14f962e6f7d3b3b6d6500",
+      "salt": ""
     },
     "primaryType": "Struct6",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "name",
           "type": "string"
@@ -2487,17 +2621,20 @@
       "param5": true
     },
     "encoded": "0x09cfbba2e1e5ea4a3a82d13e5af185c9af63919209274a8b7c749ae5d84b713cb669a821b131bc1c35ea0a46ea180437711dceaf7c7157512bc9794f513ae1c0000000000000000000000000000000000000000000000057dd5af7be83dcad2500000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000001",
-    "digest": "0x508f38594346bfeecaf00d106d48313a5fda1a95aad52b5543d5b14b9d7196a7"
+    "digest": "0x0005a401c7dabfb9fe61418c27ed4dde686a3cf098e0cccc1b7a9bbc881d759e"
   },
   {
     "name": "random-54",
     "domain": {
       "name": "Moo é🚀éo é🚀🚀oéMMooéé  MéMMéoooooo Mo 🚀o",
-      "chainId": 903
+      "version": "",
+      "chainId": "0x387",
+      "verifyingContract": "",
+      "salt": ""
     },
     "primaryType": "Struct10",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "name",
           "type": "string"
@@ -2545,19 +2682,20 @@
       }
     },
     "encoded": "0xc2160e538078feaa17b54d2e42d2d30202df0ca254993ea38c93773174f229ffc62f64b185683f6d01ccc0e8d936d70806faa97827a9a5f882dfd39e417384780000000000000000000000008e95a960e9a83b777c7862a94e8110fe91da147aafdbe910404b0c3b44c47734e11d0efc9d25900e7fcb2a08b20eb55cf7c271e6",
-    "digest": "0xbc69ff6a3a430987fe2afffe25c78d68fe98948b160b03aa8bb31dc93bb40cf8"
+    "digest": "0x5f8e4870178c51ba7731a61c0967c0a468b6b69b59b5978a5e270216edcd5f04"
   },
   {
     "name": "random-55",
     "domain": {
+      "name": "",
       "version": "14.37.24",
-      "chainId": 406,
+      "chainId": "0x196",
       "verifyingContract": "0xfa8846e816297a43ce7d94b8c6bdb6cca1159fd7",
       "salt": "0x242778aa1964c438a31f0e78cb2939d4452e9498a49b3765a9a401a5ac362230"
     },
     "primaryType": "Struct3",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "version",
           "type": "string"
@@ -2586,17 +2724,20 @@
       "param2": "0xa6eacd95abf006c234ec8ada1a0a1efe733fb8fecf"
     },
     "encoded": "0xe3f2482dcc01a81435fc0dd8a8d9e82fb6aeac6d724cfcb3ec568286b0182780a6eacd95abf006c234ec8ada1a0a1efe733fb8fecf0000000000000000000000",
-    "digest": "0x49a860a4b3d28e51559860477bea7a0dd0cd2cc65aefc1be534af93dbda125cd"
+    "digest": "0x23775ffce1e98479f1865c1de55fcb48139b53b745bca5e1211a4ce69534ecf1"
   },
   {
     "name": "random-56",
     "domain": {
-      "chainId": 1035,
-      "verifyingContract": "0x1c37f1b939feea69ce5757b2ff01a4dbe98cee99"
+      "name": "",
+      "version": "",
+      "chainId": "0x40b",
+      "verifyingContract": "0x1c37f1b939feea69ce5757b2ff01a4dbe98cee99",
+      "salt": ""
     },
     "primaryType": "Struct9",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "chainId",
           "type": "uint256"
@@ -2643,18 +2784,20 @@
       }
     },
     "encoded": "0xb9cd0c37eacfb7cce86fa6e1179348a2dffc13cef7976b514a468bdf7afb4063006b6322c21ecaba15e76c656e3fc5d69ed353a0eb9ae49a9c4ef0ed9f0b74bbada5013122d395ba3c54772283fb069b10426056ef8ca54750cb9bb552a59e7de75e33b115454660e8bf1399340fd2a08c02c80da600b7f6607e4fdaa98b71dd",
-    "digest": "0x89a21c0061b072cf4fe51034a22f646423cb79528c45920db9f8dd9b8ef023d1"
+    "digest": "0xe6d8e08b435d63ba3f4733413ff616df2a75bd385d2df7389a0bcc4161994f62"
   },
   {
     "name": "random-57",
     "domain": {
       "name": "Moo é🚀oooooéo🚀MM🚀o",
+      "version": "",
+      "chainId": null,
       "verifyingContract": "0xd5fdebacaa6fd0e4c4e3dcb01d49d0d0b5169fd3",
       "salt": "0xf46bae2676d80f6d7ed7eebfe927e808a1a9d7f16bb9c5733025eb1c54fb3cd7"
     },
     "primaryType": "Struct4",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "name",
           "type": "string"
@@ -2684,17 +2827,20 @@
       "param3": "0xc4340156b62bc39a03b5f8bf3405e1"
     },
     "encoded": "0x15a4a682c969e6c9e1a691efb9e6eac924562774edc9c70b2dea59192b5ffc4511e04fffbb632f04623d274c69004680bbfe47f642d78193000000000000000059b64b2801ddb0f37604d34c0c2b712b9ba10b111c50bf93ad769dc5372943f4",
-    "digest": "0xfdd39c246fa31fb5a02b7eed6bc3ccf206bf15199c22155fc730d523c884376f"
+    "digest": "0x005528c1887393b4727ae500ba499626aa15a31635e74cbbf0c28b3dd1777640"
   },
   {
     "name": "random-58",
     "domain": {
-      "chainId": 382,
+      "name": "",
+      "version": "",
+      "chainId": "0x17e",
+      "verifyingContract": "",
       "salt": "0xedba234675d29838cea84fca64d51c6ec1a8569eb7dc50ab6db9fdf81cbda9c7"
     },
     "primaryType": "Struct7",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "chainId",
           "type": "uint256"
@@ -2733,18 +2879,20 @@
       "param6": "0xf36ebef74931bfa226e964551dfe43911f2d130e"
     },
     "encoded": "0xc143354b22d04023559bed7cae63b574cfb78cfd7ac0c43a128d77d6e5e614ec000000000000000000000000ea0f9d8e13e45e85a35d02b4523d47aed0e2acb50000000000000000000000000000000000000000000000000000000000000000c71de37770f9c52cb0725ff89e17b4cf1847e4d111693996075aacaff8157569000000000000000000000000f36ebef74931bfa226e964551dfe43911f2d130e",
-    "digest": "0x2d06931eec7d70a1db63d07d25e4b8b90f7bcb3a2b55d972c48278dd66acb0db"
+    "digest": "0x66f9a11db6ebb29b3105c0d4d7f456cd07d988a05d371c6a47500d8a49877e89"
   },
   {
     "name": "random-59",
     "domain": {
+      "name": "",
       "version": "30.30.24",
+      "chainId": null,
       "verifyingContract": "0x561277eeb6bbd800e12ebc6cd0dbee892d139824",
       "salt": "0x14bc6a6ff4765450e40c9f760db83f7b207a736f8588a22106af54f936524eda"
     },
     "primaryType": "Struct10",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "version",
           "type": "string"
@@ -2802,18 +2950,20 @@
       "param9": false
     },
     "encoded": "0xaf138bad46576af052316d07c060c9e4148c2bff6809ec200b5bd3de4aa870cf4f3e0e37be2547e04487ab720f75f451fc5f4feabfe1102ce08d0e4ec14306d000000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000000",
-    "digest": "0xaf9d9edf7f72d55542c3a9d8b875cee65261f3aa6c7e96280440c183661bed0d"
+    "digest": "0x2b0f0e3f3bd6a1c31bea371a4192c70d809853cb971acb616942df615f43c59b"
   },
   {
     "name": "random-60",
     "domain": {
-      "chainId": 563,
+      "name": "",
+      "version": "",
+      "chainId": "0x233",
       "verifyingContract": "0x724d9d0a75aeefec930256ab77b13f018432dc13",
       "salt": "0xf766cba081e9030cf506f1616682083a65c89daebf5cf7e828d5bf85a47a819f"
     },
     "primaryType": "Struct4",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "chainId",
           "type": "uint256"
@@ -2843,16 +2993,20 @@
       "param3": false
     },
     "encoded": "0x773a0a5ad6d608cfce67b33cbffe13f6c510c8e08ce51877432cbe3f5e8efe0effffffffffffffffffffffffffffffffffffffffffffe05d8febbd996b6de4f30000000000000000000000000000000000000000000000000000000000000000",
-    "digest": "0x638795e70617a8e19fb1971a5531c28225e07cbf26f3330c59f6d5bee2b237ed"
+    "digest": "0xb8808e1ea5ab20fa27d47439b2eed7566559e0c3b346f719b0f5f979915ad487"
   },
   {
     "name": "random-61",
     "domain": {
-      "version": "7.6.2"
+      "name": "",
+      "version": "7.6.2",
+      "chainId": null,
+      "verifyingContract": "",
+      "salt": ""
     },
     "primaryType": "Struct5",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "version",
           "type": "string"
@@ -2879,20 +3033,20 @@
       "param4": "0xde0c11a1e17e64435e2d0a8414cc368302fe788c8aac8e47741336362229cf9b9c4b029f6b"
     },
     "encoded": "0x1bf518570cadc618d41542f220dc4096c36b1bdf93cbd49b2a8d9d8702b1b6540000000000000000000000002ea8b4cdab8e0585a626248968a0f3a97dbc16680000000000000000000000000000000000000000000000000000001a87dcc7fedee76d97debe8dea474b08619fc6a3b04e96d191aa5ddd4309330f5f6cc24603",
-    "digest": "0xe825e97cef6530ad8cd98b08e3d94b08c18a3ae7be1a742e6c9378b419c266ab"
+    "digest": "0x20712c5049aa6feb2943ee40cc540a9e7fd5b1d0f544628a865ad6846479e8b6"
   },
   {
     "name": "random-62",
     "domain": {
       "name": "Moo é🚀ééMMMMM🚀é",
       "version": "39.10.1",
-      "chainId": 955,
+      "chainId": "0x3bb",
       "verifyingContract": "0x72c212d52a7da827cf299e1063d0f5481a10aba3",
       "salt": "0x911b6be26e46725a5a9b2f66813850cb246cf850f316a8abd17c3255a59b1b73"
     },
     "primaryType": "Struct5",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "name",
           "type": "string"
@@ -2935,17 +3089,20 @@
       "param4": "0x12a0cdc5797b0e2cd0fcc3b5f3d63d0b40060713"
     },
     "encoded": "0xb1d573600e493816acf7786e0db884238646f98d2925ad6bc1d0e58f7a84557600000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000337bd501dc8adfc1e062ad2c26c3e700000000000000000000000012a0cdc5797b0e2cd0fcc3b5f3d63d0b40060713",
-    "digest": "0xa6448bcf64129f8f3357ad27ea6cb54528261ae82c77fa911cfd42326c5a32b9"
+    "digest": "0xa0b81f2e2061db8c27632b797f650aa96695240bb9fa12f006a527dcc8cb7deb"
   },
   {
     "name": "random-63",
     "domain": {
-      "chainId": 52,
+      "name": "",
+      "version": "",
+      "chainId": "0x34",
+      "verifyingContract": "",
       "salt": "0x63a0b8d00ebb49dc92aa7466795df26f52f7f097a8951212994dcf084f3115ee"
     },
     "primaryType": "Struct11",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "chainId",
           "type": "uint256"
@@ -3003,18 +3160,20 @@
       }
     },
     "encoded": "0xac316d647c74bc3589294fae161068a7566854edd7dd16d2eda15b770a4375daa7942ff4d68d8349802c6984bdc9c4c2b6d470e42e79142bbc940d35ac64002400000000000000000000171a57f90c59a9aa6004324b4c1e5ca16b31e5062d65320516b8c2848eb919a422085947b5272cee2812540b5bf353b28c2cb5f048a86ed4f8451f4da89498fab2ccc0b5f4f96071ca26c12b291e2fb6545c1fdf6657",
-    "digest": "0x3312dae7779358b36e3d0901d23210c35ae47615a6ced82730958afeecba27b4"
+    "digest": "0x26ccf08a323867c1ddd7dc4d31c8046193bf5e85f705c6bca7054812428fde3e"
   },
   {
     "name": "random-64",
     "domain": {
+      "name": "",
       "version": "12.22.26",
-      "chainId": 1072,
-      "verifyingContract": "0xcfadcc6d18290da205685c27be85e3d12daef93a"
+      "chainId": "0x430",
+      "verifyingContract": "0xcfadcc6d18290da205685c27be85e3d12daef93a",
+      "salt": ""
     },
     "primaryType": "Struct7",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "version",
           "type": "string"
@@ -3054,16 +3213,20 @@
       "param6": "Moo é🚀🚀oooéé "
     },
     "encoded": "0x1a13a4e4f65db23bb29d9f84dd419677df8345f546cd92242e7e392b4fbc15360000000000000000000000000000000000000000000000000000000000000001c5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a4708e08e58d1d810440dff7199e28d00000000000000000000000000000000000000d7aba156c05cec0dbf187401b9ed4df82bcd9fd30870c0924ad1cf2b4f3d704",
-    "digest": "0xaf2a42e1f7ec4b6c7b7dba5b36c575bda2972f52479f34190d1c3750e18ad5a7"
+    "digest": "0xf130b7b6cd26a7e181cb1b85a53c247ad02f9df79f295581e735747b27ce3fec"
   },
   {
     "name": "random-66",
     "domain": {
-      "chainId": 1336
+      "name": "",
+      "version": "",
+      "chainId": "0x538",
+      "verifyingContract": "",
+      "salt": ""
     },
     "primaryType": "Struct4",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "chainId",
           "type": "uint256"
@@ -3085,19 +3248,20 @@
       "param3": "0xec970b3168"
     },
     "encoded": "0x2bc752ac2910b71f3084d69bc9772a7de5341093c84f7c9e5fd2ac361544ad460000000000000000000000000000000000000000000000000000000000000001ec970b3168000000000000000000000000000000000000000000000000000000",
-    "digest": "0x8feef116af30b282bfe16c1890206276e9aae7dd7f74e5f988614956135e273f"
+    "digest": "0x5b707360375a39d42197bcbd743514d26a95d08a038c31632073300259972c38"
   },
   {
     "name": "random-68",
     "domain": {
+      "name": "",
       "version": "18.42.3",
-      "chainId": 5,
+      "chainId": "0x5",
       "verifyingContract": "0x2909159c78bf78c499a576986e657f6221814a1b",
       "salt": "0x4757ed28e3e7f1ce3bdcb44424f8d26cc8f55f00ea55759f5200e5e58c2df0f4"
     },
     "primaryType": "Struct9",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "version",
           "type": "string"
@@ -3159,18 +3323,20 @@
       "param8": false
     },
     "encoded": "0xe1a6b9ce8570dfc1929b0986ecaa84c675a38f130aa0dd754f0f3efb28a7946e7b41e0b88acf6e22ccb8ab0ceb0b4e4498e5569bdada5470159cb4aee1977181aec0dcca7af9e7739a3bb043c812bb554c938bd178a9b815ff2bcc12571dedcdcb524ab786db4edc230bef0de43dcb5bc64e388a0e6e7e776ad754bde112e7530000000000000000000000000000000000000000000000000000000000000000",
-    "digest": "0x93c2c7376679e56c01ad0855a122657ad37474c3c3cf2d943693ed74c9bdf20a"
+    "digest": "0x8ae1589cf160967a97fd7654f62dd8f6ff8ebe1ccc33bb820d8dfe4f1a74ca92"
   },
   {
     "name": "random-69",
     "domain": {
+      "name": "",
       "version": "29.38.34",
-      "chainId": 479,
+      "chainId": "0x1df",
+      "verifyingContract": "",
       "salt": "0x4d41456ce1c41c3d581d10c26cb759d4a47f54ce1a9368f438e2a81977f51d93"
     },
     "primaryType": "Struct7",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "version",
           "type": "string"
@@ -3213,17 +3379,20 @@
       }
     },
     "encoded": "0x30c11efb6065f6bda2985909969cdeae08dca57414e9e0f27cd2aa3b7be28049e16d3c3bef1a3a648aefca75d723e43c4c44ae6a69831e585a5e3cf1af9cb02e",
-    "digest": "0x5f28a72d46bcf0e734304e0fdcdb6ce0371bff2f2db3c66dbef72582ca768429"
+    "digest": "0x46e2cca7c624020e95b09669da9b3fbd293870af28fa76bbbf04391f98da096c"
   },
   {
     "name": "random-70",
     "domain": {
+      "name": "",
       "version": "18.40.21",
-      "verifyingContract": "0xb24a517ffcbfdd9bc47720db3e5190fda2e01002"
+      "chainId": null,
+      "verifyingContract": "0xb24a517ffcbfdd9bc47720db3e5190fda2e01002",
+      "salt": ""
     },
     "primaryType": "Struct4",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "version",
           "type": "string"
@@ -3249,17 +3418,20 @@
       "param3": "0xc83aff0255120cca20588d23ada5f3f38f7195f030873a49a7d16fe8dcaf2b19ac789fca2b3f90470ffe0345332fdcb0"
     },
     "encoded": "0x3ba0a68a11c3149e7b8cce5c07245e59ffa9acdaf38fcc613b25ec0abd0fde9b41ce8100000000000000000000000000000000000000000000000000000000003a478a822fa1170b9116c77ad351ea423f4a9ea13a9942e3f02beff4c8c9e6cf",
-    "digest": "0x26a000eff8c5171403d5d31329e4675bbb567bf0fb2938737fc72b35070bd0a8"
+    "digest": "0x66da6162f288185c6c34196a9cc692790a7c1fc5169615c788dd65ca2281c5d8"
   },
   {
     "name": "random-72",
     "domain": {
       "name": "Moo é🚀é🚀 M🚀 ",
-      "version": "5.17.26"
+      "version": "5.17.26",
+      "chainId": null,
+      "verifyingContract": "",
+      "salt": ""
     },
     "primaryType": "Struct3",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "name",
           "type": "string"
@@ -3280,19 +3452,20 @@
       "param2": "0x1a4984f48e88befe512b3cb96ab6dcd897b12c4178dc46a3eb0174834581a306"
     },
     "encoded": "0xf0b1d4f6e88accb50c11c83238640185fa1db3c76ce20f17fa4916dadf9db31c1a4984f48e88befe512b3cb96ab6dcd897b12c4178dc46a3eb0174834581a306",
-    "digest": "0x56403e65cffb42a3d27fc46982bf5f109216c216e600ae1d5e9eeb0f2d535c4c"
+    "digest": "0x2d0ba533e82ef4afd515abad41f7beb03d0dfefede9087fced48251ca01dcb4a"
   },
   {
     "name": "random-73",
     "domain": {
       "name": "Moo é🚀ooMo🚀oo🚀é ooo M🚀éM  oo🚀 éooo🚀 MMoé 🚀oM 🚀 é  é  🚀oé🚀ooooéo",
       "version": "35.11.14",
-      "chainId": 1042,
+      "chainId": "0x412",
+      "verifyingContract": "",
       "salt": "0x7b9937e8531f141e3ee6fe381c9a9e86ffdcd0c68a8e1ae17112e620aaab338c"
     },
     "primaryType": "Struct12",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "name",
           "type": "string"
@@ -3362,17 +3535,20 @@
       }
     },
     "encoded": "0xeb7ccb02ebd334f8f8df1a4ee2070e684c143ac9a985b10cd81de8a58fc80adbc5dd6b5081adebdb29fdae09d95ee5ea84d03f41c3772434f05e3b05708112fc70204aaa5c94f68894203bf3369b48b4d60e7f149b87d2b0805639a833c2fe66",
-    "digest": "0x67912c3108d4a59226f95dc0c3c275382f78beac03a86f9e077c1caa1eeec14a"
+    "digest": "0xc69122685310cd4bd175925acaa7f2234ef0a16e32c4de593caf01173cc63ef4"
   },
   {
     "name": "random-74",
     "domain": {
       "name": "Moo é🚀é 🚀éo🚀o 🚀o é M🚀é🚀éMo🚀🚀o🚀Mo oMo🚀  oo🚀 éo é",
+      "version": "",
+      "chainId": null,
+      "verifyingContract": "",
       "salt": "0x370860feeba70f3953279dba52f02a3a04612484aefa84f31663d9e5227e1d6c"
     },
     "primaryType": "Struct6",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "name",
           "type": "string"
@@ -3408,17 +3584,20 @@
       "param5": "0x8922c08275eb23909ccfca4daf11662e5d"
     },
     "encoded": "0x76603b49ee0d4f7ea115ee0a57044fe4c0401d1221ad71b9dc5321cc33fef7b900000000000000000000000000000000000000000000c060b4d4a59107f2806606a0b7daf9092ca6ab2e9126f86c784769009fa8f8d71e7e03679ce2ca8d87a0597d2ea26a000000000000000000000000000000000000000000000000000000cd50ee07435f2e2e828292fc6ef0446ca0f9be9bdc428a8eaffa42a5286a965f",
-    "digest": "0xa75d4290b6749b842bf573b2eb09823bb3873d1027d942b4ea6d4d81b842d6c0"
+    "digest": "0xdda5fec52a64f6ce30201e8b3aa14f1a21554126331dba56b67fbab763e953f0"
   },
   {
     "name": "random-75",
     "domain": {
       "name": "Moo é🚀🚀🚀MoééMoo M🚀  o  MoMéMoo🚀Méééé éééo Mo",
+      "version": "",
+      "chainId": null,
+      "verifyingContract": "",
       "salt": "0x38eaa8c2cfc07d160da608dbe8f1e194e7effef6978024db13d7dca0f3272c39"
     },
     "primaryType": "Struct7",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "name",
           "type": "string"
@@ -3457,18 +3636,20 @@
       "param6": false
     },
     "encoded": "0xcb86038251ab323aac49c6b590bcaa00d47d51116aa52134673db28594f5bf75784f74ad457e1d6fcfb45d736700000000000000000000000000000000000000a8a20cb63e84557a5347128e3f0c2a1b5a0afb541230866c1088af198275a6b80000000000000000000000000000000000000000000000000000000000000000",
-    "digest": "0xefef2081cc8e3873505b925f3297102ae37293e502c1a8f0c8f74ccdbb89d4bc"
+    "digest": "0x5722040c6c7e2c0d986a64ced590049f575d5291461c3fc4d3faa07191f33110"
   },
   {
     "name": "random-76",
     "domain": {
+      "name": "",
       "version": "36.49.23",
-      "chainId": 754,
+      "chainId": "0x2f2",
+      "verifyingContract": "",
       "salt": "0x43db1a3f28a17091824b3c3dab8e15ec297daf2313c6755b3e40e58f96c9b179"
     },
     "primaryType": "Struct3",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "version",
           "type": "string"
@@ -3493,18 +3674,20 @@
       "param2": "0x3a0cba0c53b27c471b7897a7d6b055079c47d518"
     },
     "encoded": "0x98edda54668461e736d24a4033f2d11540bceac48ea14c7da0fea73b8b9a55db0000000000000000000000003a0cba0c53b27c471b7897a7d6b055079c47d518",
-    "digest": "0x6e9544e309d43df400883cf848f3963329e1e69e89a787509df5a9d5cefe94c7"
+    "digest": "0xa12c90b777ef5fc5fabd967ba5a29e98ad138e0f3625cfd0fe1efe57e7f3fb0e"
   },
   {
     "name": "random-78",
     "domain": {
       "name": "Moo é🚀 ",
-      "chainId": 1205,
+      "version": "",
+      "chainId": "0x4b5",
+      "verifyingContract": "",
       "salt": "0x9af868b51e603e4c79a4f3ec3f3117dc294b46a36297214095a50f193489bb42"
     },
     "primaryType": "Struct5",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "name",
           "type": "string"
@@ -3539,18 +3722,20 @@
       "param4": "0x60217b1a8953bfec781042b8770a75"
     },
     "encoded": "0x1676a9ea413a00e543593a76cb92d87b3f3d82e3116ed0efa051c85413c5ee3d0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000060217b1a8953bfec781042b8770a750000000000000000000000000000000000",
-    "digest": "0x7f79e4826551d80cda20954308c0daf2e009e2af2aa6f3d60bec8130d535dda6"
+    "digest": "0xd3b51f668d278977d1798e4b423a8f72d025145f15e03b6dc3ac1f0e40f08a7a"
   },
   {
     "name": "random-79",
     "domain": {
+      "name": "",
       "version": "6.7.22",
-      "chainId": 483,
-      "verifyingContract": "0x55f4aa781b99afe9ce65b85e20b467cbdec997e6"
+      "chainId": "0x1e3",
+      "verifyingContract": "0x55f4aa781b99afe9ce65b85e20b467cbdec997e6",
+      "salt": ""
     },
     "primaryType": "Struct8",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "version",
           "type": "string"
@@ -3598,17 +3783,20 @@
       }
     },
     "encoded": "0xfcabf7393dcfae718d48a70508ca009b50740ada3608bceaff6b492ed20c200f8b52a6ddb851805f000000000000000000000000000000000000000000000000aca36f7ecb9904e737ae9a06d9a7bc75f52075619eb5d2238d49e56ff0722a4c50896c94a314c8d9e77fdb0734871b909b734cdaac41d6f6412bac6bbe685e74",
-    "digest": "0x52bc2e8e33e9a8f5c1e02b4eb1af26d9bfb646f90a802b87e7b05e1c492334b5"
+    "digest": "0x3bb15998333de45398c9fe293465f9a13d94ed42c9729a25db8a094433a5168c"
   },
   {
     "name": "random-80",
     "domain": {
       "name": "Moo é🚀 oo é ",
+      "version": "",
+      "chainId": null,
+      "verifyingContract": "",
       "salt": "0x12196565c18218e3d5c30fb8c3ed8aa5368b9270d1e50f96dae8c01c9524bd66"
     },
     "primaryType": "Struct5",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "name",
           "type": "string"
@@ -3639,18 +3827,20 @@
       "param4": "1327849360637990991145689530428201101848957792"
     },
     "encoded": "0xc3cf69c88a7f7d51e14da0539c7562c4aef44fdccccf126abab02153850a06c900000000000000000000000051f4089446d4fac6b978ebc92cb8c136a3ec12d43550fb9376fce556153ac9c01b5a3d92905e20a0f5e9d20c7f84b82b55b23996000000000000000000000000003b8af68e30d0b55cd77e2a766ab742aacb5360",
-    "digest": "0xfa4436f23aab9a7adce0a1ed9ccb76fb12aa9c3fd4ea8f550d3d9c21ea8ad71b"
+    "digest": "0xf3366ffdc215f4d8267cd988b9ded4f3a8488ea9aa7c88f912c1e81b8b7a7e5b"
   },
   {
     "name": "random-81",
     "domain": {
+      "name": "",
       "version": "37.42.30",
+      "chainId": null,
       "verifyingContract": "0x8ddfee525b882a427923e62ea4c6c4f15fd30ac4",
       "salt": "0xea7e38d5a4a991401101f92da453029636a589cc8a5a04f5e8b821d09fb72d62"
     },
     "primaryType": "Struct3",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "version",
           "type": "string"
@@ -3675,17 +3865,20 @@
       "param2": "0xa15ee47cd2ae"
     },
     "encoded": "0xb6ad09a6e56a9b085d21c37fc35456a42e929d83a6c454464108bba8e5bd24eaa15ee47cd2ae0000000000000000000000000000000000000000000000000000",
-    "digest": "0x5cf352f0b86d7a40b2722d6fee422cc31791ea6a756e975f94cc418482322967"
+    "digest": "0x5ece35ec168fa6890a6f6fee65c5d5cfd13d311eef61f0d3cf37de36224b6a62"
   },
   {
     "name": "random-82",
     "domain": {
-      "chainId": 1294,
-      "verifyingContract": "0xedd346d21be942f85ef9d7e2837019da832bdd15"
+      "name": "",
+      "version": "",
+      "chainId": "0x50e",
+      "verifyingContract": "0xedd346d21be942f85ef9d7e2837019da832bdd15",
+      "salt": ""
     },
     "primaryType": "Struct4",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "chainId",
           "type": "uint256"
@@ -3711,16 +3904,20 @@
       "param3": "60842439233483756494403810394413324880914448649588060989930178516"
     },
     "encoded": "0x0005f47efff5a6a0a15e05a2eec2b6e6fc783b60032aa8390118dbd32ba2cad636c6269b518467469df2499c64aa468f9cb44ac0c27f5aff6efe92d99caae298000000000093e657c796b03e22877711b903453f372f0a33b18b1f15119187d4",
-    "digest": "0xd4949695b7d6eec2e8c8f26d6d861ba735fcd61670fbca8de68609e0fd469e30"
+    "digest": "0xe0b236133cac208a74909daee902fa070b0e5a1e9c6abf92f496604d0a947c45"
   },
   {
     "name": "random-83",
     "domain": {
-      "verifyingContract": "0x7b9546d050c94a8270fa5c0d0e37ad2df4a1e763"
+      "name": "",
+      "version": "",
+      "chainId": null,
+      "verifyingContract": "0x7b9546d050c94a8270fa5c0d0e37ad2df4a1e763",
+      "salt": ""
     },
     "primaryType": "Struct11",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "verifyingContract",
           "type": "address"
@@ -3771,18 +3968,20 @@
       ]
     },
     "encoded": "0x7c13f5ac1c582fab4bda02838e5b34f88377ed3a9f2e39c4e9a99259893244cd0000001bf3a027ad30dc440fff233a7cc1bb6d49fee7c5273eff291e2f99cea417512f0ab3c462fc44f916934f29d7ab18f18c1b7cffe28b41d46b729680442e",
-    "digest": "0x2d36f076787c1920a351171a2c32575d984b68f652b1dca4db83687b2be45551"
+    "digest": "0xb7833a3783189227470e7871b012ee47d88ef7c8549b53dd5bedf1ed7a8af023"
   },
   {
     "name": "random-84",
     "domain": {
+      "name": "",
       "version": "0.4.17",
-      "chainId": 911,
+      "chainId": "0x38f",
+      "verifyingContract": "",
       "salt": "0x3e7b8591b2ff12889933bff797d082b473fc6519049106aa59b07753e926bd66"
     },
     "primaryType": "Struct4",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "version",
           "type": "string"
@@ -3812,17 +4011,20 @@
       "param3": true
     },
     "encoded": "0x889d1fd6a543c2550a4d6fbf451f7004ee9509e508b7627d82b578e77ed3541a549ef74b3d255ff952161e092604766989b5f79184cb72d5f1687d04ddedb4390000000000000000000000000000000000000000000000000000000000000001",
-    "digest": "0x789a03f8f59d24aee8073b378663b9289f823791b818602a0477434b99c8b768"
+    "digest": "0x22ba3f44ecbd65f93dd9876d3cc5677641ed8e60b8a84e3de635fd57f89d57d9"
   },
   {
     "name": "random-85",
     "domain": {
       "name": "Moo é🚀oM o     MMoéMé🚀MéMéM",
-      "chainId": 900
+      "version": "",
+      "chainId": "0x384",
+      "verifyingContract": "",
+      "salt": ""
     },
     "primaryType": "Struct5",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "name",
           "type": "string"
@@ -3859,17 +4061,20 @@
       ]
     },
     "encoded": "0x988b57712611b9efb362d55270a70ca3e280c7c23ee803db000637ee03249611aa5a4b824d61608ae0c2f6d5840f3f4e9f9984b3536adf111a3b3f81e01b75c0",
-    "digest": "0x42bfc8f80f73b02a800f2cf5f3b9b96c6774a43c706758c8f34f1fabf946b001"
+    "digest": "0x0d126199285d838f09316073c45db0ca03fd662b11489e220d6c275060499017"
   },
   {
     "name": "random-86",
     "domain": {
       "name": "Moo é🚀Mééo🚀oé",
-      "verifyingContract": "0xa55e763720cf41f5a539aab57701a95d60e29f67"
+      "version": "",
+      "chainId": null,
+      "verifyingContract": "0xa55e763720cf41f5a539aab57701a95d60e29f67",
+      "salt": ""
     },
     "primaryType": "Struct4",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "name",
           "type": "string"
@@ -3895,20 +4100,20 @@
       "param3": "Moo é🚀MM o🚀o🚀  éMMoooéoo éé🚀oé🚀 éMoo🚀é🚀M é🚀oo  Mo🚀 éoo"
     },
     "encoded": "0xa7b111f9ba803946689ccd05331e3dfd450deaf9afc546b5d2a08764dbb3075f0000000000000000000000000000000000000010504874d57b4ef8afc891f456a48ff30b0c7e041b00beb25671621131298873a003e9ec839b5d75eb5b1da286",
-    "digest": "0xf3af9321483c3d61bcdda3a128184aa6841318dc718edc3be9a2f0b976416641"
+    "digest": "0x661eaeb26c3138ed51bd6b73ea20fe4e242c21cf771aa0f1752894944bda3e1e"
   },
   {
     "name": "random-87",
     "domain": {
       "name": "Moo é🚀 éooo🚀Moo🚀oooMMo🚀🚀o ooMé éo o🚀éM ",
       "version": "45.45.47",
-      "chainId": 759,
+      "chainId": "0x2f7",
       "verifyingContract": "0xdd7404edd91ced2e440ae26be5de770826936aa1",
       "salt": "0x3e9fe589ec829de82a24cfdfb4f51be7b494d92d767ddce47df39f2d695fef40"
     },
     "primaryType": "Struct3",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "name",
           "type": "string"
@@ -3941,16 +4146,20 @@
       "param2": "0x76418c1f3cc8305025ce913e271c62064302cfc52a3cbcee02ffae444e402b"
     },
     "encoded": "0x5d03dd39f516dbdce0dda1249a18778b381083c568572fa40e677a1e8bcba69176418c1f3cc8305025ce913e271c62064302cfc52a3cbcee02ffae444e402b00",
-    "digest": "0x70669d88e5b14dde860f7967400d4001ea51ad347d9dc8e9e14a78a046620a0f"
+    "digest": "0x4c7c544ae570afd950c8270769674308aa7c0d26c12a7d21dd2e8fad803f4e5a"
   },
   {
     "name": "random-88",
     "domain": {
-      "version": "34.19.0"
+      "name": "",
+      "version": "34.19.0",
+      "chainId": null,
+      "verifyingContract": "",
+      "salt": ""
     },
     "primaryType": "Struct6",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "version",
           "type": "string"
@@ -3981,18 +4190,20 @@
       "param5": true
     },
     "encoded": "0xeb561f00a2ce847d36d192a18b66be2e5938b7c84798b9a1730ef44ce41ef7c35c6090c0461491a2941743bda5c3658bf1ea53bbd3edcde54e16205e18b457922e1277d90577b137ca94be5c47d97fdd62924edbcd364fffd8f2543a0b3974cb0000000000000000000000000000000000000000000000000000000000000001",
-    "digest": "0x284ff781d137b80a6aedaf25217692a7bee1529b50f717d20fc8b113ea3d10eb"
+    "digest": "0x6f7c91ae3c1f228167c0190af3b14f9ed560c921b20b3db784d0cf70463fcaf8"
   },
   {
     "name": "random-89",
     "domain": {
       "name": "Moo é🚀MooMé 🚀é é éM ooo🚀M 🚀oo🚀 🚀oooo🚀éooooM 🚀🚀 oMé",
+      "version": "",
+      "chainId": null,
       "verifyingContract": "0x94104688cc800c04a9f4ce356606469f7aaf0889",
       "salt": "0xccd084925ccd16ac0a852763036118c175fe5a86811c7ed8ba75bd427a63985b"
     },
     "primaryType": "Struct3",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "name",
           "type": "string"
@@ -4017,16 +4228,20 @@
       "param2": "0x7af6a9843bfac96994bcecebe57b40d67942fded"
     },
     "encoded": "0x98edda54668461e736d24a4033f2d11540bceac48ea14c7da0fea73b8b9a55db0000000000000000000000007af6a9843bfac96994bcecebe57b40d67942fded",
-    "digest": "0x7db9f61f14ad00540fd7f51c7adeeff792ab7ef3bdfd672713223f0ff3920fea"
+    "digest": "0xe64d6d5f8fd567d3d40cee1bb8fe25f675a33cd9ebdf6a29f86742dc2123a4bc"
   },
   {
     "name": "random-90",
     "domain": {
-      "verifyingContract": "0x9511e9dcad6fbe5e6693a1d7031a592f27c5c4ef"
+      "name": "",
+      "version": "",
+      "chainId": null,
+      "verifyingContract": "0x9511e9dcad6fbe5e6693a1d7031a592f27c5c4ef",
+      "salt": ""
     },
     "primaryType": "Struct5",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "verifyingContract",
           "type": "address"
@@ -4053,17 +4268,20 @@
       "param4": "0x00153b38e3509586ea81d62acfaf69f58033c03989a5e9ed83"
     },
     "encoded": "0x192ce62b78aff9164de71a0394d492eb37f524dfda52e333ccd477c065fbe73a88f0dd9c8cbee263cf947a650a3b315100000000000000000000000000000000000000000000000000000000000000000000000000000000003e77ada8f4625b00153b38e3509586ea81d62acfaf69f58033c03989a5e9ed8300000000000000",
-    "digest": "0x39c13ee9471e159919485ab461d454a50ca52a6ddd8cdadfbed90326801f74ee"
+    "digest": "0xdefaed87e45ee5fd0a52d3f15e58f63e6a91c49ff963254fa61020ccb084f050"
   },
   {
     "name": "random-91",
     "domain": {
+      "name": "",
       "version": "48.32.32",
-      "verifyingContract": "0xdc2f8681bcb020c14bb5a61803be1f1904934a7c"
+      "chainId": null,
+      "verifyingContract": "0xdc2f8681bcb020c14bb5a61803be1f1904934a7c",
+      "salt": ""
     },
     "primaryType": "Struct3",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "version",
           "type": "string"
@@ -4084,18 +4302,20 @@
       "param2": true
     },
     "encoded": "0xd827c65b54cb667b8cb0c84a4aa21ffe3d188aa9cdaede527a285c318ad7274e0000000000000000000000000000000000000000000000000000000000000001",
-    "digest": "0x465f1b1db471abcc586e028f388b54cb4e0c9d341d9c03fd4def6118ca7ac479"
+    "digest": "0x8efd3a80738934492d2822893744d8c3faabbb70de6bf57684ef727dfa77ffbd"
   },
   {
     "name": "random-92",
     "domain": {
       "name": "Moo é🚀🚀MMéo 🚀🚀MoooooéMM🚀ooMoo🚀ooo 🚀o  oéoo  🚀éoooé🚀Moo  🚀éooM🚀é🚀",
       "version": "15.24.22",
+      "chainId": null,
+      "verifyingContract": "",
       "salt": "0xf6b0ebe21875667066601b50ad91163654013e109e51fae6a8bf19a988a51adf"
     },
     "primaryType": "Struct8",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "name",
           "type": "string"
@@ -4143,16 +4363,20 @@
       "param7": true
     },
     "encoded": "0xfc75a8485d94b0cf924739d8db8392a3933b768aaf87990e0ef313c9613af2d569d3dc7ee6ddfd3cff85001b724976fea388b0d40fe7864b4d79e32eb76adc8c929ecef7eecff36ca4a793303bfeb2f7666d3015f472177f920000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001",
-    "digest": "0x650fa8632ebb3ad17d74fd519317c5bd99cf2210d6742be16bba20ad7bdb3055"
+    "digest": "0x4f7b41ccc2ece2890ee39d27d138e5bea3132ddf0afa945bcc351f645f111041"
   },
   {
     "name": "random-93",
     "domain": {
-      "name": "Moo é🚀MéMM éooéoMoo🚀 M🚀M🚀o🚀🚀🚀🚀oo🚀🚀🚀Mo🚀🚀🚀M  o🚀oMMoé M M"
+      "name": "Moo é🚀MéMM éooéoMoo🚀 M🚀M🚀o🚀🚀🚀🚀oo🚀🚀🚀Mo🚀🚀🚀M  o🚀oMMoé M M",
+      "version": "",
+      "chainId": null,
+      "verifyingContract": "",
+      "salt": ""
     },
     "primaryType": "Struct9",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "name",
           "type": "string"
@@ -4187,17 +4411,20 @@
       "param2": []
     },
     "encoded": "0xef6a7dac2342e48bc7bee2421009cf3129bbeb0bb7fdeaba99402bea15f82c76c5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470",
-    "digest": "0xba75038176156de4c9a80a8bb70ac20bb140c22b707179be3ae4a554a4e8ea23"
+    "digest": "0x2841bf8d8ce21533086aa5d5ce56d78f387ede79c0be7692e2047b8c4ccfc102"
   },
   {
     "name": "random-94",
     "domain": {
       "name": "Moo é🚀 🚀éooéoooo ooMo éMo o M🚀Mé🚀ooM o Mé🚀éoMMoo",
-      "chainId": 1017
+      "version": "",
+      "chainId": "0x3f9",
+      "verifyingContract": "",
+      "salt": ""
     },
     "primaryType": "Struct3",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "name",
           "type": "string"
@@ -4218,18 +4445,20 @@
       "param2": true
     },
     "encoded": "0xd827c65b54cb667b8cb0c84a4aa21ffe3d188aa9cdaede527a285c318ad7274e0000000000000000000000000000000000000000000000000000000000000001",
-    "digest": "0x69ec47b02da2c0ebfa801692ca474f282d9f0df84f87c45cdc921ce1a0d860bb"
+    "digest": "0x3dc0f66f5ff8f7309b6062a1fe9966f423854672d1fc8edb4e34288ba27b1f3c"
   },
   {
     "name": "random-95",
     "domain": {
+      "name": "",
       "version": "18.32.12",
-      "chainId": 742,
-      "verifyingContract": "0xabe3c4f5cf4ed1b97303bd7cae8b067c5e7f8c26"
+      "chainId": "0x2e6",
+      "verifyingContract": "0xabe3c4f5cf4ed1b97303bd7cae8b067c5e7f8c26",
+      "salt": ""
     },
     "primaryType": "Struct4",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "version",
           "type": "string"
@@ -4257,17 +4486,20 @@
       ]
     },
     "encoded": "0xfbb1adeb7d907dcad24d9dcc6c70efeb95e9983697f2b3d761bbc66df10b6de0c645b2e2e519bae0fadbaf7ef2932226f7e7935d3d837af12839bd360aa64a4d",
-    "digest": "0xc58c6e7c7e79b525438c151e97c6457f8c4c7b3065827d36e227d6efdbd5cb94"
+    "digest": "0x6277573396ef2a31a3a8ec0e2119dd8b4a5d94ef63f864308673f3c5f56c6af5"
   },
   {
     "name": "random-96",
     "domain": {
-      "chainId": 239,
-      "verifyingContract": "0x0f77912b8136385729a659bd3ef9107a61df2481"
+      "name": "",
+      "version": "",
+      "chainId": "0xef",
+      "verifyingContract": "0x0f77912b8136385729a659bd3ef9107a61df2481",
+      "salt": ""
     },
     "primaryType": "Struct36",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "chainId",
           "type": "uint256"
@@ -4437,16 +4669,20 @@
       }
     },
     "encoded": "0xf9e484b4d24731dcead8e64be7ead35857e953e16e64f5a50ed612f8605ce07d78b6a6b52e423f732676bd55ebd747cc95b670636328d911128444f847b62abd043e6379a56f021f2d7de4165f4f085e23e25ef8e536f8c2415663bfc2ef9323655ae94c06fc9d476b0d105722d4a32d1eb7a4b5529891ec029139fae945d061fcafb084efc157e2ff1daf20bdd536dd513ed329787f2f85f3c3e2c52b597d3b",
-    "digest": "0xbc43bb6f933954e8ed291b32d35556398a692421734dab354bb9401c2ecaa775"
+    "digest": "0x6dae20666ceddc00683630caa1e67dfa6c15ed6a8bc14f3a19cc4b915780a8fb"
   },
   {
     "name": "random-97",
     "domain": {
-      "verifyingContract": "0xc0b2427daf81b3b1ae287b45177cd8cb2dd7fcf0"
+      "name": "",
+      "version": "",
+      "chainId": null,
+      "verifyingContract": "0xc0b2427daf81b3b1ae287b45177cd8cb2dd7fcf0",
+      "salt": ""
     },
     "primaryType": "Struct4",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "verifyingContract",
           "type": "address"
@@ -4468,17 +4704,20 @@
       "param3": "Moo é🚀🚀éoM ooooéo Méé   M o🚀oééééMoMoéo🚀oo🚀 Mo🚀oo🚀oo o"
     },
     "encoded": "0x666400a396b19434e5bdf93d49163a67dd8b6e60e8df8160e510c7c1288ac5da000000000000000000000000a145dd9dccf1d0d72382ec1f2d82d7cd48827ec3d6991f578c45fb43694bc4e1cf51abc5fb10782beff88449580449e1ab8b1b09",
-    "digest": "0xce67b3dc8f8249f8ee121de29a726e1c1f4ac4b73971002fb69823d3e752b5b0"
+    "digest": "0x1d491ef4c59c2f763c8436a22b229e3084695745032add7e6683ab8b870c1449"
   },
   {
     "name": "random-98",
     "domain": {
+      "name": "",
+      "version": "",
+      "chainId": null,
       "verifyingContract": "0xd2489de35e4726e26c6d21423d8627a34ed723b1",
       "salt": "0xdee197f170390ffe117985bc1b6f75d2aa76cffd744a1ed741d9e5fdef371804"
     },
     "primaryType": "Struct6",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "verifyingContract",
           "type": "address"
@@ -4514,18 +4753,20 @@
       "param5": "0x0f8158ca29114619"
     },
     "encoded": "0x23b6f6f83199a6201a90b8b8b9457c300d054549f0d8c6084fc8a0b44442f7f30000000000000000000000000000000000000000000000000000000000000001251200000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000f8158ca29114619000000000000000000000000000000000000000000000000",
-    "digest": "0xe4baa2c2a442cd32eaabe94c6db4c30460bd5ab3e50e1238cd265e7e39a5b17f"
+    "digest": "0x96b627919ef48fd8bd26603bc42e7e2b33dd3cee9d1f145f086a2eb947db2787"
   },
   {
     "name": "random-99",
     "domain": {
       "name": "Moo é🚀 o ooéM🚀🚀🚀éé🚀éoé  🚀🚀oéM éMooooM  ooooéo M oMMMoo🚀éooooo ",
       "version": "44.14.34",
-      "chainId": 401
+      "chainId": "0x191",
+      "verifyingContract": "",
+      "salt": ""
     },
     "primaryType": "Struct5",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "name",
           "type": "string"
@@ -4560,19 +4801,20 @@
       "param4": "Moo é🚀 o oM🚀  éoMoé🚀MMooMM🚀 oo🚀🚀oo  ooMoo🚀M🚀M"
     },
     "encoded": "0x22ff007229938669cf96193b9dcf351dadbe0c48990093a41d72b39335e9accb77c8ed30964f4ad426b83e5a079c394eeb6108670d59ea82bbef000000000000000000000000000000000000000000000000000000000000000000000000000037ed224a35fef81262bbee1f953d29657ee71ff814272f38dd451a46d46ab71f",
-    "digest": "0xdedd776daec0f194b00d73d63004c5e0883fad5072a458f61ba77635fe04b766"
+    "digest": "0xc86798848c399a3bee563040160d318d9c7355d634e0f5121aa57a776f0a1817"
   },
   {
     "name": "random-100",
     "domain": {
       "name": "Moo é🚀M éMooo 🚀éM M  🚀oooMéo🚀MoM🚀o🚀oo🚀oéoM🚀🚀éo🚀o é 🚀🚀 MéMooéo",
       "version": "47.45.45",
-      "chainId": 1297,
+      "chainId": "0x511",
+      "verifyingContract": "",
       "salt": "0x46fd6ce92f74a7398373a2ccbcb0585fe3453b45e4a6a0a03dcab2c2dc9c9d7f"
     },
     "primaryType": "Struct8",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "name",
           "type": "string"
@@ -4624,19 +4866,20 @@
       }
     },
     "encoded": "0x8efe36edac72ec5f57c5c2283101ce2d7121dad612fdb566b4b332088a533f1048cd5f1c09c5e268f1a924b1aa9d6483e7de7344da0000000000000000000000490aa4d83fa47e2e7ec10d335cc7598977c6a4c02ac383ac4f0498c6fcf0370d",
-    "digest": "0xc757c9b58178cdd87b024fc62b56cde9056291433a95211420bfc2fd3dc67804"
+    "digest": "0xed9e4e2418b26c49b2b410cdaadf1a5f3af7e2eb631c0eb06a31ca6082842545"
   },
   {
     "name": "random-101",
     "domain": {
       "name": "Moo é🚀🚀 🚀éMo M ooMoo🚀 ooooo🚀Mo🚀é",
       "version": "32.48.49",
-      "chainId": 1182,
+      "chainId": "0x49e",
+      "verifyingContract": "",
       "salt": "0x89cb0d39315e605914b2629ef0e737a9b2a18c3393c649515dcad65464619c68"
     },
     "primaryType": "Struct18",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "name",
           "type": "string"
@@ -4732,18 +4975,20 @@
       }
     },
     "encoded": "0x3542196ee308e13b334816ef2496b2d489531edbfedf1df81b61e1d68142a6b30000000000000000000000006dcdf91a71234de95982294b661b0be4040ab340d6736ac6f05a75e17728b8ba7bdb28a31b515912dada4600176132be7e17f85f",
-    "digest": "0x06dadcc084886d4e4d42c01748794cc70125d59dfc9140a304ac4eecc93faaa5"
+    "digest": "0xd33cc722bb1ef52efb8718c8de787852dd0270b30eb3db600bfa57dd06e3bbda"
   },
   {
     "name": "random-102",
     "domain": {
+      "name": "",
       "version": "5.37.45",
-      "chainId": 1112,
-      "verifyingContract": "0xad34d80f19994d30f98da4a9127394233f5d1b62"
+      "chainId": "0x458",
+      "verifyingContract": "0xad34d80f19994d30f98da4a9127394233f5d1b62",
+      "salt": ""
     },
     "primaryType": "Struct6",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "version",
           "type": "string"
@@ -4781,19 +5026,20 @@
       }
     },
     "encoded": "0xa8831e2b1ae12bad49bd738de2fec417a85c70cbd1582c58b1a0fa67d0db417ba22678edf23dbbd8eaff7e09c5a6898c086e15f5b9afa1d3085ef7c5510000004e3b46155fd76195aa056c321070eaf751287eb0839bf1f1f03f0b67d98a5331",
-    "digest": "0x53b91d82e450b29ebfcd9d912233db26fd277b4ea288c15a4700981b56a723da"
+    "digest": "0x430a7ea302879e512e84c71505f32b18e218749dbd655b88492d7a09744a5496"
   },
   {
     "name": "random-103",
     "domain": {
       "name": "Moo é🚀o  M🚀 MoooMéM🚀🚀oé    🚀o🚀M🚀o éMo ",
       "version": "34.7.4",
+      "chainId": null,
       "verifyingContract": "0xffb9dcc2ad72de5d51a6523c3c59db76b5efce82",
       "salt": "0x91a6bbeac26f0d774f89f90732838632f7848fba09dccbbbfc4dd0d0fc1a21ae"
     },
     "primaryType": "Struct5",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "name",
           "type": "string"
@@ -4832,16 +5078,20 @@
       "param4": "Moo é🚀oé🚀🚀éoo MM ooéééM  MMoM  éo MoooM 🚀oo🚀oooM🚀éoM oéMéo🚀"
     },
     "encoded": "0x166448b3a08b4d0577e607bbf8fa9117e476d4eebfef40d0a03af3022fc95d3c00000000000000000000002400b54743f81e79d07dbe7589e7130815622ec9b9ed40337a19d52800000000000000000000000000000000000000000000000000fcce90f9868722c814b5068c652b2374b1623dcf15ef57b3a67abfb337c9b30d",
-    "digest": "0xde37ba3588f474a46a8f87b3a97d06f80c18f5f640c2c82eee6b8d35009a2710"
+    "digest": "0x147e87d7230bff0eeefa353c7a9d2aa93225abcda060c6c3af066be9090a62dc"
   },
   {
     "name": "random-104",
     "domain": {
+      "name": "",
+      "version": "",
+      "chainId": null,
+      "verifyingContract": "",
       "salt": "0x1eda86bf849f89bc2e6f69245118892e38bc6e78ae6b8952228a26f52872db44"
     },
     "primaryType": "Struct4",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "salt",
           "type": "bytes32"
@@ -4863,18 +5113,20 @@
       "param3": "0x734299d683c01075c7d7806cabbf"
     },
     "encoded": "0x4d0024736263d208aca6e84c7bb7336060a12a4693f70ea14290ed4308d052e586c6628e3abdd5327542024ebfd60ba121feeb94ad0a9fc69718ad35d60e8d7dacc5b4662798e9bfefc01e39285d731e00c77445dad6f1ce9bb875db4cd56e11",
-    "digest": "0x25bfcd9f9bf4070fa8e64500fc1f03d8b47e1d8475454f4164f235b568b61373"
+    "digest": "0x3161533c2dc8d9e2c5d4f84852f26f35ffbc001fcf7ca1dcf7f2ab07e3805edd"
   },
   {
     "name": "random-105",
     "domain": {
       "name": "Moo é🚀ooéoM 🚀🚀 o🚀ééé é🚀éoMo",
-      "chainId": 1004,
+      "version": "",
+      "chainId": "0x3ec",
+      "verifyingContract": "",
       "salt": "0x4bf151c92fcec680b466e8f725517067ecba2bfebd218159b4f7865020861285"
     },
     "primaryType": "Struct6",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "name",
           "type": "string"
@@ -4913,16 +5165,20 @@
       "param5": "263215721237"
     },
     "encoded": "0x47b2e0706327e941b7095dbab4500c0798ada3576db783a0499106e8538863be00db7a448333a0944bbe0ded5bee79fc3ea07f15863bc059c42eefdc8a3db436175773b0cff47dcc6167eafef357b7743e0fe0c2e5912473777f63bd463b41fa0000000000000000000000000000000000000000000000000000003d48e12b15",
-    "digest": "0x9ff750f7890c19f215900f6fe0a413c0a18a8765e974c8d73b996f78ad62c0f9"
+    "digest": "0xa068f0ce2a13f51b2895aac9fc509bfcaec5cacf94eb5875de3bc7bacd9a2538"
   },
   {
     "name": "random-106",
     "domain": {
-      "verifyingContract": "0xfceb71a9ad2869c8e3dff6fa3669abc9352f783d"
+      "name": "",
+      "version": "",
+      "chainId": null,
+      "verifyingContract": "0xfceb71a9ad2869c8e3dff6fa3669abc9352f783d",
+      "salt": ""
     },
     "primaryType": "Struct3",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "verifyingContract",
           "type": "address"
@@ -4939,16 +5195,20 @@
       "param2": "Moo é🚀 oMooMoéMoooMo🚀éoMooM🚀M🚀oM  M éMéoé🚀MoM oMM 🚀o🚀o🚀o"
     },
     "encoded": "0x5927d86a0ef9a01a131f7a41d2a9c89a8c82e0f454d6b4502f955f90f152eb519053df716c21aad94a049e52bc52aad715c95913062abd88cd324bdc0e09d147",
-    "digest": "0xbee1559cffdba5659309d50ed1ad306c33a388b34a1535fd5404851db7fa4ab3"
+    "digest": "0x15c1e1dac78994c1bec4a7d4bc95f261a69bc23cb8b743f831bb3a227513370e"
   },
   {
     "name": "random-107",
     "domain": {
+      "name": "",
+      "version": "",
+      "chainId": null,
+      "verifyingContract": "",
       "salt": "0x5bfb5f78bd6682c97b6f3c94bc4cf62d34110e5ad83b21b3f9432fbeaf8bcd4f"
     },
     "primaryType": "Struct6",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "salt",
           "type": "bytes32"
@@ -4980,18 +5240,20 @@
       "param5": "Moo é🚀🚀éM 🚀🚀Mo é Méé o M🚀é"
     },
     "encoded": "0x89e191a0c9d59f32cab1f2423029c95a85ca34531f959e94053e40ebf4267c5f4fccd6381664502c41c49bc5cd078cffe187640d7f9304c0661bb223f9b2dcdb00000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000000fd174bfd259833e8efb11ee94ba88bfd1632028092b0028084e3ce4c0015cd34",
-    "digest": "0xdc19c7f5a4fb303efd1e2de89b9ca2082a6d702dc248e95764d90a109cd986ef"
+    "digest": "0x1ed79c3d88af9390ce87963627aade5b62d75c6f14ce7ec6bcc5e2a1b9a4a49e"
   },
   {
     "name": "random-108",
     "domain": {
+      "name": "",
       "version": "39.28.36",
-      "chainId": 631,
-      "verifyingContract": "0x9bd5ff86e47b56b27505902cc94b3d6329a1ed9f"
+      "chainId": "0x277",
+      "verifyingContract": "0x9bd5ff86e47b56b27505902cc94b3d6329a1ed9f",
+      "salt": ""
     },
     "primaryType": "Struct8",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "version",
           "type": "string"
@@ -5039,20 +5301,20 @@
       "param7": "0xd75f12aef677e43bdaa89783ee4572178e3bf2a7"
     },
     "encoded": "0x0cf85620ea91e290d99f71f9ee10e2d73daa1b4b71b823e2362954720b7005706d7c4cf22de5351fbb6d76b5fa30da35546a802285ffee4d2bbbbbb9b6363631f03d6b228022926635e1c91913f4f990e5091fdfb5833fa5926f70aef635fd07cbed95fc50b5e3a119bc2286b468bb71a1d3fda6d9b488e82b6f9d38eae3f1fd000000000000000000000000d75f12aef677e43bdaa89783ee4572178e3bf2a7",
-    "digest": "0xde95998c10032e5774f76f2cadc5e385237bb061d35ca1ff3e3fec1abc60b2c5"
+    "digest": "0x007db6a1cb109d20ec4acad229bbe07c2835ba90ba6f1243804726cd60e2593b"
   },
   {
     "name": "random-109",
     "domain": {
       "name": "Moo é🚀 🚀M🚀éooé  oMoé",
       "version": "47.13.9",
-      "chainId": 1135,
+      "chainId": "0x46f",
       "verifyingContract": "0xf3e8de92425a724a4b5f5f34ff462f4a21c022a6",
       "salt": "0x92a39b51b11fe26a4b7c9b5c9dc46e4eed900408b0acdaade7ef2d2000f2180c"
     },
     "primaryType": "Struct7",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "name",
           "type": "string"
@@ -5103,17 +5365,20 @@
       "param6": "0x2b9eb331163da92c413824164a25f6f94e6e101867847a81de73eb550e5587bcf8737d49f18648d069dbeb0a88bd48c4806a0bd22d07fe7ee7f03096ae61f1"
     },
     "encoded": "0x92bcc5ebbe1a24ca641c980aeedbf345d2bb96c75c6e7160a63416ce671e5ba350ba05c95cd64746bc1afc3818f62a6d56861e27a783ff9f39b0f6dc1bebd746000000000000000000000000000000000000000000000000000000000000000114e055471446e3c12424b16ad746b49bb92201f598be3c5f5c500e39cd4b420c",
-    "digest": "0x26ed036a8e9356433ec6273d9d6bc87f49faacb9b4aee0c1922ab2054032a5dd"
+    "digest": "0x4bb4d0f329dc1c020c47357b30e8e9c854c256602689d560a108a43b1b69daf8"
   },
   {
     "name": "random-110",
     "domain": {
+      "name": "",
       "version": "33.16.36",
+      "chainId": null,
+      "verifyingContract": "",
       "salt": "0x685eeb5072a1173bec4979c7dfdc054601f6f80cbe7ad78f4eb43a7e1bfbf55d"
     },
     "primaryType": "Struct7",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "version",
           "type": "string"
@@ -5151,16 +5416,20 @@
       "param6": "0xff444eb48a465c6021e011bafad0310066ac09abe890fbe1159732d8f010ca0474270fb7a911db0dfb09882fbb87c29df1f1bf87"
     },
     "encoded": "0x2e43045a9a14c67d9b0a9014b72f4aa002f40464467aed0285d4c0c05453173c13b6f03fd29a02d0b024351ffe30c322d189714f11a5645864b1d1ae509c2e6cfe3999130ddf7df630cb54ae95658105ce7dd2c1e39561092b26d42f71c0089fa1f41b79c9af58bec8b31385ecf4c6f1418a351add6fabfeabfa2014583520e436b28fe9e0f31ab8023143ce0634d9618d6068007d0eb02006adbb5fce6c648c",
-    "digest": "0x853e9a5edaa2da1980831dadec0754c352e34785ecf55789d599a00e28287f70"
+    "digest": "0xf2e019fc27d27db24775e8493cff38dbbbf9784af8fe8ee5c9ed0efd39e7cfe1"
   },
   {
     "name": "random-111",
     "domain": {
-      "verifyingContract": "0x96733f3f5e8bcff66190bf82dc5523bbc8145456"
+      "name": "",
+      "version": "",
+      "chainId": null,
+      "verifyingContract": "0x96733f3f5e8bcff66190bf82dc5523bbc8145456",
+      "salt": ""
     },
     "primaryType": "Struct3",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "verifyingContract",
           "type": "address"
@@ -5177,17 +5446,20 @@
       "param2": "0x1ba2e5ab"
     },
     "encoded": "0x19a687863ba581a953b0f694f34073f5005a5d39e5c94be277688507ea013a261ba2e5ab00000000000000000000000000000000000000000000000000000000",
-    "digest": "0x7f0d4714c742f29a9f2a182af25643153529da444383e342937489226f5a0a15"
+    "digest": "0xeb7275d11dd886bf26c1a47d9610225e4831009898f3a1f4ce28bfe1d6739bd9"
   },
   {
     "name": "random-112",
     "domain": {
+      "name": "",
       "version": "44.26.33",
+      "chainId": null,
+      "verifyingContract": "",
       "salt": "0x2287f7611aabf794bc8f829715f8794eb76fc9c73ba6143df65e32b231cc8e55"
     },
     "primaryType": "Struct6",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "version",
           "type": "string"
@@ -5223,18 +5495,20 @@
       "param5": "0xd0ae690c13a9cefd7fdf00cc425174f32afc2c13f94bf6fcb96c87"
     },
     "encoded": "0x821c71dc6eceb8c412faf525df599ffeb9b576bb83836862f7c6d2bf3817f7aeab54e61a59de9271cf657d72cc1fed2256d52d003f3ca02ad8e4071826370000fffffffffffffffffffffffffff1d38d565f73f2bb8b6566354cf4080bf37e850000000000000000000000000af88ce740fb6aa140d5e7a7828bfb6755fd7f98d0ae690c13a9cefd7fdf00cc425174f32afc2c13f94bf6fcb96c870000000000",
-    "digest": "0x2bea9c81bb7324309e6659333720bcd45837c9360578495badf83b04d2c602c7"
+    "digest": "0xd1bf8256165d0b1273d0ec3ddc837b54982cbc9cd1b26dabd1e063a221fe491d"
   },
   {
     "name": "random-113",
     "domain": {
+      "name": "",
       "version": "40.24.13",
+      "chainId": null,
       "verifyingContract": "0xc246f6e3450948c0f556d212e3129013f3bbdf3f",
       "salt": "0x0c5313fdf2e387a82d3e2ce3eda9de53e5c65bfea57db445206b3a4532fc9d10"
     },
     "primaryType": "Struct6",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "version",
           "type": "string"
@@ -5274,16 +5548,20 @@
       "param5": true
     },
     "encoded": "0xa161771f2f5479ff0f53bcfbb589145f09ab64fa5e603ddd44010178ec5e3f62d5e9200f0ca4e5342abc1609bb3d7f8a1d820568d292e810a5b38eff5cf8c2f8fffffffffffffff69e6094a73803f15dc86478bdaeca4e2c460355eaee2ee8b100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001",
-    "digest": "0xca0aeafff982a7caa90778ef79c02370f41d7d3c118d6f0674db47aa844dcb53"
+    "digest": "0x587b9079db266dfac83cd5b1876912ed82e4fe7e5f182dc47c4e54d80f59ca49"
   },
   {
     "name": "random-114",
     "domain": {
+      "name": "",
+      "version": "",
+      "chainId": null,
+      "verifyingContract": "",
       "salt": "0x53dd66e28993d92f3726c54eebc889ee1feb5de9e6956f17916a70af94a9be8c"
     },
     "primaryType": "Struct6",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "salt",
           "type": "bytes32"
@@ -5313,19 +5591,20 @@
       "param5": "Moo é🚀🚀M🚀éo🚀 oé    oéé "
     },
     "encoded": "0xcbe088c466df5bc47ff7eb50eee07ae89b3ad92aa609d8de035f94d7e942142df1274645ab982ea41af65c3e80ee1ef7d1c848bcd352be42d34068c3d48695726d07a447e03c51b86b9c89ffe0fe4fb894f1082820e4a6ca78b0a32fa2d3ac3cffd3f56909e6332406c11c8e04dd583a0302d9e70ba15e08c78ebc314a6f3542",
-    "digest": "0xa6298b22e1312894d0867b42c22acac11b272a64e8826554eb644f019ced7080"
+    "digest": "0xae1980575430e30fa2a8de7b519e783fbbc7fdeaac28ff0a47ad6031d3dbcb53"
   },
   {
     "name": "random-115",
     "domain": {
       "name": "Moo é🚀éM   éoo🚀🚀🚀MMMM🚀",
-      "chainId": 519,
+      "version": "",
+      "chainId": "0x207",
       "verifyingContract": "0xb6a9e28479e2eefe2b652cd1035e244aa631ae8b",
       "salt": "0x37afd12343de89e1a0d00825845be1fff4e39ee71c0047c70e39802a5c647e1c"
     },
     "primaryType": "Struct8",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "name",
           "type": "string"
@@ -5377,18 +5656,20 @@
       "param7": "0xebcf5f2e21ef4078d79de76bc2136de32d78b8da45785d9320293cf88f56fdbb7ed2d99971bdc91313"
     },
     "encoded": "0xf9efb6691f7dd1e64ca5c079b4a65046ce7e9b124f0b5a82fca4df1cef20cbf7fe19a4668dfcc60d76d18f9fdb5404410f46b99cd9c46102434bcfe4b002810aa039e88b3516312fbf1a2f8ba092aadc17e7aba94dec383eac1c3f9d30cd41cfffffffffffffffffffffffffffffffffffffffffffffffff98e6ea23025154585e3ed849708604724bc345250b999c8afbbdc5d2d7d899f6b7f0306fd22804c5",
-    "digest": "0x4c0c04f6ce70c4bbb681ef0ad6b6398acb8b7c6ed135e03749d01ac7581e6aaf"
+    "digest": "0x2fbed842e68e4ca71b5d13462ed53be4568239550cacf70fe2bd4ac264800d51"
   },
   {
     "name": "random-116",
     "domain": {
       "name": "Moo é🚀🚀🚀🚀M 🚀o🚀Mo🚀MMM o o ooo M🚀",
       "version": "36.49.20",
+      "chainId": null,
+      "verifyingContract": "",
       "salt": "0x153291d7e60f50493d9bef0386f2e52efa990e8ef60f067395b548a323336f52"
     },
     "primaryType": "Struct17",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "name",
           "type": "string"
@@ -5475,17 +5756,20 @@
       }
     },
     "encoded": "0x2404a0d0da38cc2a26c0cae1fd80a615dcead8277266a934eb557d4a2a7b7616058530b4284971e4882f70ed579c18add8c7bf057fab40370e1641f4a2c1e84f26bed6a2942cc3da8e01ab975174dc95d1634c469b28a05029e7a338f26447a5",
-    "digest": "0x2859aeba18c02d3b96c7cac2c37cb1fc02efeb93bc0162e93cf849f24fc48ec0"
+    "digest": "0x2878a3cc33db82b6d4c8a4d6441f95bd9c3fedee03f45f05a7152326a636d3ea"
   },
   {
     "name": "random-117",
     "domain": {
-      "chainId": 404,
+      "name": "",
+      "version": "",
+      "chainId": "0x194",
+      "verifyingContract": "",
       "salt": "0xca3833452e02a6b4fa1ac8abc4b15c96f2d7646e05ac0dc999df4c02381fdb4a"
     },
     "primaryType": "Struct3",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "chainId",
           "type": "uint256"
@@ -5506,17 +5790,20 @@
       "param2": "0xe298d05b8a6eee625460e7ffde7a4080b66181e2"
     },
     "encoded": "0x98edda54668461e736d24a4033f2d11540bceac48ea14c7da0fea73b8b9a55db000000000000000000000000e298d05b8a6eee625460e7ffde7a4080b66181e2",
-    "digest": "0x0e9b9a6735b599e2aa2bd15b5a6b6e35ba3f28a6a7727883d8f7b63a9bb6dfc6"
+    "digest": "0x4d1ba9bfc80f488b7b7fa7d793c1a2dd382019430d790c93ff2dc4bdfed53cd2"
   },
   {
     "name": "random-118",
     "domain": {
+      "name": "",
       "version": "29.19.11",
-      "chainId": 1069
+      "chainId": "0x42d",
+      "verifyingContract": "",
+      "salt": ""
     },
     "primaryType": "Struct4",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "version",
           "type": "string"
@@ -5542,18 +5829,20 @@
       "param3": "2374623193016793084186176676934718"
     },
     "encoded": "0x6d5a7844c94095e64fa9ad1a945731964eeecfab4dafa5aa7d52244c21f7fabba187410677f35e34d7d2d4a67323f45587a17a000000000000000000000000000000000000000000000000000000000000007513f55b61db9e82c36d9b97b43e",
-    "digest": "0x40254d9a8b1827c010a5df5a2e776142c72a8cb6ac9dca1e4e56853db63c637b"
+    "digest": "0xe390c90a6f2ed4d15185c6698faf23694cf47f1d95e4ce609f6d7623989e8350"
   },
   {
     "name": "random-119",
     "domain": {
       "name": "Moo é🚀MéoM🚀Moé🚀éoM é ooMéMé🚀oéMMoM🚀éMo o 🚀 éé oéé🚀o M🚀o ",
       "version": "23.47.23",
-      "chainId": 392
+      "chainId": "0x188",
+      "verifyingContract": "",
+      "salt": ""
     },
     "primaryType": "Struct14",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "name",
           "type": "string"
@@ -5624,19 +5913,20 @@
       }
     },
     "encoded": "0x66a8655159b0710afca0f457c3bde2322122bdb9a1fea4237e6c302a129fa9c76a011fb94ca2e8ba68ca2390abc1167bab6b644ce5915ec5f1165b3ce7572375",
-    "digest": "0xbb821d9f1b55a93033ab1e22aff08ea2cdbae58acb7799b89ac7f9583020c16c"
+    "digest": "0xb07d931a83abc36329caf662a52972d5f4325952db672f291a0ad5f3199eb04c"
   },
   {
     "name": "random-120",
     "domain": {
       "name": "Moo é🚀é🚀é ooM oMo Mo🚀🚀ooé M🚀🚀MooMo Mé 🚀oé oo o🚀é",
       "version": "2.8.22",
+      "chainId": null,
       "verifyingContract": "0xd92defa9762b6708d9306f94e639013de8bd2b4e",
       "salt": "0xf2b1503c65653a66bb23b43d0b646d9920e2968aea19375f3f744ab0e2d5d3df"
     },
     "primaryType": "Struct6",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "name",
           "type": "string"
@@ -5675,18 +5965,20 @@
       "param5": false
     },
     "encoded": "0x73e644b97783bf4c80cd97dff29c383f1205915fd9399b0a95ccc9d335d190d6e3d0ef52ef1875273cf8cadc1df7b0c681dc2c124e44110285e59de2514e06680000000000000000000000000000000000000000000000000000000000000000",
-    "digest": "0x9d331f60c2e243c0c380f493df01d216381cbdfd1e8726bf2d95623b966e12d4"
+    "digest": "0xd2e969468f9da051aef93e7c12d52953efa2f0c7b4244cee52abffac444ec837"
   },
   {
     "name": "random-122",
     "domain": {
       "name": "Moo é🚀🚀Mo éééoééé  oéMMM oM  🚀o 🚀MoMooéoMéé oo Méé éM",
       "version": "38.16.6",
-      "chainId": 1155
+      "chainId": "0x483",
+      "verifyingContract": "",
+      "salt": ""
     },
     "primaryType": "Struct9",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "name",
           "type": "string"
@@ -5739,18 +6031,20 @@
       }
     },
     "encoded": "0x4dc6c24fe5adc7b222933880278854e343fff0c6e3008ff0ae0acb2676515b800000000000000000000000001a97d3dd8afe04195e4cf65f6642bb9abf0e30d0031afafd11b84538ee39d9de32f0581663dde8f1b5b8413f1693cadaf1f5f383",
-    "digest": "0xcf807730a8b53a7c355704e7acd17208573fe6f07eba715f9c3eff5552130cd7"
+    "digest": "0x5fcf07a0b7192b91693386fb72e66da7dec6c238e293945e8d1bab927c3c2878"
   },
   {
     "name": "random-123",
     "domain": {
       "name": "Moo é🚀🚀🚀oé o🚀 MM🚀  éoé🚀  🚀ooéé 🚀éo🚀 é  oM🚀Moéooo  MéoéoMo",
+      "version": "",
+      "chainId": null,
       "verifyingContract": "0x6fb9e64197fbfffeb79e710b1786fad0adcded2a",
       "salt": "0x50e5121d17089bc449b8a20c541511a7fdd92d31a6e6f028fccd96044f12e2eb"
     },
     "primaryType": "Struct4",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "name",
           "type": "string"
@@ -5780,19 +6074,20 @@
       "param3": "0xd1f004a769a4d83c51ef78ae86c9f45497820157"
     },
     "encoded": "0x210ade7f30d7f00dbd3bcfd9b6e33d421cb4677f314bb1d18b47c7532f4a33da0000000000000000000000000000000000000000000000000000000000000001000000000000000000000000d1f004a769a4d83c51ef78ae86c9f45497820157",
-    "digest": "0x3607930da601b81fc487c79b4c2a6a5fd546a2ff2f80e5e45693813adf27a56d"
+    "digest": "0xf8017e75f4be32e5bca6cf1a63b6864cbd48cee14d64c3a32f2b2c34dacee366"
   },
   {
     "name": "random-124",
     "domain": {
       "name": "Moo é🚀 🚀ooo éoéooMM oo🚀Mé🚀o🚀🚀ooo MoooM 🚀ééo🚀é éMéé o",
-      "chainId": 737,
+      "version": "",
+      "chainId": "0x2e1",
       "verifyingContract": "0xa67338c83e7cad895cd912fd10b293c30b93507c",
       "salt": "0x29fec8e11edc8a14fed2ebc136bb9718842edaa9fa0661f05b23adba9bbd360c"
     },
     "primaryType": "Struct11",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "name",
           "type": "string"
@@ -5857,18 +6152,20 @@
       }
     },
     "encoded": "0xe41195b80dea8f516fb631cf6457d52b859a33fee20b1678715321d816e04f34000000000000000000000000289a7fc0abbf5814916b435aedd05110f990b8a8c975b7d342e5f9bd4cece3275d900bc4463445fe2c102fc24cdd8bdd9c741af46d6c322f4335555294c4862917e57478c76ba1b8b90655a5134f7532df97e50d",
-    "digest": "0x8d1983077b551e2dc3ff4d7c564c4eaf4d8ac90e5d66ff1f778bc642dc729582"
+    "digest": "0xb9a8e9f43bd3273b3eca183f69ff45a231653378394855d438f7c9fb868bf773"
   },
   {
     "name": "random-125",
     "domain": {
       "name": "Moo é🚀MMooMo Moé",
       "version": "49.24.49",
-      "verifyingContract": "0xcf398d52a18e0a6f91a16c23bae18afd490e004a"
+      "chainId": null,
+      "verifyingContract": "0xcf398d52a18e0a6f91a16c23bae18afd490e004a",
+      "salt": ""
     },
     "primaryType": "Struct4",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "name",
           "type": "string"
@@ -5898,16 +6195,20 @@
       "param3": "0x40caa66524b856"
     },
     "encoded": "0x08b05ab3afcc030e7935ce6c66d5d4b79136f50d1f567b347bde3906d91197e80000000000000000000000000000000000000000000000000000000000000000f234b4abf550f95ad2b3e18a8327dfad72bafbc9c735d4d70db98855f86e4d3e",
-    "digest": "0x8869dd15921fcbfb0942af0803bc4a69e79254d54aecffd8d092de03241b7b29"
+    "digest": "0xcc3b1d441ad3b7f568033a108b4d15b39d09bafc952e5cdfb1b0064b67e3327c"
   },
   {
     "name": "random-126",
     "domain": {
-      "chainId": 1089
+      "name": "",
+      "version": "",
+      "chainId": "0x441",
+      "verifyingContract": "",
+      "salt": ""
     },
     "primaryType": "Struct9",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "chainId",
           "type": "uint256"
@@ -5948,17 +6249,20 @@
       ]
     },
     "encoded": "0xae9a402c7fe6b3d9bde74954593223cd4c7c61f3764929e780ca44432ba4edf88ebaa4befe0af4b10f9ff1d424dc9f2e501c9349db90511b8fc2ae5be855444f4c981d388229b9d3b092a114e1ab19340cd5ea397c66da5afc0bf366562778ba45cee17bca9a453477906b4710d48e03be64fbe1527a2a76f4c454afdec7e47587b1d2abb5f508f09df8e2d9dafbaa5dd87e71487b42b75e4b5a7d89feebfbc2",
-    "digest": "0xdbf3e30a06348c3a82df230158a8d3fe7be0948ba7e7e482eacdc44cae526ff9"
+    "digest": "0x4d98a165b98dbde4e30a89bbbc75d880d63e2955931de50610fe43ed8da2eda5"
   },
   {
     "name": "random-127",
     "domain": {
       "name": "Moo é🚀",
-      "version": "42.13.26"
+      "version": "42.13.26",
+      "chainId": null,
+      "verifyingContract": "",
+      "salt": ""
     },
     "primaryType": "Struct13",
     "types": {
-      "EIP712Domain": [
+      "SIP712Domain": [
         {
           "name": "name",
           "type": "string"
@@ -6017,36 +6321,19 @@
       "param9": "0x219b81e0367f33c3face28f7ca0f98f42a3aad3f"
     },
     "encoded": "0xec4d8bc63ac053b4abb7da4dcf5f9d853222e50f2cf3a7a70102a4ccf963484724c38815168dfc92aea0b45d4da4e474a0cccad6525ff2fa8584df0f4add65567a1e9576f0b9eccfba97fa5a64cec39eafe610e076674eeb749db12c47055f87000000000000000000000000219b81e0367f33c3face28f7ca0f98f42a3aad3f771f547647235bc1319baeaa2a6b4c3a394d0fee465d0d44fe7f3e6cc9cbf7d0",
-    "digest": "0x800e34308adad5c2fb5a176196e58c026d3e7e8a0485bc3f83f5f552bcf7e8aa"
+    "digest": "0xaf3909091bceaae19de5f11cb175a200df719ac1601df8f1f1cf503811e05c37"
   },
   {
-    "name": "EIP712 example",
+    "name": "SIP712 example",
     "domain": {
       "name": "Ether Mail",
       "version": "1",
-      "chainId": 1,
-      "verifyingContract": "0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC"
+      "chainId": "0x1",
+      "verifyingContract": "0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC",
+      "salt": ""
     },
     "primaryType": "Mail",
     "types": {
-      "EIP712Domain": [
-        {
-          "name": "name",
-          "type": "string"
-        },
-        {
-          "name": "version",
-          "type": "string"
-        },
-        {
-          "name": "chainId",
-          "type": "uint256"
-        },
-        {
-          "name": "verifyingContract",
-          "type": "address"
-        }
-      ],
       "Mail": [
         {
           "name": "from",
@@ -6070,6 +6357,24 @@
           "name": "wallet",
           "type": "address"
         }
+      ],
+      "SIP712Domain": [
+        {
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "name": "version",
+          "type": "string"
+        },
+        {
+          "name": "chainId",
+          "type": "uint256"
+        },
+        {
+          "name": "verifyingContract",
+          "type": "address"
+        }
       ]
     },
     "data": {
@@ -6084,6 +6389,6 @@
       }
     },
     "encoded": "0xa0cedeb2dc280ba39b857546d74f5549c3a1d7bdc2dd96bf881f76108e23dac2fc71e5fa27ff56c350aa531bc129ebdf613b772b6604664f5d8dbe21b85eb0c8cd54f074a4af31b4411ff6a60c9719dbd559c221c8ac3492d9d872b041d703d1b5aadf3154a261abdd9086fc627b61efca26ae5702701d05cd2305f7c52a2fc8",
-    "digest": "0xbe609aee343fb3c4b28e1df9e632fca64fcfaede20f02e86244efddf30957bd2"
+    "digest": "0x90a8bfdd5e3f2460f9250e449d3f021a2dbd00a611cf20e18210f961fcc3ab68"
   }
 ]

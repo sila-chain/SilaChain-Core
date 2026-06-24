@@ -28,8 +28,8 @@ import (
 	"github.com/sila-org/sila/consensus/silaash"
 	"github.com/sila-org/sila/core/rawdb"
 	"github.com/sila-org/sila/core/types"
-	"github.com/sila-org/sila/siladb"
 	"github.com/sila-org/sila/params"
+	"github.com/sila-org/sila/siladb"
 	"github.com/sila-org/sila/triedb"
 	"github.com/sila-org/sila/triedb/pathdb"
 )
@@ -268,9 +268,9 @@ func TestBinaryGenesisCommit(t *testing.T) {
 		HomesteadBlock:          big.NewInt(0),
 		DAOForkBlock:            nil,
 		DAOForkSupport:          false,
-		EIP150Block:             big.NewInt(0),
-		EIP155Block:             big.NewInt(0),
-		EIP158Block:             big.NewInt(0),
+		SIP150Block:             big.NewInt(0),
+		SIP155Block:             big.NewInt(0),
+		SIP158Block:             big.NewInt(0),
 		ByzantiumBlock:          big.NewInt(0),
 		ConstantinopleBlock:     big.NewInt(0),
 		PetersburgBlock:         big.NewInt(0),
@@ -288,7 +288,7 @@ func TestBinaryGenesisCommit(t *testing.T) {
 		UBTTime:                 &ubtTime,
 		TerminalTotalDifficulty: big.NewInt(0),
 		EnableUBTAtGenesis:      true,
-		Silaash:                  nil,
+		Silaash:                 nil,
 		Clique:                  nil,
 		BlobScheduleConfig: &params.BlobScheduleConfig{
 			Cancun: params.DefaultCancunBlobConfig,

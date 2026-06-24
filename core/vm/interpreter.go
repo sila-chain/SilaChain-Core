@@ -31,7 +31,7 @@ type Config struct {
 
 	NoBaseFee               bool  // Forces the SIP-1559 baseFee to 0 (needed for 0 price calls)
 	EnablePreimageRecording bool  // Enables recording of SHA3/keccak preimages
-	ExtraEips               []int // Additional SIPS that are to be enabled
+	ExtraSips               []int // Additional SIPS that are to be enabled
 }
 
 // ScopeContext contains the things that are per-call, such as stack and memory,

@@ -687,7 +687,7 @@ txloop:
 			break txloop
 		}
 		// Finalize the state so any modifications are written to the trie
-		// Only delete empty objects if EIP158/161 (a.k.a Spurious Dragon) is in effect
+		// Only delete empty objects if SIP158/161 (a.k.a Spurious Dragon) is in effect
 		statedb.Finalise(evm.ChainConfig().IsEIP158(block.Number()))
 	}
 
@@ -766,7 +766,7 @@ func (api *API) standardTraceBlockToFile(ctx context.Context, block *types.Block
 				return dumps, err
 			}
 			// Finalize the state so any modifications are written to the trie
-			// Only delete empty objects if EIP158/161 (a.k.a Spurious Dragon) is in effect
+			// Only delete empty objects if SIP158/161 (a.k.a Spurious Dragon) is in effect
 			statedb.Finalise(evm.ChainConfig().IsEIP158(block.Number()))
 			continue
 		}
@@ -810,7 +810,7 @@ func (api *API) standardTraceBlockToFile(ctx context.Context, block *types.Block
 			return dumps, err
 		}
 		// Finalize the state so any modifications are written to the trie
-		// Only delete empty objects if EIP158/161 (a.k.a Spurious Dragon) is in effect
+		// Only delete empty objects if SIP158/161 (a.k.a Spurious Dragon) is in effect
 		statedb.Finalise(chainConfig.IsEIP158(block.Number()))
 
 		// If we've traced the transaction we were looking for, abort

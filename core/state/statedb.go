@@ -319,7 +319,7 @@ func (s *StateDB) Exist(addr common.Address) bool {
 }
 
 // Empty returns whether the state object is either non-existent
-// or empty according to the EIP161 specification (balance = nonce = code = 0)
+// or empty according to the SIP161 specification (balance = nonce = code = 0)
 func (s *StateDB) Empty(addr common.Address) bool {
 	so := s.getStateObject(addr)
 	return so == nil || so.empty()
@@ -1452,7 +1452,7 @@ func (s *StateDB) CommitWithUpdate(block uint64, deleteEmptyObjects bool, noStor
 // - Reset transient storage (SIP-1153)
 func (s *StateDB) Prepare(rules params.Rules, sender, coinbase common.Address, dst *common.Address, precompiles []common.Address, list types.AccessList) {
 	if rules.IsEIP2929 && rules.IsEIP4762 {
-		panic("eip2929 and eip4762 are both activated")
+		panic("sip2929 and sip4762 are both activated")
 	}
 	if rules.IsEIP2929 {
 		// Clear out any leftover from previous executions

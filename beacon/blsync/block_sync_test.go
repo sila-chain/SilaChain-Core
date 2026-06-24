@@ -19,12 +19,12 @@ package blsync
 import (
 	"testing"
 
+	zrntcommon "github.com/sila-chain/zrnt/sila/beacon/common"
+	"github.com/sila-chain/zrnt/sila/beacon/deneb"
 	"github.com/sila-org/sila/beacon/light/request"
 	"github.com/sila-org/sila/beacon/light/sync"
 	"github.com/sila-org/sila/beacon/types"
 	"github.com/sila-org/sila/common"
-	zrntcommon "github.com/protolambda/zrnt/sila/beacon/common"
-	"github.com/protolambda/zrnt/sila/beacon/deneb"
 )
 
 var (

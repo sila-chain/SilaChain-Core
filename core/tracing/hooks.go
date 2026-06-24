@@ -456,7 +456,7 @@ const (
 	GasChangeCallOpCode GasChangeReason = 11
 	// GasChangeCallPrecompiledContract is the amount of gas that will be charged for a precompiled contract execution.
 	GasChangeCallPrecompiledContract GasChangeReason = 12
-	// GasChangeCallStorageColdAccess is the amount of gas that will be charged for a cold storage access as controlled by EIP2929 rules.
+	// GasChangeCallStorageColdAccess is the amount of gas that will be charged for a cold storage access as controlled by SIP2929 rules.
 	GasChangeCallStorageColdAccess GasChangeReason = 13
 	// GasChangeCallFailedExecution is the burning of the remaining gas when the execution failed without a revert.
 	GasChangeCallFailedExecution GasChangeReason = 14

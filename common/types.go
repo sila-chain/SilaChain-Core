@@ -257,7 +257,7 @@ func (a Address) Bytes() []byte { return a[:] }
 // Big converts an address to a big integer.
 func (a Address) Big() *big.Int { return new(big.Int).SetBytes(a[:]) }
 
-// Hex returns an EIP55-compliant hex string representation of the address.
+// Hex returns an SIP55-compliant hex string representation of the address.
 func (a Address) Hex() string {
 	return string(a.checksumHex())
 }
@@ -456,12 +456,12 @@ func (ma *MixedcaseAddress) Original() string {
 // AddressEIP55 is an alias of Address with a customized json marshaller
 type AddressEIP55 Address
 
-// String returns the hex representation of the address in the manner of EIP55.
+// String returns the hex representation of the address in the manner of SIP55.
 func (addr AddressEIP55) String() string {
 	return Address(addr).Hex()
 }
 
-// MarshalJSON marshals the address in the manner of EIP55.
+// MarshalJSON marshals the address in the manner of SIP55.
 func (addr AddressEIP55) MarshalJSON() ([]byte, error) {
 	return json.Marshal(addr.String())
 }

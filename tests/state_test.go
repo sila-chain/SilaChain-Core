@@ -266,7 +266,7 @@ func runBenchmark(b *testing.B, t *StateTest) {
 			}
 			var rules = config.Rules(new(big.Int), false, 0)
 
-			vmconfig.ExtraEips = eips
+			vmconfig.ExtraSips = eips
 			block := t.genesis(config).ToBlock()
 			state := MakePreState(rawdb.NewMemoryDatabase(), t.json.Pre, false, rawdb.HashScheme)
 			defer state.Close()

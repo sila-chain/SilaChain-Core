@@ -27,12 +27,12 @@ import (
 	"github.com/sila-org/sila/core"
 	"github.com/sila-org/sila/core/rawdb"
 	"github.com/sila-org/sila/core/types"
-	"github.com/sila-org/sila/sila/silaconfig"
-	"github.com/sila-org/sila/sila/protocols/sila"
 	"github.com/sila-org/sila/event"
 	"github.com/sila-org/sila/p2p"
 	"github.com/sila-org/sila/p2p/enode"
 	"github.com/sila-org/sila/params"
+	"github.com/sila-org/sila/sila/protocols/sila"
+	"github.com/sila-org/sila/sila/silaconfig"
 )
 
 // testEthHandler is a mock event handler to listen for inbound network requests
@@ -42,11 +42,11 @@ type testEthHandler struct {
 	txBroadcasts event.Feed
 }
 
-func (h *testEthHandler) Chain() *core.BlockChain              { panic("no backing chain") }
-func (h *testEthHandler) TxPool() sila.TxPool                   { panic("no backing tx pool") }
-func (h *testEthHandler) AcceptTxs() bool                      { return true }
+func (h *testEthHandler) Chain() *core.BlockChain                { panic("no backing chain") }
+func (h *testEthHandler) TxPool() sila.TxPool                    { panic("no backing tx pool") }
+func (h *testEthHandler) AcceptTxs() bool                        { return true }
 func (h *testEthHandler) RunPeer(*sila.Peer, sila.Handler) error { panic("not used in tests") }
-func (h *testEthHandler) PeerInfo(enode.ID) interface{}        { panic("not used in tests") }
+func (h *testEthHandler) PeerInfo(enode.ID) interface{}          { panic("not used in tests") }
 
 func (h *testEthHandler) Handle(peer *sila.Peer, packet sila.Packet) error {
 	switch packet := packet.(type) {
@@ -88,9 +88,9 @@ func testForkIDSplit(t *testing.T, protocol uint) {
 		configNoFork  = &params.ChainConfig{HomesteadBlock: big.NewInt(1)}
 		configProFork = &params.ChainConfig{
 			HomesteadBlock: big.NewInt(1),
-			EIP150Block:    big.NewInt(2),
-			EIP155Block:    big.NewInt(2),
-			EIP158Block:    big.NewInt(2),
+			SIP150Block:    big.NewInt(2),
+			SIP155Block:    big.NewInt(2),
+			SIP158Block:    big.NewInt(2),
 			ByzantiumBlock: big.NewInt(3),
 		}
 		dbNoFork  = rawdb.NewMemoryDatabase()

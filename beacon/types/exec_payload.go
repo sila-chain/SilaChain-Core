@@ -20,13 +20,13 @@ import (
 	"fmt"
 	"math/big"
 
+	"github.com/holiman/uint256"
+	"github.com/sila-chain/zrnt/sila/beacon/capella"
+	zrntcommon "github.com/sila-chain/zrnt/sila/beacon/common"
+	"github.com/sila-chain/zrnt/sila/beacon/deneb"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/core/types"
 	"github.com/sila-org/sila/trie"
-	"github.com/holiman/uint256"
-	"github.com/protolambda/zrnt/sila/beacon/capella"
-	zrntcommon "github.com/protolambda/zrnt/sila/beacon/common"
-	"github.com/protolambda/zrnt/sila/beacon/deneb"
 )
 
 type payloadType interface {

@@ -14,7 +14,7 @@
   "randomcode": null,
   "randomlogs": null,
   "randomstorage": null,
-  "tx-eip7702": {
+  "tx-sip7702": {
     "account": "0xeda8645ba6948855e3b3cd596bbb07596d59c603",
     "proxyAddr": "0x4dc5e971f8b11ace4f21d40b0ede74a07940f356",
     "authorizeTx": "0x64c47531984e4099548b480b5af0bce04ab89d29f2fe7ae36e97ba68d688539f"
@@ -453,7 +453,7 @@
       "logtopic1": "0x701960547b78067b00883157f5e9fca3bbea742385129f0db7e1e69ce445dfef"
     }
   ],
-  "tx-emit-eip2930": [
+  "tx-emit-sip2930": [
     {
       "txhash": "0x76f2917dfdad8c636c493258e672938661a2044a05338bbad7d14d446fae4d45",
       "sender": "0x7435ed30a8b4aeb0877cef0c6e8cffe834eb865f",
@@ -1756,7 +1756,7 @@
     }
   ],
   "tx-largereceipt": 11,
-  "tx-request-eip7002": {
+  "tx-request-sip7002": {
     "txhash": "0x27d8ca12587f28aa0184966fabcbeb321b438a6495d5e8294dc9c62525f41b8c",
     "block": "0xd"
   },
@@ -2086,7 +2086,7 @@
       "indexInBlock": 0
     }
   ],
-  "tx-transfer-eip2930": [
+  "tx-transfer-sip2930": [
     {
       "txhash": "0xf278a97c1c92c517531ae9f24179862518cf6397cd3615deebe37049d5a6c695",
       "sender": "0x7435ed30a8b4aeb0877cef0c6e8cffe834eb865f",

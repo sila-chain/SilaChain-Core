@@ -45,9 +45,9 @@ var (
 		HomesteadBlock:          big.NewInt(1_150_000),
 		DAOForkBlock:            big.NewInt(1_920_000),
 		DAOForkSupport:          true,
-		EIP150Block:             big.NewInt(2_463_000),
-		EIP155Block:             big.NewInt(2_675_000),
-		EIP158Block:             big.NewInt(2_675_000),
+		SIP150Block:             big.NewInt(2_463_000),
+		SIP155Block:             big.NewInt(2_675_000),
+		SIP158Block:             big.NewInt(2_675_000),
 		ByzantiumBlock:          big.NewInt(4_370_000),
 		ConstantinopleBlock:     big.NewInt(7_280_000),
 		PetersburgBlock:         big.NewInt(7_280_000),
@@ -80,9 +80,9 @@ var (
 		HomesteadBlock:          big.NewInt(0),
 		DAOForkBlock:            nil,
 		DAOForkSupport:          true,
-		EIP150Block:             big.NewInt(0),
-		EIP155Block:             big.NewInt(0),
-		EIP158Block:             big.NewInt(0),
+		SIP150Block:             big.NewInt(0),
+		SIP155Block:             big.NewInt(0),
+		SIP158Block:             big.NewInt(0),
 		ByzantiumBlock:          big.NewInt(0),
 		ConstantinopleBlock:     big.NewInt(0),
 		PetersburgBlock:         big.NewInt(0),
@@ -116,9 +116,9 @@ var (
 		HomesteadBlock:          big.NewInt(0),
 		DAOForkBlock:            nil,
 		DAOForkSupport:          true,
-		EIP150Block:             big.NewInt(0),
-		EIP155Block:             big.NewInt(0),
-		EIP158Block:             big.NewInt(0),
+		SIP150Block:             big.NewInt(0),
+		SIP155Block:             big.NewInt(0),
+		SIP158Block:             big.NewInt(0),
 		ByzantiumBlock:          big.NewInt(0),
 		ConstantinopleBlock:     big.NewInt(0),
 		PetersburgBlock:         big.NewInt(0),
@@ -152,9 +152,9 @@ var (
 		HomesteadBlock:          big.NewInt(0),
 		DAOForkBlock:            nil,
 		DAOForkSupport:          true,
-		EIP150Block:             big.NewInt(0),
-		EIP155Block:             big.NewInt(0),
-		EIP158Block:             big.NewInt(0),
+		SIP150Block:             big.NewInt(0),
+		SIP155Block:             big.NewInt(0),
+		SIP158Block:             big.NewInt(0),
 		ByzantiumBlock:          big.NewInt(0),
 		ConstantinopleBlock:     big.NewInt(0),
 		PetersburgBlock:         big.NewInt(0),
@@ -189,9 +189,9 @@ var (
 		HomesteadBlock:          big.NewInt(0),
 		DAOForkBlock:            nil,
 		DAOForkSupport:          false,
-		EIP150Block:             big.NewInt(0),
-		EIP155Block:             big.NewInt(0),
-		EIP158Block:             big.NewInt(0),
+		SIP150Block:             big.NewInt(0),
+		SIP155Block:             big.NewInt(0),
+		SIP158Block:             big.NewInt(0),
 		ByzantiumBlock:          big.NewInt(0),
 		ConstantinopleBlock:     big.NewInt(0),
 		PetersburgBlock:         big.NewInt(0),
@@ -215,9 +215,9 @@ var (
 	AllDevChainProtocolChanges = &ChainConfig{
 		ChainID:                 big.NewInt(1337),
 		HomesteadBlock:          big.NewInt(0),
-		EIP150Block:             big.NewInt(0),
-		EIP155Block:             big.NewInt(0),
-		EIP158Block:             big.NewInt(0),
+		SIP150Block:             big.NewInt(0),
+		SIP155Block:             big.NewInt(0),
+		SIP158Block:             big.NewInt(0),
 		ByzantiumBlock:          big.NewInt(0),
 		ConstantinopleBlock:     big.NewInt(0),
 		PetersburgBlock:         big.NewInt(0),
@@ -246,9 +246,9 @@ var (
 		HomesteadBlock:          big.NewInt(0),
 		DAOForkBlock:            nil,
 		DAOForkSupport:          false,
-		EIP150Block:             big.NewInt(0),
-		EIP155Block:             big.NewInt(0),
-		EIP158Block:             big.NewInt(0),
+		SIP150Block:             big.NewInt(0),
+		SIP155Block:             big.NewInt(0),
+		SIP158Block:             big.NewInt(0),
 		ByzantiumBlock:          big.NewInt(0),
 		ConstantinopleBlock:     big.NewInt(0),
 		PetersburgBlock:         big.NewInt(0),
@@ -276,9 +276,9 @@ var (
 		HomesteadBlock:          big.NewInt(0),
 		DAOForkBlock:            nil,
 		DAOForkSupport:          false,
-		EIP150Block:             big.NewInt(0),
-		EIP155Block:             big.NewInt(0),
-		EIP158Block:             big.NewInt(0),
+		SIP150Block:             big.NewInt(0),
+		SIP155Block:             big.NewInt(0),
+		SIP158Block:             big.NewInt(0),
 		ByzantiumBlock:          big.NewInt(0),
 		ConstantinopleBlock:     big.NewInt(0),
 		PetersburgBlock:         big.NewInt(0),
@@ -306,9 +306,9 @@ var (
 		HomesteadBlock:          big.NewInt(0),
 		DAOForkBlock:            nil,
 		DAOForkSupport:          false,
-		EIP150Block:             big.NewInt(0),
-		EIP155Block:             big.NewInt(0),
-		EIP158Block:             big.NewInt(0),
+		SIP150Block:             big.NewInt(0),
+		SIP155Block:             big.NewInt(0),
+		SIP158Block:             big.NewInt(0),
 		ByzantiumBlock:          big.NewInt(0),
 		ConstantinopleBlock:     big.NewInt(0),
 		PetersburgBlock:         big.NewInt(0),
@@ -341,9 +341,9 @@ var (
 		HomesteadBlock:          nil,
 		DAOForkBlock:            nil,
 		DAOForkSupport:          false,
-		EIP150Block:             nil,
-		EIP155Block:             nil,
-		EIP158Block:             nil,
+		SIP150Block:             nil,
+		SIP155Block:             nil,
+		SIP158Block:             nil,
 		ByzantiumBlock:          nil,
 		ConstantinopleBlock:     nil,
 		PetersburgBlock:         nil,
@@ -438,10 +438,10 @@ type ChainConfig struct {
 	DAOForkBlock   *big.Int `json:"daoForkBlock,omitempty"`   // TheDAO hard-fork switch block (nil = no fork)
 	DAOForkSupport bool     `json:"daoForkSupport,omitempty"` // Whether the nodes supports or opposes the DAO hard-fork
 
-	// EIP150 implements the Gas price changes (https://github.com/sila-org/SIPs/issues/150)
-	EIP150Block *big.Int `json:"eip150Block,omitempty"` // EIP150 HF block (nil = no fork)
-	EIP155Block *big.Int `json:"eip155Block,omitempty"` // EIP155 HF block
-	EIP158Block *big.Int `json:"eip158Block,omitempty"` // EIP158 HF block
+	// SIP150 implements the Gas price changes (https://github.com/sila-org/SIPs/issues/150)
+	SIP150Block *big.Int `json:"sip150Block,omitempty"` // SIP150 HF block (nil = no fork)
+	SIP155Block *big.Int `json:"sip155Block,omitempty"` // SIP155 HF block
+	SIP158Block *big.Int `json:"sip158Block,omitempty"` // SIP158 HF block
 
 	ByzantiumBlock      *big.Int `json:"byzantiumBlock,omitempty"`      // Byzantium switch block (nil = no fork, 0 = already on byzantium)
 	ConstantinopleBlock *big.Int `json:"constantinopleBlock,omitempty"` // Constantinople switch block (nil = no fork, 0 = already activated)
@@ -524,14 +524,14 @@ func (c *ChainConfig) String() string {
 	if c.DAOForkBlock != nil {
 		result += fmt.Sprintf(", DAOForkBlock: %v", c.DAOForkBlock)
 	}
-	if c.EIP150Block != nil {
-		result += fmt.Sprintf(", EIP150Block: %v", c.EIP150Block)
+	if c.SIP150Block != nil {
+		result += fmt.Sprintf(", SIP150Block: %v", c.SIP150Block)
 	}
-	if c.EIP155Block != nil {
-		result += fmt.Sprintf(", EIP155Block: %v", c.EIP155Block)
+	if c.SIP155Block != nil {
+		result += fmt.Sprintf(", SIP155Block: %v", c.SIP155Block)
 	}
-	if c.EIP158Block != nil {
-		result += fmt.Sprintf(", EIP158Block: %v", c.EIP158Block)
+	if c.SIP158Block != nil {
+		result += fmt.Sprintf(", SIP158Block: %v", c.SIP158Block)
 	}
 	if c.ByzantiumBlock != nil {
 		result += fmt.Sprintf(", ByzantiumBlock: %v", c.ByzantiumBlock)
@@ -630,9 +630,9 @@ func (c *ChainConfig) Description() string {
 	if c.DAOForkBlock != nil {
 		banner += fmt.Sprintf(" - DAO Fork:                    #%-8v\n", c.DAOForkBlock)
 	}
-	banner += fmt.Sprintf(" - Tangerine Whistle (SIP 150): #%-8v\n", c.EIP150Block)
-	banner += fmt.Sprintf(" - Spurious Dragon/1 (SIP 155): #%-8v\n", c.EIP155Block)
-	banner += fmt.Sprintf(" - Spurious Dragon/2 (SIP 158): #%-8v\n", c.EIP158Block)
+	banner += fmt.Sprintf(" - Tangerine Whistle (SIP 150): #%-8v\n", c.SIP150Block)
+	banner += fmt.Sprintf(" - Spurious Dragon/1 (SIP 155): #%-8v\n", c.SIP155Block)
+	banner += fmt.Sprintf(" - Spurious Dragon/2 (SIP 158): #%-8v\n", c.SIP158Block)
 	banner += fmt.Sprintf(" - Byzantium:                   #%-8v\n", c.ByzantiumBlock)
 	banner += fmt.Sprintf(" - Constantinople:              #%-8v\n", c.ConstantinopleBlock)
 	banner += fmt.Sprintf(" - Petersburg:                  #%-8v\n", c.PetersburgBlock)
@@ -736,19 +736,19 @@ func (c *ChainConfig) IsDAOFork(num *big.Int) bool {
 	return isBlockForked(c.DAOForkBlock, num)
 }
 
-// IsEIP150 returns whether num is either equal to the EIP150 fork block or greater.
+// IsEIP150 returns whether num is either equal to the SIP150 fork block or greater.
 func (c *ChainConfig) IsEIP150(num *big.Int) bool {
-	return isBlockForked(c.EIP150Block, num)
+	return isBlockForked(c.SIP150Block, num)
 }
 
-// IsEIP155 returns whether num is either equal to the EIP155 fork block or greater.
+// IsEIP155 returns whether num is either equal to the SIP155 fork block or greater.
 func (c *ChainConfig) IsEIP155(num *big.Int) bool {
-	return isBlockForked(c.EIP155Block, num)
+	return isBlockForked(c.SIP155Block, num)
 }
 
-// IsEIP158 returns whether num is either equal to the EIP158 fork block or greater.
+// IsEIP158 returns whether num is either equal to the SIP158 fork block or greater.
 func (c *ChainConfig) IsEIP158(num *big.Int) bool {
-	return isBlockForked(c.EIP158Block, num)
+	return isBlockForked(c.SIP158Block, num)
 }
 
 // IsByzantium returns whether num is either equal to the Byzantium fork block or greater.
@@ -928,9 +928,9 @@ func (c *ChainConfig) CheckConfigForkOrder() error {
 	for _, cur := range []fork{
 		{name: "homesteadBlock", block: c.HomesteadBlock},
 		{name: "daoForkBlock", block: c.DAOForkBlock, optional: true},
-		{name: "eip150Block", block: c.EIP150Block},
-		{name: "eip155Block", block: c.EIP155Block},
-		{name: "eip158Block", block: c.EIP158Block},
+		{name: "sip150Block", block: c.SIP150Block},
+		{name: "sip155Block", block: c.SIP155Block},
+		{name: "sip158Block", block: c.SIP158Block},
 		{name: "byzantiumBlock", block: c.ByzantiumBlock},
 		{name: "constantinopleBlock", block: c.ConstantinopleBlock},
 		{name: "petersburgBlock", block: c.PetersburgBlock},
@@ -1046,17 +1046,17 @@ func (c *ChainConfig) checkCompatible(newcfg *ChainConfig, headNumber *big.Int, 
 	if c.IsDAOFork(headNumber) && c.DAOForkSupport != newcfg.DAOForkSupport {
 		return newBlockCompatError("DAO fork support flag", c.DAOForkBlock, newcfg.DAOForkBlock)
 	}
-	if isForkBlockIncompatible(c.EIP150Block, newcfg.EIP150Block, headNumber) {
-		return newBlockCompatError("EIP150 fork block", c.EIP150Block, newcfg.EIP150Block)
+	if isForkBlockIncompatible(c.SIP150Block, newcfg.SIP150Block, headNumber) {
+		return newBlockCompatError("SIP150 fork block", c.SIP150Block, newcfg.SIP150Block)
 	}
-	if isForkBlockIncompatible(c.EIP155Block, newcfg.EIP155Block, headNumber) {
-		return newBlockCompatError("EIP155 fork block", c.EIP155Block, newcfg.EIP155Block)
+	if isForkBlockIncompatible(c.SIP155Block, newcfg.SIP155Block, headNumber) {
+		return newBlockCompatError("SIP155 fork block", c.SIP155Block, newcfg.SIP155Block)
 	}
-	if isForkBlockIncompatible(c.EIP158Block, newcfg.EIP158Block, headNumber) {
-		return newBlockCompatError("EIP158 fork block", c.EIP158Block, newcfg.EIP158Block)
+	if isForkBlockIncompatible(c.SIP158Block, newcfg.SIP158Block, headNumber) {
+		return newBlockCompatError("SIP158 fork block", c.SIP158Block, newcfg.SIP158Block)
 	}
 	if c.IsEIP158(headNumber) && !configBlockEqual(c.ChainID, newcfg.ChainID) {
-		return newBlockCompatError("EIP158 chain ID", c.EIP158Block, newcfg.EIP158Block)
+		return newBlockCompatError("SIP158 chain ID", c.SIP158Block, newcfg.SIP158Block)
 	}
 	if isForkBlockIncompatible(c.ByzantiumBlock, newcfg.ByzantiumBlock, headNumber) {
 		return newBlockCompatError("Byzantium fork block", c.ByzantiumBlock, newcfg.ByzantiumBlock)

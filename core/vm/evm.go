@@ -184,20 +184,20 @@ func NewEVM(blockCtx BlockContext, statedb StateDB, chainConfig *params.ChainCon
 	default:
 		evm.table = &frontierInstructionSet
 	}
-	var extraEips []int
-	if len(evm.Config.ExtraEips) > 0 {
+	var extraSips []int
+	if len(evm.Config.ExtraSips) > 0 {
 		// Deep-copy jumptable to prevent modification of opcodes in other tables
 		evm.table = copyJumpTable(evm.table)
 	}
-	for _, eip := range evm.Config.ExtraEips {
+	for _, eip := range evm.Config.ExtraSips {
 		if err := EnableEIP(eip, evm.table); err != nil {
 			// Disable it, so caller can check if it's activated or not
 			log.Error("SIP activation failed", "eip", eip, "error", err)
 		} else {
-			extraEips = append(extraEips, eip)
+			extraSips = append(extraSips, eip)
 		}
 	}
-	evm.Config.ExtraEips = extraEips
+	evm.Config.ExtraSips = extraSips
 	return evm
 }
 

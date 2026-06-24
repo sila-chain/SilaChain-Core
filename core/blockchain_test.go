@@ -1355,8 +1355,8 @@ func testEIP155Transition(t *testing.T, scheme string) {
 		gspec      = &Genesis{
 			Config: &params.ChainConfig{
 				ChainID:        big.NewInt(1),
-				EIP150Block:    big.NewInt(0),
-				EIP155Block:    big.NewInt(2),
+				SIP150Block:    big.NewInt(0),
+				SIP155Block:    big.NewInt(2),
 				HomesteadBlock: new(big.Int),
 			},
 			Alloc: types.GenesisAlloc{address: {Balance: funds}, deleteAddr: {Balance: new(big.Int)}},
@@ -1429,8 +1429,8 @@ func testEIP155Transition(t *testing.T, scheme string) {
 	// generate an invalid chain id transaction
 	config := &params.ChainConfig{
 		ChainID:        big.NewInt(2),
-		EIP150Block:    big.NewInt(0),
-		EIP155Block:    big.NewInt(2),
+		SIP150Block:    big.NewInt(0),
+		SIP155Block:    big.NewInt(2),
 		HomesteadBlock: new(big.Int),
 	}
 	blocks, _ = GenerateChain(config, blocks[len(blocks)-1], silaash.NewFaker(), genDb, 4, func(i int, block *BlockGen) {
@@ -1470,9 +1470,9 @@ func testEIP161AccountRemoval(t *testing.T, scheme string) {
 			Config: &params.ChainConfig{
 				ChainID:        big.NewInt(1),
 				HomesteadBlock: new(big.Int),
-				EIP155Block:    new(big.Int),
-				EIP150Block:    new(big.Int),
-				EIP158Block:    big.NewInt(2),
+				SIP155Block:    new(big.Int),
+				SIP150Block:    new(big.Int),
+				SIP158Block:    big.NewInt(2),
 			},
 			Alloc: types.GenesisAlloc{address: {Balance: funds}},
 		}
@@ -3610,9 +3610,9 @@ func TestCreateThenDeletePreByzantium(t *testing.T) {
 	testCreateThenDelete(t, &params.ChainConfig{
 		ChainID:        big.NewInt(3),
 		HomesteadBlock: big.NewInt(0),
-		EIP150Block:    big.NewInt(0),
-		EIP155Block:    big.NewInt(10),
-		EIP158Block:    big.NewInt(10),
+		SIP150Block:    big.NewInt(0),
+		SIP155Block:    big.NewInt(10),
+		SIP158Block:    big.NewInt(10),
 		ByzantiumBlock: big.NewInt(1_700_000),
 	})
 }
@@ -3814,7 +3814,7 @@ func TestTransientStorageReset(t *testing.T) {
 		destAddress = crypto.CreateAddress(address, 0)
 		funds       = big.NewInt(1000000000000000)
 		vmConfig    = vm.Config{
-			ExtraEips: []int{1153}, // Enable transient storage SIP
+			ExtraSips: []int{1153}, // Enable transient storage SIP
 		}
 	)
 	code := append([]byte{

@@ -17,6 +17,7 @@
 package vm
 
 import (
+	"github.com/holiman/uint256"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/core/state"
 	"github.com/sila-org/sila/core/stateless"
@@ -24,7 +25,6 @@ import (
 	"github.com/sila-org/sila/core/types"
 	"github.com/sila-org/sila/core/types/bal"
 	"github.com/sila-org/sila/params"
-	"github.com/holiman/uint256"
 )
 
 // StateDB is an EVM database for full state querying.
@@ -72,7 +72,7 @@ type StateDB interface {
 	IsNewContract(addr common.Address) bool
 
 	// Empty returns whether the given account is empty. Empty
-	// is defined according to EIP161 (balance = nonce = code = 0).
+	// is defined according to SIP161 (balance = nonce = code = 0).
 	Empty(common.Address) bool
 
 	AddressInAccessList(addr common.Address) bool

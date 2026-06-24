@@ -38,8 +38,8 @@ func TestCheckCompatible(t *testing.T) {
 		{stored: AllSilaashProtocolChanges, new: AllSilaashProtocolChanges, headBlock: 0, headTimestamp: uint64(time.Now().Unix()), wantErr: nil},
 		{stored: AllSilaashProtocolChanges, new: AllSilaashProtocolChanges, headBlock: 100, wantErr: nil},
 		{
-			stored:    &ChainConfig{EIP150Block: big.NewInt(10)},
-			new:       &ChainConfig{EIP150Block: big.NewInt(20)},
+			stored:    &ChainConfig{SIP150Block: big.NewInt(10)},
+			new:       &ChainConfig{SIP150Block: big.NewInt(20)},
 			headBlock: 9,
 			wantErr:   nil,
 		},
@@ -66,11 +66,11 @@ func TestCheckCompatible(t *testing.T) {
 			},
 		},
 		{
-			stored:    &ChainConfig{HomesteadBlock: big.NewInt(30), EIP150Block: big.NewInt(10)},
-			new:       &ChainConfig{HomesteadBlock: big.NewInt(25), EIP150Block: big.NewInt(20)},
+			stored:    &ChainConfig{HomesteadBlock: big.NewInt(30), SIP150Block: big.NewInt(10)},
+			new:       &ChainConfig{HomesteadBlock: big.NewInt(25), SIP150Block: big.NewInt(20)},
 			headBlock: 25,
 			wantErr: &ConfigCompatError{
-				What:          "EIP150 fork block",
+				What:          "SIP150 fork block",
 				StoredBlock:   big.NewInt(10),
 				NewBlock:      big.NewInt(20),
 				RewindToBlock: 9,
