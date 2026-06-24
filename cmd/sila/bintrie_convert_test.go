@@ -21,6 +21,7 @@ import (
 	"math/big"
 	"testing"
 
+	"github.com/holiman/uint256"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/core"
 	"github.com/sila-org/sila/core/rawdb"
@@ -29,7 +30,6 @@ import (
 	"github.com/sila-org/sila/trie/bintrie"
 	"github.com/sila-org/sila/triedb"
 	"github.com/sila-org/sila/triedb/pathdb"
-	"github.com/holiman/uint256"
 )
 
 func TestBintrieConvert(t *testing.T) {

@@ -30,18 +30,18 @@ import (
 )
 
 const (
-	ipcAPIs  = "admin:1.0 debug:1.0 miner:1.0 net:1.0 rpc:1.0 sila:1.0 silaEngine:1.0 testing:1.0 txpool:1.0 web3:1.0"
-	httpAPIs = "net:1.0 rpc:1.0 sila:1.0 web3:1.0"
+	ipcAPIs  = "admin:1.0 debug:1.0 miner:1.0 net:1.0 rpc:1.0 sila:1.0 silaEngine:1.0 testing:1.0 txpool:1.0 silaWeb3:1.0"
+	httpAPIs = "net:1.0 rpc:1.0 sila:1.0 silaWeb3:1.0"
 )
 
 // spawns sila with the given command line args, using a set of flags to minimise
 // memory and disk IO. If the args don't set --datadir, the
 // child g gets a temporary data directory.
 func runMinimalSila(t *testing.T, args ...string) *testsila {
-	// --holesky to make the 'writing genesis to disk' faster (no accounts)
+	// --sila-staging-testnet to make the 'writing genesis to disk' faster (no accounts)
 	// --networkid=1337 to avoid cache bump
 	// --syncmode=full to avoid allocating fast sync bloom
-	allArgs := []string{"--holesky", "--networkid", "1337", "--authrpc.port", "0", "--syncmode=full", "--port", "0",
+	allArgs := []string{"--sila-staging-testnet", "--networkid", "1337", "--authrpc.port", "0", "--syncmode=full", "--port", "0",
 		"--nat", "none", "--nodiscover", "--maxpeers", "0", "--cache", "64",
 		"--datadir.minfreedisk", "0"}
 	return runSila(t, append(allArgs, args...)...)

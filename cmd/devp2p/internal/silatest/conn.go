@@ -296,7 +296,7 @@ func (c *Conn) handshake() error {
 		if msg.Version >= 5 {
 			c.SetSnappy(true)
 		}
-		c.negotiateEthProtocol(msg.Caps)
+		c.negotiateSilaProtocol(msg.Caps)
 		if c.negotiatedProtoVersion == 0 {
 			return fmt.Errorf("could not negotiate sila protocol (remote caps: %v, local sila version: %v)", msg.Caps, c.ourHighestProtoVersion)
 		}
@@ -310,16 +310,16 @@ func (c *Conn) handshake() error {
 	}
 }
 
-// negotiateEthProtocol sets the Conn's sila protocol version to highest
+// negotiateSilaProtocol sets the Conn's sila protocol version to highest
 // advertised capability from peer.
-func (c *Conn) negotiateEthProtocol(caps []p2p.Cap) {
-	var highestEthVersion uint
+func (c *Conn) negotiateSilaProtocol(caps []p2p.Cap) {
+	var highestSilaVersion uint
 	var highestSnapVersion uint
 	for _, capability := range caps {
 		switch capability.Name {
 		case "sila":
-			if capability.Version > highestEthVersion && capability.Version <= c.ourHighestProtoVersion {
-				highestEthVersion = capability.Version
+			if capability.Version > highestSilaVersion && capability.Version <= c.ourHighestProtoVersion {
+				highestSilaVersion = capability.Version
 			}
 		case "snap":
 			if capability.Version > highestSnapVersion && capability.Version <= c.ourHighestSnapProtoVersion {
@@ -327,7 +327,7 @@ func (c *Conn) negotiateEthProtocol(caps []p2p.Cap) {
 			}
 		}
 	}
-	c.negotiatedProtoVersion = highestEthVersion
+	c.negotiatedProtoVersion = highestSilaVersion
 	c.negotiatedSnapProtoVersion = highestSnapVersion
 }
 

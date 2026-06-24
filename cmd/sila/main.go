@@ -26,11 +26,11 @@ import (
 	"github.com/sila-org/sila/accounts"
 	"github.com/sila-org/sila/cmd/utils"
 	"github.com/sila-org/sila/console/prompt"
-	"github.com/sila-org/sila/silaclient"
 	"github.com/sila-org/sila/internal/debug"
 	"github.com/sila-org/sila/internal/flags"
 	"github.com/sila-org/sila/log"
 	"github.com/sila-org/sila/node"
+	"github.com/sila-org/sila/silaclient"
 	"go.uber.org/automaxprocs/maxprocs"
 
 	// Force-load the tracer engines to trigger registration
@@ -289,14 +289,14 @@ func main() {
 func prepare(ctx *cli.Context) {
 	// If we're running a known preset, log it for convenience.
 	switch {
-	case ctx.IsSet(utils.SepoliaFlag.Name):
-		log.Info("Starting Sila on Sepolia testnet...")
+	case ctx.IsSet(utils.SilaPublicTestnetFlag.Name):
+		log.Info("Starting Sila on SilaPublicTestnet testnet...")
 
-	case ctx.IsSet(utils.HoleskyFlag.Name):
-		log.Info("Starting Sila on Holesky testnet...")
+	case ctx.IsSet(utils.SilaStagingTestnetFlag.Name):
+		log.Info("Starting Sila on SilaStagingTestnet testnet...")
 
-	case ctx.IsSet(utils.HoodiFlag.Name):
-		log.Info("Starting Sila on Hoodi testnet...")
+	case ctx.IsSet(utils.SilaDevTestnetFlag.Name):
+		log.Info("Starting Sila on SilaDevTestnet testnet...")
 
 	case !ctx.IsSet(utils.NetworkIdFlag.Name):
 		log.Info("Starting Sila on Sila mainnet...")

@@ -25,9 +25,9 @@ import (
 	"math/big"
 	"time"
 
+	"github.com/holiman/uint256"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/log"
-	"github.com/holiman/uint256"
 	"github.com/urfave/cli/v2"
 )
 

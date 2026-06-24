@@ -137,7 +137,7 @@ var (
 	}
 	NetworkIdFlag = &cli.Uint64Flag{
 		Name:     "networkid",
-		Usage:    "Explicitly set network ID (integer)(For testnets: use --sepolia, --holesky, --hoodi instead)",
+		Usage:    "Explicitly set network ID (integer)(For testnets: use --sila-public-testnet, --sila-staging-testnet, --sila-dev-testnet instead)",
 		Value:    silaconfig.Defaults.NetworkId,
 		Category: flags.SilaCategory,
 	}
@@ -146,19 +146,19 @@ var (
 		Usage:    "Sila mainnet",
 		Category: flags.SilaCategory,
 	}
-	SepoliaFlag = &cli.BoolFlag{
-		Name:     "sepolia",
-		Usage:    "Sepolia network: pre-configured proof-of-stake test network",
+	SilaPublicTestnetFlag = &cli.BoolFlag{
+		Name:     "sila-public-testnet",
+		Usage:    "SilaPublicTestnet network: pre-configured proof-of-stake test network",
 		Category: flags.SilaCategory,
 	}
-	HoleskyFlag = &cli.BoolFlag{
-		Name:     "holesky",
-		Usage:    "Holesky network: pre-configured proof-of-stake test network",
+	SilaStagingTestnetFlag = &cli.BoolFlag{
+		Name:     "sila-staging-testnet",
+		Usage:    "SilaStagingTestnet network: pre-configured proof-of-stake test network",
 		Category: flags.SilaCategory,
 	}
-	HoodiFlag = &cli.BoolFlag{
-		Name:     "hoodi",
-		Usage:    "Hoodi network: pre-configured proof-of-stake test network",
+	SilaDevTestnetFlag = &cli.BoolFlag{
+		Name:     "sila-dev-testnet",
+		Usage:    "SilaDevTestnet network: pre-configured proof-of-stake test network",
 		Category: flags.SilaCategory,
 	}
 	// Dev mode
@@ -646,7 +646,7 @@ var (
 	}
 	RPCGlobalTxFeeCapFlag = &cli.Float64Flag{
 		Name:     "rpc.txfeecap",
-		Usage:    "Sets a cap on transaction fee (in ether) that can be sent via the RPC APIs (0 = no cap)",
+		Usage:    "Sets a cap on transaction fee (in sila) that can be sent via the RPC APIs (0 = no cap)",
 		Value:    silaconfig.Defaults.RPCTxFeeCap,
 		Category: flags.APICategory,
 	}
@@ -1123,9 +1123,9 @@ Please note that --` + MetricsHTTPFlag.Name + ` must be set to start the server.
 var (
 	// TestnetFlags is the flag group of all built-in supported testnets.
 	TestnetFlags = []cli.Flag{
-		SepoliaFlag,
-		HoleskyFlag,
-		HoodiFlag,
+		SilaPublicTestnetFlag,
+		SilaStagingTestnetFlag,
+		SilaDevTestnetFlag,
 	}
 	// NetworkFlags is the flag group of all built-in supported networks.
 	NetworkFlags = append([]cli.Flag{MainnetFlag}, TestnetFlags...)
@@ -1153,14 +1153,14 @@ var (
 // then a subdirectory of the specified datadir will be used.
 func MakeDataDir(ctx *cli.Context) string {
 	if path := ctx.String(DataDirFlag.Name); path != "" {
-		if ctx.Bool(SepoliaFlag.Name) {
-			return filepath.Join(path, "sepolia")
+		if ctx.Bool(SilaPublicTestnetFlag.Name) {
+			return filepath.Join(path, "sila-public-testnet")
 		}
-		if ctx.Bool(HoleskyFlag.Name) {
-			return filepath.Join(path, "holesky")
+		if ctx.Bool(SilaStagingTestnetFlag.Name) {
+			return filepath.Join(path, "sila-staging-testnet")
 		}
-		if ctx.Bool(HoodiFlag.Name) {
-			return filepath.Join(path, "hoodi")
+		if ctx.Bool(SilaDevTestnetFlag.Name) {
+			return filepath.Join(path, "sila-dev-testnet")
 		}
 		return path
 	}
@@ -1207,10 +1207,10 @@ func setNodeUserIdent(ctx *cli.Context, cfg *node.Config) {
 //
 // 1. --bootnodes flag
 // 2. Config file
-// 3. Network preset flags (e.g. --holesky)
+// 3. Network preset flags (e.g. --sila-staging-testnet)
 // 4. default to mainnet nodes
 func setBootstrapNodes(ctx *cli.Context, cfg *p2p.Config) {
-	urls := params.MainnetBootnodes
+	urls := params.SilaMainnetBootnodes
 	if ctx.IsSet(BootnodesFlag.Name) {
 		urls = SplitAndTrim(ctx.String(BootnodesFlag.Name))
 	} else {
@@ -1218,12 +1218,12 @@ func setBootstrapNodes(ctx *cli.Context, cfg *p2p.Config) {
 			return // Already set by config file, don't apply defaults.
 		}
 		switch {
-		case ctx.Bool(HoleskyFlag.Name):
-			urls = params.HoleskyBootnodes
-		case ctx.Bool(SepoliaFlag.Name):
-			urls = params.SepoliaBootnodes
-		case ctx.Bool(HoodiFlag.Name):
-			urls = params.HoodiBootnodes
+		case ctx.Bool(SilaStagingTestnetFlag.Name):
+			urls = params.SilaStagingTestnetBootnodes
+		case ctx.Bool(SilaPublicTestnetFlag.Name):
+			urls = params.SilaPublicTestnetBootnodes
+		case ctx.Bool(SilaDevTestnetFlag.Name):
+			urls = params.SilaDevTestnetBootnodes
 		}
 	}
 	cfg.BootstrapNodes = mustParseBootnodes(urls)
@@ -1436,8 +1436,8 @@ func MakeDatabaseHandles(max int) int {
 	return int(raised / 2) // Leave half for networking and other stuff
 }
 
-// setEtherbase retrieves the etherbase from the directly specified command line flags.
-func setEtherbase(ctx *cli.Context, cfg *silaconfig.Config) {
+// setSilaBaseUnitbase retrieves the etherbase from the directly specified command line flags.
+func setSilaBaseUnitbase(ctx *cli.Context, cfg *silaconfig.Config) {
 	if !ctx.IsSet(MinerPendingFeeRecipientFlag.Name) {
 		return
 	}
@@ -1592,12 +1592,12 @@ func SetDataDir(ctx *cli.Context, cfg *node.Config) {
 		cfg.DataDir = ctx.String(DataDirFlag.Name)
 	case ctx.Bool(DeveloperFlag.Name):
 		cfg.DataDir = "" // unless explicitly requested, use memory databases
-	case ctx.Bool(SepoliaFlag.Name) && cfg.DataDir == node.DefaultDataDir():
-		cfg.DataDir = filepath.Join(node.DefaultDataDir(), "sepolia")
-	case ctx.Bool(HoleskyFlag.Name) && cfg.DataDir == node.DefaultDataDir():
-		cfg.DataDir = filepath.Join(node.DefaultDataDir(), "holesky")
-	case ctx.Bool(HoodiFlag.Name) && cfg.DataDir == node.DefaultDataDir():
-		cfg.DataDir = filepath.Join(node.DefaultDataDir(), "hoodi")
+	case ctx.Bool(SilaPublicTestnetFlag.Name) && cfg.DataDir == node.DefaultDataDir():
+		cfg.DataDir = filepath.Join(node.DefaultDataDir(), "sila-public-testnet")
+	case ctx.Bool(SilaStagingTestnetFlag.Name) && cfg.DataDir == node.DefaultDataDir():
+		cfg.DataDir = filepath.Join(node.DefaultDataDir(), "sila-staging-testnet")
+	case ctx.Bool(SilaDevTestnetFlag.Name) && cfg.DataDir == node.DefaultDataDir():
+		cfg.DataDir = filepath.Join(node.DefaultDataDir(), "sila-dev-testnet")
 	}
 }
 
@@ -1715,11 +1715,11 @@ func setRequiredBlocks(ctx *cli.Context, cfg *silaconfig.Config) {
 // SetSilaConfig applies sila-related command line flags to the config.
 func SetSilaConfig(ctx *cli.Context, stack *node.Node, cfg *silaconfig.Config) {
 	// Avoid conflicting network flags
-	flags.CheckExclusive(ctx, MainnetFlag, DeveloperFlag, SepoliaFlag, HoleskyFlag, HoodiFlag, OverrideGenesisFlag)
+	flags.CheckExclusive(ctx, MainnetFlag, DeveloperFlag, SilaPublicTestnetFlag, SilaStagingTestnetFlag, SilaDevTestnetFlag, OverrideGenesisFlag)
 	flags.CheckExclusive(ctx, DeveloperFlag, ExternalSignerFlag) // Can't use both ephemeral unlocked and external signer
 
 	// Set configurations from CLI flags
-	setEtherbase(ctx, cfg)
+	setSilaBaseUnitbase(ctx, cfg)
 	setGPO(ctx, &cfg.GPO)
 	setTxPool(ctx, &cfg.TxPool)
 	setBlobPool(ctx, &cfg.BlobPool)
@@ -1921,19 +1921,19 @@ func SetSilaConfig(ctx *cli.Context, stack *node.Node, cfg *silaconfig.Config) {
 	case ctx.Bool(MainnetFlag.Name):
 		cfg.NetworkId = 1
 		cfg.Genesis = core.DefaultGenesisBlock()
-		SetDNSDiscoveryDefaults(cfg, params.MainnetGenesisHash)
-	case ctx.Bool(HoleskyFlag.Name):
+		SetDNSDiscoveryDefaults(cfg, params.SilaMainnetGenesisHash)
+	case ctx.Bool(SilaStagingTestnetFlag.Name):
 		cfg.NetworkId = 17000
-		cfg.Genesis = core.DefaultHoleskyGenesisBlock()
-		SetDNSDiscoveryDefaults(cfg, params.HoleskyGenesisHash)
-	case ctx.Bool(SepoliaFlag.Name):
+		cfg.Genesis = core.DefaultSilaStagingTestnetGenesisBlock()
+		SetDNSDiscoveryDefaults(cfg, params.SilaStagingTestnetGenesisHash)
+	case ctx.Bool(SilaPublicTestnetFlag.Name):
 		cfg.NetworkId = 11155111
-		cfg.Genesis = core.DefaultSepoliaGenesisBlock()
-		SetDNSDiscoveryDefaults(cfg, params.SepoliaGenesisHash)
-	case ctx.Bool(HoodiFlag.Name):
+		cfg.Genesis = core.DefaultSilaPublicTestnetGenesisBlock()
+		SetDNSDiscoveryDefaults(cfg, params.SilaPublicTestnetGenesisHash)
+	case ctx.Bool(SilaDevTestnetFlag.Name):
 		cfg.NetworkId = 560048
-		cfg.Genesis = core.DefaultHoodiGenesisBlock()
-		SetDNSDiscoveryDefaults(cfg, params.HoodiGenesisHash)
+		cfg.Genesis = core.DefaultSilaDevTestnetGenesisBlock()
+		SetDNSDiscoveryDefaults(cfg, params.SilaDevTestnetGenesisHash)
 	case ctx.Bool(DeveloperFlag.Name):
 		cfg.NetworkId = 1337
 		cfg.SyncMode = silaconfig.FullSync
@@ -1963,7 +1963,7 @@ func SetSilaConfig(ctx *cli.Context, stack *node.Node, cfg *silaconfig.Config) {
 		}
 
 		// Figure out the dev account address.
-		// setEtherbase has been called above, configuring the miner address from command line flags.
+		// setSilaBaseUnitbase has been called above, configuring the miner address from command line flags.
 		if cfg.Miner.PendingFeeRecipient != (common.Address{}) {
 			developer = accounts.Account{Address: cfg.Miner.PendingFeeRecipient}
 		} else if accs := ks.Accounts(); len(accs) > 0 {
@@ -2030,7 +2030,7 @@ func SetSilaConfig(ctx *cli.Context, stack *node.Node, cfg *silaconfig.Config) {
 		cfg.Genesis = genesis
 	default:
 		if ctx.Uint64(NetworkIdFlag.Name) == 1 {
-			SetDNSDiscoveryDefaults(cfg, params.MainnetGenesisHash)
+			SetDNSDiscoveryDefaults(cfg, params.SilaMainnetGenesisHash)
 		}
 	}
 	if ctx.IsSet(NetworkIdFlag.Name) {
@@ -2069,16 +2069,16 @@ func SetSilaConfig(ctx *cli.Context, stack *node.Node, cfg *silaconfig.Config) {
 func MakeBeaconLightConfig(ctx *cli.Context) bparams.ClientConfig {
 	var config bparams.ClientConfig
 	customConfig := ctx.IsSet(BeaconConfigFlag.Name)
-	flags.CheckExclusive(ctx, MainnetFlag, SepoliaFlag, HoleskyFlag, HoodiFlag, BeaconConfigFlag)
+	flags.CheckExclusive(ctx, MainnetFlag, SilaPublicTestnetFlag, SilaStagingTestnetFlag, SilaDevTestnetFlag, BeaconConfigFlag)
 	switch {
 	case ctx.Bool(MainnetFlag.Name):
 		config.ChainConfig = *bparams.MainnetLightConfig
-	case ctx.Bool(SepoliaFlag.Name):
-		config.ChainConfig = *bparams.SepoliaLightConfig
-	case ctx.Bool(HoleskyFlag.Name):
-		config.ChainConfig = *bparams.HoleskyLightConfig
-	case ctx.Bool(HoodiFlag.Name):
-		config.ChainConfig = *bparams.HoodiLightConfig
+	case ctx.Bool(SilaPublicTestnetFlag.Name):
+		config.ChainConfig = *bparams.SilaPublicTestnetLightConfig
+	case ctx.Bool(SilaStagingTestnetFlag.Name):
+		config.ChainConfig = *bparams.SilaStagingTestnetLightConfig
+	case ctx.Bool(SilaDevTestnetFlag.Name):
+		config.ChainConfig = *bparams.SilaDevTestnetLightConfig
 	default:
 		if !customConfig {
 			config.ChainConfig = *bparams.MainnetLightConfig
@@ -2173,9 +2173,9 @@ func SetDNSDiscoveryDefaults(cfg *silaconfig.Config, genesis common.Hash) {
 	}
 }
 
-// RegisterEthService adds an Sila client to the stack.
+// RegisterSilaService adds an Sila client to the stack.
 // The second return value is the full node instance.
-func RegisterEthService(stack *node.Node, cfg *silaconfig.Config) (*sila.SilaAPIBackend, *sila.Sila) {
+func RegisterSilaService(stack *node.Node, cfg *silaconfig.Config) (*sila.SilaAPIBackend, *sila.Sila) {
 	backend, err := sila.New(stack, cfg)
 	if err != nil {
 		Fatalf("Failed to register the Sila service: %v", err)
@@ -2374,12 +2374,12 @@ func MakeGenesis(ctx *cli.Context) *core.Genesis {
 	switch {
 	case ctx.Bool(MainnetFlag.Name):
 		genesis = core.DefaultGenesisBlock()
-	case ctx.Bool(HoleskyFlag.Name):
-		genesis = core.DefaultHoleskyGenesisBlock()
-	case ctx.Bool(SepoliaFlag.Name):
-		genesis = core.DefaultSepoliaGenesisBlock()
-	case ctx.Bool(HoodiFlag.Name):
-		genesis = core.DefaultHoodiGenesisBlock()
+	case ctx.Bool(SilaStagingTestnetFlag.Name):
+		genesis = core.DefaultSilaStagingTestnetGenesisBlock()
+	case ctx.Bool(SilaPublicTestnetFlag.Name):
+		genesis = core.DefaultSilaPublicTestnetGenesisBlock()
+	case ctx.Bool(SilaDevTestnetFlag.Name):
+		genesis = core.DefaultSilaDevTestnetGenesisBlock()
 	case ctx.Bool(DeveloperFlag.Name):
 		Fatalf("Developer chains are ephemeral")
 	}

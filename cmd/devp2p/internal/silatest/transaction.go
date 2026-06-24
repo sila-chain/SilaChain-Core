@@ -24,9 +24,9 @@ import (
 
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/core/types"
-	"github.com/sila-org/sila/sila/protocols/sila"
 	"github.com/sila-org/sila/internal/utesting"
 	"github.com/sila-org/sila/rlp"
+	"github.com/sila-org/sila/sila/protocols/sila"
 )
 
 // sendTxs sends the given transactions to the node and

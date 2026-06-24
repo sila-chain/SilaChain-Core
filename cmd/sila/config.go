@@ -27,6 +27,7 @@ import (
 	"strings"
 	"unicode"
 
+	"github.com/naoina/toml"
 	"github.com/sila-org/sila/accounts"
 	"github.com/sila-org/sila/accounts/external"
 	"github.com/sila-org/sila/accounts/keystore"
@@ -36,9 +37,6 @@ import (
 	"github.com/sila-org/sila/cmd/utils"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/crypto"
-	"github.com/sila-org/sila/sila/catalyst"
-	"github.com/sila-org/sila/sila/silaconfig"
-	"github.com/sila-org/sila/sila/syncer"
 	"github.com/sila-org/sila/internal/flags"
 	"github.com/sila-org/sila/internal/telemetry/tracesetup"
 	"github.com/sila-org/sila/internal/version"
@@ -46,7 +44,9 @@ import (
 	"github.com/sila-org/sila/metrics"
 	"github.com/sila-org/sila/node"
 	"github.com/sila-org/sila/rpc"
-	"github.com/naoina/toml"
+	"github.com/sila-org/sila/sila/catalyst"
+	"github.com/sila-org/sila/sila/silaconfig"
+	"github.com/sila-org/sila/sila/syncer"
 	"github.com/urfave/cli/v2"
 )
 
@@ -107,7 +107,7 @@ type silastatsConfig struct {
 }
 
 type silaConfig struct {
-	Sila      silaconfig.Config
+	Sila     silaconfig.Config
 	Node     node.Config
 	Ethstats silastatsConfig
 	Metrics  metrics.Config
@@ -144,7 +144,7 @@ func defaultNodeConfig() node.Config {
 func loadBaseConfig(ctx *cli.Context) silaConfig {
 	// Load defaults.
 	cfg := silaConfig{
-		Sila:     silaconfig.Defaults,
+		Sila:    silaconfig.Defaults,
 		Node:    defaultNodeConfig(),
 		Metrics: metrics.DefaultConfig,
 	}
@@ -250,7 +250,7 @@ func makeFullNode(ctx *cli.Context) *node.Node {
 	}
 
 	// Add Sila service.
-	backend, sila := utils.RegisterEthService(stack, &cfg.Sila)
+	backend, sila := utils.RegisterSilaService(stack, &cfg.Sila)
 
 	// Create gauge with sila system and build information
 	if sila != nil { // The 'sila' backend may be nil in light mode

@@ -27,8 +27,8 @@ import (
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/core/tracing"
 	"github.com/sila-org/sila/core/types"
-	"github.com/sila-org/sila/sila/tracers"
 	"github.com/sila-org/sila/log"
+	"github.com/sila-org/sila/sila/tracers"
 )
 
 // fileWritingTracer wraps either a tracer or a logger. On tx start,

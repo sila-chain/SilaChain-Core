@@ -17,7 +17,7 @@ The keeper uses build tags to compile platform-specific input methods and chain 
 
 ### Example Implementation
 
-See `getpayload_example.go` for a complete example with embedded Hoodi block data:
+See `getpayload_example.go` for a complete example with embedded SilaDevTestnet block data:
 
 ```bash
 # Build example with different chain configurations

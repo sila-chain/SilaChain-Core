@@ -69,7 +69,7 @@ var blockRlp []byte
 // and returns it as a slice. It is expected to be an RLP-encoded Payload structure
 // that contains the witness and the block.
 // This is a demo version, that is intended to run on a regular computer, so what
-// it does is embed a small Hoodi block, encodes the Payload structure containing
+// it does is embed a small SilaDevTestnet block, encodes the Payload structure containing
 // the block and its witness as RLP, and returns the encoding.
 func getInput() []byte {
 	var block types.Block
@@ -89,7 +89,7 @@ func getInput() []byte {
 	}
 
 	payload := Payload{
-		ChainID: params.HoodiChainConfig.ChainID.Uint64(),
+		ChainID: params.SilaDevTestnetChainConfig.ChainID.Uint64(),
 		Block:   &block,
 		Witness: witness,
 	}

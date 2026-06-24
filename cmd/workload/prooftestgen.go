@@ -29,11 +29,11 @@ import (
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/core/types"
 	"github.com/sila-org/sila/crypto"
-	"github.com/sila-org/sila/sila/tracers"
-	"github.com/sila-org/sila/sila/tracers/native"
 	"github.com/sila-org/sila/internal/flags"
 	"github.com/sila-org/sila/internal/testrand"
 	"github.com/sila-org/sila/log"
+	"github.com/sila-org/sila/sila/tracers"
+	"github.com/sila-org/sila/sila/tracers/native"
 	"github.com/urfave/cli/v2"
 )
 

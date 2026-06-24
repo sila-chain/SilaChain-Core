@@ -26,12 +26,12 @@ import (
 
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/common/hexutil"
-	"github.com/sila-org/sila/sila"
-	"github.com/sila-org/sila/sila/catalyst"
-	"github.com/sila-org/sila/sila/silaconfig"
 	"github.com/sila-org/sila/internal/utesting"
 	"github.com/sila-org/sila/node"
 	"github.com/sila-org/sila/p2p"
+	"github.com/sila-org/sila/sila"
+	"github.com/sila-org/sila/sila/catalyst"
+	"github.com/sila-org/sila/sila/silaconfig"
 )
 
 func makeJWTSecret(t *testing.T) (string, [32]byte, error) {
@@ -46,7 +46,7 @@ func makeJWTSecret(t *testing.T) (string, [32]byte, error) {
 	return jwtPath, secret, nil
 }
 
-func TestEthSuite(t *testing.T) {
+func TestSilaSuite(t *testing.T) {
 	jwtPath, secret, err := makeJWTSecret(t)
 	if err != nil {
 		t.Fatalf("could not make jwt secret: %v", err)

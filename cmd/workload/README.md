@@ -1,12 +1,12 @@
 ## Workload Testing Tool
 
-This tool performs RPC calls against a live node. It has tests for the Sepolia testnet and
+This tool performs RPC calls against a live node. It has tests for the SilaPublicTestnet testnet and
 Mainnet. Note the tests require a fully synced node.
 
-To run the tests against a Sepolia node, use:
+To run the tests against a SilaPublicTestnet node, use:
 
 ```shell
-> ./workload test --sepolia http://host:8545
+> ./workload test --sila-public-testnet http://host:8545
 ```
 
 To run a specific test, use the `--run` flag to filter the test cases. Filtering works
@@ -14,14 +14,14 @@ similar to the `go test` command. For example, to run only tests for `sila_getBl
 and `sila_getBlockByNumber`, use this command:
 
 ```
-> ./workload test --sepolia --run History/getBlockBy http://host:8545
+> ./workload test --sila-public-testnet --run History/getBlockBy http://host:8545
 ```
 
 Notably, trace tests require archive which keeps all the historical states for tracing.
 The additional flag is required to activate the trace tests.
 
 ```
-> ./workload test --sepolia --archive --run Trace/Block http://host:8545
+> ./workload test --sila-public-testnet --archive --run Trace/Block http://host:8545
 ```
 
 ### Regenerating tests

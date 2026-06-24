@@ -28,9 +28,9 @@ import (
 	"github.com/sila-org/sila/core/state"
 	"github.com/sila-org/sila/core/types"
 	"github.com/sila-org/sila/crypto"
-	"github.com/sila-org/sila/sila/protocols/snap"
 	"github.com/sila-org/sila/internal/utesting"
 	"github.com/sila-org/sila/rlp"
+	"github.com/sila-org/sila/sila/protocols/snap"
 	"github.com/sila-org/sila/trie"
 	"github.com/sila-org/sila/trie/trienode"
 )

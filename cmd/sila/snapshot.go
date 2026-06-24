@@ -209,13 +209,13 @@ the expected order for the overlay tree migration.
 `,
 			},
 			{
-				Name:    "list-eip-7610-accounts",
+				Name:    "list-sip-7610-accounts",
 				Aliases: []string{"sip7610"},
 				Usage:   "list SIP7610 eligible accounts",
-				Action:  listEIP7610EligibleAccounts,
+				Action:  listSIP7610EligibleAccounts,
 				Flags:   slices.Concat(utils.NetworkFlags, utils.DatabaseFlags),
 				Description: `
-sila snapshot list-eip-7610-accounts
+sila snapshot list-sip-7610-accounts
 traverses the post–SIP-161 state and returns all accounts that are eligible
 under SIP-7610: accounts with zero nonce, empty runtime code, and non-empty
 storage. The traversal will be aborted immediately if the state is prior to
@@ -1007,7 +1007,7 @@ func checkAccount(ctx *cli.Context) error {
 	return nil
 }
 
-// listEIP7610EligibleAccounts traverses the post–SIP-161 state and returns all
+// listSIP7610EligibleAccounts traverses the post–SIP-161 state and returns all
 // accounts that are eligible under SIP-7610: accounts with zero nonce, empty
 // runtime code, and non-empty storage.
 //
@@ -1020,7 +1020,7 @@ func checkAccount(ctx *cli.Context) error {
 // responsible for generating the eligible account set themselves.
 //
 // Notably, the exported accounts are identified by their address.
-func listEIP7610EligibleAccounts(ctx *cli.Context) error {
+func listSIP7610EligibleAccounts(ctx *cli.Context) error {
 	stack, _ := makeConfigNode(ctx)
 	defer stack.Close()
 
@@ -1038,7 +1038,7 @@ func listEIP7610EligibleAccounts(ctx *cli.Context) error {
 		return err
 	}
 	if !config.IsSIP158(headBlock.Number()) {
-		log.Info("Local head is prior to SIP-161", "head", headBlock.Number(), "eip-161", *config.SIP158Block)
+		log.Info("Local head is prior to SIP-161", "head", headBlock.Number(), "sip-161", *config.SIP158Block)
 		return nil
 	}
 	triedb := utils.MakeTrieDatabase(ctx, stack, chaindb, false, true, false)

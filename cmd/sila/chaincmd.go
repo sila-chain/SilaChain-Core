@@ -40,7 +40,6 @@ import (
 	"github.com/sila-org/sila/core/state"
 	"github.com/sila-org/sila/core/types"
 	"github.com/sila-org/sila/crypto"
-	"github.com/sila-org/sila/siladb"
 	"github.com/sila-org/sila/internal/debug"
 	"github.com/sila-org/sila/internal/era"
 	"github.com/sila-org/sila/internal/era/eradl"
@@ -50,6 +49,7 @@ import (
 	"github.com/sila-org/sila/log"
 	"github.com/sila-org/sila/node"
 	"github.com/sila-org/sila/params"
+	"github.com/sila-org/sila/siladb"
 	"github.com/urfave/cli/v2"
 )
 
@@ -495,12 +495,12 @@ func importHistory(ctx *cli.Context) error {
 		switch {
 		case ctx.Bool(utils.MainnetFlag.Name):
 			network = "mainnet"
-		case ctx.Bool(utils.SepoliaFlag.Name):
-			network = "sepolia"
-		case ctx.Bool(utils.HoleskyFlag.Name):
-			network = "holesky"
-		case ctx.Bool(utils.HoodiFlag.Name):
-			network = "hoodi"
+		case ctx.Bool(utils.SilaPublicTestnetFlag.Name):
+			network = "sila-public-testnet"
+		case ctx.Bool(utils.SilaStagingTestnetFlag.Name):
+			network = "sila-staging-testnet"
+		case ctx.Bool(utils.SilaDevTestnetFlag.Name):
+			network = "sila-dev-testnet"
 		}
 	} else {
 		// No network flag set, try to determine network based on files
@@ -793,8 +793,8 @@ func downloadEra(ctx *cli.Context) error {
 	if utils.IsNetworkPreset(ctx) {
 		switch {
 		case ctx.IsSet(utils.MainnetFlag.Name):
-		case ctx.IsSet(utils.SepoliaFlag.Name):
-			network = "sepolia"
+		case ctx.IsSet(utils.SilaPublicTestnetFlag.Name):
+			network = "sila-public-testnet"
 		default:
 			return errors.New("unsupported network, no known era1 checksums")
 		}

@@ -135,12 +135,12 @@ type nodeFilterC struct {
 }
 
 var filterFlags = map[string]nodeFilterC{
-	"-limit":       {1, trueFilter}, // needed to skip over -limit
-	"-ip":          {1, ipFilter},
-	"-min-age":     {1, minAgeFilter},
+	"-limit":        {1, trueFilter}, // needed to skip over -limit
+	"-ip":           {1, ipFilter},
+	"-min-age":      {1, minAgeFilter},
 	"-sila-network": {1, silaFilter},
-	"-les-server":  {0, lesFilter},
-	"-snap":        {0, snapFilter},
+	"-les-server":   {0, lesFilter},
+	"-snap":         {0, snapFilter},
 }
 
 // parseFilters parses nodeFilters from args.
@@ -229,13 +229,13 @@ func silaFilter(args []string) (nodeFilter, error) {
 	var filter forkid.Filter
 	switch args[0] {
 	case "mainnet":
-		filter = forkid.NewStaticFilter(params.MainnetChainConfig, core.DefaultGenesisBlock().ToBlock())
-	case "sepolia":
-		filter = forkid.NewStaticFilter(params.SepoliaChainConfig, core.DefaultSepoliaGenesisBlock().ToBlock())
-	case "holesky":
-		filter = forkid.NewStaticFilter(params.HoleskyChainConfig, core.DefaultHoleskyGenesisBlock().ToBlock())
-	case "hoodi":
-		filter = forkid.NewStaticFilter(params.HoodiChainConfig, core.DefaultHoodiGenesisBlock().ToBlock())
+		filter = forkid.NewStaticFilter(params.SilaMainnetChainConfig, core.DefaultGenesisBlock().ToBlock())
+	case "sila-public-testnet":
+		filter = forkid.NewStaticFilter(params.SilaPublicTestnetChainConfig, core.DefaultSilaPublicTestnetGenesisBlock().ToBlock())
+	case "sila-staging-testnet":
+		filter = forkid.NewStaticFilter(params.SilaStagingTestnetChainConfig, core.DefaultSilaStagingTestnetGenesisBlock().ToBlock())
+	case "sila-dev-testnet":
+		filter = forkid.NewStaticFilter(params.SilaDevTestnetChainConfig, core.DefaultSilaDevTestnetGenesisBlock().ToBlock())
 	default:
 		return nil, fmt.Errorf("unknown network %q", args[0])
 	}

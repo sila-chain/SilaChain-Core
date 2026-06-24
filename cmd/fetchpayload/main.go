@@ -33,9 +33,9 @@ import (
 	"github.com/sila-org/sila/common/hexutil"
 	"github.com/sila-org/sila/core/stateless"
 	"github.com/sila-org/sila/core/types"
-	"github.com/sila-org/sila/silaclient"
 	"github.com/sila-org/sila/rlp"
 	"github.com/sila-org/sila/rpc"
+	"github.com/sila-org/sila/silaclient"
 )
 
 // Payload is duplicated from cmd/keeper/main.go (package main, not importable).

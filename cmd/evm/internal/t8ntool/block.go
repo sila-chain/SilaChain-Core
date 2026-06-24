@@ -82,8 +82,8 @@ type bbInput struct {
 	Clique      *cliqueInput        `json:"clique,omitempty"`
 
 	Silaash bool                 `json:"-"`
-	Txs    []*types.Transaction `json:"-"`
-	Ommers []*types.Header      `json:"-"`
+	Txs     []*types.Transaction `json:"-"`
+	Ommers  []*types.Header      `json:"-"`
 }
 
 type cliqueInput struct {

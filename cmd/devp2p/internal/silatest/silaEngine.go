@@ -25,8 +25,8 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/sila-org/sila/common"
 	"github.com/golang-jwt/jwt/v4"
+	"github.com/sila-org/sila/common"
 )
 
 // SilaEngineClient is a wrapper around silaEngine-related data.

@@ -25,9 +25,9 @@ import (
 
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/crypto"
-	"github.com/sila-org/sila/sila/tracers"
 	"github.com/sila-org/sila/internal/utesting"
 	"github.com/sila-org/sila/log"
+	"github.com/sila-org/sila/sila/tracers"
 	"github.com/urfave/cli/v2"
 )
 

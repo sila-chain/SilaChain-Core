@@ -38,9 +38,9 @@ import (
 	"github.com/sila-org/sila/core/state"
 	"github.com/sila-org/sila/core/types"
 	"github.com/sila-org/sila/crypto"
-	"github.com/sila-org/sila/sila/protocols/sila"
 	"github.com/sila-org/sila/params"
 	"github.com/sila-org/sila/rlp"
+	"github.com/sila-org/sila/sila/protocols/sila"
 )
 
 // Chain is a lightweight blockchain-like store which can read a hivechain

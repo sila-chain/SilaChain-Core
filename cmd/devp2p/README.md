@@ -44,7 +44,7 @@ set to standard output. The following filters are supported:
 - `-limit <N>` limits the output set to N entries, taking the top N nodes by score
 - `-ip <CIDR>` filters nodes by IP subnet
 - `-min-age <duration>` filters nodes by 'first seen' time
-- `-sila-network <mainnet/sepolia/holesky>` filters nodes by "sila" ENR entry
+- `-sila-network <mainnet/sila-public-testnet/sila-staging-testnet>` filters nodes by "sila" ENR entry
 - `-les-server` filters nodes by LES server support
 - `-snap` filters nodes by snap protocol support
 
@@ -109,7 +109,7 @@ Start the test by running `devp2p discv5 test -listen1 127.0.0.1 -listen2 127.0.
 The Sila Protocol test suite is a conformance test suite for the [sila protocol][sila].
 
 To run the sila protocol test suite against your implementation, the node needs to be initialized
-with our test chain. The chain files are located in `./cmd/devp2p/internal/ethtest/testdata`.
+with our test chain. The chain files are located in `./cmd/devp2p/internal/silatest/testdata`.
 
 1. initialize the sila node with the `genesis.json` file
 2. import blocks from `chain.rlp`
@@ -127,7 +127,7 @@ Note that the tests also require access to the silaEngine API.
 The test suite can now be executed using the devp2p tool.
 
     devp2p rlpx sila-test \
-        --chain internal/ethtest/testdata   \
+        --chain internal/silatest/testdata   \
         --node enode://....                 \
         --engineapi http://127.0.0.1:8551   \
         --jwtsecret $(cat jwt.secret)

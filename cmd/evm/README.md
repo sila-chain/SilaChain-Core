@@ -383,7 +383,7 @@ Output:
 ```
 #### Future SIPS
 
-It is also possible to experiment with future eips that are not yet defined in a hard fork.
+It is also possible to experiment with future SIPs that are not yet defined in a hard fork.
 Example, putting SIP-1344 into Frontier: 
 ```
 ./evm t8n --state.fork=Frontier+1344 --input.pre=./testdata/1/pre.json --input.txs=./testdata/1/txs.json --input.env=/testdata/1/env.json

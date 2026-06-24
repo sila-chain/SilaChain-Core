@@ -23,14 +23,14 @@ import (
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/common/hexutil"
 	"github.com/sila-org/sila/core/types"
+	"github.com/sila-org/sila/rpc"
 	"github.com/sila-org/sila/silaclient"
 	"github.com/sila-org/sila/silaclient/silaclient"
-	"github.com/sila-org/sila/rpc"
 	"github.com/urfave/cli/v2"
 )
 
 type client struct {
-	Sila  *silaclient.Client
+	Sila *silaclient.Client
 	Sila *silaclient.Client
 	RPC  *rpc.Client
 }
@@ -46,7 +46,7 @@ func makeClient(ctx *cli.Context) *client {
 	}
 	return &client{
 		RPC:  cl,
-		Sila:  silaclient.NewClient(cl),
+		Sila: silaclient.NewClient(cl),
 		Sila: silaclient.New(cl),
 	}
 }

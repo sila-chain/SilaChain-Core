@@ -26,9 +26,9 @@ import (
 	"github.com/sila-org/sila/cmd/evm/internal/t8ntool"
 	"github.com/sila-org/sila/core/state"
 	"github.com/sila-org/sila/core/tracing"
-	"github.com/sila-org/sila/sila/tracers/logger"
 	"github.com/sila-org/sila/internal/debug"
 	"github.com/sila-org/sila/internal/flags"
+	"github.com/sila-org/sila/sila/tracers/logger"
 	"github.com/urfave/cli/v2"
 
 	// Force-load the tracer engines to trigger registration

@@ -22,14 +22,14 @@ import (
 	"testing"
 
 	"github.com/sila-org/sila/core/types"
-	"github.com/sila-org/sila/sila/protocols/sila"
 	"github.com/sila-org/sila/p2p"
+	"github.com/sila-org/sila/sila/protocols/sila"
 	"github.com/stretchr/testify/assert"
 )
 
-// TestEthProtocolNegotiation tests whether the test suite
+// TestSilaProtocolNegotiation tests whether the test suite
 // can negotiate the highest sila protocol in a status message exchange
-func TestEthProtocolNegotiation(t *testing.T) {
+func TestSilaProtocolNegotiation(t *testing.T) {
 	t.Parallel()
 	var tests = []struct {
 		conn     *Conn
@@ -117,7 +117,7 @@ func TestEthProtocolNegotiation(t *testing.T) {
 
 	for i, tt := range tests {
 		t.Run(strconv.Itoa(i), func(t *testing.T) {
-			tt.conn.negotiateEthProtocol(tt.caps)
+			tt.conn.negotiateSilaProtocol(tt.caps)
 			assert.Equal(t, tt.expected, uint32(tt.conn.negotiatedProtoVersion))
 		})
 	}
