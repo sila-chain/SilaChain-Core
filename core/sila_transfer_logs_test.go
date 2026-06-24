@@ -55,7 +55,7 @@ contract TestLogs {
 }
 */
 
-// TestEthTransferLogs tests EIP-7708 SILA transfer log output by simulating a
+// TestEthTransferLogs tests SIP-7708 SILA transfer log output by simulating a
 // scenario including transaction, CALL and SELFDESTRUCT value transfers, and
 // also "ordinary" logs emitted. The same scenario is also tested with no value
 // transferred.
@@ -75,7 +75,7 @@ func testEthTransferLogs(t *testing.T, value uint64) {
 		testEvent2 = crypto.Keccak256Hash([]byte("TestEvent2()"))
 		config     = *params.MergedTestChainConfig
 		signer     = types.LatestSigner(&config)
-		silaEngine     = beacon.New(silaash.NewFaker())
+		silaEngine = beacon.New(silaash.NewFaker())
 	)
 
 	//TODO remove this hacky config initialization when final Amsterdam config is available

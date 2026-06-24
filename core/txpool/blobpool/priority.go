@@ -26,7 +26,7 @@ import (
 var log1_125 = math.Log(1.125)
 
 // log1_17 is used in the eviction priority calculation for blob fees.
-// EIP-7892 (BPO) changed the ratio of target to max blobs, and with that
+// SIP-7892 (BPO) changed the ratio of target to max blobs, and with that
 // also the maximum blob fee decrease in a slot from 1.125 to approx 1.17 .
 // Since we want priorities to approximate time, we should change our log
 // calculation for blob fees.

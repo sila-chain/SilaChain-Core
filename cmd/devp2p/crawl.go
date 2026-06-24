@@ -193,7 +193,7 @@ func (c *crawler) updateNode(n *enode.Node) int {
 	node.LastCheck = truncNow()
 	if nn, err := c.disc.RequestENR(n); err != nil {
 		if node.Score == 0 {
-			// Node doesn't implement EIP-868.
+			// Node doesn't implement SIP-868.
 			log.Debug("Skipping node", "id", n.ID())
 			return nodeSkipIncompat
 		}

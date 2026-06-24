@@ -19,19 +19,19 @@ package vm
 import (
 	"fmt"
 
+	"github.com/holiman/uint256"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/common/math"
 	"github.com/sila-org/sila/core/tracing"
-	"github.com/holiman/uint256"
 )
 
 // Config are the configuration options for the Interpreter
 type Config struct {
 	Tracer *tracing.Hooks
 
-	NoBaseFee               bool  // Forces the EIP-1559 baseFee to 0 (needed for 0 price calls)
+	NoBaseFee               bool  // Forces the SIP-1559 baseFee to 0 (needed for 0 price calls)
 	EnablePreimageRecording bool  // Enables recording of SHA3/keccak preimages
-	ExtraEips               []int // Additional EIPS that are to be enabled
+	ExtraEips               []int // Additional SIPS that are to be enabled
 }
 
 // ScopeContext contains the things that are per-call, such as stack and memory,

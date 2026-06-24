@@ -33,6 +33,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/holiman/uint256"
 	"github.com/sila-org/sila"
 	"github.com/sila-org/sila/accounts"
 	"github.com/sila-org/sila/accounts/abi"
@@ -50,13 +51,12 @@ import (
 	"github.com/sila-org/sila/core/vm"
 	"github.com/sila-org/sila/crypto"
 	"github.com/sila-org/sila/crypto/kzg4844"
-	"github.com/sila-org/sila/siladb"
 	"github.com/sila-org/sila/event"
 	"github.com/sila-org/sila/internal/blocktest"
 	"github.com/sila-org/sila/internal/silaapi/override"
 	"github.com/sila-org/sila/params"
 	"github.com/sila-org/sila/rpc"
-	"github.com/holiman/uint256"
+	"github.com/sila-org/sila/siladb"
 	"github.com/stretchr/testify/require"
 )
 
@@ -501,7 +501,7 @@ func (b testBackend) FeeHistory(ctx context.Context, blockCount uint64, lastBloc
 }
 func (b testBackend) BlobBaseFee(ctx context.Context) *big.Int { return new(big.Int) }
 func (b testBackend) BaseFee(ctx context.Context) *big.Int     { return new(big.Int) }
-func (b testBackend) ChainDb() siladb.Database                  { return b.db }
+func (b testBackend) ChainDb() siladb.Database                 { return b.db }
 func (b testBackend) AccountManager() *accounts.Manager        { return b.accman }
 func (b testBackend) ExtRPCEnabled() bool                      { return false }
 func (b testBackend) RPCGasCap() uint64                        { return 10000000 }
@@ -687,7 +687,7 @@ func (b testBackend) SubscribeNewTxsEvent(events chan<- core.NewTxsEvent) event.
 	panic("implement me")
 }
 func (b testBackend) ChainConfig() *params.ChainConfig { return b.chain.Config() }
-func (b testBackend) SilaEngine() consensus.SilaEngine         { return b.chain.SilaEngine() }
+func (b testBackend) SilaEngine() consensus.SilaEngine { return b.chain.SilaEngine() }
 func (b testBackend) GetLogs(ctx context.Context, blockHash common.Hash, number uint64) ([][]*types.Log, error) {
 	panic("implement me")
 }
@@ -936,7 +936,7 @@ func TestEstimateGas(t *testing.T) {
 			blockOverrides: override.BlockOverrides{Number: (*hexutil.Big)(big.NewInt(11))},
 			expectErr:      newRevertError(packRevert("block 11")),
 		},
-		// Should be able to send to an EIP-7702 delegated account.
+		// Should be able to send to an SIP-7702 delegated account.
 		{
 			blockNumber: rpc.LatestBlockNumber,
 			call: TransactionArgs{
@@ -946,7 +946,7 @@ func TestEstimateGas(t *testing.T) {
 			},
 			want: 21000,
 		},
-		// Should be able to send as EIP-7702 delegated account.
+		// Should be able to send as SIP-7702 delegated account.
 		{
 			blockNumber: rpc.LatestBlockNumber,
 			call: TransactionArgs{
@@ -4012,7 +4012,7 @@ func TestEIP7910Config(t *testing.T) {
 			CancunTime:              newUint64(0),
 			PragueTime:              newUint64(1742999832),
 			DepositContractAddress:  common.HexToAddress("0x00000000219ab540356cBB839Cbe05303d7705Fa"),
-			Silaash:                  new(params.SilaashConfig),
+			Silaash:                 new(params.SilaashConfig),
 			BlobScheduleConfig: &params.BlobScheduleConfig{
 				Cancun: params.DefaultCancunBlobConfig,
 				Prague: params.DefaultPragueBlobConfig,

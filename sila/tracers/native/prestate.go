@@ -29,10 +29,10 @@ import (
 	"github.com/sila-org/sila/core/types"
 	"github.com/sila-org/sila/core/vm"
 	"github.com/sila-org/sila/crypto"
-	"github.com/sila-org/sila/sila/tracers"
-	"github.com/sila-org/sila/sila/tracers/internal"
 	"github.com/sila-org/sila/log"
 	"github.com/sila-org/sila/params"
+	"github.com/sila-org/sila/sila/tracers"
+	"github.com/sila-org/sila/sila/tracers/internal"
 )
 
 //go:generate go run github.com/fjl/gencodec -type account -field-override accountMarshaling -out gen_account_json.go
@@ -46,7 +46,7 @@ type stateMap = map[common.Address]*account
 type account struct {
 	Balance *big.Int `json:"balance,omitempty"`
 	// Code is a pointer so omitempty can omit unchanged code (nil) while
-	// still emitting "0x" when code is cleared (e.g. EIP-7702 deauth).
+	// still emitting "0x" when code is cleared (e.g. SIP-7702 deauth).
 	Code     *[]byte                     `json:"code,omitempty"`
 	CodeHash *common.Hash                `json:"codeHash,omitempty"`
 	Nonce    uint64                      `json:"nonce,omitempty"`
@@ -135,12 +135,12 @@ func (t *prestateTracer) OnOpcode(pc uint64, opcode byte, gas, cost uint64, scop
 		t.lookupAccount(addr)
 		if op == vm.SELFDESTRUCT {
 			if t.chainConfig.IsCancun(t.env.BlockNumber, t.env.Time) {
-				// EIP-6780: only delete if created in same transaction
+				// SIP-6780: only delete if created in same transaction
 				if t.created[caller] {
 					t.deleted[caller] = true
 				}
 			} else {
-				// Pre-EIP-6780: always delete
+				// Pre-SIP-6780: always delete
 				t.deleted[caller] = true
 			}
 		}

@@ -20,14 +20,14 @@ import (
 	"bytes"
 	"fmt"
 
+	"github.com/holiman/uint256"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/core/rawdb"
 	"github.com/sila-org/sila/core/types"
 	"github.com/sila-org/sila/core/types/bal"
 	"github.com/sila-org/sila/crypto"
-	"github.com/sila-org/sila/siladb"
 	"github.com/sila-org/sila/rlp"
-	"github.com/holiman/uint256"
+	"github.com/sila-org/sila/siladb"
 )
 
 // verifyAccessList checks that the given block access list matches the hash
@@ -165,7 +165,7 @@ func (s *syncerV2) applyAccessList(b *bal.BlockAccessList, batch siladb.Batch) e
 			}
 		}
 
-		// Don't create empty accounts in flat state (EIP-161).
+		// Don't create empty accounts in flat state (SIP-161).
 		isEmpty := account.Balance.IsZero() && account.Nonce == 0 &&
 			bytes.Equal(account.CodeHash, types.EmptyCodeHash[:])
 		switch {

@@ -257,7 +257,7 @@ func (p *Peer) ReplyReceiptsRLP70(id uint64, receipts rlp.RawList[*ReceiptList],
 	})
 }
 
-// ReplyBlockAccessLists is the response to GetBlockAccessLists (EIP-8159).
+// ReplyBlockAccessLists is the response to GetBlockAccessLists (SIP-8159).
 func (p *Peer) ReplyBlockAccessLists(id uint64, list rlp.RawList[RawBlockAccessList]) error {
 	return p2p.Send(p.rw, BlockAccessListsMsg, &BlockAccessListPacket{
 		RequestId: id,
@@ -265,7 +265,7 @@ func (p *Peer) ReplyBlockAccessLists(id uint64, list rlp.RawList[RawBlockAccessL
 	})
 }
 
-// RequestBALs fetches block access lists for the given block hashes (EIP-8159)
+// RequestBALs fetches block access lists for the given block hashes (SIP-8159)
 func (p *Peer) RequestBALs(hashes []common.Hash, sink chan *Response) (*Request, error) {
 	p.Log().Debug("Fetching block access lists", "count", len(hashes))
 	id := rand.Uint64()

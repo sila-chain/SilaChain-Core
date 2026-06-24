@@ -26,10 +26,10 @@ import (
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/core/types"
 	"github.com/sila-org/sila/crypto"
-	"github.com/sila-org/sila/siladb"
 	"github.com/sila-org/sila/log"
 	"github.com/sila-org/sila/params"
 	"github.com/sila-org/sila/rlp"
+	"github.com/sila-org/sila/siladb"
 )
 
 // DecodeTxLookupEntry decodes the supplied tx lookup data.
@@ -148,7 +148,7 @@ func findTxInBlockBody(blockbody rlp.RawValue, target common.Hash) (*types.Trans
 	txIndex := uint64(0)
 	for iter.Next() {
 		// The preimage for the hash calculation of legacy transactions
-		// is just their RLP encoding. For typed (EIP-2718) transactions,
+		// is just their RLP encoding. For typed (SIP-2718) transactions,
 		// which are encoded as byte arrays, the preimage is the content of
 		// the byte array, so trim their prefix here.
 		txRLP := iter.Value()
@@ -316,10 +316,10 @@ func ReadCanonicalRawReceipt(db siladb.Reader, blockHash common.Hash, blockNumbe
 // Note that zero length rows are not stored in the database and therefore all
 // non-existent entries are interpreted as empty rows and return no error.
 // Also note that the mapRowIndex indexing scheme is the same as the one
-// proposed in EIP-7745 for tree-hashing the filter map structure and for the
+// proposed in SIP-7745 for tree-hashing the filter map structure and for the
 // same data proximity reasons it is also suitable for database representation.
 // See also:
-// https://eips.sila.org/EIPS/eip-7745#hash-tree-structure
+// https://sips.sila.org/SIPS/eip-7745#hash-tree-structure
 func ReadFilterMapExtRow(db siladb.KeyValueReader, mapRowIndex uint64, bitLength uint) ([]uint32, error) {
 	byteLength := int(bitLength) / 8
 	if int(bitLength) != byteLength*8 {

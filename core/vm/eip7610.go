@@ -24,8 +24,8 @@ import (
 )
 
 // eip7610Accounts lists the addresses eligible for contract deployment
-// rejection under EIP-7610, keyed by chain ID. Only networks that adopted
-// EIP-158 after genesis need an entry; all others have no pre-existing
+// rejection under SIP-7610, keyed by chain ID. Only networks that adopted
+// SIP-158 after genesis need an entry; all others have no pre-existing
 // address collisions to guard against.
 var eip7610Accounts = map[uint64][]common.Address{
 	params.MainnetChainConfig.ChainID.Uint64(): {
@@ -82,12 +82,12 @@ var eip7610AccountSets = func() map[uint64]map[common.Address]struct{} {
 // targets an already existing account in Sila. This situation would only
 // occur in the event of an address collision, which is extremely unlikely.
 //
-// This check is skipped for blocks prior to EIP-158, serving as a safeguard
+// This check is skipped for blocks prior to SIP-158, serving as a safeguard
 // against potential address collisions in the future. Chains that are not
 // registered in eip7610Accounts are assumed to have no rejected accounts,
 // and false is returned for them.
 func isEIP7610RejectedAccount(chainID *big.Int, addr common.Address, isEIP158 bool) bool {
-	// Short circuit for blocks prior to EIP-158.
+	// Short circuit for blocks prior to SIP-158.
 	if !isEIP158 {
 		return false
 	}

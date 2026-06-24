@@ -288,7 +288,7 @@ func TestT8n(t *testing.T) {
 			output: t8nOutput{alloc: true, result: true},
 			expOut: "exp.json",
 		},
-		{ // Prague test, EIP-7702 transaction
+		{ // Prague test, SIP-7702 transaction
 			base: "./testdata/33",
 			input: t8nInput{
 				"alloc.json", "txs.json", "env.json", "Prague", "",
@@ -296,7 +296,7 @@ func TestT8n(t *testing.T) {
 			output: t8nOutput{alloc: true, result: true},
 			expOut: "exp.json",
 		},
-		{ // Osaka test, EIP-7918 blob gas with parent base fee
+		{ // Osaka test, SIP-7918 blob gas with parent base fee
 			base: "./testdata/34",
 			input: t8nInput{
 				"alloc.json", "txs.json", "env.json", "Osaka", "",
@@ -468,9 +468,9 @@ type b11rInput struct {
 	inWithdrawals string
 	inTxsRlp      string
 	inClique      string
-	silaash        bool
-	silaashMode    string
-	silaashDir     string
+	silaash       bool
+	silaashMode   string
+	silaashDir    string
 }
 
 func (args *b11rInput) get(base string) []string {

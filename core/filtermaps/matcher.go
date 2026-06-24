@@ -39,7 +39,7 @@ var ErrMatchAll = errors.New("match all patterns not supported")
 
 // MatcherBackend defines the functions required for searching in the log index
 // data structure. It is currently implemented by FilterMapsMatcherBackend but
-// once EIP-7745 is implemented and active, these functions can also be trustlessly
+// once SIP-7745 is implemented and active, these functions can also be trustlessly
 // served by a remote prover.
 type MatcherBackend interface {
 	GetParams() *Params

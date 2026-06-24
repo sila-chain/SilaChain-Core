@@ -33,6 +33,7 @@ import (
 	"strings"
 	"time"
 
+	pcsclite "github.com/gballet/go-libpcsclite"
 	"github.com/sila-org/sila/accounts"
 	"github.com/sila-org/sila/accounts/keystore"
 	bparams "github.com/sila-org/sila/beacon/params"
@@ -46,19 +47,10 @@ import (
 	"github.com/sila-org/sila/core/vm"
 	"github.com/sila-org/sila/crypto"
 	"github.com/sila-org/sila/crypto/kzg4844"
-	"github.com/sila-org/sila/sila"
-	"github.com/sila-org/sila/sila/silaconfig"
-	"github.com/sila-org/sila/sila/filters"
-	"github.com/sila-org/sila/sila/gasprice"
-	"github.com/sila-org/sila/sila/syncer"
-	"github.com/sila-org/sila/sila/tracers"
-	"github.com/sila-org/sila/siladb"
-	"github.com/sila-org/sila/siladb/remotedb"
-	"github.com/sila-org/sila/silastats"
 	"github.com/sila-org/sila/graphql"
-	"github.com/sila-org/sila/internal/silaapi"
 	"github.com/sila-org/sila/internal/flags"
 	"github.com/sila-org/sila/internal/memlimit"
+	"github.com/sila-org/sila/internal/silaapi"
 	"github.com/sila-org/sila/log"
 	"github.com/sila-org/sila/metrics"
 	"github.com/sila-org/sila/metrics/exp"
@@ -71,10 +63,18 @@ import (
 	"github.com/sila-org/sila/p2p/netutil"
 	"github.com/sila-org/sila/params"
 	"github.com/sila-org/sila/rpc"
+	"github.com/sila-org/sila/sila"
+	"github.com/sila-org/sila/sila/filters"
+	"github.com/sila-org/sila/sila/gasprice"
+	"github.com/sila-org/sila/sila/silaconfig"
+	"github.com/sila-org/sila/sila/syncer"
+	"github.com/sila-org/sila/sila/tracers"
+	"github.com/sila-org/sila/siladb"
+	"github.com/sila-org/sila/siladb/remotedb"
+	"github.com/sila-org/sila/silastats"
 	"github.com/sila-org/sila/triedb"
 	"github.com/sila-org/sila/triedb/hashdb"
 	"github.com/sila-org/sila/triedb/pathdb"
-	pcsclite "github.com/gballet/go-libpcsclite"
 	"github.com/urfave/cli/v2"
 )
 
@@ -299,7 +299,7 @@ var (
 	}
 	SnapV2Flag = &cli.BoolFlag{
 		Name:     "snap.v2",
-		Usage:    "Enable the experimental snap/2 (EIP-8189, BAL-based) sync protocol (advertises and syncs via snap/2; not safe on public networks)",
+		Usage:    "Enable the experimental snap/2 (SIP-8189, BAL-based) sync protocol (advertises and syncs via snap/2; not safe on public networks)",
 		Value:    silaconfig.Defaults.SnapV2,
 		Category: flags.StateCategory,
 	}

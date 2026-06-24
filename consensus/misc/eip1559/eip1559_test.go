@@ -44,7 +44,7 @@ func copyConfig(original *params.ChainConfig) *params.ChainConfig {
 		BerlinBlock:             original.BerlinBlock,
 		LondonBlock:             original.LondonBlock,
 		TerminalTotalDifficulty: original.TerminalTotalDifficulty,
-		Silaash:                  original.Silaash,
+		Silaash:                 original.Silaash,
 		Clique:                  original.Clique,
 	}
 }
@@ -56,7 +56,7 @@ func config() *params.ChainConfig {
 }
 
 // TestBlockGasLimits tests the gasLimit checks for blocks both across
-// the EIP-1559 boundary and post-1559 blocks
+// the SIP-1559 boundary and post-1559 blocks
 func TestBlockGasLimits(t *testing.T) {
 	initial := new(big.Int).SetUint64(params.InitialBaseFee)
 

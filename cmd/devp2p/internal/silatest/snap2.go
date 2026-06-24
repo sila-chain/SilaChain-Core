@@ -25,12 +25,12 @@ import (
 	"github.com/sila-org/sila/core/types"
 	"github.com/sila-org/sila/core/types/bal"
 	"github.com/sila-org/sila/crypto"
-	"github.com/sila-org/sila/sila/protocols/snap"
 	"github.com/sila-org/sila/internal/utesting"
 	"github.com/sila-org/sila/rlp"
+	"github.com/sila-org/sila/sila/protocols/snap"
 )
 
-// Snap/2 (EIP-8189) replaces trie node healing with BAL-based state catch-up.
+// Snap/2 (SIP-8189) replaces trie node healing with BAL-based state catch-up.
 // It keeps 0x00..0x05 (AccountRange/StorageRanges/ByteCodes) unchanged, removes
 // GetTrieNodes (0x06) / TrieNodes (0x07), and adds GetBlockAccessLists (0x08) /
 // BlockAccessLists (0x09).
@@ -43,7 +43,7 @@ import (
 // TestSnap2Status performs an RLPx+sila+snap/2 handshake against the node,
 // verifying that the node advertises and negotiates snap/2.
 func (s *Suite) TestSnap2Status(t *utesting.T) {
-	t.Log(`This test performs a snap/2 (EIP-8189) handshake. The peer is expected to
+	t.Log(`This test performs a snap/2 (SIP-8189) handshake. The peer is expected to
 advertise snap/2 as a p2p capability and accept the connection.`)
 
 	conn, err := s.dialSnap2()
@@ -64,7 +64,7 @@ type accessListsTest struct {
 	hashes []common.Hash
 
 	// minEntries/maxEntries bound the number of entries the response list
-	// MUST contain. Per EIP-8189 the server may truncate from the tail when
+	// MUST contain. Per SIP-8189 the server may truncate from the tail when
 	// the byte soft limit is reached, but MUST preserve request order.
 	minEntries int
 	maxEntries int
@@ -73,7 +73,7 @@ type accessListsTest struct {
 }
 
 // TestSnap2GetBlockAccessLists exercises various forms of GetBlockAccessLists
-// requests defined in EIP-8189. Per the spec:
+// requests defined in SIP-8189. Per the spec:
 //
 //   - Nodes MUST always respond.
 //   - Unavailable BALs are returned as the RLP empty string (0x80) at the
@@ -211,12 +211,12 @@ each position independently and preserve request order.`,
 }
 
 // TestSnap2TrieNodesRemoved verifies that snap/2 no longer serves the
-// GetTrieNodes message (0x06). Per EIP-8189, snap/2 removes GetTrieNodes and
+// GetTrieNodes message (0x06). Per SIP-8189, snap/2 removes GetTrieNodes and
 // TrieNodes entirely. A server that negotiated snap/2 must not treat these
 // codes as valid snap messages and should disconnect the peer that sends them.
 func (s *Suite) TestSnap2TrieNodesRemoved(t *utesting.T) {
 	t.Log(`This test verifies that sending a GetTrieNodes message over a snap/2
-connection causes the peer to reject the request. Per EIP-8189, GetTrieNodes
+connection causes the peer to reject the request. Per SIP-8189, GetTrieNodes
 is removed in snap/2.`)
 
 	conn, err := s.dialSnap2()
@@ -261,11 +261,11 @@ is removed in snap/2.`)
 }
 
 // softResponseLimitSnap mirrors the recommended 2 MiB soft limit for
-// BlockAccessLists responses from EIP-8189 §"Response Size Limit".
+// BlockAccessLists responses from SIP-8189 §"Response Size Limit".
 const softResponseLimitSnap = 2 * 1024 * 1024
 
 // snapGetAccessLists sends a GetBlockAccessLists request, validates the
-// response structure against EIP-8189, and verifies BAL content against the
+// response structure against SIP-8189, and verifies BAL content against the
 // block-access-list-hash field of the corresponding block header (when the
 // block is known and a BAL was returned).
 func (s *Suite) snapGetAccessLists(t *utesting.T, tc *accessListsTest) error {
@@ -343,7 +343,7 @@ func (s *Suite) snapGetAccessLists(t *utesting.T, tc *accessListsTest) error {
 			return fmt.Errorf("entry %d: server returned BAL data for a block with no expected BAL (hash %x)", idx, tc.hashes[idx])
 		}
 
-		// Per EIP-8189: compute keccak256(rlp.encode(bal)) against the raw
+		// Per SIP-8189: compute keccak256(rlp.encode(bal)) against the raw
 		// bytes actually received on the wire, and compare to the header
 		// commitment. Hashing raw bytes (rather than re-encoding after a
 		// decode round-trip) catches peers that send non-canonical BAL

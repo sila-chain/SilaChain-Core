@@ -24,6 +24,7 @@ import (
 	"math/big"
 	"strings"
 
+	"github.com/holiman/uint256"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/common/hexutil"
 	"github.com/sila-org/sila/common/math"
@@ -32,14 +33,13 @@ import (
 	"github.com/sila-org/sila/core/tracing"
 	"github.com/sila-org/sila/core/types"
 	"github.com/sila-org/sila/crypto"
-	"github.com/sila-org/sila/siladb"
 	"github.com/sila-org/sila/log"
 	"github.com/sila-org/sila/params"
 	"github.com/sila-org/sila/rlp"
+	"github.com/sila-org/sila/siladb"
 	"github.com/sila-org/sila/trie"
 	"github.com/sila-org/sila/triedb"
 	"github.com/sila-org/sila/triedb/pathdb"
-	"github.com/holiman/uint256"
 )
 
 //go:generate go run github.com/fjl/gencodec -type Genesis -field-override genesisSpecMarshaling -out gen_genesis.go
@@ -70,10 +70,10 @@ type Genesis struct {
 	Number        uint64      `json:"number"`
 	GasUsed       uint64      `json:"gasUsed"`
 	ParentHash    common.Hash `json:"parentHash"`
-	BaseFee       *big.Int    `json:"baseFeePerGas"` // EIP-1559
-	ExcessBlobGas *uint64     `json:"excessBlobGas"` // EIP-4844
-	BlobGasUsed   *uint64     `json:"blobGasUsed"`   // EIP-4844
-	SlotNumber    *uint64     `json:"slotNumber"`    // EIP-7843
+	BaseFee       *big.Int    `json:"baseFeePerGas"` // SIP-1559
+	ExcessBlobGas *uint64     `json:"excessBlobGas"` // SIP-4844
+	BlobGasUsed   *uint64     `json:"blobGasUsed"`   // SIP-4844
+	SlotNumber    *uint64     `json:"slotNumber"`    // SIP-7843
 }
 
 // copy copies the genesis.
@@ -528,11 +528,11 @@ func (g *Genesis) toBlockWithRoot(root common.Hash) *types.Block {
 			withdrawals = make([]*types.Withdrawal, 0)
 		}
 		if conf.IsCancun(num, g.Timestamp) {
-			// EIP-4788: The parentBeaconBlockRoot of the genesis block is always
+			// SIP-4788: The parentBeaconBlockRoot of the genesis block is always
 			// the zero hash. This is because the genesis block does not have a parent
 			// by definition.
 			head.ParentBeaconRoot = new(common.Hash)
-			// EIP-4844 fields
+			// SIP-4844 fields
 			head.ExcessBlobGas = g.ExcessBlobGas
 			head.BlobGasUsed = g.BlobGasUsed
 			if head.ExcessBlobGas == nil {

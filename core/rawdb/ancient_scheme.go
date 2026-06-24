@@ -37,7 +37,7 @@ const (
 	ChainFreezerReceiptTable = "receipts"
 
 	// ChainFreezerBALTable indicates the name of the freezer block access list
-	// table introduced by EIP-7928.
+	// table introduced by SIP-7928.
 	ChainFreezerBALTable = "bals"
 )
 
@@ -49,7 +49,7 @@ const (
 	ChainFreezerBlockDataGroup = "blockdata"
 
 	// ChainFreezerBALGroup is the tail group for the block access list table.
-	// BAL is only populated after EIP-7928 activates, so it generally has a
+	// BAL is only populated after SIP-7928 activates, so it generally has a
 	// higher tail than the block-data group and is pruned independently.
 	ChainFreezerBALGroup = "bal"
 )

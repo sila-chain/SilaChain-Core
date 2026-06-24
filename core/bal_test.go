@@ -23,6 +23,7 @@ import (
 	"math/big"
 	"testing"
 
+	"github.com/holiman/uint256"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/consensus/beacon"
 	"github.com/sila-org/sila/consensus/silaash"
@@ -30,10 +31,9 @@ import (
 	"github.com/sila-org/sila/core/types/bal"
 	"github.com/sila-org/sila/crypto"
 	"github.com/sila-org/sila/params"
-	"github.com/holiman/uint256"
 )
 
-// EIP-7928 BAL inclusion tests.
+// SIP-7928 BAL inclusion tests.
 //
 // Each test exercises a single rule from the spec and asserts both presence
 // and absence in the resulting block access list.
@@ -58,7 +58,7 @@ type balTestEnv struct {
 }
 
 // newBALTestEnv builds an Amsterdam chain config, funds a sender and pre-deploys
-// the EIP-7928 system contracts. Extra accounts can be merged into Alloc.
+// the SIP-7928 system contracts. Extra accounts can be merged into Alloc.
 func newBALTestEnv(extra types.GenesisAlloc) *balTestEnv {
 	cfg := balChainConfig()
 	key, _ := crypto.HexToECDSA("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
@@ -153,7 +153,7 @@ func assertEmpty(t *testing.T, aa *bal.AccountAccess) {
 	}
 }
 
-// txGasNewAccount covers the base tx cost plus the EIP-8037 account-creation
+// txGasNewAccount covers the base tx cost plus the SIP-8037 account-creation
 // state-gas charge (STATE_BYTES_PER_NEW_ACCOUNT × CPSB ≈ 183,600) that is
 // incurred when value is transferred to a non-existent account under Amsterdam.
 // params.TxGas (21,000) alone is insufficient: the transfer would run out of
@@ -399,7 +399,7 @@ func TestBALExtCodeCopyProbeOnNonExistent(t *testing.T) {
 	assertEmpty(t, assertPresent(t, b, probe))
 }
 
-// TestBALAccessListNotAutoPromoted: an EIP-2930 access-list entry that is
+// TestBALAccessListNotAutoPromoted: an SIP-2930 access-list entry that is
 // never actually touched must NOT appear in the BAL.
 func TestBALAccessListNotAutoPromoted(t *testing.T) {
 	to := common.HexToAddress("0xabba")
@@ -752,7 +752,7 @@ func TestBALCreateInitRevertEmptyChangeSet(t *testing.T) {
 func TestBALCreateInitOOGEmptyChangeSet(t *testing.T) {
 	env := newBALTestEnv(nil)
 	// Infinite loop: JUMPDEST PUSH1 0 JUMP — burns gas until OOG. The
-	// gas budget must cover EIP-8037 intrinsic state gas (account creation)
+	// gas budget must cover SIP-8037 intrinsic state gas (account creation)
 	// so the tx is accepted; OOG must happen inside the init code.
 	init := []byte{0x5b, 0x60, 0x00, 0x56}
 
@@ -873,7 +873,7 @@ func TestBALSelfDestructBeneficiaryWithZeroBalance(t *testing.T) {
 	beneficiary := common.HexToAddress("0xbeefbeef")
 	env := newBALTestEnv(nil)
 	// Init code performs SELFDESTRUCT to beneficiary inside the constructor,
-	// so EIP-6780's same-tx requirement is satisfied. The destructing account
+	// so SIP-6780's same-tx requirement is satisfied. The destructing account
 	// starts with balance 0 because the creation tx sends 0 value.
 	//   PUSH20 <ben> SELFDESTRUCT
 	init := append([]byte{0x73}, beneficiary.Bytes()...)
@@ -917,7 +917,7 @@ func TestBALSelfDestructBeneficiaryWithValueTransfer(t *testing.T) {
 
 // TestBALSelfDestructPreExistingContract: SELFDESTRUCT on a pre-existing
 // contract with positive balance records balance→0 for the contract and the
-// corresponding credit on the beneficiary. EIP-6780 means the contract is
+// corresponding credit on the beneficiary. SIP-6780 means the contract is
 // only credited and not deleted, but its balance moves regardless.
 func TestBALSelfDestructPreExistingContract(t *testing.T) {
 	suicidal := common.HexToAddress("0x5e1f")
@@ -987,20 +987,20 @@ func TestBALMidTxBalanceRoundTrip(t *testing.T) {
 
 // ============================== System contracts (pre/post-execution) ==============================
 
-// TestBALSystemContractsPresent: per EIP-7928, "System contract addresses
+// TestBALSystemContractsPresent: per SIP-7928, "System contract addresses
 // accessed during pre/post-execution" MUST be included in the BAL. That
 // means all four of the post-merge system contracts touched by every
 // Amsterdam block:
 //
-//   - EIP-4788 beacon roots         (pre-execution, when ParentBeaconRoot is set)
-//   - EIP-2935 history storage      (pre-execution)
-//   - EIP-7002 withdrawal queue     (post-execution)
-//   - EIP-7251 consolidation queue  (post-execution)
+//   - SIP-4788 beacon roots         (pre-execution, when ParentBeaconRoot is set)
+//   - SIP-2935 history storage      (pre-execution)
+//   - SIP-7002 withdrawal queue     (post-execution)
+//   - SIP-7251 consolidation queue  (post-execution)
 func TestBALSystemContractsPresent(t *testing.T) {
 	env := newBALTestEnv(nil)
 
 	b, _ := env.run(t, func(g *BlockGen) {
-		// SetCoinbase initialises b.bal; SetParentBeaconRoot triggers EIP-4788.
+		// SetCoinbase initialises b.bal; SetParentBeaconRoot triggers SIP-4788.
 		g.SetCoinbase(common.Address{0xc0})
 		g.SetParentBeaconRoot(common.Hash{0xbe, 0xac})
 	})
@@ -1056,9 +1056,9 @@ func TestBALWithdrawalNonZeroAmountRecordsBalance(t *testing.T) {
 	}
 }
 
-// ============================== EIP-7702 authority ==============================
+// ============================== SIP-7702 authority ==============================
 
-// TestBALAuthorityIncludedOnSetCodeTx: the authority of an EIP-7702 set-code
+// TestBALAuthorityIncludedOnSetCodeTx: the authority of an SIP-7702 set-code
 // transaction is added to the BAL once its delegation is loaded, recording
 // both the nonce bump and the delegation-pointer code entry.
 func TestBALAuthorityIncludedOnSetCodeTx(t *testing.T) {
@@ -1099,7 +1099,7 @@ func TestBALAuthorityIncludedOnSetCodeTx(t *testing.T) {
 	}
 }
 
-// TestBALDelegationTargetNotIncludedOnAuthOnly: the EIP-7702 delegation target
+// TestBALDelegationTargetNotIncludedOnAuthOnly: the SIP-7702 delegation target
 // MUST NOT appear in the BAL when only the authorization is installed and the
 // target is never loaded as an execution target.
 func TestBALDelegationTargetNotIncludedOnAuthOnly(t *testing.T) {
@@ -1152,7 +1152,7 @@ func (e *balTestEnv) newSetCodeTx(t *testing.T, nonce uint64, to common.Address,
 	return tx
 }
 
-// TestBALAuthFailedBeforeLoadExcluded: an EIP-7702 auth whose ChainID check
+// TestBALAuthFailedBeforeLoadExcluded: an SIP-7702 auth whose ChainID check
 // fails returns before the authority is loaded, so the authority address
 // MUST NOT appear in the BAL.
 func TestBALAuthFailedBeforeLoadExcluded(t *testing.T) {
@@ -1176,7 +1176,7 @@ func TestBALAuthFailedBeforeLoadExcluded(t *testing.T) {
 	assertAbsent(t, b, authority)
 }
 
-// TestBALAuthFailedAfterLoadEmptyChangeSet: an EIP-7702 auth that fails the
+// TestBALAuthFailedAfterLoadEmptyChangeSet: an SIP-7702 auth that fails the
 // nonce check happens AFTER the authority's code is loaded (and the address
 // added to accessed_addresses), so the authority MUST appear in the BAL —
 // but with no nonce or code change.

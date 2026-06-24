@@ -38,10 +38,10 @@ import (
 	"github.com/sila-org/sila/core/vm"
 	"github.com/sila-org/sila/crypto"
 	"github.com/sila-org/sila/crypto/keccak"
-	"github.com/sila-org/sila/siladb"
 	"github.com/sila-org/sila/log"
 	"github.com/sila-org/sila/params"
 	"github.com/sila-org/sila/rlp"
+	"github.com/sila-org/sila/siladb"
 )
 
 const (
@@ -165,7 +165,7 @@ func ecrecover(header *types.Header, sigcache *sigLRU) (common.Address, error) {
 // Sila testnet following the Ropsten attacks.
 type Clique struct {
 	config *params.CliqueConfig // Consensus silaEngine configuration parameters
-	db     siladb.Database       // Database to store and retrieve snapshot checkpoints
+	db     siladb.Database      // Database to store and retrieve snapshot checkpoints
 
 	recents    *lru.Cache[common.Hash, *Snapshot] // Snapshots for recent block to speed up reorgs
 	signatures *sigLRU                            // Signatures of recent blocks to speed up mining
@@ -344,7 +344,7 @@ func (c *Clique) verifyCascadingFields(chain consensus.ChainHeaderReader, header
 		return fmt.Errorf("invalid gasUsed: have %d, gasLimit %d", header.GasUsed, header.GasLimit)
 	}
 	if !chain.Config().IsLondon(header.Number) {
-		// Verify BaseFee not present before EIP-1559 fork.
+		// Verify BaseFee not present before SIP-1559 fork.
 		if header.BaseFee != nil {
 			return fmt.Errorf("invalid baseFee before fork: have %d, want <nil>", header.BaseFee)
 		}
@@ -352,7 +352,7 @@ func (c *Clique) verifyCascadingFields(chain consensus.ChainHeaderReader, header
 			return err
 		}
 	} else if err := eip1559.VerifyEIP1559Header(chain.Config(), parent, header); err != nil {
-		// Verify the header's EIP-1559 attributes.
+		// Verify the header's SIP-1559 attributes.
 		return err
 	}
 	// Retrieve the snapshot needed to verify this header and cache it

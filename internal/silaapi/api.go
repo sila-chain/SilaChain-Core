@@ -39,14 +39,14 @@ import (
 	"github.com/sila-org/sila/core/types"
 	"github.com/sila-org/sila/core/vm"
 	"github.com/sila-org/sila/crypto"
-	"github.com/sila-org/sila/sila/gasestimator"
-	"github.com/sila-org/sila/sila/tracers/logger"
 	"github.com/sila-org/sila/internal/silaapi/override"
 	"github.com/sila-org/sila/log"
 	"github.com/sila-org/sila/p2p"
 	"github.com/sila-org/sila/params"
 	"github.com/sila-org/sila/rlp"
 	"github.com/sila-org/sila/rpc"
+	"github.com/sila-org/sila/sila/gasestimator"
+	"github.com/sila-org/sila/sila/tracers/logger"
 )
 
 // estimateGasErrorRatio is the amount of overestimation sila_estimateGas is
@@ -315,11 +315,11 @@ func NewBlockChainAPI(b Backend) *BlockChainAPI {
 	return &BlockChainAPI{b}
 }
 
-// ChainId is the EIP-155 replay-protection chain id for the current Sila chain config.
+// ChainId is the SIP-155 replay-protection chain id for the current Sila chain config.
 //
-// Note, this method does not conform to EIP-695 because the configured chain ID is always
+// Note, this method does not conform to SIP-695 because the configured chain ID is always
 // returned, regardless of the current head block. We used to return an error when the chain
-// wasn't synced up to a block where EIP-155 is enabled, but this behavior caused issues
+// wasn't synced up to a block where SIP-155 is enabled, but this behavior caused issues
 // in CL clients.
 func (api *BlockChainAPI) ChainId() *hexutil.Big {
 	return (*hexutil.Big)(api.b.ChainConfig().ChainID)
@@ -1119,7 +1119,7 @@ func newRPCTransaction(tx *types.Transaction, blockHash common.Hash, blockNumber
 
 	switch tx.Type() {
 	case types.LegacyTxType:
-		// if a legacy transaction has an EIP-155 chain id, include it explicitly
+		// if a legacy transaction has an SIP-155 chain id, include it explicitly
 		if id := tx.ChainId(); id.Sign() != 0 {
 			result.ChainID = (*hexutil.Big)(id)
 		}
@@ -1238,7 +1238,7 @@ type accessListResult struct {
 	GasUsed    hexutil.Uint64    `json:"gasUsed"`
 }
 
-// CreateAccessList creates an EIP-2930 type AccessList for the given transaction.
+// CreateAccessList creates an SIP-2930 type AccessList for the given transaction.
 // Reexec and BlockNrOrHash can be specified to create the accessList on top of a certain state.
 // StateOverrides can be used to create the accessList while taking into account state changes from previous transactions.
 func (api *BlockChainAPI) CreateAccessList(ctx context.Context, args TransactionArgs, blockNrOrHash *rpc.BlockNumberOrHash, stateOverrides *override.StateOverride) (*accessListResult, error) {
@@ -1272,7 +1272,7 @@ type configResponse struct {
 	Last    *config `json:"last"`
 }
 
-// Config implements the EIP-7910 sila_config method.
+// Config implements the SIP-7910 sila_config method.
 func (api *BlockChainAPI) Config(ctx context.Context) (*configResponse, error) {
 	genesis, err := api.b.HeaderByNumber(ctx, 0)
 	if err != nil {
@@ -1645,7 +1645,7 @@ func SubmitTransaction(ctx context.Context, b Backend, tx *types.Transaction) (c
 	}
 	if !b.UnprotectedAllowed() && !tx.Protected() {
 		// Ensure only eip155 signed transactions are submitted if EIP155Required is set.
-		return common.Hash{}, errors.New("only replay-protected (EIP-155) transactions allowed over RPC")
+		return common.Hash{}, errors.New("only replay-protected (SIP-155) transactions allowed over RPC")
 	}
 	if err := b.SendTx(ctx, tx); err != nil {
 		return common.Hash{}, err

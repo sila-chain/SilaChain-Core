@@ -636,7 +636,7 @@ func opCreate(pc *uint64, evm *EVM, scope *ScopeContext) ([]byte, error) {
 		offset, size = scope.Stack.pop(), scope.Stack.pop()
 		input        = scope.Memory.GetCopy(offset.Uint64(), size.Uint64())
 	)
-	// Apply EIP-150 to the regular gas left after the state charge.
+	// Apply SIP-150 to the regular gas left after the state charge.
 	forward := scope.Contract.Gas.RegularGas
 	if evm.chainRules.IsEIP150 {
 		forward -= forward / 64
@@ -682,7 +682,7 @@ func opCreate2(pc *uint64, evm *EVM, scope *ScopeContext) ([]byte, error) {
 		salt         = scope.Stack.pop()
 		input        = scope.Memory.GetCopy(offset.Uint64(), size.Uint64())
 	)
-	// Apply EIP-150 to the regular gas left after the state charge.
+	// Apply SIP-150 to the regular gas left after the state charge.
 	forward := scope.Contract.Gas.RegularGas
 	forward -= forward / 64
 
@@ -957,8 +957,8 @@ func opSelfdestruct6780(pc *uint64, evm *EVM, scope *ScopeContext) ([]byte, erro
 	return nil, errStopToken
 }
 
-// decodeSingle decodes the immediate operand of a backward-compatible DUPN or SWAPN instruction (EIP-8024)
-// https://eips.sila.org/EIPS/eip-8024
+// decodeSingle decodes the immediate operand of a backward-compatible DUPN or SWAPN instruction (SIP-8024)
+// https://sips.sila.org/SIPS/eip-8024
 func decodeSingle(x byte) int {
 	// Depths 1-16 are already covered by the legacy opcodes. The forbidden byte range [91, 127] removes
 	// 37 values from the 256 possible immediates, leaving 219 usable values, so this encoding covers depths
@@ -968,10 +968,10 @@ func decodeSingle(x byte) int {
 }
 
 // decodePair decodes the immediate operand of a backward-compatible EXCHANGE
-// instruction (EIP-8024) into stack indices (n, m) where 1 <= n < m
+// instruction (SIP-8024) into stack indices (n, m) where 1 <= n < m
 // and n + m <= 30. The forbidden byte range [82, 127] removes 46 values from
 // the 256 possible immediates, leaving exactly 210 usable bytes.
-// https://eips.sila.org/EIPS/eip-8024
+// https://sips.sila.org/SIPS/eip-8024
 func decodePair(x byte) (int, int) {
 	// XOR with 143 remaps the forbidden bytes [82, 127] to an unused corner
 	// of the 16x16 grid below.

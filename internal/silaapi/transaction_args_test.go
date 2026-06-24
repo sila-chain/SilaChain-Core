@@ -34,10 +34,10 @@ import (
 	"github.com/sila-org/sila/core/state"
 	"github.com/sila-org/sila/core/types"
 	"github.com/sila-org/sila/core/vm"
-	"github.com/sila-org/sila/siladb"
 	"github.com/sila-org/sila/event"
 	"github.com/sila-org/sila/params"
 	"github.com/sila-org/sila/rpc"
+	"github.com/sila-org/sila/siladb"
 )
 
 // TestSetFeeDefaults tests the logic for filling in default fee values works as expected.
@@ -208,7 +208,7 @@ func TestSetFeeDefaults(t *testing.T) {
 			nil,
 			errors.New("both gasPrice and (maxFeePerGas or maxPriorityFeePerGas) specified"),
 		},
-		// EIP-4844
+		// SIP-4844
 		{
 			"set gas price and maxFee for blob transaction",
 			"cancun",
@@ -330,7 +330,7 @@ func (b *backendMock) SyncProgress(ctx context.Context) sila.SyncProgress {
 func (b *backendMock) FeeHistory(ctx context.Context, blockCount uint64, lastBlock rpc.BlockNumber, rewardPercentiles []float64) (*big.Int, [][]*big.Int, []*big.Int, []float64, []*big.Int, []float64, error) {
 	return nil, nil, nil, nil, nil, nil, nil
 }
-func (b *backendMock) ChainDb() siladb.Database           { return nil }
+func (b *backendMock) ChainDb() siladb.Database          { return nil }
 func (b *backendMock) AccountManager() *accounts.Manager { return nil }
 func (b *backendMock) ExtRPCEnabled() bool               { return false }
 func (b *backendMock) RPCGasCap() uint64                 { return 0 }

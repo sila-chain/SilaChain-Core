@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with the sila library. If not, see <http://www.gnu.org/licenses/>.
 
-// Package blobpool implements the EIP-4844 blob transaction pool.
+// Package blobpool implements the SIP-4844 blob transaction pool.
 package blobpool
 
 import (
@@ -30,6 +30,8 @@ import (
 	"sync/atomic"
 	"time"
 
+	"github.com/holiman/billy"
+	"github.com/holiman/uint256"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/consensus/misc/eip1559"
 	"github.com/sila-org/sila/consensus/misc/eip4844"
@@ -43,8 +45,6 @@ import (
 	"github.com/sila-org/sila/metrics"
 	"github.com/sila-org/sila/params"
 	"github.com/sila-org/sila/rlp"
-	"github.com/holiman/billy"
-	"github.com/holiman/uint256"
 )
 
 const (
@@ -274,7 +274,7 @@ func newBlobTxMeta(id uint64, size uint64, storageSize uint32, ptx *blobTxForPoo
 	return meta
 }
 
-// BlobPool is the transaction pool dedicated to EIP-4844 blob transactions.
+// BlobPool is the transaction pool dedicated to SIP-4844 blob transactions.
 //
 // Blob transactions are special snowflakes that are designed for a very specific
 // purpose (rollups) and are expected to adhere to that specific use case. These
@@ -416,7 +416,7 @@ func newBlobTxMeta(id uint64, size uint64, storageSize uint32, ptx *blobTxForPoo
 //
 //     jumps = floor(log1.125(txfee) - log1.125(basefee))
 //
-//     For blob fees, EIP-7892 changed the ratio of target to max blobs, and
+//     For blob fees, SIP-7892 changed the ratio of target to max blobs, and
 //     with that also the maximum blob fee decrease in a slot from 1.125 to
 //     approx 1.17. therefore, we use:
 //

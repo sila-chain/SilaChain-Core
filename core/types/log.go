@@ -17,10 +17,10 @@
 package types
 
 import (
+	"github.com/holiman/uint256"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/common/hexutil"
 	"github.com/sila-org/sila/params"
-	"github.com/holiman/uint256"
 )
 
 //go:generate go run ../../rlp/rlpgen -type Log -out gen_log_rlp.go
@@ -65,8 +65,8 @@ type logMarshaling struct {
 	Index          hexutil.Uint
 }
 
-// SilaTransferLog creates and SILA transfer log according to EIP-7708.
-// Specification: https://eips.sila.org/EIPS/eip-7708
+// SilaTransferLog creates and SILA transfer log according to SIP-7708.
+// Specification: https://sips.sila.org/SIPS/eip-7708
 func SilaTransferLog(from, to common.Address, amount *uint256.Int) *Log {
 	amount32 := amount.Bytes32()
 	return &Log{
@@ -80,8 +80,8 @@ func SilaTransferLog(from, to common.Address, amount *uint256.Int) *Log {
 	}
 }
 
-// SilaBurnLog creates an SILA burn log according to EIP-7708.
-// Specification: https://eips.sila.org/EIPS/eip-7708
+// SilaBurnLog creates an SILA burn log according to SIP-7708.
+// Specification: https://sips.sila.org/SIPS/eip-7708
 func SilaBurnLog(from common.Address, amount *uint256.Int) *Log {
 	amount32 := amount.Bytes32()
 	return &Log{

@@ -22,11 +22,11 @@ import (
 	"errors"
 	"math/big"
 
+	"github.com/holiman/uint256"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/common/hexutil"
 	"github.com/sila-org/sila/crypto"
 	"github.com/sila-org/sila/rlp"
-	"github.com/holiman/uint256"
 )
 
 // DelegationPrefix is used by code to denote the account is delegating to
@@ -46,7 +46,7 @@ func AddressToDelegation(addr common.Address) []byte {
 	return append(DelegationPrefix, addr.Bytes()...)
 }
 
-// SetCodeTx implements the EIP-7702 transaction type which temporarily installs
+// SetCodeTx implements the SIP-7702 transaction type which temporarily installs
 // the code at the signer's address.
 type SetCodeTx struct {
 	ChainID    *uint256.Int

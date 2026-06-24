@@ -28,9 +28,9 @@ import (
 	"github.com/sila-org/sila/common/lru"
 	"github.com/sila-org/sila/core/rawdb"
 	"github.com/sila-org/sila/core/types"
-	"github.com/sila-org/sila/siladb"
 	"github.com/sila-org/sila/log"
 	"github.com/sila-org/sila/metrics"
+	"github.com/sila-org/sila/siladb"
 )
 
 var (
@@ -61,9 +61,9 @@ const (
 // responsible for building and updating the index according to the canonical
 // chain.
 //
-// Note that FilterMaps implements the same data structure as proposed in EIP-7745
+// Note that FilterMaps implements the same data structure as proposed in SIP-7745
 // without the tree hashing and consensus changes:
-// https://eips.sila.org/EIPS/eip-7745
+// https://sips.sila.org/SIPS/eip-7745
 type FilterMaps struct {
 	// If disabled is set, log indexing is fully disabled.
 	// This is configured by the --history.logs.disable Sila flag.
@@ -680,10 +680,10 @@ func (f *FilterMaps) storeFilterMapRowsOfGroup(batch siladb.Batch, mapIndices []
 
 // mapRowIndex calculates the unified storage index where the given row of the
 // given map is stored. Note that this indexing scheme is the same as the one
-// proposed in EIP-7745 for tree-hashing the filter map structure and for the
+// proposed in SIP-7745 for tree-hashing the filter map structure and for the
 // same data proximity reasons it is also suitable for database representation.
 // See also:
-// https://eips.sila.org/EIPS/eip-7745#hash-tree-structure
+// https://sips.sila.org/SIPS/eip-7745#hash-tree-structure
 func (f *FilterMaps) mapRowIndex(mapIndex, rowIndex uint32) uint64 {
 	epochIndex, mapSubIndex := mapIndex>>f.logMapsPerEpoch, mapIndex&(f.mapsPerEpoch-1)
 	return (uint64(epochIndex)<<f.logMapHeight+uint64(rowIndex))<<f.logMapsPerEpoch + uint64(mapSubIndex)

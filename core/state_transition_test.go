@@ -237,7 +237,7 @@ func TestIntrinsicGas(t *testing.T) {
 			},
 			isEIP2028:   true,
 			isAmsterdam: true,
-			// base access-list charge + EIP-7981 extra
+			// base access-list charge + SIP-7981 extra
 			want: vm.GasCosts{RegularGas: params.TxGas +
 				2*params.TxAccessListAddressGas + 3*params.TxAccessListStorageKeyGas +
 				2*amsterdamAddressCost + 3*amsterdamStorageKeyCost},
@@ -259,7 +259,7 @@ func TestIntrinsicGas(t *testing.T) {
 			isHomestead: true,
 			isEIP2028:   true,
 			isAmsterdam: true,
-			// EIP-8037: creation regular gas is TxGas + CreateGasAmsterdam (not TxGasContractCreation),
+			// SIP-8037: creation regular gas is TxGas + CreateGasAmsterdam (not TxGasContractCreation),
 			// and account-creation cost is moved to state gas.
 			want: vm.GasCosts{
 				RegularGas: params.TxGas + params.CreateGasAmsterdam,
@@ -310,7 +310,7 @@ func TestIntrinsicGas(t *testing.T) {
 			},
 			isEIP2028:   true,
 			isAmsterdam: true,
-			// EIP-8037 splits the auth-tuple charge into regular + state gas:
+			// SIP-8037 splits the auth-tuple charge into regular + state gas:
 			//   regular: TxAuthTupleRegularGas (7500) per auth
 			//   state:   (AuthorizationCreationSize + AccountCreationSize) * CostPerStateByte per auth
 			want: vm.GasCosts{

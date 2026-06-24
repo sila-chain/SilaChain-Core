@@ -26,6 +26,7 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/holiman/uint256"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/common/hexutil"
 	"github.com/sila-org/sila/consensus/misc/eip1559"
@@ -37,16 +38,15 @@ import (
 	"github.com/sila-org/sila/core/types"
 	"github.com/sila-org/sila/core/vm"
 	"github.com/sila-org/sila/crypto"
+	"github.com/sila-org/sila/log"
+	"github.com/sila-org/sila/params"
 	"github.com/sila-org/sila/sila/tracers"
 	"github.com/sila-org/sila/sila/tracers/logger"
 	"github.com/sila-org/sila/sila/tracers/native"
-	"github.com/sila-org/sila/log"
-	"github.com/sila-org/sila/params"
 	"github.com/sila-org/sila/tests"
 	"github.com/sila-org/sila/trie/bintrie"
 	"github.com/sila-org/sila/triedb"
 	"github.com/sila-org/sila/triedb/database"
-	"github.com/holiman/uint256"
 	"github.com/urfave/cli/v2"
 )
 
@@ -328,7 +328,7 @@ func applyLondonChecks(env *stEnv, chainConfig *params.ChainConfig) error {
 		return nil
 	}
 	if env.ParentBaseFee == nil || env.Number == 0 {
-		return NewError(ErrorConfig, errors.New("EIP-1559 config but missing 'parentBaseFee' in env section"))
+		return NewError(ErrorConfig, errors.New("SIP-1559 config but missing 'parentBaseFee' in env section"))
 	}
 	env.BaseFee = eip1559.CalcBaseFee(chainConfig, &types.Header{
 		Number:   new(big.Int).SetUint64(env.Number - 1),
@@ -389,7 +389,7 @@ func applyCancunChecks(env *stEnv, chainConfig *params.ChainConfig) error {
 		return nil
 	}
 	// Post-cancun
-	// We require EIP-4788 beacon root to be set in the env
+	// We require SIP-4788 beacon root to be set in the env
 	if env.ParentBeaconBlockRoot == nil {
 		return NewError(ErrorConfig, errors.New("post-cancun env requires parentBeaconBlockRoot to be set"))
 	}

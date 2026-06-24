@@ -82,28 +82,28 @@ type Header struct {
 	MixDigest   common.Hash    `json:"mixHash"`
 	Nonce       BlockNonce     `json:"nonce"`
 
-	// BaseFee was added by EIP-1559 and is ignored in legacy headers.
+	// BaseFee was added by SIP-1559 and is ignored in legacy headers.
 	BaseFee *big.Int `json:"baseFeePerGas" rlp:"optional"`
 
-	// WithdrawalsHash was added by EIP-4895 and is ignored in legacy headers.
+	// WithdrawalsHash was added by SIP-4895 and is ignored in legacy headers.
 	WithdrawalsHash *common.Hash `json:"withdrawalsRoot" rlp:"optional"`
 
-	// BlobGasUsed was added by EIP-4844 and is ignored in legacy headers.
+	// BlobGasUsed was added by SIP-4844 and is ignored in legacy headers.
 	BlobGasUsed *uint64 `json:"blobGasUsed" rlp:"optional"`
 
-	// ExcessBlobGas was added by EIP-4844 and is ignored in legacy headers.
+	// ExcessBlobGas was added by SIP-4844 and is ignored in legacy headers.
 	ExcessBlobGas *uint64 `json:"excessBlobGas" rlp:"optional"`
 
-	// ParentBeaconRoot was added by EIP-4788 and is ignored in legacy headers.
+	// ParentBeaconRoot was added by SIP-4788 and is ignored in legacy headers.
 	ParentBeaconRoot *common.Hash `json:"parentBeaconBlockRoot" rlp:"optional"`
 
-	// RequestsHash was added by EIP-7685 and is ignored in legacy headers.
+	// RequestsHash was added by SIP-7685 and is ignored in legacy headers.
 	RequestsHash *common.Hash `json:"requestsHash" rlp:"optional"`
 
-	// BlockAccessListHash was added by EIP-7928 and is ignored in legacy headers.
+	// BlockAccessListHash was added by SIP-7928 and is ignored in legacy headers.
 	BlockAccessListHash *common.Hash `json:"blockAccessListHash" rlp:"optional"`
 
-	// SlotNumber was added by EIP-7843 and is ignored in legacy headers.
+	// SlotNumber was added by SIP-7843 and is ignored in legacy headers.
 	SlotNumber *uint64 `json:"slotNumber" rlp:"optional"`
 }
 

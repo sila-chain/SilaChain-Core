@@ -14,7 +14,7 @@ All notable changes to the tracing interface will be documented in this file.
 
 ### New types
 
-- `CodeChangeReason` is a new type used to provide a reason for code changes. It includes various reasons such as contract creation, genesis initialization, EIP-7702 authorization, self-destruct, and revert operations ([#32525](https://github.com/sila-org/sila/pull/32525)).
+- `CodeChangeReason` is a new type used to provide a reason for code changes. It includes various reasons such as contract creation, genesis initialization, SIP-7702 authorization, self-destruct, and revert operations ([#32525](https://github.com/sila-org/sila/pull/32525)).
 
 ## [v1.15.4](https://github.com/sila-org/sila/releases/tag/v1.15.4)
 
@@ -116,7 +116,7 @@ This release contained only minor extensions to the tracing interface.
 
 ## [v1.14.3]
 
-There have been minor backwards-compatible changes to the tracing interface to explicitly mark the execution of **system** contracts. As of now the only system call updates the parent beacon block root as per [EIP-4788](https://eips.sila.org/EIPS/eip-4788). Other system calls are being considered for the future hardfork.
+There have been minor backwards-compatible changes to the tracing interface to explicitly mark the execution of **system** contracts. As of now the only system call updates the parent beacon block root as per [SIP-4788](https://sips.sila.org/SIPS/eip-4788). Other system calls are being considered for the future hardfork.
 
 ### New methods
 

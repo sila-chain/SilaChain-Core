@@ -27,13 +27,13 @@ import (
 	"testing"
 	"time"
 
+	"github.com/holiman/uint256"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/common/math"
 	"github.com/sila-org/sila/core/state"
 	"github.com/sila-org/sila/core/types"
 	"github.com/sila-org/sila/crypto"
 	"github.com/sila-org/sila/params"
-	"github.com/holiman/uint256"
 )
 
 type TwoOperandTestcase struct {
@@ -136,7 +136,7 @@ func TestByteOp(t *testing.T) {
 }
 
 func TestSHL(t *testing.T) {
-	// Testcases from https://github.com/sila-org/EIPs/blob/master/EIPS/eip-145.md#shl-shift-left
+	// Testcases from https://github.com/sila-org/SIPs/blob/master/SIPS/eip-145.md#shl-shift-left
 	tests := []TwoOperandTestcase{
 		{"0000000000000000000000000000000000000000000000000000000000000001", "01", "0000000000000000000000000000000000000000000000000000000000000002"},
 		{"0000000000000000000000000000000000000000000000000000000000000001", "ff", "8000000000000000000000000000000000000000000000000000000000000000"},
@@ -153,7 +153,7 @@ func TestSHL(t *testing.T) {
 }
 
 func TestSHR(t *testing.T) {
-	// Testcases from https://github.com/sila-org/EIPs/blob/master/EIPS/eip-145.md#shr-logical-shift-right
+	// Testcases from https://github.com/sila-org/SIPs/blob/master/SIPS/eip-145.md#shr-logical-shift-right
 	tests := []TwoOperandTestcase{
 		{"0000000000000000000000000000000000000000000000000000000000000001", "00", "0000000000000000000000000000000000000000000000000000000000000001"},
 		{"0000000000000000000000000000000000000000000000000000000000000001", "01", "0000000000000000000000000000000000000000000000000000000000000000"},
@@ -171,7 +171,7 @@ func TestSHR(t *testing.T) {
 }
 
 func TestSAR(t *testing.T) {
-	// Testcases from https://github.com/sila-org/EIPs/blob/master/EIPS/eip-145.md#sar-arithmetic-shift-right
+	// Testcases from https://github.com/sila-org/SIPs/blob/master/SIPS/eip-145.md#sar-arithmetic-shift-right
 	tests := []TwoOperandTestcase{
 		{"0000000000000000000000000000000000000000000000000000000000000001", "00", "0000000000000000000000000000000000000000000000000000000000000001"},
 		{"0000000000000000000000000000000000000000000000000000000000000001", "01", "0000000000000000000000000000000000000000000000000000000000000000"},
@@ -780,7 +780,7 @@ func TestBlobHash(t *testing.T) {
 }
 
 func TestOpMCopy(t *testing.T) {
-	// Test cases from https://eips.sila.org/EIPS/eip-5656#test-cases
+	// Test cases from https://sips.sila.org/SIPS/eip-5656#test-cases
 	for i, tc := range []struct {
 		dst, src, len string
 		pre           string
@@ -812,7 +812,7 @@ func TestOpMCopy(t *testing.T) {
 			want:    "000001020304050607 000000000000000000000000000000000000000000000000",
 			wantGas: 6,
 		},
-		// Tests below are not in the EIP, but maybe should be added
+		// Tests below are not in the SIP, but maybe should be added
 		{ // MCOPY 0xFFFFFFFFFFFF 0xFFFFFFFFFFFF 0 - copy zero bytes from out-of-bounds index(overlapping).
 			dst: "0xFFFFFFFFFFFF", src: "0xFFFFFFFFFFFF", len: "0x0",
 			pre:     "11",

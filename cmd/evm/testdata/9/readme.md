@@ -1,6 +1,6 @@
-## EIP-1559 testing
+## SIP-1559 testing
 
-This test contains testcases for EIP-1559, which uses a new transaction type and has a new block parameter.
+This test contains testcases for SIP-1559, which uses a new transaction type and has a new block parameter.
 
 ### Prestate
 
@@ -15,7 +15,7 @@ The alloc also contains some funds on `0xa94f5374fce5edbc8e2a8697c15331677e6ebf0
 
 There are two transactions, each invokes the contract above. 
 
-1. EIP-1559 ACL-transaction, which contains the `0x0` slot for `0xaaaa`
+1. SIP-1559 ACL-transaction, which contains the `0x0` slot for `0xaaaa`
 2. Legacy transaction
 
 ## Execution 

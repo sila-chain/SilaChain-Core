@@ -23,6 +23,7 @@ import (
 	"slices"
 	"time"
 
+	"github.com/holiman/uint256"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/core/types"
 	"github.com/sila-org/sila/crypto"
@@ -31,7 +32,6 @@ import (
 	"github.com/sila-org/sila/trie/bintrie"
 	"github.com/sila-org/sila/trie/transitiontrie"
 	"github.com/sila-org/sila/trie/trienode"
-	"github.com/holiman/uint256"
 )
 
 type Storage map[common.Hash]common.Hash
@@ -79,8 +79,8 @@ type stateObject struct {
 	// account is still accessible in the scope of same transaction.
 	selfDestructed bool
 
-	// This is an EIP-6780 flag indicating whether the object is eligible for
-	// self-destruct according to EIP-6780. The flag could be set either when
+	// This is an SIP-6780 flag indicating whether the object is eligible for
+	// self-destruct according to SIP-6780. The flag could be set either when
 	// the contract is just created within the current transaction, or when the
 	// object was previously existent and is being deployed as a contract within
 	// the current transaction.
@@ -293,7 +293,7 @@ func (s *stateObject) finalise() {
 	}
 	// Revoke the flag at the end of the transaction. It finalizes the status
 	// of the newly-created object as it's no longer eligible for self-destruct
-	// by EIP-6780. For non-newly-created objects, it's a no-op.
+	// by SIP-6780. For non-newly-created objects, it's a no-op.
 	s.newContract = false
 }
 

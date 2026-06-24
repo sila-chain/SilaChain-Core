@@ -25,6 +25,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/holiman/uint256"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/consensus/beacon"
 	"github.com/sila-org/sila/consensus/silaash"
@@ -37,7 +38,6 @@ import (
 	"github.com/sila-org/sila/core/types"
 	"github.com/sila-org/sila/crypto"
 	"github.com/sila-org/sila/params"
-	"github.com/holiman/uint256"
 )
 
 var (
@@ -58,7 +58,7 @@ var (
 func initBackend(withLocal bool) *SilaAPIBackend {
 	var (
 		// Create a database pre-initialize with a genesis block
-		db     = rawdb.NewMemoryDatabase()
+		db         = rawdb.NewMemoryDatabase()
 		silaEngine = beacon.New(silaash.NewFaker())
 	)
 	chain, _ := core.NewBlockChain(db, gspec, silaEngine, nil)
@@ -134,11 +134,11 @@ func TestSendTx(t *testing.T) {
 func TestSendTxEIP2681(t *testing.T) {
 	b := initBackend(false)
 
-	// Test EIP-2681: nonce overflow should be rejected
+	// Test SIP-2681: nonce overflow should be rejected
 	tx := makeTx(uint64(math.MaxUint64), nil, nil, key) // max uint64 nonce
 	err := b.SendTx(context.Background(), tx)
 	if err == nil {
-		t.Fatal("Expected EIP-2681 nonce overflow error, but transaction was accepted")
+		t.Fatal("Expected SIP-2681 nonce overflow error, but transaction was accepted")
 	}
 	if !errors.Is(err, core.ErrNonceMax) {
 		t.Errorf("Expected core.ErrNonceMax, got: %v", err)

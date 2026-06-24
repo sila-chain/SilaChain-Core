@@ -28,8 +28,8 @@ import (
 	"github.com/sila-org/sila/core/state"
 	"github.com/sila-org/sila/core/types"
 	"github.com/sila-org/sila/core/vm"
-	"github.com/sila-org/sila/sila/tracers"
 	"github.com/sila-org/sila/log"
+	"github.com/sila-org/sila/sila/tracers"
 	"github.com/sila-org/sila/trie"
 	"github.com/sila-org/sila/triedb"
 )
@@ -244,7 +244,7 @@ func (sila *Sila) stateAtTransaction(ctx context.Context, block *types.Block, tx
 	if err != nil {
 		return nil, vm.BlockContext{}, nil, nil, err
 	}
-	// Insert parent beacon block root in the state as per EIP-4788.
+	// Insert parent beacon block root in the state as per SIP-4788.
 	context := core.NewEVMBlockContext(block.Header(), sila.blockchain, nil)
 	evm := vm.NewEVM(context, statedb, sila.blockchain.Config(), vm.Config{})
 	defer evm.Release()

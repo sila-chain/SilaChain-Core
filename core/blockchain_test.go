@@ -32,6 +32,7 @@ import (
 	"time"
 
 	"github.com/davecgh/go-spew/spew"
+	"github.com/holiman/uint256"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/consensus"
 	"github.com/sila-org/sila/consensus/beacon"
@@ -42,12 +43,11 @@ import (
 	"github.com/sila-org/sila/core/vm"
 	"github.com/sila-org/sila/core/vm/program"
 	"github.com/sila-org/sila/crypto"
+	"github.com/sila-org/sila/params"
 	"github.com/sila-org/sila/sila/tracers/logger"
 	"github.com/sila-org/sila/siladb"
 	"github.com/sila-org/sila/siladb/pebble"
-	"github.com/sila-org/sila/params"
 	"github.com/sila-org/sila/trie"
-	"github.com/holiman/uint256"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -1123,7 +1123,7 @@ func testLogRebirth(t *testing.T, scheme string) {
 		addr1         = crypto.PubkeyToAddress(key1.PublicKey)
 		gspec         = &Genesis{Config: params.TestChainConfig, Alloc: types.GenesisAlloc{addr1: {Balance: big.NewInt(10000000000000000)}}}
 		signer        = types.LatestSigner(gspec.Config)
-		silaEngine        = silaash.NewFaker()
+		silaEngine    = silaash.NewFaker()
 		blockchain, _ = NewBlockChain(rawdb.NewMemoryDatabase(), gspec, silaEngine, DefaultConfig().WithStateScheme(scheme))
 	)
 	defer blockchain.Stop()
@@ -1817,9 +1817,9 @@ func testSideImport(t *testing.T, numCanonBlocksInSidechain, blocksBetweenCommon
 	chainConfig := *params.TestChainConfig
 	var (
 		silaEngine = beacon.New(silaash.NewFaker())
-		key, _ = crypto.HexToECDSA("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
-		addr   = crypto.PubkeyToAddress(key.PublicKey)
-		nonce  = uint64(0)
+		key, _     = crypto.HexToECDSA("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
+		addr       = crypto.PubkeyToAddress(key.PublicKey)
+		nonce      = uint64(0)
 
 		gspec = &Genesis{
 			Config:  &chainConfig,
@@ -2101,7 +2101,7 @@ func testInsertKnownChainDataWithMerging(t *testing.T, typ string, mergeHeight i
 			BaseFee: big.NewInt(params.InitialBaseFee),
 			Config:  &chainConfig,
 		}
-		silaEngine     = beacon.New(silaash.NewFaker())
+		silaEngine = beacon.New(silaash.NewFaker())
 		mergeBlock = uint64(gomath.MaxUint64)
 	)
 	// Apply merging since genesis
@@ -2570,8 +2570,8 @@ func TestDeleteCreateRevert(t *testing.T) {
 
 func testDeleteCreateRevert(t *testing.T, scheme string) {
 	var (
-		aa     = common.HexToAddress("0x000000000000000000000000000000000000aaaa")
-		bb     = common.HexToAddress("0x000000000000000000000000000000000000bbbb")
+		aa         = common.HexToAddress("0x000000000000000000000000000000000000aaaa")
+		bb         = common.HexToAddress("0x000000000000000000000000000000000000bbbb")
 		silaEngine = silaash.NewFaker()
 
 		// A sender who makes transactions, has some funds
@@ -3169,8 +3169,8 @@ func testInitThenFailCreateContract(t *testing.T, scheme string) {
 	}
 }
 
-// TestEIP2718Transition tests that an EIP-2718 transaction will be accepted
-// after the fork block has passed. This is verified by sending an EIP-2930
+// TestEIP2718Transition tests that an SIP-2718 transaction will be accepted
+// after the fork block has passed. This is verified by sending an SIP-2930
 // access list transaction, which specifies a single slot access, and then
 // checking that the gas usage of a hot SLOAD and a cold SLOAD are calculated
 // correctly.
@@ -3181,7 +3181,7 @@ func TestEIP2718Transition(t *testing.T) {
 
 func testEIP2718Transition(t *testing.T, scheme string) {
 	var (
-		aa     = common.HexToAddress("0x000000000000000000000000000000000000aaaa")
+		aa         = common.HexToAddress("0x000000000000000000000000000000000000aaaa")
 		silaEngine = silaash.NewFaker()
 
 		// A sender who makes transactions, has some funds
@@ -3251,7 +3251,7 @@ func testEIP2718Transition(t *testing.T, scheme string) {
 // TestEIP1559Transition tests the following:
 //
 //  1. A transaction whose gasFeeCap is greater than the baseFee is valid.
-//  2. Gas accounting for access lists on EIP-1559 transactions is correct.
+//  2. Gas accounting for access lists on SIP-1559 transactions is correct.
 //  3. Only the transaction's tip will be received by the coinbase.
 //  4. The transaction sender pays for both the tip and baseFee.
 //  5. The coinbase receives only the partially realized tip when
@@ -3264,7 +3264,7 @@ func TestEIP1559Transition(t *testing.T) {
 
 func testEIP1559Transition(t *testing.T, scheme string) {
 	var (
-		aa     = common.HexToAddress("0x000000000000000000000000000000000000aaaa")
+		aa         = common.HexToAddress("0x000000000000000000000000000000000000aaaa")
 		silaEngine = silaash.NewFaker()
 
 		// A sender who makes transactions, has some funds
@@ -3335,7 +3335,7 @@ func testEIP1559Transition(t *testing.T, scheme string) {
 
 	block := chain.GetBlockByNumber(1)
 
-	// 1+2: Ensure EIP-1559 access lists are accounted for via gas usage.
+	// 1+2: Ensure SIP-1559 access lists are accounted for via gas usage.
 	expectedGas := params.TxGas + params.TxAccessListAddressGas + params.TxAccessListStorageKeyGas +
 		vm.GasQuickStep*2 + params.WarmStorageReadCostEIP2929 + params.ColdSloadCostEIP2929
 	if block.GasUsed() != expectedGas {
@@ -3422,7 +3422,7 @@ func testSetCanonical(t *testing.T, scheme string) {
 			BaseFee: big.NewInt(params.InitialBaseFee),
 		}
 		signer      = types.LatestSigner(gspec.Config)
-		silaEngine      = silaash.NewFaker()
+		silaEngine  = silaash.NewFaker()
 		chainLength = 10
 	)
 	// Generate and import the canonical chain
@@ -3696,7 +3696,7 @@ func testCreateThenDelete(t *testing.T, config *params.ChainConfig) {
 
 func TestDeleteThenCreate(t *testing.T) {
 	var (
-		silaEngine      = silaash.NewFaker()
+		silaEngine  = silaash.NewFaker()
 		key, _      = crypto.HexToECDSA("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
 		address     = crypto.PubkeyToAddress(key.PublicKey)
 		factoryAddr = crypto.CreateAddress(address, 0)
@@ -3808,13 +3808,13 @@ func TestDeleteThenCreate(t *testing.T) {
 // between transactions.
 func TestTransientStorageReset(t *testing.T) {
 	var (
-		silaEngine      = silaash.NewFaker()
+		silaEngine  = silaash.NewFaker()
 		key, _      = crypto.HexToECDSA("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
 		address     = crypto.PubkeyToAddress(key.PublicKey)
 		destAddress = crypto.CreateAddress(address, 0)
 		funds       = big.NewInt(1000000000000000)
 		vmConfig    = vm.Config{
-			ExtraEips: []int{1153}, // Enable transient storage EIP
+			ExtraEips: []int{1153}, // Enable transient storage SIP
 		}
 	)
 	code := append([]byte{
@@ -3903,8 +3903,8 @@ func TestTransientStorageReset(t *testing.T) {
 
 func TestEIP3651(t *testing.T) {
 	var (
-		aa     = common.HexToAddress("0x000000000000000000000000000000000000aaaa")
-		bb     = common.HexToAddress("0x000000000000000000000000000000000000bbbb")
+		aa         = common.HexToAddress("0x000000000000000000000000000000000000aaaa")
+		bb         = common.HexToAddress("0x000000000000000000000000000000000000bbbb")
 		silaEngine = beacon.New(silaash.NewFaker())
 
 		// A sender who makes transactions, has some funds
@@ -3989,7 +3989,7 @@ func TestEIP3651(t *testing.T) {
 
 	block := chain.GetBlockByNumber(1)
 
-	// 1+2: Ensure EIP-1559 access lists are accounted for via gas usage.
+	// 1+2: Ensure SIP-1559 access lists are accounted for via gas usage.
 	innerGas := vm.GasQuickStep*2 + params.ColdSloadCostEIP2929*2
 	expectedGas := params.TxGas + 5*vm.GasFastestStep + vm.GasQuickStep + 100 + innerGas // 100 because 0xaaaa is in access list
 	if block.GasUsed() != expectedGas {
@@ -4016,16 +4016,16 @@ func TestEIP3651(t *testing.T) {
 // Simple deposit generator, source: https://gist.github.com/lightclient/54abb2af2465d6969fa6d1920b9ad9d7
 var depositsGeneratorCode = common.FromHex("6080604052366103aa575f603067ffffffffffffffff811115610025576100246103ae565b5b6040519080825280601f01601f1916602001820160405280156100575781602001600182028036833780820191505090505b5090505f8054906101000a900460ff1660f81b815f8151811061007d5761007c6103db565b5b60200101907effffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff191690815f1a9053505f602067ffffffffffffffff8111156100c7576100c66103ae565b5b6040519080825280601f01601f1916602001820160405280156100f95781602001600182028036833780820191505090505b5090505f8054906101000a900460ff1660f81b815f8151811061011f5761011e6103db565b5b60200101907effffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff191690815f1a9053505f600867ffffffffffffffff811115610169576101686103ae565b5b6040519080825280601f01601f19166020018201604052801561019b5781602001600182028036833780820191505090505b5090505f8054906101000a900460ff1660f81b815f815181106101c1576101c06103db565b5b60200101907effffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff191690815f1a9053505f606067ffffffffffffffff81111561020b5761020a6103ae565b5b6040519080825280601f01601f19166020018201604052801561023d5781602001600182028036833780820191505090505b5090505f8054906101000a900460ff1660f81b815f81518110610263576102626103db565b5b60200101907effffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff191690815f1a9053505f600867ffffffffffffffff8111156102ad576102ac6103ae565b5b6040519080825280601f01601f1916602001820160405280156102df5781602001600182028036833780820191505090505b5090505f8054906101000a900460ff1660f81b815f81518110610305576103046103db565b5b60200101907effffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff191690815f1a9053505f8081819054906101000a900460ff168092919061035090610441565b91906101000a81548160ff021916908360ff160217905550507f649bbc62d0e31342afea4e5cd82d4049e7e1ee912fc0889aa790803be39038c585858585856040516103a09594939291906104d9565b60405180910390a1005b5f80fd5b7f4e487b71000000000000000000000000000000000000000000000000000000005f52604160045260245ffd5b7f4e487b71000000000000000000000000000000000000000000000000000000005f52603260045260245ffd5b7f4e487b71000000000000000000000000000000000000000000000000000000005f52601160045260245ffd5b5f60ff82169050919050565b5f61044b82610435565b915060ff820361045e5761045d610408565b5b600182019050919050565b5f81519050919050565b5f82825260208201905092915050565b8281835e5f83830152505050565b5f601f19601f8301169050919050565b5f6104ab82610469565b6104b58185610473565b93506104c5818560208601610483565b6104ce81610491565b840191505092915050565b5f60a0820190508181035f8301526104f181886104a1565b9050818103602083015261050581876104a1565b9050818103604083015261051981866104a1565b9050818103606083015261052d81856104a1565b9050818103608083015261054181846104a1565b9050969550505050505056fea26469706673582212208569967e58690162d7d6fe3513d07b393b4c15e70f41505cbbfd08f53eba739364736f6c63430008190033")
 
-// This is a smoke test for EIP-7685 requests added in the Prague fork. The test first
+// This is a smoke test for SIP-7685 requests added in the Prague fork. The test first
 // creates a block containing requests, and then inserts it into the chain to run
 // validation.
 func TestPragueRequests(t *testing.T) {
 	var (
-		key1, _ = crypto.HexToECDSA("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
-		addr1   = crypto.PubkeyToAddress(key1.PublicKey)
-		config  = *params.MergedTestChainConfig
-		signer  = types.LatestSigner(&config)
-		silaEngine  = beacon.New(silaash.NewFaker())
+		key1, _    = crypto.HexToECDSA("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
+		addr1      = crypto.PubkeyToAddress(key1.PublicKey)
+		config     = *params.MergedTestChainConfig
+		signer     = types.LatestSigner(&config)
+		silaEngine = beacon.New(silaash.NewFaker())
 	)
 	gspec := &Genesis{
 		Config: &config,
@@ -4101,16 +4101,16 @@ func TestPragueRequests(t *testing.T) {
 // value to storage which is verified after.
 func TestEIP7702(t *testing.T) {
 	var (
-		config  = *params.MergedTestChainConfig
-		signer  = types.LatestSigner(&config)
-		silaEngine  = beacon.New(silaash.NewFaker())
-		key1, _ = crypto.HexToECDSA("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
-		key2, _ = crypto.HexToECDSA("8a1f9a8f95be41cd7ccb6168179afb4504aefe388d1e14474d32c45c72ce7b7a")
-		addr1   = crypto.PubkeyToAddress(key1.PublicKey)
-		addr2   = crypto.PubkeyToAddress(key2.PublicKey)
-		aa      = common.HexToAddress("0x000000000000000000000000000000000000aaaa")
-		bb      = common.HexToAddress("0x000000000000000000000000000000000000bbbb")
-		funds   = new(big.Int).Mul(common.Big1, big.NewInt(params.Ether))
+		config     = *params.MergedTestChainConfig
+		signer     = types.LatestSigner(&config)
+		silaEngine = beacon.New(silaash.NewFaker())
+		key1, _    = crypto.HexToECDSA("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
+		key2, _    = crypto.HexToECDSA("8a1f9a8f95be41cd7ccb6168179afb4504aefe388d1e14474d32c45c72ce7b7a")
+		addr1      = crypto.PubkeyToAddress(key1.PublicKey)
+		addr2      = crypto.PubkeyToAddress(key2.PublicKey)
+		aa         = common.HexToAddress("0x000000000000000000000000000000000000aaaa")
+		bb         = common.HexToAddress("0x000000000000000000000000000000000000bbbb")
+		funds      = new(big.Int).Mul(common.Big1, big.NewInt(params.Ether))
 	)
 	gspec := &Genesis{
 		Config: &config,
@@ -4210,7 +4210,7 @@ func testChainReorgSnapSync(t *testing.T, ancientLimit uint64) {
 			Alloc:   types.GenesisAlloc{address: {Balance: funds}},
 			BaseFee: big.NewInt(params.InitialBaseFee),
 		}
-		signer = types.LatestSigner(gspec.Config)
+		signer     = types.LatestSigner(gspec.Config)
 		silaEngine = beacon.New(silaash.NewFaker())
 	)
 	genDb, blocks, receipts := GenerateChainWithGenesis(gspec, silaEngine, 32, func(i int, block *BlockGen) {
@@ -4306,7 +4306,7 @@ func TestInsertChainWithCutoff(t *testing.T) {
 			Alloc:   types.GenesisAlloc{address: {Balance: funds}},
 			BaseFee: big.NewInt(params.InitialBaseFee),
 		}
-		signer = types.LatestSigner(gspec.Config)
+		signer     = types.LatestSigner(gspec.Config)
 		silaEngine = beacon.New(silaash.NewFaker())
 	)
 	_, blocks, receipts := GenerateChainWithGenesis(gspec, silaEngine, chainLength, func(i int, block *BlockGen) {
@@ -4435,9 +4435,9 @@ func TestGetCanonicalReceipt(t *testing.T) {
 			Alloc:   types.GenesisAlloc{address: {Balance: funds}},
 			BaseFee: big.NewInt(params.InitialBaseFee),
 		}
-		signer  = types.LatestSigner(gspec.Config)
-		silaEngine  = beacon.New(silaash.NewFaker())
-		codeBin = common.FromHex("0x608060405234801561000f575f5ffd5b507f8ae1c8c6e5f91159d0bc1c4b9a47ce45301753843012cbe641e4456bfc73538b33426040516100419291906100ff565b60405180910390a1610139565b5f73ffffffffffffffffffffffffffffffffffffffff82169050919050565b5f6100778261004e565b9050919050565b6100878161006d565b82525050565b5f819050919050565b61009f8161008d565b82525050565b5f82825260208201905092915050565b7f436f6e7374727563746f72207761732063616c6c6564000000000000000000005f82015250565b5f6100e96016836100a5565b91506100f4826100b5565b602082019050919050565b5f6060820190506101125f83018561007e565b61011f6020830184610096565b8181036040830152610130816100dd565b90509392505050565b603e806101455f395ff3fe60806040525f5ffdfea2646970667358221220e8bc3c31e3ac337eab702e8fdfc1c71894f4df1af4221bcde4a2823360f403fb64736f6c634300081e0033")
+		signer     = types.LatestSigner(gspec.Config)
+		silaEngine = beacon.New(silaash.NewFaker())
+		codeBin    = common.FromHex("0x608060405234801561000f575f5ffd5b507f8ae1c8c6e5f91159d0bc1c4b9a47ce45301753843012cbe641e4456bfc73538b33426040516100419291906100ff565b60405180910390a1610139565b5f73ffffffffffffffffffffffffffffffffffffffff82169050919050565b5f6100778261004e565b9050919050565b6100878161006d565b82525050565b5f819050919050565b61009f8161008d565b82525050565b5f82825260208201905092915050565b7f436f6e7374727563746f72207761732063616c6c6564000000000000000000005f82015250565b5f6100e96016836100a5565b91506100f4826100b5565b602082019050919050565b5f6060820190506101125f83018561007e565b61011f6020830184610096565b8181036040830152610130816100dd565b90509392505050565b603e806101455f395ff3fe60806040525f5ffdfea2646970667358221220e8bc3c31e3ac337eab702e8fdfc1c71894f4df1af4221bcde4a2823360f403fb64736f6c634300081e0033")
 	)
 	_, blocks, receipts := GenerateChainWithGenesis(gspec, silaEngine, chainLength, func(i int, block *BlockGen) {
 		// SPDX-License-Identifier: MIT

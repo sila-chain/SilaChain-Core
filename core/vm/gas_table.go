@@ -104,7 +104,7 @@ func gasSStore(evm *EVM, contract *Contract, stack *Stack, mem *Memory, memorySi
 		current, original = evm.StateDB.GetStateAndCommittedState(contract.Address(), x.Bytes32())
 	)
 	// The legacy gas metering only takes into consideration the current state
-	// Legacy rules should be applied if we are in Petersburg (removal of EIP-1283)
+	// Legacy rules should be applied if we are in Petersburg (removal of SIP-1283)
 	// OR Constantinople is not active
 	if evm.chainRules.IsPetersburg || !evm.chainRules.IsConstantinople {
 		// This checks for 3 scenarios and calculates gas accordingly:
@@ -123,7 +123,7 @@ func gasSStore(evm *EVM, contract *Contract, stack *Stack, mem *Memory, memorySi
 		}
 	}
 
-	// The new gas metering is based on net gas costs (EIP-1283):
+	// The new gas metering is based on net gas costs (SIP-1283):
 	//
 	// (1.) If current value equals new value (this is a no-op), 200 gas is deducted.
 	// (2.) If current value does not equal new value
@@ -564,7 +564,7 @@ func gasCreate2Eip8037(evm *EVM, contract *Contract, stack *Stack, mem *Memory, 
 	// Since size <= MaxInitCodeSizeAmsterdam, these multiplications cannot overflow
 	words := (size + 31) / 32
 
-	// CREATE2 charges both InitCodeWordGas (EIP-3860) and Keccak256WordGas
+	// CREATE2 charges both InitCodeWordGas (SIP-3860) and Keccak256WordGas
 	// (for address hashing).
 	wordGas := (params.InitCodeWordGas + params.Keccak256WordGas) * words
 
@@ -602,7 +602,7 @@ func regularGasCall8037(evm *EVM, contract *Contract, stack *Stack, mem *Memory,
 	return gas, nil
 }
 
-// stateGasCall8037 is the stateful gas calculator for CALL in Amsterdam (EIP-8037).
+// stateGasCall8037 is the stateful gas calculator for CALL in Amsterdam (SIP-8037).
 // It only returns the state-dependent gas (account creation as state gas).
 // Memory gas, transfer gas, and callGas are handled by gasCallStateless and
 // makeCallVariantGasCall.
@@ -616,7 +616,7 @@ func stateGasCall8037(evm *EVM, contract *Contract, stack *Stack) (uint64, error
 	// It's technically possible to skip the EIP158 but very unlikely in practice.
 	if evm.chainRules.IsEIP158 {
 		// Important: use StateDB.Empty instead of !StateDB.Exist. An account may exist
-		// in the current state yet still be considered non-existent by EIP-161 if its
+		// in the current state yet still be considered non-existent by SIP-161 if its
 		// nonce, balance, and code are all zero. Such accounts can appear temporarily
 		// during execution (e.g. via SELFDESTRUCT) and are removed at tx end.
 		//
@@ -648,7 +648,7 @@ func gasSelfdestruct8037(evm *EVM, contract *Contract, stack *Stack, mem *Memory
 		return gas, ErrOutOfGas
 	}
 	// Important: use StateDB.Empty instead of !StateDB.Exist. An account may exist
-	// in the current state yet still be considered non-existent by EIP-161 if its
+	// in the current state yet still be considered non-existent by SIP-161 if its
 	// nonce, balance, and code are all zero. Such accounts can appear temporarily
 	// during execution (e.g. via SELFDESTRUCT) and are removed at tx end.
 	//
@@ -683,7 +683,7 @@ func gasSStore8037(evm *EVM, contract *Contract, stack *Stack, mem *Memory, memo
 	value := common.Hash(y.Bytes32())
 
 	if current == value { // noop (1)
-		// EIP 2200 original clause:
+		// SIP 2200 original clause:
 		//		return params.SloadGasEIP2200, nil
 		return GasCosts{RegularGas: cost.RegularGas + params.WarmStorageReadCostEIP2929}, nil // SLOAD_GAS
 	}
@@ -697,7 +697,7 @@ func gasSStore8037(evm *EVM, contract *Contract, stack *Stack, mem *Memory, memo
 		if value == (common.Hash{}) { // delete slot (2.1.2b)
 			evm.StateDB.AddRefund(params.SstoreClearsScheduleRefundEIP3529)
 		}
-		// EIP-2200 original clause:
+		// SIP-2200 original clause:
 		//		return params.SstoreResetGasEIP2200, nil // write existing slot (2.1.2)
 		return GasCosts{RegularGas: cost.RegularGas + params.SstoreResetGasEIP2200 - params.ColdSloadCostEIP2929}, nil // write existing slot (2.1.2)
 	}
@@ -710,7 +710,7 @@ func gasSStore8037(evm *EVM, contract *Contract, stack *Stack, mem *Memory, memo
 	}
 	if original == value {
 		if original == (common.Hash{}) { // reset to original inexistent slot (2.2.2.1)
-			// EIP-8037 point (2): refund state gas directly to the reservoir
+			// SIP-8037 point (2): refund state gas directly to the reservoir
 			// at the SSTORE restoration point (0→x→0 in same tx); not to the
 			// refund counter, which is capped at gas_used/5.
 			contract.Gas.RefundState(params.StorageCreationSize * evm.Context.CostPerStateByte)
@@ -718,7 +718,7 @@ func gasSStore8037(evm *EVM, contract *Contract, stack *Stack, mem *Memory, memo
 			// Regular portion of the refund still goes through the refund counter.
 			evm.StateDB.AddRefund(params.SstoreResetGasEIP2200 - params.ColdSloadCostEIP2929 - params.WarmStorageReadCostEIP2929)
 		} else { // reset to original existing slot (2.2.2.2)
-			// EIP 2200 Original clause:
+			// SIP 2200 Original clause:
 			//	evm.StateDB.AddRefund(params.SstoreResetGasEIP2200 - params.SloadGasEIP2200)
 			// - SSTORE_RESET_GAS redefined as (5000 - COLD_SLOAD_COST)
 			// - SLOAD_GAS redefined as WARM_STORAGE_READ_COST
@@ -726,7 +726,7 @@ func gasSStore8037(evm *EVM, contract *Contract, stack *Stack, mem *Memory, memo
 			evm.StateDB.AddRefund((params.SstoreResetGasEIP2200 - params.ColdSloadCostEIP2929) - params.WarmStorageReadCostEIP2929)
 		}
 	}
-	// EIP-2200 original clause:
+	// SIP-2200 original clause:
 	//return params.SloadGasEIP2200, nil // dirty update (2.2)
 	return GasCosts{RegularGas: cost.RegularGas + params.WarmStorageReadCostEIP2929}, nil // dirty update (2.2)
 }

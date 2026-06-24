@@ -26,11 +26,11 @@ import (
 
 	"github.com/davecgh/go-spew/spew"
 	"github.com/sila-org/sila/crypto"
-	"github.com/sila-org/sila/sila/protocols/sila"
-	"github.com/sila-org/sila/sila/protocols/snap"
 	"github.com/sila-org/sila/p2p"
 	"github.com/sila-org/sila/p2p/rlpx"
 	"github.com/sila-org/sila/rlp"
+	"github.com/sila-org/sila/sila/protocols/sila"
+	"github.com/sila-org/sila/sila/protocols/snap"
 )
 
 var (
@@ -85,7 +85,7 @@ func (s *Suite) dialSnap() (*Conn, error) {
 }
 
 // dialSnap2 creates a connection advertising snap/2 as the only snap capability.
-// This is used by the snap/2 (EIP-8189) test suite to force the peer to
+// This is used by the snap/2 (SIP-8189) test suite to force the peer to
 // negotiate snap/2 rather than falling back to snap/1.
 func (s *Suite) dialSnap2() (*Conn, error) {
 	conn, err := s.dial()

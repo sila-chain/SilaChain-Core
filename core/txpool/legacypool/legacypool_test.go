@@ -29,6 +29,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/holiman/uint256"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/core"
 	"github.com/sila-org/sila/core/state"
@@ -40,7 +41,6 @@ import (
 	"github.com/sila-org/sila/event"
 	"github.com/sila-org/sila/params"
 	"github.com/sila-org/sila/trie"
-	"github.com/holiman/uint256"
 )
 
 var (
@@ -48,7 +48,7 @@ var (
 	// sideeffects used during testing.
 	testTxPoolConfig Config
 
-	// eip1559Config is a chain config with EIP-1559 enabled at block 0.
+	// eip1559Config is a chain config with SIP-1559 enabled at block 0.
 	eip1559Config *params.ChainConfig
 )
 
@@ -2262,7 +2262,7 @@ func TestSlotCount(t *testing.T) {
 	}
 }
 
-// TestSetCodeTransactions tests a few scenarios regarding the EIP-7702
+// TestSetCodeTransactions tests a few scenarios regarding the SIP-7702
 // SetCodeTx.
 func TestSetCodeTransactions(t *testing.T) {
 	t.Parallel()

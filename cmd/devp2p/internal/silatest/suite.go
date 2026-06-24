@@ -25,25 +25,25 @@ import (
 	"sync"
 	"time"
 
+	"github.com/holiman/uint256"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/consensus/misc/eip4844"
 	"github.com/sila-org/sila/core/types"
 	"github.com/sila-org/sila/crypto"
 	"github.com/sila-org/sila/crypto/kzg4844"
-	"github.com/sila-org/sila/sila/protocols/sila"
 	"github.com/sila-org/sila/internal/utesting"
 	"github.com/sila-org/sila/p2p"
 	"github.com/sila-org/sila/p2p/enode"
 	"github.com/sila-org/sila/rlp"
+	"github.com/sila-org/sila/sila/protocols/sila"
 	"github.com/sila-org/sila/trie"
-	"github.com/holiman/uint256"
 )
 
 // Suite represents a structure used to test a node's conformance
 // to the sila protocol.
 type Suite struct {
-	Dest   *enode.Node
-	chain  *Chain
+	Dest       *enode.Node
+	chain      *Chain
 	silaEngine *SilaEngineClient
 }
 
@@ -61,8 +61,8 @@ func NewSuite(dest *enode.Node, chainDir, silaEngineURL, jwt string) (*Suite, er
 	}
 
 	return &Suite{
-		Dest:   dest,
-		chain:  chain,
+		Dest:       dest,
+		chain:      chain,
 		silaEngine: silaEngine,
 	}, nil
 }
@@ -106,7 +106,7 @@ func (s *Suite) SnapTests() []utesting.Test {
 	}
 }
 
-// Snap2Tests returns the list of tests for the snap/2 protocol (EIP-8189).
+// Snap2Tests returns the list of tests for the snap/2 protocol (SIP-8189).
 // These tests require the peer to advertise and negotiate snap/2.
 func (s *Suite) Snap2Tests() []utesting.Test {
 	return []utesting.Test{

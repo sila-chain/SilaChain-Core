@@ -51,7 +51,7 @@ type (
 		Version    uint
 		From, To   Endpoint
 		Expiration uint64
-		ENRSeq     uint64 `rlp:"optional"` // Sequence number of local record, added by EIP-868.
+		ENRSeq     uint64 `rlp:"optional"` // Sequence number of local record, added by SIP-868.
 
 		// Ignore additional fields (for forward compatibility).
 		Rest []rlp.RawValue `rlp:"tail"`
@@ -65,7 +65,7 @@ type (
 		To         Endpoint
 		ReplyTok   []byte // This contains the hash of the ping packet.
 		Expiration uint64 // Absolute timestamp at which the packet becomes invalid.
-		ENRSeq     uint64 `rlp:"optional"` // Sequence number of local record, added by EIP-868.
+		ENRSeq     uint64 `rlp:"optional"` // Sequence number of local record, added by SIP-868.
 
 		// Ignore additional fields (for forward compatibility).
 		Rest []rlp.RawValue `rlp:"tail"`

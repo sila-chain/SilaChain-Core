@@ -27,11 +27,11 @@ import (
 	"reflect"
 	"testing"
 
+	"github.com/holiman/uint256"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/crypto"
 	"github.com/sila-org/sila/params"
 	"github.com/sila-org/sila/rlp"
-	"github.com/holiman/uint256"
 )
 
 // The values in those tests are from the Transaction Tests
@@ -107,10 +107,10 @@ func TestTransactionEncode(t *testing.T) {
 func TestEIP2718TransactionSigHash(t *testing.T) {
 	s := NewEIP2930Signer(big.NewInt(1))
 	if s.Hash(emptyEip2718Tx) != common.HexToHash("49b486f0ec0a60dfbbca2d30cb07c9e8ffb2a2ff41f29a1ab6737475f6ff69f3") {
-		t.Errorf("empty EIP-2718 transaction hash mismatch, got %x", s.Hash(emptyEip2718Tx))
+		t.Errorf("empty SIP-2718 transaction hash mismatch, got %x", s.Hash(emptyEip2718Tx))
 	}
 	if s.Hash(signedEip2718Tx) != common.HexToHash("49b486f0ec0a60dfbbca2d30cb07c9e8ffb2a2ff41f29a1ab6737475f6ff69f3") {
-		t.Errorf("signed EIP-2718 transaction hash mismatch, got %x", s.Hash(signedEip2718Tx))
+		t.Errorf("signed SIP-2718 transaction hash mismatch, got %x", s.Hash(signedEip2718Tx))
 	}
 }
 

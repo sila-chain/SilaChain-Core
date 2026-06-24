@@ -25,7 +25,7 @@ import (
 )
 
 func TestMemoryCopy(t *testing.T) {
-	// Test cases from https://eips.sila.org/EIPS/eip-5656#test-cases
+	// Test cases from https://sips.sila.org/SIPS/eip-5656#test-cases
 	for i, tc := range []struct {
 		dst, src, len uint64
 		pre           string
@@ -52,7 +52,7 @@ func TestMemoryCopy(t *testing.T) {
 			"000102030405060708 000000000000000000000000000000000000000000000000",
 			"000001020304050607 000000000000000000000000000000000000000000000000",
 		},
-		// Tests below are not in the EIP, but maybe should be added
+		// Tests below are not in the SIP, but maybe should be added
 		{ // MCOPY 0xFFFFFFFFFFFF 0xFFFFFFFFFFFF 0 - copy zero bytes from out-of-bounds index(overlapping).
 			0xFFFFFFFFFFFF, 0xFFFFFFFFFFFF, 0,
 			"11",

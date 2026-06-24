@@ -21,13 +21,13 @@ import (
 	"encoding/binary"
 	"fmt"
 
+	"github.com/holiman/uint256"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/core/types"
 	"github.com/sila-org/sila/siladb"
 	"github.com/sila-org/sila/trie"
 	"github.com/sila-org/sila/trie/trienode"
 	"github.com/sila-org/sila/triedb/database"
-	"github.com/holiman/uint256"
 )
 
 // ChunkedCode represents a sequence of HashSize-byte chunks of code (StemSize bytes of which
@@ -41,7 +41,7 @@ const (
 )
 
 // ChunkifyCode generates the chunked version of an array representing EVM bytecode
-// according to EIP-7864 specification.
+// according to SIP-7864 specification.
 //
 // The code is divided into HashSize-byte chunks, where each chunk contains:
 //   - Byte 0: Metadata byte indicating the number of leading bytes that are PUSHDATA (0-StemSize)
@@ -63,7 +63,7 @@ const (
 // by examining only the chunk containing the potential JUMPDEST, making it ideal
 // for stateless execution and verkle/binary tries.
 //
-// Reference: https://eips.sila.org/EIPS/eip-7864
+// Reference: https://sips.sila.org/SIPS/eip-7864
 func ChunkifyCode(code []byte) ChunkedCode {
 	var (
 		chunkOffset = 0 // offset in the chunk
@@ -105,7 +105,7 @@ func ChunkifyCode(code []byte) ChunkedCode {
 	return chunks
 }
 
-// BinaryTrie is the implementation of https://eips.sila.org/EIPS/eip-7864.
+// BinaryTrie is the implementation of https://sips.sila.org/SIPS/eip-7864.
 type BinaryTrie struct {
 	store      *nodeStore
 	reader     *trie.Reader

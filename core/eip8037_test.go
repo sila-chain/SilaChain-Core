@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with the sila library. If not, see <http://www.gnu.org/licenses/>.
 
-// Transaction- and block-level tests for EIP-8037 (multidimensional state-gas
+// Transaction- and block-level tests for SIP-8037 (multidimensional state-gas
 // metering). They apply whole transactions and inspect the 2D block gas pool
 // (cumulativeRegular / cumulativeState) and the receipt/peak figures.
 
@@ -24,6 +24,7 @@ import (
 	"math/big"
 	"testing"
 
+	"github.com/holiman/uint256"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/consensus/beacon"
 	"github.com/sila-org/sila/consensus/silaash"
@@ -33,7 +34,6 @@ import (
 	"github.com/sila-org/sila/core/vm"
 	"github.com/sila-org/sila/crypto"
 	"github.com/sila-org/sila/params"
-	"github.com/holiman/uint256"
 )
 
 var (
@@ -294,7 +294,7 @@ func TestValidationStateGasOverflowAllowed(t *testing.T) {
 	}
 }
 
-// Intrinsic regular gas above MaxTxGas (EIP-7825 cap) is rejected.
+// Intrinsic regular gas above MaxTxGas (SIP-7825 cap) is rejected.
 func TestValidationIntrinsicRegularCap(t *testing.T) {
 	al := make(types.AccessList, 8000) // ~19.2M regular, over the 16.77M cap
 	for i := range al {
@@ -348,7 +348,7 @@ func TestRefundCappedAt20Percent(t *testing.T) {
 	}
 }
 
-// The EIP-7623 calldata floor is applied after the refund.
+// The SIP-7623 calldata floor is applied after the refund.
 func TestRefundCalldataFloorAfterRefund(t *testing.T) {
 	data := make([]byte, 1000) // all-zero calldata: floor dominates a bare call
 	floor, _ := FloorDataGas(rules8037, data, nil)
@@ -446,7 +446,7 @@ func TestReceiptCumulativeGasUsed(t *testing.T) {
 	}
 }
 
-// ======================= EIP-7702 authorizations =========================
+// ======================= SIP-7702 authorizations =========================
 
 // signAuth signs an authorization from authKey for the given delegate and nonce.
 func signAuth(t *testing.T, authKey string, delegate common.Address, nonce uint64) (types.SetCodeAuthorization, common.Address) {

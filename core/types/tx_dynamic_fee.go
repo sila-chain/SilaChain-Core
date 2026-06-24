@@ -24,7 +24,7 @@ import (
 	"github.com/sila-org/sila/rlp"
 )
 
-// DynamicFeeTx represents an EIP-1559 transaction.
+// DynamicFeeTx represents an SIP-1559 transaction.
 type DynamicFeeTx struct {
 	ChainID    *big.Int
 	Nonce      uint64

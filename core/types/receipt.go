@@ -169,7 +169,7 @@ func (r *Receipt) DecodeRLP(s *rlp.Stream) error {
 	case kind == rlp.Byte:
 		return errShortTypedReceipt
 	default:
-		// It's an EIP-2718 typed tx receipt.
+		// It's an SIP-2718 typed tx receipt.
 		b, buf, err := getPooledBuffer(size)
 		if err != nil {
 			return err
@@ -183,7 +183,7 @@ func (r *Receipt) DecodeRLP(s *rlp.Stream) error {
 }
 
 // UnmarshalBinary decodes the consensus encoding of receipts.
-// It supports legacy RLP receipts and EIP-2718 typed receipts.
+// It supports legacy RLP receipts and SIP-2718 typed receipts.
 func (r *Receipt) UnmarshalBinary(b []byte) error {
 	if len(b) > 0 && b[0] > 0x7f {
 		// It's a legacy receipt decode the RLP
@@ -280,7 +280,7 @@ func (r *Receipt) DeriveFields(signer Signer, context DeriveReceiptContext) {
 	r.GasUsed = context.GasUsed
 	r.EffectiveGasPrice = context.Tx.inner.effectiveGasPrice(new(big.Int), context.BaseFee)
 
-	// EIP-4844 blob transaction fields
+	// SIP-4844 blob transaction fields
 	if context.Tx.Type() == BlobTxType {
 		r.BlobGasUsed = context.Tx.BlobGas()
 		r.BlobGasPrice = context.BlobGasPrice

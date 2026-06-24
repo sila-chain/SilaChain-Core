@@ -25,6 +25,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/holiman/uint256"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/common/hexutil"
 	"github.com/sila-org/sila/common/math"
@@ -39,17 +40,16 @@ import (
 	"github.com/sila-org/sila/core/vm"
 	"github.com/sila-org/sila/crypto"
 	"github.com/sila-org/sila/crypto/keccak"
-	"github.com/sila-org/sila/siladb"
 	"github.com/sila-org/sila/params"
 	"github.com/sila-org/sila/rlp"
+	"github.com/sila-org/sila/siladb"
 	"github.com/sila-org/sila/triedb"
 	"github.com/sila-org/sila/triedb/hashdb"
 	"github.com/sila-org/sila/triedb/pathdb"
-	"github.com/holiman/uint256"
 )
 
 // StateTest checks transaction processing without block context.
-// See https://github.com/sila-org/EIPs/issues/176 for the test format specification.
+// See https://github.com/sila-org/SIPs/issues/176 for the test format specification.
 type StateTest struct {
 	json stJSON
 }
@@ -161,7 +161,7 @@ type stAuthorizationMarshaling struct {
 // GetChainConfig takes a fork definition and returns a chain config.
 // The fork definition can be
 // - a plain forkname, e.g. `Byzantium`,
-// - a fork basename, and a list of EIPs to enable; e.g. `Byzantium+1884+1283`.
+// - a fork basename, and a list of SIPs to enable; e.g. `Byzantium+1884+1283`.
 func GetChainConfig(forkString string) (baseConfig *params.ChainConfig, eips []int, err error) {
 	var (
 		splitForks            = strings.Split(forkString, "+")
@@ -568,7 +568,7 @@ type dummyChain struct {
 	config *params.ChainConfig
 }
 
-func (d *dummyChain) SilaEngine() consensus.SilaEngine                        { return nil }
+func (d *dummyChain) SilaEngine() consensus.SilaEngine                { return nil }
 func (d *dummyChain) GetHeader(h common.Hash, n uint64) *types.Header { return nil }
 func (d *dummyChain) Config() *params.ChainConfig                     { return d.config }
 func (d *dummyChain) CurrentHeader() *types.Header                    { return nil }

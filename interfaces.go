@@ -169,12 +169,12 @@ type CallMsg struct {
 	To        *common.Address // the destination contract (nil for contract creation)
 	Gas       uint64          // if 0, the call executes with near-infinite gas
 	GasPrice  *big.Int        // wei <-> gas exchange ratio
-	GasFeeCap *big.Int        // EIP-1559 fee cap per gas.
-	GasTipCap *big.Int        // EIP-1559 tip per gas.
+	GasFeeCap *big.Int        // SIP-1559 fee cap per gas.
+	GasTipCap *big.Int        // SIP-1559 tip per gas.
 	Value     *big.Int        // amount of wei sent along with the call
 	Data      []byte          // input data, usually an ABI-encoded contract method invocation
 
-	AccessList types.AccessList // EIP-2930 access list.
+	AccessList types.AccessList // SIP-2930 access list.
 
 	// For BlobTxType
 	BlobGasFeeCap *big.Int
@@ -241,7 +241,7 @@ type GasPricer interface {
 	SuggestGasPrice(ctx context.Context) (*big.Int, error)
 }
 
-// GasPricer1559 provides access to the EIP-1559 gas price oracle.
+// GasPricer1559 provides access to the SIP-1559 gas price oracle.
 type GasPricer1559 interface {
 	SuggestGasTipCap(ctx context.Context) (*big.Int, error)
 }

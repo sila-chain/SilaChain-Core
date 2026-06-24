@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with the sila library. If not, see <http://www.gnu.org/licenses/>.
 
-// Opcode-level tests for EIP-8037 (multidimensional state-gas metering).
+// Opcode-level tests for SIP-8037 (multidimensional state-gas metering).
 // They drive a single frame via evm.Call and assert the state-gas accounting
 // exposed by the returned GasBudget (UsedStateGas / StateGas / Spilled).
 
@@ -26,13 +26,13 @@ import (
 	"math/rand"
 	"testing"
 
+	"github.com/holiman/uint256"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/core/state"
 	"github.com/sila-org/sila/core/tracing"
 	"github.com/sila-org/sila/core/types"
 	"github.com/sila-org/sila/crypto"
 	"github.com/sila-org/sila/params"
-	"github.com/holiman/uint256"
 )
 
 // state-gas charges in units (CPSB applied).
@@ -41,7 +41,7 @@ var (
 	stateGasNewSlot    = int64(params.StorageCreationSize * params.CostPerStateByte) // 97,920
 )
 
-// amsterdam8037Config clones MergedTestChainConfig with Amsterdam (EIP-8037) live.
+// amsterdam8037Config clones MergedTestChainConfig with Amsterdam (SIP-8037) live.
 func amsterdam8037Config() *params.ChainConfig {
 	cfg := *params.MergedTestChainConfig
 	cfg.AmsterdamTime = new(uint64)
@@ -496,7 +496,7 @@ func TestSelfdestructSameTxAccountNoRefill(t *testing.T) {
 	}
 }
 
-// selfdestruct of a pre-existing account refills nothing (EIP-6780: not removed).
+// selfdestruct of a pre-existing account refills nothing (SIP-6780: not removed).
 func TestSelfdestructPreexistingNoRefill(t *testing.T) {
 	setup := func(db *state.StateDB, self common.Address) {
 		db.AddBalance(existAddr, uint256.NewInt(1), tracing.BalanceChangeUnspecified)

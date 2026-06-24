@@ -21,13 +21,13 @@ import (
 	"math/big"
 	"testing"
 
+	"github.com/holiman/uint256"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/core/rawdb"
 	"github.com/sila-org/sila/core/types"
 	"github.com/sila-org/sila/core/types/bal"
 	"github.com/sila-org/sila/crypto"
 	"github.com/sila-org/sila/rlp"
-	"github.com/holiman/uint256"
 )
 
 // buildTestBAL constructs a BlockAccessList from a ConstructionBlockAccessList
@@ -513,11 +513,11 @@ func TestIsStorageFetched(t *testing.T) {
 
 // TestAccessListApplicationSameTxCreateDestroy tests the edge case where an
 // account is created and self-destructed in the same transaction during the
-// pivot gap. Per EIP-7928, such accounts appear in the BAL with a balance
+// pivot gap. Per SIP-7928, such accounts appear in the BAL with a balance
 // change to zero but no nonce or code changes. Since the account didn't exist
 // at the old pivot and doesn't exist at the new pivot (destroyed),
 // applyAccessList should not leave a zero-balance account in the snapshot.
-// Per EIP-161, empty accounts (zero balance, zero nonce, no code) must not exist
+// Per SIP-161, empty accounts (zero balance, zero nonce, no code) must not exist
 // in state.
 func TestAccessListApplicationSameTxCreateDestroy(t *testing.T) {
 	t.Parallel()

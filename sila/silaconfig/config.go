@@ -30,11 +30,11 @@ import (
 	"github.com/sila-org/sila/core/history"
 	"github.com/sila-org/sila/core/txpool/blobpool"
 	"github.com/sila-org/sila/core/txpool/legacypool"
-	"github.com/sila-org/sila/sila/gasprice"
-	"github.com/sila-org/sila/siladb"
 	"github.com/sila-org/sila/log"
 	"github.com/sila-org/sila/miner"
 	"github.com/sila-org/sila/params"
+	"github.com/sila-org/sila/sila/gasprice"
+	"github.com/sila-org/sila/siladb"
 	"github.com/sila-org/sila/triedb"
 	"github.com/sila-org/sila/triedb/pathdb"
 )
@@ -99,7 +99,7 @@ type Config struct {
 
 	// This can be set to list of enrtree:// URLs which will be queried for
 	// nodes to connect to.
-	SilaDiscoveryURLs  []string
+	SilaDiscoveryURLs []string
 	SnapDiscoveryURLs []string
 
 	// State options.
@@ -184,7 +184,7 @@ type Config struct {
 	// Enables tracking of state size
 	EnableStateSizeTracking bool
 
-	// SnapV2 enables the experimental snap/2 (EIP-8189, BAL-based) sync protocol:
+	// SnapV2 enables the experimental snap/2 (SIP-8189, BAL-based) sync protocol:
 	// the node advertises snap/2 on the wire and uses the snap/2 state syncer.
 	// It is not safe to enable on public networks yet.
 	SnapV2 bool
@@ -215,7 +215,7 @@ type Config struct {
 	// OverrideUBT (TODO: remove after the fork)
 	OverrideUBT *uint64 `toml:",omitempty"`
 
-	// EIP-7966: sila_sendRawTransactionSync timeouts
+	// SIP-7966: sila_sendRawTransactionSync timeouts
 	TxSyncDefaultTimeout time.Duration `toml:",omitempty"`
 	TxSyncMaxTimeout     time.Duration `toml:",omitempty"`
 

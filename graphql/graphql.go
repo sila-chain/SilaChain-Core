@@ -33,10 +33,10 @@ import (
 	"github.com/sila-org/sila/consensus/misc/eip1559"
 	"github.com/sila-org/sila/core/state"
 	"github.com/sila-org/sila/core/types"
-	"github.com/sila-org/sila/sila/filters"
 	"github.com/sila-org/sila/internal/silaapi"
 	"github.com/sila-org/sila/rlp"
 	"github.com/sila-org/sila/rpc"
+	"github.com/sila-org/sila/sila/filters"
 )
 
 var (
@@ -169,7 +169,7 @@ func (l *Log) Data(ctx context.Context) hexutil.Bytes {
 	return l.log.Data
 }
 
-// AccessTuple represents EIP-2930
+// AccessTuple represents SIP-2930
 type AccessTuple struct {
 	address     common.Address
 	storageKeys []common.Hash
@@ -184,7 +184,7 @@ func (at *AccessTuple) StorageKeys(ctx context.Context) []common.Hash {
 }
 
 // Withdrawal represents a withdrawal of value from the beacon chain
-// by a validator. For details see EIP-4895.
+// by a validator. For details see SIP-4895.
 type Withdrawal struct {
 	index     uint64
 	validator uint64
@@ -781,7 +781,7 @@ func (b *Block) NextBaseFeePerGas(ctx context.Context) (*hexutil.Big, error) {
 	}
 	chaincfg := b.r.backend.ChainConfig()
 	if header.BaseFee == nil {
-		// Make sure next block doesn't enable EIP-1559
+		// Make sure next block doesn't enable SIP-1559
 		if !chaincfg.IsLondon(new(big.Int).Add(header.Number, common.Big1)) {
 			return nil, nil
 		}

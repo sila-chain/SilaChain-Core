@@ -80,7 +80,7 @@ func NewGasBudget(regular, state uint64) GasBudget {
 
 // Used returns the total scalar gas consumed relative to an initial budget
 // (= (initial.regular + initial.state) − (current.regular + current.state)).
-// This is the payment scalar (EIP-8037's tx_gas_used_before_refund).
+// This is the payment scalar (SIP-8037's tx_gas_used_before_refund).
 func (g GasBudget) Used(initial GasBudget) uint64 {
 	return (initial.RegularGas + initial.StateGas) - (g.RegularGas + g.StateGas)
 }
@@ -175,7 +175,7 @@ func (g *GasBudget) IsZero() bool {
 
 // RefundState applies an inline state-gas refund (e.g., SSTORE 0->A->0).
 //
-// Per EIP-8037, the refund repays the regular gas previously borrowed for
+// Per SIP-8037, the refund repays the regular gas previously borrowed for
 // state-gas spillover (tracked by Spilled) before crediting the
 // reservoir: it is returned to RegularGas up to the outstanding borrowed
 // amount, and only the remainder tops up StateGas.
@@ -207,7 +207,7 @@ func (g *GasBudget) RefundState(s uint64) {
 // reporting reasons and therefore constructs its child budget directly.
 //
 // Caller must ensure `regular` does not exceed the running balance and
-// apply any EIP-150 1/64 retention before calling Forward.
+// apply any SIP-150 1/64 retention before calling Forward.
 func (g *GasBudget) Forward(regular uint64) GasBudget {
 	g.RegularGas -= regular
 	g.UsedRegularGas += regular
@@ -242,7 +242,7 @@ func (g GasBudget) ExitSuccess() GasBudget {
 
 // ExitRevert produces the leftover for a REVERT exit. The frame's state
 // changes are discarded, so all state gas it charged is refilled to its origin
-// (EIP-8037): up to Spilled is returned to RegularGas (the regular
+// (SIP-8037): up to Spilled is returned to RegularGas (the regular
 // gas it borrowed), and the remainder restores the reservoir. Because the
 // borrowed regular gas is repaid first, the reservoir is made whole back to its
 // start-of-frame value.
@@ -265,7 +265,7 @@ func (g GasBudget) ExitRevert() GasBudget {
 
 // ExitHalt produces the leftover for an exceptional halt. As with a revert, the
 // frame's state changes are rolled back and its state gas is refilled to origin
-// (EIP-8037); the difference is that the frame's gas_left is consumed rather
+// (SIP-8037); the difference is that the frame's gas_left is consumed rather
 // than returned. The portion refilled to RegularGas is therefore burned along
 // with the rest of gas_left, leaving only the reservoir portion to survive,
 // which equals the reservoir's value at the start of the frame.
@@ -304,7 +304,7 @@ func (g GasBudget) Exit(err error) GasBudget {
 }
 
 // Absorb merges a sub-call's leftover GasBudget into this (caller's) running
-// budget. Additionally, it does an EIP-8037 spillover correction:
+// budget. Additionally, it does an SIP-8037 spillover correction:
 // state-gas that spilled into the regular pool inside the child frame is
 // excluded from the UsedRegularGas.
 func (g *GasBudget) Absorb(child GasBudget) {

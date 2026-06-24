@@ -27,11 +27,11 @@ package tracing
 import (
 	"math/big"
 
+	"github.com/holiman/uint256"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/core/types"
 	"github.com/sila-org/sila/params"
 	"github.com/sila-org/sila/trie/trienode"
-	"github.com/holiman/uint256"
 )
 
 // OpContext provides the context at which the opcode is being
@@ -166,7 +166,7 @@ type (
 
 	// GasChangeHook reports changes to the regular execution gas. Tracers
 	// that don't need visibility into the state-access gas dimension
-	// introduced by EIP-8037 (Amsterdam) can implement only this hook; it
+	// introduced by SIP-8037 (Amsterdam) can implement only this hook; it
 	// will continue to fire across the Amsterdam fork unchanged.
 	//
 	// If both this hook and GasChangeHookV2 are implemented on the same
@@ -176,7 +176,7 @@ type (
 
 	// GasChangeHookV2 is invoked when any gas dimension changes. It is the
 	// multi-dimensional successor to GasChangeHook, exposing the state-access
-	// gas dimension introduced by EIP-8037 (Amsterdam) alongside the regular
+	// gas dimension introduced by SIP-8037 (Amsterdam) alongside the regular
 	// dimension.
 	//
 	// Compatibility:
@@ -221,7 +221,7 @@ type (
 	GenesisBlockHook = func(genesis *types.Block, alloc types.GenesisAlloc)
 
 	// OnSystemCallStartHook is called when a system call is about to be executed. Today,
-	// this hook is invoked when the EIP-4788 system call is about to be executed to set the
+	// this hook is invoked when the SIP-4788 system call is about to be executed to set the
 	// beacon block root.
 	//
 	// After this hook, the EVM call tracing will happened as usual so you will receive a `OnEnter/OnExit`
@@ -236,7 +236,7 @@ type (
 	OnSystemCallStartHookV2 = func(vm *VMContext)
 
 	// OnSystemCallEndHook is called when a system call has finished executing. Today,
-	// this hook is invoked when the EIP-4788 system call is about to be executed to set the
+	// this hook is invoked when the SIP-4788 system call is about to be executed to set the
 	// beacon block root.
 	OnSystemCallEndHook = func()
 
@@ -359,7 +359,7 @@ const (
 	// BalanceIncreaseRewardTransactionFee is the transaction tip increasing block builder's balance.
 	BalanceIncreaseRewardTransactionFee BalanceChangeReason = 5
 	// BalanceDecreaseGasBuy is spent to purchase gas for execution a transaction.
-	// Part of this gas will be burnt as per EIP-1559 rules.
+	// Part of this gas will be burnt as per SIP-1559 rules.
 	BalanceDecreaseGasBuy BalanceChangeReason = 6
 	// BalanceIncreaseGasReturn is ether returned for unused gas at the end of execution.
 	BalanceIncreaseGasReturn BalanceChangeReason = 7
@@ -391,7 +391,7 @@ const (
 	BalanceChangeRevert BalanceChangeReason = 15
 )
 
-// Gas represents a multi-dimensional gas budget introduced by EIP-8037.
+// Gas represents a multi-dimensional gas budget introduced by SIP-8037.
 // It carries the regular execution gas and the state-access gas, which are
 // metered independently from the Amsterdam fork onwards.
 //
@@ -501,7 +501,7 @@ const (
 	// NonceChangeNewContract is the nonce change of a newly created contract.
 	NonceChangeNewContract NonceChangeReason = 4
 
-	// NonceChangeAuthorization is the nonce change due to a EIP-7702 authorization.
+	// NonceChangeAuthorization is the nonce change due to a SIP-7702 authorization.
 	NonceChangeAuthorization NonceChangeReason = 5
 
 	// NonceChangeRevert is emitted when the nonce is reverted back to a previous value due to call failure.
@@ -526,10 +526,10 @@ const (
 	// CodeChangeGenesis is when contract code is set during blockchain genesis or initial setup.
 	CodeChangeGenesis CodeChangeReason = 2
 
-	// CodeChangeAuthorization is when code is set via EIP-7702 Set Code Authorization.
+	// CodeChangeAuthorization is when code is set via SIP-7702 Set Code Authorization.
 	CodeChangeAuthorization CodeChangeReason = 3
 
-	// CodeChangeAuthorizationClear is when EIP-7702 delegation is cleared by setting to zero address.
+	// CodeChangeAuthorizationClear is when SIP-7702 delegation is cleared by setting to zero address.
 	CodeChangeAuthorizationClear CodeChangeReason = 4
 
 	// CodeChangeSelfDestruct is when contract code is cleared due to self-destruct.

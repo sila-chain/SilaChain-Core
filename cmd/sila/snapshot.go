@@ -43,9 +43,9 @@ import (
 	"github.com/sila-org/sila/core/state/snapshot"
 	"github.com/sila-org/sila/core/types"
 	"github.com/sila-org/sila/crypto"
-	"github.com/sila-org/sila/siladb/pebble"
 	"github.com/sila-org/sila/log"
 	"github.com/sila-org/sila/rlp"
+	"github.com/sila-org/sila/siladb/pebble"
 	"github.com/sila-org/sila/trie"
 	"github.com/sila-org/sila/triedb"
 	"github.com/urfave/cli/v2"
@@ -216,10 +216,10 @@ the expected order for the overlay tree migration.
 				Flags:   slices.Concat(utils.NetworkFlags, utils.DatabaseFlags),
 				Description: `
 sila snapshot list-eip-7610-accounts
-traverses the post–EIP-161 state and returns all accounts that are eligible
-under EIP-7610: accounts with zero nonce, empty runtime code, and non-empty
+traverses the post–SIP-161 state and returns all accounts that are eligible
+under SIP-7610: accounts with zero nonce, empty runtime code, and non-empty
 storage. The traversal will be aborted immediately if the state is prior to
-EIP-161.
+SIP-161.
 
 The exported accounts are identified by their address.
 `,
@@ -1007,15 +1007,15 @@ func checkAccount(ctx *cli.Context) error {
 	return nil
 }
 
-// listEIP7610EligibleAccounts traverses the post–EIP-161 state and returns all
-// accounts that are eligible under EIP-7610: accounts with zero nonce, empty
+// listEIP7610EligibleAccounts traverses the post–SIP-161 state and returns all
+// accounts that are eligible under SIP-7610: accounts with zero nonce, empty
 // runtime code, and non-empty storage.
 //
-// Such accounts could only have been created before EIP-161, since after that
+// Such accounts could only have been created before SIP-161, since after that
 // all newly created contracts are initialized with a nonce of one.
 //
 // This helper should be generally applicable to all networks, including the
-// Sila mainnet. For most networks where EIP-161 was enabled from genesis,
+// Sila mainnet. For most networks where SIP-161 was enabled from genesis,
 // the resulting set is expected to be empty. Otherwise, network operators are
 // responsible for generating the eligible account set themselves.
 //
@@ -1038,7 +1038,7 @@ func listEIP7610EligibleAccounts(ctx *cli.Context) error {
 		return err
 	}
 	if !config.IsEIP158(headBlock.Number()) {
-		log.Info("Local head is prior to EIP-161", "head", headBlock.Number(), "eip-161", *config.EIP158Block)
+		log.Info("Local head is prior to SIP-161", "head", headBlock.Number(), "eip-161", *config.EIP158Block)
 		return nil
 	}
 	triedb := utils.MakeTrieDatabase(ctx, stack, chaindb, false, true, false)
@@ -1068,7 +1068,7 @@ func listEIP7610EligibleAccounts(ctx *cli.Context) error {
 			log.Error("Failed to decode", "err", err)
 			return err
 		}
-		// EIP-7610 account eligibility:
+		// SIP-7610 account eligibility:
 		// - account.nonce == 0
 		// - account.runtime_code == empty
 		// - account.storage != empty

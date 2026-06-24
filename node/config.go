@@ -189,7 +189,7 @@ type Config struct {
 	// Logger is a custom logger to use with the p2p.Server.
 	Logger log.Logger `toml:"-,omitempty"`
 
-	// AllowUnprotectedTxs allows non EIP-155 protected transactions to be send over RPC.
+	// AllowUnprotectedTxs allows non SIP-155 protected transactions to be send over RPC.
 	AllowUnprotectedTxs bool `toml:",omitempty"`
 
 	// BatchRequestLimit is the maximum number of requests in a batch.

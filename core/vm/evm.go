@@ -21,6 +21,7 @@ import (
 	"math/big"
 	"sync/atomic"
 
+	"github.com/holiman/uint256"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/core/state"
 	"github.com/sila-org/sila/core/tracing"
@@ -28,7 +29,6 @@ import (
 	"github.com/sila-org/sila/crypto"
 	"github.com/sila-org/sila/log"
 	"github.com/sila-org/sila/params"
-	"github.com/holiman/uint256"
 )
 
 type (
@@ -68,7 +68,7 @@ type BlockContext struct {
 	Random      *common.Hash   // Provides information for PREVRANDAO
 	SlotNum     uint64         // Provides information for SLOTNUM
 
-	CostPerStateByte uint64 // CostPerByte for new state after EIP-8037
+	CostPerStateByte uint64 // CostPerByte for new state after SIP-8037
 }
 
 // TxContext provides the EVM with information about a transaction.
@@ -192,7 +192,7 @@ func NewEVM(blockCtx BlockContext, statedb StateDB, chainConfig *params.ChainCon
 	for _, eip := range evm.Config.ExtraEips {
 		if err := EnableEIP(eip, evm.table); err != nil {
 			// Disable it, so caller can check if it's activated or not
-			log.Error("EIP activation failed", "eip", eip, "error", err)
+			log.Error("SIP activation failed", "eip", eip, "error", err)
 		} else {
 			extraEips = append(extraEips, eip)
 		}
@@ -530,7 +530,7 @@ func (evm *EVM) create(caller common.Address, code []byte, gas GasBudget, value 
 		if evm.Config.Tracer.HasGasHook() {
 			evm.Config.Tracer.EmitGasChange(gas.AsTracing(), halt.AsTracing(), tracing.GasChangeCallFailedExecution)
 		}
-		// EIP-8037 collision rule: the state reservoir is fully preserved on
+		// SIP-8037 collision rule: the state reservoir is fully preserved on
 		// address collision while regular gas is burnt.
 		return nil, common.Address{}, halt, false, ErrContractAddressCollision
 	}
@@ -601,7 +601,7 @@ func (evm *EVM) initNewContract(contract *Contract, address common.Address) ([]b
 		return ret, err
 	}
 	// Check prefix before gas calculation.
-	// Reject code starting with 0xEF if EIP-3541 is enabled.
+	// Reject code starting with 0xEF if SIP-3541 is enabled.
 	if len(ret) >= 1 && ret[0] == 0xEF && evm.chainRules.IsLondon {
 		return ret, ErrInvalidCode
 	}

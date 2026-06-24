@@ -25,15 +25,15 @@ import (
 	"sync/atomic"
 	"time"
 
+	"github.com/holiman/uint256"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/crypto"
 	"github.com/sila-org/sila/rlp"
-	"github.com/holiman/uint256"
 )
 
 var (
 	ErrInvalidSig           = errors.New("invalid transaction v, r, s values")
-	ErrUnexpectedProtection = errors.New("transaction type does not supported EIP-155 protected signatures")
+	ErrUnexpectedProtection = errors.New("transaction type does not supported SIP-155 protected signatures")
 	ErrTxTypeNotSupported   = errors.New("transaction type not supported")
 	ErrGasFeeCapTooLow      = errors.New("fee cap less than base fee")
 	ErrUint256Overflow      = errors.New("bigint overflow, too large for uint256")
@@ -111,7 +111,7 @@ func (tx *Transaction) EncodeRLP(w io.Writer) error {
 	if tx.Type() == LegacyTxType {
 		return rlp.Encode(w, tx.inner)
 	}
-	// It's an EIP-2718 typed TX envelope.
+	// It's an SIP-2718 typed TX envelope.
 	buf := encodeBufferPool.Get().(*bytes.Buffer)
 	defer encodeBufferPool.Put(buf)
 	buf.Reset()
@@ -128,7 +128,7 @@ func (tx *Transaction) encodeTyped(w *bytes.Buffer) error {
 }
 
 // MarshalBinary returns the canonical encoding of the transaction.
-// For legacy transactions, it returns the RLP encoding. For EIP-2718 typed
+// For legacy transactions, it returns the RLP encoding. For SIP-2718 typed
 // transactions, it returns the type and payload.
 func (tx *Transaction) MarshalBinary() ([]byte, error) {
 	if tx.Type() == LegacyTxType {
@@ -156,7 +156,7 @@ func (tx *Transaction) DecodeRLP(s *rlp.Stream) error {
 	case kind == rlp.Byte:
 		return errShortTypedTx
 	default:
-		// It's an EIP-2718 typed TX envelope.
+		// It's an SIP-2718 typed TX envelope.
 		// First read the tx payload bytes into a temporary buffer.
 		b, buf, err := getPooledBuffer(size)
 		if err != nil {
@@ -176,7 +176,7 @@ func (tx *Transaction) DecodeRLP(s *rlp.Stream) error {
 }
 
 // UnmarshalBinary decodes the canonical encoding of transactions.
-// It supports legacy RLP transactions and EIP-2718 typed transactions.
+// It supports legacy RLP transactions and SIP-2718 typed transactions.
 func (tx *Transaction) UnmarshalBinary(b []byte) error {
 	if len(b) > 0 && b[0] > 0x7f {
 		// It's a legacy transaction.
@@ -188,7 +188,7 @@ func (tx *Transaction) UnmarshalBinary(b []byte) error {
 		tx.setDecoded(&data, uint64(len(b)))
 		return nil
 	}
-	// It's an EIP-2718 typed transaction envelope.
+	// It's an SIP-2718 typed transaction envelope.
 	inner, err := tx.decodeTyped(b)
 	if err != nil {
 		return err
@@ -238,7 +238,7 @@ func sanityCheckSignature(v *big.Int, r *big.Int, s *big.Int, maybeProtected boo
 		chainID := deriveChainId(v).Uint64()
 		plainV = byte(v.Uint64() - 35 - 2*chainID)
 	} else if maybeProtected {
-		// Only EIP-155 signatures can be optionally protected. Since
+		// Only SIP-155 signatures can be optionally protected. Since
 		// we determined this v value is not protected, it must be a
 		// raw 27 or 28.
 		plainV = byte(v.Uint64() - 27)

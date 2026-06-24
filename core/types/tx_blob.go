@@ -24,11 +24,11 @@ import (
 	"math/big"
 	"slices"
 
+	"github.com/holiman/uint256"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/crypto/kzg4844"
 	"github.com/sila-org/sila/params"
 	"github.com/sila-org/sila/rlp"
-	"github.com/holiman/uint256"
 )
 
 const (
@@ -43,7 +43,7 @@ const (
 	BlobSidecarVersion1 = byte(1)
 )
 
-// BlobTx represents an EIP-4844 transaction.
+// BlobTx represents an SIP-4844 transaction.
 type BlobTx struct {
 	ChainID    *uint256.Int
 	Nonce      uint64

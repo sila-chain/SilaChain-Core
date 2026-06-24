@@ -175,7 +175,7 @@ func PingWrongFrom(t *utesting.T) {
 }
 
 // PingExtraData This test sends a PING packet with additional data at the end and expects a PONG
-// response. The remote node should respond because EIP-8 mandates ignoring additional
+// response. The remote node should respond because SIP-8 mandates ignoring additional
 // trailing data.
 func PingExtraData(t *utesting.T) {
 	te := newTestEnv(Remote, Listen1, Listen2)

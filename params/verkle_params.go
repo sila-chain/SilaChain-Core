@@ -16,7 +16,7 @@
 
 package params
 
-// Verkle tree EIP: costs associated to witness accesses
+// Verkle tree SIP: costs associated to witness accesses
 var (
 	WitnessBranchReadCost  uint64 = 1900
 	WitnessChunkReadCost   uint64 = 200

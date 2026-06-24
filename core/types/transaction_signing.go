@@ -90,7 +90,7 @@ func LatestSigner(config *params.ChainConfig) Signer {
 }
 
 // LatestSignerForChainID returns the 'most permissive' Signer available. Specifically,
-// this enables support for EIP-155 replay protection and all implemented EIP-2718
+// this enables support for SIP-155 replay protection and all implemented SIP-2718
 // transaction types if chainID is non-nil.
 //
 // Use this in transaction-handling code where the current block number and fork
@@ -291,42 +291,42 @@ func (s *modernSigner) SignatureValues(tx *Transaction, sig []byte) (R, S, V *bi
 }
 
 // NewPragueSigner returns a signer that accepts
-// - EIP-7702 set code transactions
-// - EIP-4844 blob transactions
-// - EIP-1559 dynamic fee transactions
-// - EIP-2930 access list transactions,
-// - EIP-155 replay protected transactions, and
+// - SIP-7702 set code transactions
+// - SIP-4844 blob transactions
+// - SIP-1559 dynamic fee transactions
+// - SIP-2930 access list transactions,
+// - SIP-155 replay protected transactions, and
 // - legacy Homestead transactions.
 func NewPragueSigner(chainId *big.Int) Signer {
 	return newModernSigner(chainId, forks.Prague)
 }
 
 // NewCancunSigner returns a signer that accepts
-// - EIP-4844 blob transactions
-// - EIP-1559 dynamic fee transactions
-// - EIP-2930 access list transactions,
-// - EIP-155 replay protected transactions, and
+// - SIP-4844 blob transactions
+// - SIP-1559 dynamic fee transactions
+// - SIP-2930 access list transactions,
+// - SIP-155 replay protected transactions, and
 // - legacy Homestead transactions.
 func NewCancunSigner(chainId *big.Int) Signer {
 	return newModernSigner(chainId, forks.Cancun)
 }
 
 // NewLondonSigner returns a signer that accepts
-// - EIP-1559 dynamic fee transactions
-// - EIP-2930 access list transactions,
-// - EIP-155 replay protected transactions, and
+// - SIP-1559 dynamic fee transactions
+// - SIP-2930 access list transactions,
+// - SIP-155 replay protected transactions, and
 // - legacy Homestead transactions.
 func NewLondonSigner(chainId *big.Int) Signer {
 	return newModernSigner(chainId, forks.London)
 }
 
-// NewEIP2930Signer returns a signer that accepts EIP-2930 access list transactions,
-// EIP-155 replay protected transactions, and legacy Homestead transactions.
+// NewEIP2930Signer returns a signer that accepts SIP-2930 access list transactions,
+// SIP-155 replay protected transactions, and legacy Homestead transactions.
 func NewEIP2930Signer(chainId *big.Int) Signer {
 	return newModernSigner(chainId, forks.Berlin)
 }
 
-// EIP155Signer implements Signer using the EIP-155 rules. This accepts transactions which
+// EIP155Signer implements Signer using the SIP-155 rules. This accepts transactions which
 // are replay-protected as well as unprotected homestead transactions.
 // Deprecated: always use the Signer interface type
 type EIP155Signer struct {

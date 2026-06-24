@@ -99,31 +99,31 @@ func newVerkleInstructionSet() JumpTable {
 
 func newAmsterdamInstructionSet() JumpTable {
 	instructionSet := newOsakaInstructionSet()
-	enable7843(&instructionSet) // EIP-7843 (SLOTNUM opcode)
-	enable8024(&instructionSet) // EIP-8024 (Backward compatible SWAPN, DUPN, EXCHANGE)
-	enable8037(&instructionSet) // EIP-8037 (State creation gas cost increase)
+	enable7843(&instructionSet) // SIP-7843 (SLOTNUM opcode)
+	enable8024(&instructionSet) // SIP-8024 (Backward compatible SWAPN, DUPN, EXCHANGE)
+	enable8037(&instructionSet) // SIP-8037 (State creation gas cost increase)
 	return validate(instructionSet)
 }
 
 func newOsakaInstructionSet() JumpTable {
 	instructionSet := newPragueInstructionSet()
-	enable7939(&instructionSet) // EIP-7939 (CLZ opcode)
+	enable7939(&instructionSet) // SIP-7939 (CLZ opcode)
 	return validate(instructionSet)
 }
 
 func newPragueInstructionSet() JumpTable {
 	instructionSet := newCancunInstructionSet()
-	enable7702(&instructionSet) // EIP-7702 Setcode transaction type
+	enable7702(&instructionSet) // SIP-7702 Setcode transaction type
 	return validate(instructionSet)
 }
 
 func newCancunInstructionSet() JumpTable {
 	instructionSet := newShanghaiInstructionSet()
-	enable4844(&instructionSet) // EIP-4844 (BLOBHASH opcode)
-	enable7516(&instructionSet) // EIP-7516 (BLOBBASEFEE opcode)
-	enable1153(&instructionSet) // EIP-1153 "Transient Storage"
-	enable5656(&instructionSet) // EIP-5656 (MCOPY opcode)
-	enable6780(&instructionSet) // EIP-6780 SELFDESTRUCT only in same transaction
+	enable4844(&instructionSet) // SIP-4844 (BLOBHASH opcode)
+	enable7516(&instructionSet) // SIP-7516 (BLOBBASEFEE opcode)
+	enable1153(&instructionSet) // SIP-1153 "Transient Storage"
+	enable5656(&instructionSet) // SIP-5656 (MCOPY opcode)
+	enable6780(&instructionSet) // SIP-6780 SELFDESTRUCT only in same transaction
 	return validate(instructionSet)
 }
 
@@ -150,8 +150,8 @@ func newMergeInstructionSet() JumpTable {
 // constantinople, istanbul, petersburg, berlin and london instructions.
 func newLondonInstructionSet() JumpTable {
 	instructionSet := newBerlinInstructionSet()
-	enable3529(&instructionSet) // EIP-3529: Reduction in refunds https://eips.sila.org/EIPS/eip-3529
-	enable3198(&instructionSet) // Base fee opcode https://eips.sila.org/EIPS/eip-3198
+	enable3529(&instructionSet) // SIP-3529: Reduction in refunds https://sips.sila.org/SIPS/eip-3529
+	enable3198(&instructionSet) // Base fee opcode https://sips.sila.org/SIPS/eip-3198
 	return validate(instructionSet)
 }
 
@@ -159,7 +159,7 @@ func newLondonInstructionSet() JumpTable {
 // constantinople, istanbul, petersburg and berlin instructions.
 func newBerlinInstructionSet() JumpTable {
 	instructionSet := newIstanbulInstructionSet()
-	enable2929(&instructionSet) // Gas cost increases for state access opcodes https://eips.sila.org/EIPS/eip-2929
+	enable2929(&instructionSet) // Gas cost increases for state access opcodes https://sips.sila.org/SIPS/eip-2929
 	return validate(instructionSet)
 }
 
@@ -168,9 +168,9 @@ func newBerlinInstructionSet() JumpTable {
 func newIstanbulInstructionSet() JumpTable {
 	instructionSet := newConstantinopleInstructionSet()
 
-	enable1344(&instructionSet) // ChainID opcode - https://eips.sila.org/EIPS/eip-1344
-	enable1884(&instructionSet) // Reprice reader opcodes - https://eips.sila.org/EIPS/eip-1884
-	enable2200(&instructionSet) // Net metered SSTORE - https://eips.sila.org/EIPS/eip-2200
+	enable1344(&instructionSet) // ChainID opcode - https://sips.sila.org/SIPS/eip-1344
+	enable1884(&instructionSet) // Reprice reader opcodes - https://sips.sila.org/SIPS/eip-1884
+	enable2200(&instructionSet) // Net metered SSTORE - https://sips.sila.org/SIPS/eip-2200
 
 	return validate(instructionSet)
 }
@@ -250,14 +250,14 @@ func newByzantiumInstructionSet() JumpTable {
 	return validate(instructionSet)
 }
 
-// EIP 158 a.k.a Spurious Dragon
+// SIP 158 a.k.a Spurious Dragon
 func newSpuriousDragonInstructionSet() JumpTable {
 	instructionSet := newTangerineWhistleInstructionSet()
 	instructionSet[EXP].dynamicGas = gasExpEIP158
 	return validate(instructionSet)
 }
 
-// EIP 150 a.k.a Tangerine Whistle
+// SIP 150 a.k.a Tangerine Whistle
 func newTangerineWhistleInstructionSet() JumpTable {
 	instructionSet := newHomesteadInstructionSet()
 	instructionSet[BALANCE].constantGas = params.BalanceGasEIP150

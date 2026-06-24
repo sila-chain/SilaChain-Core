@@ -34,9 +34,9 @@ import (
 	"github.com/sila-org/sila/core/types"
 	"github.com/sila-org/sila/core/vm"
 	"github.com/sila-org/sila/core/vm/program"
+	"github.com/sila-org/sila/params"
 	"github.com/sila-org/sila/sila/tracers"
 	"github.com/sila-org/sila/sila/tracers/logger"
-	"github.com/sila-org/sila/params"
 
 	// force-load js tracers to trigger registration
 	_ "github.com/sila-org/sila/sila/tracers/js"
@@ -524,7 +524,7 @@ func BenchmarkSimpleLoop(b *testing.B) {
 }
 
 // TestEip2929Cases contains various testcases that are used for
-// EIP-2929 about gas repricings
+// SIP-2929 about gas repricings
 func TestEip2929Cases(t *testing.T) {
 	t.Skip("Test only useful for generating documentation")
 	id := 1
@@ -880,7 +880,7 @@ func BenchmarkTracerStepVsCallFrame(b *testing.B) {
 	benchmarkNonModifyingCode(10000000, code, "tracer-call-frame-10M", callFrameTracer, b)
 }
 
-// TestDelegatedAccountAccessCost tests that calling an account with an EIP-7702
+// TestDelegatedAccountAccessCost tests that calling an account with an SIP-7702
 // delegation designator incurs the correct amount of gas based on the tracer.
 func TestDelegatedAccountAccessCost(t *testing.T) {
 	statedb, _ := state.New(types.EmptyRootHash, state.NewDatabaseForTesting())

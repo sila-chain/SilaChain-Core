@@ -70,7 +70,7 @@ func TestValidateTransactionEIP2681(t *testing.T) {
 			wantErr: nil,
 		},
 		{
-			name:    "EIP-2681 nonce overflow (2^64-1)",
+			name:    "SIP-2681 nonce overflow (2^64-1)",
 			nonce:   math.MaxUint64,
 			wantErr: core.ErrNonceMax,
 		},

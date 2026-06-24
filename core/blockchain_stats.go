@@ -46,7 +46,7 @@ type ExecuteStats struct {
 	StorageDeleted  int // Number of storage slots deleted
 	CodeLoaded      int // Number of contract code loaded
 	CodeLoadBytes   int // Number of bytes read from contract code
-	CodeUpdated     int // Number of contract code written (CREATE/CREATE2 + EIP-7702)
+	CodeUpdated     int // Number of contract code written (CREATE/CREATE2 + SIP-7702)
 	CodeUpdateBytes int // Total bytes of code written
 
 	Execution       time.Duration // Time spent on the EVM execution

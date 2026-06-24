@@ -30,7 +30,7 @@ type transientStorageKey struct {
 	key  common.Hash
 }
 
-// transientStorage is a representation of EIP-1153 "Transient Storage".
+// transientStorage is a representation of SIP-1153 "Transient Storage".
 type transientStorage map[transientStorageKey]common.Hash
 
 // newTransientStorage creates a new instance of a transientStorage.

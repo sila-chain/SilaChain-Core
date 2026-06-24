@@ -25,6 +25,7 @@ import (
 	"math"
 	"math/big"
 
+	"github.com/holiman/uint256"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/common/hexutil"
 	"github.com/sila-org/sila/consensus/misc/eip4844"
@@ -34,7 +35,6 @@ import (
 	"github.com/sila-org/sila/log"
 	"github.com/sila-org/sila/params"
 	"github.com/sila-org/sila/rpc"
-	"github.com/holiman/uint256"
 )
 
 // TransactionArgs represents the arguments to construct a new transaction
@@ -184,14 +184,14 @@ func (args *TransactionArgs) setDefaults(ctx context.Context, b Backend, config 
 
 // setFeeDefaults fills in default fee values for unspecified tx fields.
 func (args *TransactionArgs) setFeeDefaults(ctx context.Context, b Backend, head *types.Header) error {
-	// Sanity check the EIP-4844 fee parameters.
+	// Sanity check the SIP-4844 fee parameters.
 	if args.BlobFeeCap != nil && args.BlobFeeCap.ToInt().Sign() == 0 {
 		return errors.New("maxFeePerBlobGas, if specified, must be non-zero")
 	}
 	if b.ChainConfig().IsCancun(head.Number, head.Time) {
 		args.setCancunFeeDefaults(b.ChainConfig(), head)
 	}
-	// If both gasPrice and at least one of the EIP-1559 fee parameters are specified, error.
+	// If both gasPrice and at least one of the SIP-1559 fee parameters are specified, error.
 	if args.GasPrice != nil && (args.MaxFeePerGas != nil || args.MaxPriorityFeePerGas != nil) {
 		return errors.New("both gasPrice and (maxFeePerGas or maxPriorityFeePerGas) specified")
 	}
@@ -200,7 +200,7 @@ func (args *TransactionArgs) setFeeDefaults(ctx context.Context, b Backend, head
 	// other tx values. See https://github.com/sila-org/sila/pull/23274
 	// for more information.
 	eip1559ParamsSet := args.MaxFeePerGas != nil && args.MaxPriorityFeePerGas != nil
-	// Sanity check the EIP-1559 fee parameters if present.
+	// Sanity check the SIP-1559 fee parameters if present.
 	if args.GasPrice == nil && eip1559ParamsSet {
 		if args.MaxFeePerGas.ToInt().Sign() == 0 {
 			return errors.New("maxFeePerGas must be non-zero")
@@ -211,7 +211,7 @@ func (args *TransactionArgs) setFeeDefaults(ctx context.Context, b Backend, head
 		return nil // No need to set anything, user already set MaxFeePerGas and MaxPriorityFeePerGas
 	}
 
-	// Sanity check the non-EIP-1559 fee parameters.
+	// Sanity check the non-SIP-1559 fee parameters.
 	isLondon := b.ChainConfig().IsLondon(head.Number)
 	if args.GasPrice != nil && !eip1559ParamsSet {
 		// Zero gas-price is not allowed after London fork
@@ -275,7 +275,7 @@ func (args *TransactionArgs) setLondonFeeDefaults(ctx context.Context, head *typ
 		)
 		args.MaxFeePerGas = (*hexutil.Big)(val)
 	}
-	// Both EIP-1559 fee parameters are now set; sanity check them.
+	// Both SIP-1559 fee parameters are now set; sanity check them.
 	if args.MaxFeePerGas.ToInt().Cmp(args.MaxPriorityFeePerGas.ToInt()) < 0 {
 		return fmt.Errorf("maxFeePerGas (%v) < maxPriorityFeePerGas (%v)", args.MaxFeePerGas, args.MaxPriorityFeePerGas)
 	}

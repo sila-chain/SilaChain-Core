@@ -100,7 +100,7 @@ func VerifyEIP4844Header(config *params.ChainConfig, parent, header *types.Heade
 
 	bcfg, err := latestBlobConfig(config, header.Time)
 	if err != nil {
-		panic("called before EIP-4844 is active")
+		panic("called before SIP-4844 is active")
 	}
 
 	if header.ExcessBlobGas == nil {
@@ -152,7 +152,7 @@ func calcExcessBlobGas(isOsaka bool, bcfg BlobConfig, parent *types.Header) uint
 		return 0
 	}
 
-	// EIP-7918 (post-Osaka) introduces a different formula for computing excess,
+	// SIP-7918 (post-Osaka) introduces a different formula for computing excess,
 	// in cases where the price is lower than a 'reserve price'.
 	if isOsaka {
 		var (
@@ -166,7 +166,7 @@ func calcExcessBlobGas(isOsaka bool, bcfg BlobConfig, parent *types.Header) uint
 		}
 	}
 
-	// Original EIP-4844 formula.
+	// Original SIP-4844 formula.
 	return excessBlobGas - targetGas
 }
 

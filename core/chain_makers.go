@@ -21,6 +21,7 @@ import (
 	"fmt"
 	"math/big"
 
+	"github.com/holiman/uint256"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/consensus"
 	"github.com/sila-org/sila/consensus/misc"
@@ -31,10 +32,9 @@ import (
 	"github.com/sila-org/sila/core/types"
 	"github.com/sila-org/sila/core/types/bal"
 	"github.com/sila-org/sila/core/vm"
-	"github.com/sila-org/sila/siladb"
 	"github.com/sila-org/sila/params"
+	"github.com/sila-org/sila/siladb"
 	"github.com/sila-org/sila/triedb"
-	"github.com/holiman/uint256"
 )
 
 // BlockGen creates blocks for testing.
@@ -110,7 +110,7 @@ func (b *BlockGen) SetParentBeaconRoot(root common.Hash) {
 // There are a few options can be passed as well in order to run some
 // customized rules.
 // - bc:       enables the ability to query historical block hashes for BLOCKHASH
-// - vmConfig: extends the flexibility for customizing evm rules, e.g. enable extra EIPs
+// - vmConfig: extends the flexibility for customizing evm rules, e.g. enable extra SIPs
 func (b *BlockGen) addTx(bc *BlockChain, vmConfig vm.Config, tx *types.Transaction) {
 	if b.gasPool == nil {
 		b.SetCoinbase(common.Address{})
@@ -194,7 +194,7 @@ func (b *BlockGen) Timestamp() uint64 {
 	return b.header.Time
 }
 
-// BaseFee returns the EIP-1559 base fee of the block being generated.
+// BaseFee returns the SIP-1559 base fee of the block being generated.
 func (b *BlockGen) BaseFee() *big.Int {
 	return new(big.Int).Set(b.header.BaseFee)
 }
@@ -305,7 +305,7 @@ func (b *BlockGen) OffsetTime(seconds int64) {
 	b.header.Difficulty = b.silaEngine.CalcDifficulty(b.cm, b.header.Time, b.parent.Header())
 }
 
-// ConsensusLayerRequests returns the EIP-7685 requests which have accumulated so far.
+// ConsensusLayerRequests returns the SIP-7685 requests which have accumulated so far.
 func (b *BlockGen) ConsensusLayerRequests() [][]byte {
 	requests, _ := b.collectRequests(true)
 	return requests
@@ -387,7 +387,7 @@ func GenerateChain(config *params.ChainConfig, parent *types.Block, silaEngine c
 		}
 
 		if config.IsPrague(b.header.Number, b.header.Time) || config.IsUBT(b.header.Number, b.header.Time) {
-			// EIP-2935
+			// SIP-2935
 			blockContext := NewEVMBlockContext(b.header, cm, &b.header.Coinbase)
 			blockContext.Random = &common.Hash{} // enable post-merge instruction set
 			evm := vm.NewEVM(blockContext, statedb, cm.config, vm.Config{})
@@ -577,7 +577,7 @@ func makeBlockChainWithGenesis(genesis *Genesis, n int, silaEngine consensus.Sil
 // chainMaker contains the state of chain generation.
 type chainMaker struct {
 	bottom      *types.Block
-	silaEngine      consensus.SilaEngine
+	silaEngine  consensus.SilaEngine
 	config      *params.ChainConfig
 	chain       []*types.Block
 	chainByHash map[common.Hash]*types.Block
@@ -588,7 +588,7 @@ func newChainMaker(bottom *types.Block, config *params.ChainConfig, silaEngine c
 	return &chainMaker{
 		bottom:      bottom,
 		config:      config,
-		silaEngine:      silaEngine,
+		silaEngine:  silaEngine,
 		chainByHash: make(map[common.Hash]*types.Block),
 	}
 }

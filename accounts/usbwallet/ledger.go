@@ -52,7 +52,7 @@ const (
 	ledgerOpRetrieveAddress  ledgerOpcode = 0x02 // Returns the public key and Sila address for a given BIP 32 path
 	ledgerOpSignTransaction  ledgerOpcode = 0x04 // Signs an Sila transaction after having the user validate the parameters
 	ledgerOpGetConfiguration ledgerOpcode = 0x06 // Returns specific wallet application configuration
-	ledgerOpSignTypedMessage ledgerOpcode = 0x0c // Signs an Sila message following the EIP 712 specification
+	ledgerOpSignTypedMessage ledgerOpcode = 0x0c // Signs an Sila message following the SIP 712 specification
 
 	ledgerP1DirectlyFetchAddress    ledgerParam1 = 0x00 // Return address directly from the wallet
 	ledgerP1InitTypedMessageData    ledgerParam1 = 0x00 // First chunk of Typed Message data
@@ -60,7 +60,7 @@ const (
 	ledgerP1ContTransactionData     ledgerParam1 = 0x80 // Subsequent transaction data block for signing
 	ledgerP2DiscardAddressChainCode ledgerParam2 = 0x00 // Do not return the chain code along with the address
 
-	ledgerEip155Size int = 3 // Size of the EIP-155 chain_id,r,s in unsigned transactions
+	ledgerEip155Size int = 3 // Size of the SIP-155 chain_id,r,s in unsigned transactions
 )
 
 // errLedgerReplyInvalidHeader is the error message returned by a Ledger data exchange
@@ -168,7 +168,7 @@ func (w *ledgerDriver) Derive(path accounts.DerivationPath) (common.Address, err
 // waiting for the user to confirm or deny the transaction.
 //
 // Note, if the version of the Sila application running on the Ledger wallet is
-// too old to sign EIP-155 transactions, but such is requested nonetheless, an error
+// too old to sign SIP-155 transactions, but such is requested nonetheless, an error
 // will be returned opposed to silently signing in Homestead mode.
 func (w *ledgerDriver) SignTx(path accounts.DerivationPath, tx *types.Transaction, chainID *big.Int) (common.Address, *types.Transaction, error) {
 	// If the Sila app doesn't run, abort
@@ -180,12 +180,12 @@ func (w *ledgerDriver) SignTx(path accounts.DerivationPath, tx *types.Transactio
 	case types.AccessListTxType, types.DynamicFeeTxType:
 		if ledgerVersionLessThan(w.version, 1, 9, 0) {
 			//lint:ignore ST1005 brand name displayed on the console
-			return common.Address{}, nil, fmt.Errorf("Ledger version >= 1.9.0 required for EIP-2930/EIP-1559 signing (found version v%d.%d.%d)", w.version[0], w.version[1], w.version[2])
+			return common.Address{}, nil, fmt.Errorf("Ledger version >= 1.9.0 required for SIP-2930/SIP-1559 signing (found version v%d.%d.%d)", w.version[0], w.version[1], w.version[2])
 		}
 	case types.SetCodeTxType:
 		if ledgerVersionLessThan(w.version, 1, 17, 0) {
 			//lint:ignore ST1005 brand name displayed on the console
-			return common.Address{}, nil, fmt.Errorf("Ledger version >= 1.17.0 required for EIP-7702 signing (found version v%d.%d.%d)", w.version[0], w.version[1], w.version[2])
+			return common.Address{}, nil, fmt.Errorf("Ledger version >= 1.17.0 required for SIP-7702 signing (found version v%d.%d.%d)", w.version[0], w.version[1], w.version[2])
 		}
 	}
 	if chainID != nil && ledgerVersionLessThan(w.version, 1, 0, 3) {
@@ -208,7 +208,7 @@ func (w *ledgerDriver) SignTypedMessage(path accounts.DerivationPath, domainHash
 	// Ensure the wallet is capable of signing the given transaction
 	if ledgerVersionLessThan(w.version, 1, 5, 0) {
 		//lint:ignore ST1005 brand name displayed on the console
-		return nil, fmt.Errorf("Ledger version >= 1.5.0 required for EIP-712 signing (found version v%d.%d.%d)", w.version[0], w.version[1], w.version[2])
+		return nil, fmt.Errorf("Ledger version >= 1.5.0 required for SIP-712 signing (found version v%d.%d.%d)", w.version[0], w.version[1], w.version[2])
 	}
 	// All infos gathered and metadata checks out, request signing
 	return w.ledgerSignTypedMessage(path, domainHash, messageHash)

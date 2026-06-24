@@ -281,7 +281,7 @@ type SilaSignTx struct {
 	Value            []byte   `protobuf:"bytes,6,opt,name=value" json:"value,omitempty"`                                                 // <=256 bit unsigned big endian (in wei)
 	DataInitialChunk []byte   `protobuf:"bytes,7,opt,name=data_initial_chunk,json=dataInitialChunk" json:"data_initial_chunk,omitempty"` // The initial data chunk (<= 1024 bytes)
 	DataLength       *uint32  `protobuf:"varint,8,opt,name=data_length,json=dataLength" json:"data_length,omitempty"`                    // Length of transaction payload
-	ChainId          *uint32  `protobuf:"varint,9,opt,name=chain_id,json=chainId" json:"chain_id,omitempty"`                             // Chain Id for EIP 155
+	ChainId          *uint32  `protobuf:"varint,9,opt,name=chain_id,json=chainId" json:"chain_id,omitempty"`                             // Chain Id for SIP 155
 	TxType           *uint32  `protobuf:"varint,10,opt,name=tx_type,json=txType" json:"tx_type,omitempty"`                               // (only for Wanchain)
 }
 
@@ -842,7 +842,7 @@ var file_messages_sila_proto_goTypes = []any{
 	(*SilaSignMessage)(nil),      // 7: hw.trezor.messages.sila.SilaSignMessage
 	(*SilaMessageSignature)(nil), // 8: hw.trezor.messages.sila.SilaMessageSignature
 	(*SilaVerifyMessage)(nil),    // 9: hw.trezor.messages.sila.SilaVerifyMessage
-	(*HDNodeType)(nil),               // 10: hw.trezor.messages.common.HDNodeType
+	(*HDNodeType)(nil),           // 10: hw.trezor.messages.common.HDNodeType
 }
 var file_messages_sila_proto_depIdxs = []int32{
 	10, // 0: hw.trezor.messages.sila.SilaPublicKey.node:type_name -> hw.trezor.messages.common.HDNodeType

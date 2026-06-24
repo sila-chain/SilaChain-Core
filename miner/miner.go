@@ -70,7 +70,7 @@ type Miner struct {
 	confMu      sync.RWMutex // The lock used to protect the config fields: GasCeil, GasTip and Extradata
 	config      *Config
 	chainConfig *params.ChainConfig
-	silaEngine      consensus.SilaEngine
+	silaEngine  consensus.SilaEngine
 	txpool      *txpool.TxPool
 	prio        []common.Address // A list of senders to prioritize
 	chain       *core.BlockChain
@@ -83,7 +83,7 @@ func New(sila Backend, config Config, silaEngine consensus.SilaEngine) *Miner {
 	return &Miner{
 		config:      &config,
 		chainConfig: sila.BlockChain().Config(),
-		silaEngine:      silaEngine,
+		silaEngine:  silaEngine,
 		txpool:      sila.TxPool(),
 		chain:       sila.BlockChain(),
 		pending:     &pending{},
@@ -159,7 +159,7 @@ func (miner *Miner) getPending() *newPayloadResult {
 	if miner.chainConfig.IsShanghai(childNumber, timestamp) {
 		withdrawal = []*types.Withdrawal{}
 	}
-	// Post-Amsterdam, prepareWork requires a slot number (EIP-7843). The pending
+	// Post-Amsterdam, prepareWork requires a slot number (SIP-7843). The pending
 	// block is synthetic and has no canonical slot, so derive one from the parent
 	// when available and fall back to zero otherwise.
 	if miner.chainConfig.IsAmsterdam(childNumber, timestamp) {

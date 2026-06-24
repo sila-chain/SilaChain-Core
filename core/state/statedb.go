@@ -28,6 +28,7 @@ import (
 	"sync/atomic"
 	"time"
 
+	"github.com/holiman/uint256"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/core/stateless"
 	"github.com/sila-org/sila/core/tracing"
@@ -38,7 +39,6 @@ import (
 	"github.com/sila-org/sila/params"
 	"github.com/sila-org/sila/trie"
 	"github.com/sila-org/sila/trie/trienode"
-	"github.com/holiman/uint256"
 	"golang.org/x/sync/errgroup"
 )
 
@@ -128,7 +128,7 @@ type StateDB struct {
 	accessList   *accessList
 	accessEvents *AccessEvents
 
-	// Per-transaction state access footprint for EIP-7928
+	// Per-transaction state access footprint for SIP-7928
 	stateAccessList *bal.ConstructionBlockAccessList
 
 	// Block access index (0 for pre-execution, 1..n for transactions, n+1 for post-execution)
@@ -664,7 +664,7 @@ func (s *StateDB) CreateAccount(addr common.Address) {
 // by CreateAccount, but that is not required if it already existed in the
 // state due to funds sent beforehand.
 // This operation sets the 'newContract'-flag, which is required in order to
-// correctly handle EIP-6780 'delete-in-same-transaction' logic.
+// correctly handle SIP-6780 'delete-in-same-transaction' logic.
 func (s *StateDB) CreateContract(addr common.Address) {
 	obj := s.getStateObject(addr)
 	if !obj.newContract {
@@ -771,11 +771,11 @@ type removedAccountWithBalance struct {
 
 // LogsForBurnAccounts returns the sila burn logs for accounts scheduled for
 // removal which still have positive balance. The purpose of this function is
-// to handle a corner case of EIP-7708 where a self-destructed account might
+// to handle a corner case of SIP-7708 where a self-destructed account might
 // still receive funds between sending/burning its previous balance and actual
 // removal. In this case the burning of these remaining balances still need to
 // be logged.
-// Specification EIP-7708: https://eips.sila.org/EIPS/eip-7708
+// Specification SIP-7708: https://sips.sila.org/SIPS/eip-7708
 //
 // This function should only be invoked at the transaction boundary, specifically
 // before the Finalise.
@@ -837,8 +837,8 @@ func (s *StateDB) Finalise(deleteEmptyObjects bool) *bal.ConstructionBlockAccess
 				// Notably, if the account is deleted during the transaction,
 				// its pre-transaction nonce, code, and storage must be empty.
 				//
-				// EIP-6780 restricts self-destruct to contracts deployed within
-				// the same transaction, while EIP-7610 rejects deployments to
+				// SIP-6780 restricts self-destruct to contracts deployed within
+				// the same transaction, while SIP-7610 rejects deployments to
 				// destinations with non-empty storage, non-zero nonce and non-empty
 				// code.
 				//
@@ -1417,7 +1417,7 @@ func (s *StateDB) commitAndFlush(block uint64, deleteEmptyObjects bool, noStorag
 //
 // noStorageWiping is a flag indicating whether storage wiping is permitted.
 // Since self-destruction was deprecated with the Cancun fork and there are
-// no empty accounts left that could be deleted by EIP-158, storage wiping
+// no empty accounts left that could be deleted by SIP-158, storage wiping
 // should not occur.
 func (s *StateDB) Commit(block uint64, deleteEmptyObjects bool, noStorageWiping bool) (common.Hash, error) {
 	ret, err := s.commitAndFlush(block, deleteEmptyObjects, noStorageWiping, false)
@@ -1446,10 +1446,10 @@ func (s *StateDB) CommitWithUpdate(block uint64, deleteEmptyObjects bool, noStor
 // - Add precompiles to access list (2929)
 // - Add the contents of the optional tx access list (2930)
 //
-// Potential EIPs:
+// Potential SIPs:
 // - Reset access list (Berlin)
-// - Add coinbase to access list (EIP-3651)
-// - Reset transient storage (EIP-1153)
+// - Add coinbase to access list (SIP-3651)
+// - Reset transient storage (SIP-1153)
 func (s *StateDB) Prepare(rules params.Rules, sender, coinbase common.Address, dst *common.Address, precompiles []common.Address, list types.AccessList) {
 	if rules.IsEIP2929 && rules.IsEIP4762 {
 		panic("eip2929 and eip4762 are both activated")
@@ -1473,7 +1473,7 @@ func (s *StateDB) Prepare(rules params.Rules, sender, coinbase common.Address, d
 				al.AddSlot(el.Address, key)
 			}
 		}
-		if rules.IsShanghai { // EIP-3651: warm coinbase
+		if rules.IsShanghai { // SIP-3651: warm coinbase
 			al.AddAddress(coinbase)
 		}
 	}

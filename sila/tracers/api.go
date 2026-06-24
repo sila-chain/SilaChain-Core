@@ -36,14 +36,14 @@ import (
 	"github.com/sila-org/sila/core/state"
 	"github.com/sila-org/sila/core/types"
 	"github.com/sila-org/sila/core/vm"
-	"github.com/sila-org/sila/sila/tracers/logger"
-	"github.com/sila-org/sila/siladb"
 	"github.com/sila-org/sila/internal/silaapi"
 	"github.com/sila-org/sila/internal/silaapi/override"
 	"github.com/sila-org/sila/log"
 	"github.com/sila-org/sila/params"
 	"github.com/sila-org/sila/rlp"
 	"github.com/sila-org/sila/rpc"
+	"github.com/sila-org/sila/sila/tracers/logger"
+	"github.com/sila-org/sila/siladb"
 )
 
 const (
@@ -369,7 +369,7 @@ func (api *API) traceChain(start, end *types.Block, config *TraceConfig, closed 
 				break
 			}
 			// Insert block's parent beacon block root in the state
-			// as per EIP-4788.
+			// as per SIP-4788.
 			context := core.NewEVMBlockContext(next.Header(), api.chainContext(ctx), nil)
 			evm := vm.NewEVM(context, statedb, api.backend.ChainConfig(), vm.Config{})
 

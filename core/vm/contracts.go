@@ -31,6 +31,7 @@ import (
 	"github.com/consensys/gnark-crypto/ecc/bls12-381/fp"
 	"github.com/consensys/gnark-crypto/ecc/bls12-381/fr"
 	patched_big "github.com/ethereum/go-bigmodexpfix/src/math/big"
+	"github.com/holiman/uint256"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/common/bitutil"
 	"github.com/sila-org/sila/core/tracing"
@@ -40,7 +41,6 @@ import (
 	"github.com/sila-org/sila/crypto/kzg4844"
 	"github.com/sila-org/sila/crypto/secp256r1"
 	"github.com/sila-org/sila/params"
-	"github.com/holiman/uint256"
 	"golang.org/x/crypto/ripemd160"
 )
 
@@ -172,7 +172,7 @@ var PrecompiledContractsOsaka = PrecompiledContracts{
 }
 
 // PrecompiledContractsP256Verify contains the precompiled Sila
-// contract specified in EIP-7212. This is exported for testing purposes.
+// contract specified in SIP-7212. This is exported for testing purposes.
 var PrecompiledContractsP256Verify = PrecompiledContracts{
 	common.BytesToAddress([]byte{0x1, 0x00}): &p256Verify{},
 }
@@ -386,7 +386,7 @@ type bigModExp struct {
 	eip7883 bool
 }
 
-// byzantiumMultComplexity implements the bigModexp multComplexity formula, as defined in EIP-198.
+// byzantiumMultComplexity implements the bigModexp multComplexity formula, as defined in SIP-198.
 //
 //	def mult_complexity(x):
 //		if x <= 64: return x ** 2
@@ -600,7 +600,7 @@ func (c *bigModExp) RequiredGas(input []byte) uint64 {
 		}
 	}
 
-	// Choose the appropriate gas calculation based on the EIP flags
+	// Choose the appropriate gas calculation based on the SIP flags
 	if c.eip7883 {
 		return osakaModexpGas(baseLen, expLen, modLen, expHead)
 	} else if c.eip2565 {
@@ -922,7 +922,7 @@ var (
 	errBLS12381G2PointSubgroup             = errors.New("g2 point is not on correct subgroup")
 )
 
-// bls12381G1Add implements EIP-2537 G1Add precompile.
+// bls12381G1Add implements SIP-2537 G1Add precompile.
 type bls12381G1Add struct{}
 
 // RequiredGas returns the gas required to execute the pre-compiled contract.
@@ -931,7 +931,7 @@ func (c *bls12381G1Add) RequiredGas(input []byte) uint64 {
 }
 
 func (c *bls12381G1Add) Run(input []byte) ([]byte, error) {
-	// Implements EIP-2537 G1Add precompile.
+	// Implements SIP-2537 G1Add precompile.
 	// > G1 addition call expects `256` bytes as an input that is interpreted as byte concatenation of two G1 points (`128` bytes each).
 	// > Output is an encoding of addition operation result - single G1 point (`128` bytes).
 	if len(input) != 256 {
@@ -949,7 +949,7 @@ func (c *bls12381G1Add) Run(input []byte) ([]byte, error) {
 		return nil, err
 	}
 
-	// No need to check the subgroup here, as specified by EIP-2537
+	// No need to check the subgroup here, as specified by SIP-2537
 
 	// Compute r = p_0 + p_1
 	p0.Add(p0, p1)
@@ -962,7 +962,7 @@ func (c *bls12381G1Add) Name() string {
 	return "BLS12_G1ADD"
 }
 
-// bls12381G1MultiExp implements EIP-2537 G1MultiExp precompile.
+// bls12381G1MultiExp implements SIP-2537 G1MultiExp precompile.
 type bls12381G1MultiExp struct{}
 
 // RequiredGas returns the gas required to execute the pre-compiled contract.
@@ -985,7 +985,7 @@ func (c *bls12381G1MultiExp) RequiredGas(input []byte) uint64 {
 }
 
 func (c *bls12381G1MultiExp) Run(input []byte) ([]byte, error) {
-	// Implements EIP-2537 G1MultiExp precompile.
+	// Implements SIP-2537 G1MultiExp precompile.
 	// G1 multiplication call expects `160*k` bytes as an input that is interpreted as byte concatenation of `k` slices each of them being a byte concatenation of encoding of G1 point (`128` bytes) and encoding of a scalar value (`32` bytes).
 	// Output is an encoding of multiexponentiation operation result - single G1 point (`128` bytes).
 	k := len(input) / 160
@@ -1026,7 +1026,7 @@ func (c *bls12381G1MultiExp) Name() string {
 	return "BLS12_G1MSM"
 }
 
-// bls12381G2Add implements EIP-2537 G2Add precompile.
+// bls12381G2Add implements SIP-2537 G2Add precompile.
 type bls12381G2Add struct{}
 
 // RequiredGas returns the gas required to execute the pre-compiled contract.
@@ -1035,7 +1035,7 @@ func (c *bls12381G2Add) RequiredGas(input []byte) uint64 {
 }
 
 func (c *bls12381G2Add) Run(input []byte) ([]byte, error) {
-	// Implements EIP-2537 G2Add precompile.
+	// Implements SIP-2537 G2Add precompile.
 	// > G2 addition call expects `512` bytes as an input that is interpreted as byte concatenation of two G2 points (`256` bytes each).
 	// > Output is an encoding of addition operation result - single G2 point (`256` bytes).
 	if len(input) != 512 {
@@ -1053,7 +1053,7 @@ func (c *bls12381G2Add) Run(input []byte) ([]byte, error) {
 		return nil, err
 	}
 
-	// No need to check the subgroup here, as specified by EIP-2537
+	// No need to check the subgroup here, as specified by SIP-2537
 
 	// Compute r = p_0 + p_1
 	r := new(bls12381.G2Affine)
@@ -1067,7 +1067,7 @@ func (c *bls12381G2Add) Name() string {
 	return "BLS12_G2ADD"
 }
 
-// bls12381G2MultiExp implements EIP-2537 G2MultiExp precompile.
+// bls12381G2MultiExp implements SIP-2537 G2MultiExp precompile.
 type bls12381G2MultiExp struct{}
 
 // RequiredGas returns the gas required to execute the pre-compiled contract.
@@ -1090,7 +1090,7 @@ func (c *bls12381G2MultiExp) RequiredGas(input []byte) uint64 {
 }
 
 func (c *bls12381G2MultiExp) Run(input []byte) ([]byte, error) {
-	// Implements EIP-2537 G2MultiExp precompile logic
+	// Implements SIP-2537 G2MultiExp precompile logic
 	// > G2 multiplication call expects `288*k` bytes as an input that is interpreted as byte concatenation of `k` slices each of them being a byte concatenation of encoding of G2 point (`256` bytes) and encoding of a scalar value (`32` bytes).
 	// > Output is an encoding of multiexponentiation operation result - single G2 point (`256` bytes).
 	k := len(input) / 288
@@ -1131,7 +1131,7 @@ func (c *bls12381G2MultiExp) Name() string {
 	return "BLS12_G2MSM"
 }
 
-// bls12381Pairing implements EIP-2537 Pairing precompile.
+// bls12381Pairing implements SIP-2537 Pairing precompile.
 type bls12381Pairing struct{}
 
 // RequiredGas returns the gas required to execute the pre-compiled contract.
@@ -1140,7 +1140,7 @@ func (c *bls12381Pairing) RequiredGas(input []byte) uint64 {
 }
 
 func (c *bls12381Pairing) Run(input []byte) ([]byte, error) {
-	// Implements EIP-2537 Pairing precompile logic.
+	// Implements SIP-2537 Pairing precompile logic.
 	// > Pairing call expects `384*k` bytes as an inputs that is interpreted as byte concatenation of `k` slices. Each slice has the following structure:
 	// > - `128` bytes of G1 point encoding
 	// > - `256` bytes of G2 point encoding
@@ -1287,7 +1287,7 @@ func encodePointG2(p *bls12381.G2Affine) []byte {
 	return out
 }
 
-// bls12381MapG1 implements EIP-2537 MapG1 precompile.
+// bls12381MapG1 implements SIP-2537 MapG1 precompile.
 type bls12381MapG1 struct{}
 
 // RequiredGas returns the gas required to execute the pre-compiled contract.
@@ -1296,7 +1296,7 @@ func (c *bls12381MapG1) RequiredGas(input []byte) uint64 {
 }
 
 func (c *bls12381MapG1) Run(input []byte) ([]byte, error) {
-	// Implements EIP-2537 Map_To_G1 precompile.
+	// Implements SIP-2537 Map_To_G1 precompile.
 	// > Field-to-curve call expects an `64` bytes input that is interpreted as an element of the base field.
 	// > Output of this call is `128` bytes and is G1 point following respective encoding rules.
 	if len(input) != 64 {
@@ -1320,7 +1320,7 @@ func (c *bls12381MapG1) Name() string {
 	return "BLS12_MAP_FP_TO_G1"
 }
 
-// bls12381MapG2 implements EIP-2537 MapG2 precompile.
+// bls12381MapG2 implements SIP-2537 MapG2 precompile.
 type bls12381MapG2 struct{}
 
 // RequiredGas returns the gas required to execute the pre-compiled contract.
@@ -1329,7 +1329,7 @@ func (c *bls12381MapG2) RequiredGas(input []byte) uint64 {
 }
 
 func (c *bls12381MapG2) Run(input []byte) ([]byte, error) {
-	// Implements EIP-2537 Map_FP2_TO_G2 precompile logic.
+	// Implements SIP-2537 Map_FP2_TO_G2 precompile logic.
 	// > Field-to-curve call expects an `128` bytes input that is interpreted as an element of the quadratic extension field.
 	// > Output of this call is `256` bytes and is G2 point following respective encoding rules.
 	if len(input) != 128 {
@@ -1357,7 +1357,7 @@ func (c *bls12381MapG2) Name() string {
 	return "BLS12_MAP_FP2_TO_G2"
 }
 
-// kzgPointEvaluation implements the EIP-4844 point evaluation precompile.
+// kzgPointEvaluation implements the SIP-4844 point evaluation precompile.
 type kzgPointEvaluation struct{}
 
 // RequiredGas estimates the gas required for running the point evaluation precompile.
@@ -1417,7 +1417,7 @@ func (b *kzgPointEvaluation) Name() string {
 	return "KZG_POINT_EVALUATION"
 }
 
-// kZGToVersionedHash implements kzg_to_versioned_hash from EIP-4844
+// kZGToVersionedHash implements kzg_to_versioned_hash from SIP-4844
 func kZGToVersionedHash(kzg kzg4844.Commitment) common.Hash {
 	h := sha256.Sum256(kzg[:])
 	h[0] = blobCommitmentVersionKZG

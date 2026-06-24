@@ -273,7 +273,7 @@ func blockReceiptsToNetwork(blockReceipts, blockBody rlp.RawValue, q receiptQuer
 		content, _, _ := rlp.SplitList(it.Value())
 		// Stop appending receipts when they would go over the size limit.
 		// Note we rely on the assumption that the txType is encoded as a single byte,
-		// which is always true because EIP-2718 does not allow tx types > 0x7f.
+		// which is always true because SIP-2718 does not allow tx types > 0x7f.
 		size := rlp.ListSize(1 + uint64(len(content)))
 		if q.sizeLimit > 0 && (uint64(enc.Size())+size) > q.sizeLimit {
 			if uint(i) == uint(q.firstIndex) {

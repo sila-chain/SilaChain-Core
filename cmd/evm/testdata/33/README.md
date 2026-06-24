@@ -1,1 +1,1 @@
-This test sets some EIP-7702 delegations and calls them.
+This test sets some SIP-7702 delegations and calls them.

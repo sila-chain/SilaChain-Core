@@ -34,11 +34,11 @@ import (
 	"net"
 	"time"
 
+	"github.com/golang/snappy"
 	"github.com/sila-org/sila/crypto"
 	"github.com/sila-org/sila/crypto/ecies"
 	"github.com/sila-org/sila/crypto/keccak"
 	"github.com/sila-org/sila/rlp"
-	"github.com/golang/snappy"
 )
 
 // Conn is an RLPx network connection. It wraps a low-level network connection. The
@@ -386,7 +386,7 @@ type handshakeState struct {
 	wbuf writeBuffer
 }
 
-// RLPx v4 handshake auth (defined in EIP-8).
+// RLPx v4 handshake auth (defined in SIP-8).
 type authMsgV4 struct {
 	Signature       [sigLen]byte
 	InitiatorPubkey [pubLen]byte
@@ -397,7 +397,7 @@ type authMsgV4 struct {
 	Rest []rlp.RawValue `rlp:"tail"`
 }
 
-// RLPx v4 handshake response (defined in EIP-8).
+// RLPx v4 handshake response (defined in SIP-8).
 type authRespV4 struct {
 	RandomPubkey [pubLen]byte
 	Nonce        [shaLen]byte
@@ -635,7 +635,7 @@ func (h *handshakeState) sealEIP8(msg interface{}) ([]byte, error) {
 		return nil, err
 	}
 	// Pad with random amount of data. the amount needs to be at least 100 bytes to make
-	// the message distinguishable from pre-EIP-8 handshakes.
+	// the message distinguishable from pre-SIP-8 handshakes.
 	h.wbuf.appendZero(mrand.Intn(100) + 100)
 
 	prefix := make([]byte, 2)

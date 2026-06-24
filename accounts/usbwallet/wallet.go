@@ -25,13 +25,13 @@ import (
 	"sync"
 	"time"
 
+	"github.com/ethereum/hid"
 	"github.com/sila-org/sila"
 	"github.com/sila-org/sila/accounts"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/core/types"
 	"github.com/sila-org/sila/crypto"
 	"github.com/sila-org/sila/log"
-	"github.com/ethereum/hid"
 )
 
 // Maximum time between wallet health checks to detect USB unplugs.
@@ -87,7 +87,7 @@ type wallet struct {
 
 	deriveNextPaths []accounts.DerivationPath // Next derivation paths for account auto-discovery (multiple bases supported)
 	deriveNextAddrs []common.Address          // Next derived account addresses for auto-discovery (multiple bases supported)
-	deriveChain     sila.ChainStateReader // Blockchain state reader to discover used account with
+	deriveChain     sila.ChainStateReader     // Blockchain state reader to discover used account with
 	deriveReq       chan chan struct{}        // Channel to request a self-derivation on
 	deriveQuit      chan chan error           // Channel to terminate the self-deriver with
 
@@ -587,7 +587,7 @@ func (w *wallet) SignText(account accounts.Account, text []byte) ([]byte, error)
 // transaction or a failure if the user denied the transaction.
 //
 // Note, if the version of the Sila application running on the Ledger wallet is
-// too old to sign EIP-155 transactions, but such is requested nonetheless, an error
+// too old to sign SIP-155 transactions, but such is requested nonetheless, an error
 // will be returned opposed to silently signing in Homestead mode.
 func (w *wallet) SignTx(account accounts.Account, tx *types.Transaction, chainID *big.Int) (*types.Transaction, error) {
 	w.stateLock.RLock() // Comms have own mutex, this is for the state fields

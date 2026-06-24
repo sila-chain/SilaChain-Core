@@ -25,11 +25,11 @@ import (
 	"sync"
 	"testing"
 
+	"github.com/holiman/uint256"
+	"github.com/kylelemons/godebug/diff"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/params"
 	"github.com/sila-org/sila/rlp"
-	"github.com/holiman/uint256"
-	"github.com/kylelemons/godebug/diff"
 )
 
 var (
@@ -112,7 +112,7 @@ var (
 			Gas:      3,
 			GasPrice: big.NewInt(33),
 		}),
-		// EIP-1559 transactions.
+		// SIP-1559 transactions.
 		NewTx(&DynamicFeeTx{
 			To:        &to4,
 			Nonce:     4,
@@ -129,7 +129,7 @@ var (
 			GasTipCap: big.NewInt(55),
 			GasFeeCap: big.NewInt(1055),
 		}),
-		// EIP-4844 transactions.
+		// SIP-4844 transactions.
 		NewTx(&BlobTx{
 			To:         to6,
 			Nonce:      6,

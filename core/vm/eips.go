@@ -46,7 +46,7 @@ var activators = map[int]func(*JumpTable){
 	8037: enable8037,
 }
 
-// EnableEIP enables the given EIP on the config.
+// EnableEIP enables the given SIP on the config.
 // This operation writes in-place, and callers need to ensure that the globally
 // defined jump tables are not polluted.
 func EnableEIP(eipNum int, jt *JumpTable) error {
@@ -71,7 +71,7 @@ func ActivateableEips() []string {
 	return nums
 }
 
-// enable1884 applies EIP-1884 to the given jump table:
+// enable1884 applies SIP-1884 to the given jump table:
 // - Increase cost of BALANCE to 700
 // - Increase cost of EXTCODEHASH to 700
 // - Increase cost of SLOAD to 800
@@ -96,8 +96,8 @@ func opSelfBalance(pc *uint64, evm *EVM, scope *ScopeContext) ([]byte, error) {
 	return nil, nil
 }
 
-// enable1344 applies EIP-1344 (ChainID Opcode)
-// - Adds an opcode that returns the current chain’s EIP-155 unique identifier
+// enable1344 applies SIP-1344 (ChainID Opcode)
+// - Adds an opcode that returns the current chain’s SIP-155 unique identifier
 func enable1344(jt *JumpTable) {
 	// New opcode
 	jt[CHAINID] = &operation{
@@ -114,14 +114,14 @@ func opChainID(pc *uint64, evm *EVM, scope *ScopeContext) ([]byte, error) {
 	return nil, nil
 }
 
-// enable2200 applies EIP-2200 (Rebalance net-metered SSTORE)
+// enable2200 applies SIP-2200 (Rebalance net-metered SSTORE)
 func enable2200(jt *JumpTable) {
 	jt[SLOAD].constantGas = params.SloadGasEIP2200
 	jt[SSTORE].dynamicGas = gasSStoreEIP2200
 }
 
-// enable2929 enables "EIP-2929: Gas cost increases for state access opcodes"
-// https://eips.sila.org/EIPS/eip-2929
+// enable2929 enables "SIP-2929: Gas cost increases for state access opcodes"
+// https://sips.sila.org/SIPS/eip-2929
 func enable2929(jt *JumpTable) {
 	jt[SSTORE].dynamicGas = gasSStoreEIP2929
 
@@ -158,7 +158,7 @@ func enable2929(jt *JumpTable) {
 	jt[SELFDESTRUCT].dynamicGas = gasSelfdestructEIP2929
 }
 
-// enable3529 enabled "EIP-3529: Reduction in refunds":
+// enable3529 enabled "SIP-3529: Reduction in refunds":
 // - Removes refunds for selfdestructs
 // - Reduces refunds for SSTORE
 // - Reduces max refunds to 20% gas
@@ -167,7 +167,7 @@ func enable3529(jt *JumpTable) {
 	jt[SELFDESTRUCT].dynamicGas = gasSelfdestructEIP3529
 }
 
-// enable3198 applies EIP-3198 (BASEFEE Opcode)
+// enable3198 applies SIP-3198 (BASEFEE Opcode)
 // - Adds an opcode that returns the current block's base fee.
 func enable3198(jt *JumpTable) {
 	// New opcode
@@ -179,7 +179,7 @@ func enable3198(jt *JumpTable) {
 	}
 }
 
-// enable1153 applies EIP-1153 "Transient Storage"
+// enable1153 applies SIP-1153 "Transient Storage"
 // - Adds TLOAD that reads from transient storage
 // - Adds TSTORE that writes to transient storage
 func enable1153(jt *JumpTable) {
@@ -223,7 +223,7 @@ func opBaseFee(pc *uint64, evm *EVM, scope *ScopeContext) ([]byte, error) {
 	return nil, nil
 }
 
-// enable3855 applies EIP-3855 (PUSH0 opcode)
+// enable3855 applies SIP-3855 (PUSH0 opcode)
 func enable3855(jt *JumpTable) {
 	// New opcode
 	jt[PUSH0] = &operation{
@@ -240,15 +240,15 @@ func opPush0(pc *uint64, evm *EVM, scope *ScopeContext) ([]byte, error) {
 	return nil, nil
 }
 
-// enable3860 enables "EIP-3860: Limit and meter initcode"
-// https://eips.sila.org/EIPS/eip-3860
+// enable3860 enables "SIP-3860: Limit and meter initcode"
+// https://sips.sila.org/SIPS/eip-3860
 func enable3860(jt *JumpTable) {
 	jt[CREATE].dynamicGas = gasCreateEip3860
 	jt[CREATE2].dynamicGas = gasCreate2Eip3860
 }
 
-// enable5656 enables EIP-5656 (MCOPY opcode)
-// https://eips.sila.org/EIPS/eip-5656
+// enable5656 enables SIP-5656 (MCOPY opcode)
+// https://sips.sila.org/SIPS/eip-5656
 func enable5656(jt *JumpTable) {
 	jt[MCOPY] = &operation{
 		execute:     opMcopy,
@@ -260,7 +260,7 @@ func enable5656(jt *JumpTable) {
 	}
 }
 
-// opMcopy implements the MCOPY opcode (https://eips.sila.org/EIPS/eip-5656)
+// opMcopy implements the MCOPY opcode (https://sips.sila.org/SIPS/eip-5656)
 func opMcopy(pc *uint64, evm *EVM, scope *ScopeContext) ([]byte, error) {
 	dst, src, length := scope.Stack.pop3()
 	// These values are checked for overflow during memory expansion calculation
@@ -294,7 +294,7 @@ func opCLZ(pc *uint64, evm *EVM, scope *ScopeContext) ([]byte, error) {
 	return nil, nil
 }
 
-// enable4844 applies EIP-4844 (BLOBHASH opcode)
+// enable4844 applies SIP-4844 (BLOBHASH opcode)
 func enable4844(jt *JumpTable) {
 	jt[BLOBHASH] = &operation{
 		execute:     opBlobHash,
@@ -304,7 +304,7 @@ func enable4844(jt *JumpTable) {
 	}
 }
 
-// enable7939 enables EIP-7939 (CLZ opcode)
+// enable7939 enables SIP-7939 (CLZ opcode)
 func enable7939(jt *JumpTable) {
 	jt[CLZ] = &operation{
 		execute:     opCLZ,
@@ -314,7 +314,7 @@ func enable7939(jt *JumpTable) {
 	}
 }
 
-// enable7516 applies EIP-7516 (BLOBBASEFEE opcode)
+// enable7516 applies SIP-7516 (BLOBBASEFEE opcode)
 func enable7516(jt *JumpTable) {
 	jt[BLOBBASEFEE] = &operation{
 		execute:     opBlobBaseFee,
@@ -324,7 +324,7 @@ func enable7516(jt *JumpTable) {
 	}
 }
 
-// enable6780 applies EIP-6780 (deactivate SELFDESTRUCT)
+// enable6780 applies SIP-6780 (deactivate SELFDESTRUCT)
 func enable6780(jt *JumpTable) {
 	jt[SELFDESTRUCT] = &operation{
 		execute:     opSelfdestruct6780,
@@ -335,7 +335,7 @@ func enable6780(jt *JumpTable) {
 	}
 }
 
-// enable8024 applies EIP-8024 (DUPN, SWAPN, EXCHANGE)
+// enable8024 applies SIP-8024 (DUPN, SWAPN, EXCHANGE)
 func enable8024(jt *JumpTable) {
 	jt[DUPN] = &operation{
 		execute:     opDupN,
@@ -379,7 +379,7 @@ func opExtCodeCopyEIP4762(pc *uint64, evm *EVM, scope *ScopeContext) ([]byte, er
 	return nil, nil
 }
 
-// opPush1EIP4762 handles the special case of PUSH1 opcode for EIP-4762, which
+// opPush1EIP4762 handles the special case of PUSH1 opcode for SIP-4762, which
 // need not worry about the adjusted bound logic when adding the PUSHDATA to
 // the list of access events.
 func opPush1EIP4762(pc *uint64, evm *EVM, scope *ScopeContext) ([]byte, error) {
@@ -560,7 +560,7 @@ func enable4762(jt *JumpTable) {
 	}
 }
 
-// enable7702 the EIP-7702 changes to support delegation designators.
+// enable7702 the SIP-7702 changes to support delegation designators.
 func enable7702(jt *JumpTable) {
 	jt[CALL].dynamicGas = gasCallEIP7702
 	jt[CALLCODE].dynamicGas = gasCallCodeEIP7702
@@ -574,7 +574,7 @@ func opSlotNum(pc *uint64, evm *EVM, scope *ScopeContext) ([]byte, error) {
 	return nil, nil
 }
 
-// enable7843 enables the SLOTNUM opcode as specified in EIP-7843.
+// enable7843 enables the SLOTNUM opcode as specified in SIP-7843.
 func enable7843(jt *JumpTable) {
 	jt[SLOTNUM] = &operation{
 		execute:     opSlotNum,
@@ -584,7 +584,7 @@ func enable7843(jt *JumpTable) {
 	}
 }
 
-// enable8037 enables the multidimensional-metering as specified in EIP-8037.
+// enable8037 enables the multidimensional-metering as specified in SIP-8037.
 func enable8037(jt *JumpTable) {
 	jt[CREATE].constantGas = params.CreateGasAmsterdam
 	jt[CREATE].dynamicGas = gasCreateEip8037

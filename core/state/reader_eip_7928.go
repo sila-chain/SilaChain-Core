@@ -34,7 +34,7 @@ import (
 //   Using an Access List hint, it asynchronously fetches required state data
 //   in the background, minimizing I/O blocking during transaction processing.
 //
-// - Execution Layer: To support parallel transaction execution within the EIP
+// - Execution Layer: To support parallel transaction execution within the SIP
 //   7928 context, readers are wrapped in ReaderWithBlockLevelAccessList.
 //   This layer provides a "unified view" by merging the pre-transition state
 //   with mutated states from preceding transactions in the block.

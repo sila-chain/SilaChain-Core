@@ -22,13 +22,13 @@ import (
 	"math"
 	"math/big"
 
+	"github.com/holiman/uint256"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/core/tracing"
 	"github.com/sila-org/sila/core/types"
 	"github.com/sila-org/sila/core/vm"
 	"github.com/sila-org/sila/crypto/kzg4844"
 	"github.com/sila-org/sila/params"
-	"github.com/holiman/uint256"
 )
 
 // ExecutionResult includes all output after executing given evm
@@ -132,7 +132,7 @@ func IntrinsicGas(data []byte, accessList types.AccessList, authList []types.Set
 		}
 		gas.RegularGas += storageKeys * params.TxAccessListStorageKeyGas
 
-		// EIP-7981: access list data is charged in addition to the base charge.
+		// SIP-7981: access list data is charged in addition to the base charge.
 		if rules.IsAmsterdam {
 			const (
 				addressCost    = common.AddressLength * params.TxCostFloorPerToken7976 * params.TxTokenPerNonZeroByte
@@ -151,14 +151,14 @@ func IntrinsicGas(data []byte, accessList types.AccessList, authList []types.Set
 	return gas, nil
 }
 
-// FloorDataGas computes the minimum gas required for a transaction based on its data tokens (EIP-7623).
+// FloorDataGas computes the minimum gas required for a transaction based on its data tokens (SIP-7623).
 func FloorDataGas(rules params.Rules, data []byte, accessList types.AccessList) (uint64, error) {
 	var (
 		tokens    uint64
 		tokenCost uint64
 	)
 	if rules.IsAmsterdam {
-		// EIP-7976 changes how calldata is priced.
+		// SIP-7976 changes how calldata is priced.
 		// From 10/40 to 64/64 for zero/non-zero bytes.
 		tokenCost = params.TxCostFloorPerToken7976
 		dataLen := uint64(len(data))
@@ -167,7 +167,7 @@ func FloorDataGas(rules params.Rules, data []byte, accessList types.AccessList) 
 		}
 		tokens = dataLen * params.TxTokenPerNonZeroByte
 
-		// EIP-7981 adds additional tokens for every entry in the accesslist
+		// SIP-7981 adds additional tokens for every entry in the accesslist
 		const addressTokenCost = uint64(common.AddressLength) * params.TxTokenPerNonZeroByte
 		addresses := uint64(len(accessList))
 		if (math.MaxUint64-tokens)/addressTokenCost < addresses {
@@ -202,7 +202,7 @@ func FloorDataGas(rules params.Rules, data []byte, accessList types.AccessList) 
 	if (math.MaxUint64-params.TxGas)/tokenCost < tokens {
 		return 0, ErrGasUintOverflow
 	}
-	// Minimum gas required for a transaction based on its data tokens (EIP-7623).
+	// Minimum gas required for a transaction based on its data tokens (SIP-7623).
 	return params.TxGas + tokens*tokenCost, nil
 }
 
@@ -389,8 +389,8 @@ func (st *stateTransition) to() common.Address {
 //
 //   - Pre-Amsterdam: one-dimensional regular budget equal to
 //     `msg.GasLimit`; the state-gas reservoir is zero.
-//   - Amsterdam+ (EIP-8037): two-dimensional budget. Regular gas is
-//     capped at `MaxTxGas` (EIP-7825, 16_777_216); any excess from
+//   - Amsterdam+ (SIP-8037): two-dimensional budget. Regular gas is
+//     capped at `MaxTxGas` (SIP-7825, 16_777_216); any excess from
 //     `msg.GasLimit` above that cap becomes the state-gas reservoir.
 func (st *stateTransition) buyGas() error {
 	mgval := new(uint256.Int).SetUint64(st.msg.GasLimit)
@@ -476,17 +476,17 @@ func (st *stateTransition) buyGas() error {
 // the EVM to run, then ends by calling buyGas to lock in the gas budget.
 // It returns a consensus error if any of the following fail:
 //
-//   - Sender nonce matches state and is not at 2^64-1 (EIP-2681).
-//   - EIP-7825 per-tx gas-limit cap on Osaka chains pre-Amsterdam
+//   - Sender nonce matches state and is not at 2^64-1 (SIP-2681).
+//   - SIP-7825 per-tx gas-limit cap on Osaka chains pre-Amsterdam
 //     (the cap also bounds the regular dimension after Amsterdam, but
 //     it is enforced there via the two-dimensional budget in buyGas).
-//   - EIP-3607 sender-is-EOA, allowing accounts whose only code is an
-//     EIP-7702 delegation designator.
-//   - EIP-1559 fee-cap, tip-cap and base-fee constraints (London+).
+//   - SIP-3607 sender-is-EOA, allowing accounts whose only code is an
+//     SIP-7702 delegation designator.
+//   - SIP-1559 fee-cap, tip-cap and base-fee constraints (London+).
 //   - Blob-tx structural checks: non-nil `To`, non-empty hash list,
 //     valid KZG versioned hashes, count below `BlobTxMaxBlobs` (Osaka+).
 //   - Blob fee-cap not below the current blob base fee (Cancun+).
-//   - EIP-7702 set-code-tx shape: non-nil `To` and non-empty
+//   - SIP-7702 set-code-tx shape: non-nil `To` and non-empty
 //     authorization list.
 //
 // The SkipNonceChecks / SkipTransactionChecks / NoBaseFee flags bypass
@@ -513,7 +513,7 @@ func (st *stateTransition) preCheck() error {
 		isAmsterdam = st.evm.ChainConfig().IsAmsterdam(st.evm.Context.BlockNumber, st.evm.Context.Time)
 	)
 	if !msg.SkipTransactionChecks {
-		// Verify tx gas limit does not exceed EIP-7825 cap.
+		// Verify tx gas limit does not exceed SIP-7825 cap.
 		if !isAmsterdam && isOsaka && msg.GasLimit > params.MaxTxGas {
 			return fmt.Errorf("%w (cap: %d, tx: %d)", ErrGasLimitTooHigh, params.MaxTxGas, msg.GasLimit)
 		}
@@ -576,7 +576,7 @@ func (st *stateTransition) preCheck() error {
 			}
 		}
 	}
-	// Check that EIP-7702 authorization list signatures are well formed.
+	// Check that SIP-7702 authorization list signatures are well formed.
 	if msg.SetCodeAuthorizations != nil {
 		if msg.To == nil {
 			return fmt.Errorf("%w (sender %v)", ErrSetCodeTxCreate, msg.From)
@@ -626,7 +626,7 @@ func (st *stateTransition) execute() (*ExecutionResult, error) {
 		st.evm.Config.Tracer.EmitGasChange(prior.AsTracing(), st.gasRemaining.AsTracing(), tracing.GasChangeTxIntrinsicGas)
 	}
 
-	// Validate the EIP-7623 calldata floor against the gas limit. The floor inflates
+	// Validate the SIP-7623 calldata floor against the gas limit. The floor inflates
 	// the total gas usage at tx end, so the gas limit must be sufficient to cover that.
 	if rules.IsPrague {
 		floorDataGas, err = FloorDataGas(rules, msg.Data, msg.AccessList)
@@ -665,8 +665,8 @@ func (st *stateTransition) execute() (*ExecutionResult, error) {
 
 	// Execute the preparatory steps for state transition which includes:
 	// - prepare accessList(post-berlin)
-	// - reset transient storage(EIP-1153)
-	// - enable block-level accessList construction (EIP-7928)
+	// - reset transient storage(SIP-1153)
+	// - enable block-level accessList construction (SIP-7928)
 	st.state.Prepare(rules, msg.From, st.evm.Context.Coinbase, msg.To, vm.ActivePrecompiles(rules), msg.AccessList)
 
 	// Execute the top-most frame
@@ -694,7 +694,7 @@ func (st *stateTransition) execute() (*ExecutionResult, error) {
 		// Increment the nonce for the next transaction.
 		st.state.SetNonce(msg.From, st.state.GetNonce(msg.From)+1, tracing.NonceChangeEoACall)
 
-		// Apply EIP-7702 authorizations.
+		// Apply SIP-7702 authorizations.
 		st.applyAuthorizations(rules, msg.SetCodeAuthorizations)
 
 		// Perform convenience warming of sender's delegation target. Although the
@@ -740,7 +740,7 @@ func (st *stateTransition) execute() (*ExecutionResult, error) {
 		}
 	}
 
-	// EIP-7708: Emit the SILA-burn logs
+	// SIP-7708: Emit the SILA-burn logs
 	if rules.IsAmsterdam {
 		for _, log := range st.evm.StateDB.LogsForBurnAccounts() {
 			st.evm.StateDB.AddLog(log)
@@ -756,15 +756,15 @@ func (st *stateTransition) execute() (*ExecutionResult, error) {
 
 // settleGas finalizes the per-tx gas accounting after EVM execution:
 //
-//   - Snapshots the EIP-8037 block-level 2D figures (tx_regular_gas,
+//   - Snapshots the SIP-8037 block-level 2D figures (tx_regular_gas,
 //     tx_state_gas) before any refund or floor:
 //
 //     tx_gas_used_before_refund = tx.gas - gas_left - state_gas_reservoir
 //     tx_state_gas              = state_gas_used
 //     tx_regular_gas            = tx_gas_used_before_refund - tx_state_gas
 //
-//   - Computes the receipt scalar tx_gas_used by applying the EIP-3529
-//     refund (capped at tx_gas_used_before_refund/5) and the EIP-7623
+//   - Computes the receipt scalar tx_gas_used by applying the SIP-3529
+//     refund (capped at tx_gas_used_before_refund/5) and the SIP-7623
 //     calldata floor:
 //
 //     tx_gas_used = max(tx_gas_used_before_refund - tx_gas_refund, calldata_floor)
@@ -784,7 +784,7 @@ func (st *stateTransition) settleGas(rules params.Rules, floorDataGas uint64) (g
 	}
 	txStateGas := uint64(st.gasRemaining.UsedStateGas)
 
-	// EIP-8037:
+	// SIP-8037:
 	// tx_gas_used_before_refund = tx.gas - tx_output.gas_left - tx_output.state_gas_reservoir
 	// tx_state_gas = intrinsic_state_gas + tx_output.execution_state_gas_used
 	// tx_regular_gas = tx_gas_used_before_refund - tx_state_gas
@@ -796,7 +796,7 @@ func (st *stateTransition) settleGas(rules params.Rules, floorDataGas uint64) (g
 	}
 	txRegularGas := gasUsedBeforeRefund - txStateGas
 
-	// EIP-3529: tx_gas_refund = min(tx_gas_used_before_refund/5, refund_counter).
+	// SIP-3529: tx_gas_refund = min(tx_gas_used_before_refund/5, refund_counter).
 	refund := st.calcRefund(gasUsedBeforeRefund)
 	if st.evm.Config.Tracer.HasGasHook() {
 		st.evm.Config.Tracer.EmitGasChange(tracing.Gas{Regular: gasLeft}, tracing.Gas{Regular: gasLeft + refund}, tracing.GasChangeTxRefunds)
@@ -804,7 +804,7 @@ func (st *stateTransition) settleGas(rules params.Rules, floorDataGas uint64) (g
 	gasLeft += refund
 	gasUsed = gasUsedBeforeRefund - refund
 
-	// EIP-7623: tx_gas_used = max(tx_gas_used_after_refund, calldata_floor).
+	// SIP-7623: tx_gas_used = max(tx_gas_used_after_refund, calldata_floor).
 	peakUsed = gasUsedBeforeRefund
 	if rules.IsPrague && gasUsed < floorDataGas {
 		diff := floorDataGas - gasUsed
@@ -838,13 +838,13 @@ func (st *stateTransition) settleGas(rules params.Rules, floorDataGas uint64) (g
 	return gasUsed, peakUsed, nil
 }
 
-// validateAuthorization validates an EIP-7702 authorization against the state.
+// validateAuthorization validates an SIP-7702 authorization against the state.
 func (st *stateTransition) validateAuthorization(auth *types.SetCodeAuthorization) (authority common.Address, err error) {
 	// Verify chain ID is null or equal to current chain ID.
 	if !auth.ChainID.IsZero() && auth.ChainID.CmpBig(st.evm.ChainConfig().ChainID) != 0 {
 		return authority, ErrAuthorizationWrongChainID
 	}
-	// Limit nonce to 2^64-1 per EIP-2681.
+	// Limit nonce to 2^64-1 per SIP-2681.
 	if auth.Nonce+1 < auth.Nonce {
 		return authority, ErrAuthorizationNonceOverflow
 	}
@@ -869,8 +869,8 @@ func (st *stateTransition) validateAuthorization(auth *types.SetCodeAuthorizatio
 	return authority, nil
 }
 
-// applyAuthorization applies an EIP-7702 code delegation to the state and,
-// under EIP-8037, reconciles the per-authorization intrinsic state-gas pre-
+// applyAuthorization applies an SIP-7702 code delegation to the state and,
+// under SIP-8037, reconciles the per-authorization intrinsic state-gas pre-
 // charge so that, per authority:
 //
 //   - the account portion (AccountCreationSize × CPSB) is charged at most
@@ -937,7 +937,7 @@ func (st *stateTransition) applyAuthorization(rules params.Rules, auth *types.Se
 	return nil
 }
 
-// applyAuthorizations applies an EIP-7702 code delegation to the state.
+// applyAuthorizations applies an SIP-7702 code delegation to the state.
 func (st *stateTransition) applyAuthorizations(rules params.Rules, auths []types.SetCodeAuthorization) {
 	preDelegated := make(map[common.Address]bool)
 	for _, auth := range auths {
@@ -945,7 +945,7 @@ func (st *stateTransition) applyAuthorizations(rules params.Rules, auths []types
 	}
 }
 
-// calcRefund computes the EIP-3529 refund cap against tx_gas_used_before_refund.
+// calcRefund computes the SIP-3529 refund cap against tx_gas_used_before_refund.
 func (st *stateTransition) calcRefund(gasUsedBeforeRefund uint64) uint64 {
 	quotient := params.RefundQuotient
 	if st.evm.ChainConfig().IsLondon(st.evm.Context.BlockNumber) {

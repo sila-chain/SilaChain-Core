@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with the sila library. If not, see <http://www.gnu.org/licenses/>.
 
-// Package kzg4844 implements the KZG crypto for EIP-4844.
+// Package kzg4844 implements the KZG crypto for SIP-4844.
 package kzg4844
 
 import (

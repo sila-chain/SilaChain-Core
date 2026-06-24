@@ -21,6 +21,7 @@ import (
 	"fmt"
 	"math/big"
 
+	"github.com/holiman/uint256"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/consensus"
 	"github.com/sila-org/sila/consensus/misc/eip1559"
@@ -30,7 +31,6 @@ import (
 	"github.com/sila-org/sila/core/types/bal"
 	"github.com/sila-org/sila/core/vm"
 	"github.com/sila-org/sila/params"
-	"github.com/holiman/uint256"
 )
 
 // Proof-of-stake protocol constants.
@@ -53,7 +53,7 @@ var (
 // Beacon is a consensus silaEngine that combines the eth1 consensus and proof-of-stake
 // algorithm. There is a special flag inside to decide whether to use legacy consensus
 // rules or new rules. The transition rule is described in the eth1/2 merge spec.
-// https://github.com/sila-org/EIPs/blob/master/EIPS/eip-3675.md
+// https://github.com/sila-org/SIPs/blob/master/SIPS/eip-3675.md
 //
 // The beacon here is a half-functional consensus silaEngine with partial functions which
 // is only used for necessary consensus checks. The legacy consensus silaEngine can be any
@@ -240,7 +240,7 @@ func (beacon *Beacon) verifyHeader(chain consensus.ChainHeaderReader, header, pa
 	if diff := new(big.Int).Sub(header.Number, parent.Number); diff.Cmp(common.Big1) != 0 {
 		return consensus.ErrInvalidNumber
 	}
-	// Verify the header's EIP-1559 attributes.
+	// Verify the header's SIP-1559 attributes.
 	if err := eip1559.VerifyEIP1559Header(chain.Config(), parent, header); err != nil {
 		return err
 	}

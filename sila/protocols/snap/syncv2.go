@@ -34,12 +34,12 @@ import (
 	"github.com/sila-org/sila/core/types"
 	"github.com/sila-org/sila/core/types/bal"
 	"github.com/sila-org/sila/crypto"
-	"github.com/sila-org/sila/siladb"
 	"github.com/sila-org/sila/event"
 	"github.com/sila-org/sila/log"
 	"github.com/sila-org/sila/p2p/msgrate"
 	"github.com/sila-org/sila/params"
 	"github.com/sila-org/sila/rlp"
+	"github.com/sila-org/sila/siladb"
 	"github.com/sila-org/sila/trie"
 	"github.com/sila-org/sila/trie/trienode"
 	"github.com/sila-org/sila/triedb"
@@ -47,8 +47,8 @@ import (
 
 const (
 	// maxAccessListRequestCount is the maximum number of block BALs to
-	// request in a single query. BALs average ~72 KiB compressed (per EIP-7928),
-	// and EIP-8189 recommends a 2 MiB response soft limit, so we target ~28
+	// request in a single query. BALs average ~72 KiB compressed (per SIP-7928),
+	// and SIP-8189 recommends a 2 MiB response soft limit, so we target ~28
 	// blocks per request to avoid server-side truncation.
 	//
 	// NOTE: If the gas limit is raised significantly, this number may need to be adjusted
@@ -369,7 +369,7 @@ type SyncPeerV2 interface {
 //   - The peer delivers a stale response after a previous timeout
 //   - The peer delivers a refusal to serve the requested state
 type syncerV2 struct {
-	db     siladb.Database   // Database to store the trie nodes into (and dedup)
+	db     siladb.Database  // Database to store the trie nodes into (and dedup)
 	scheme string           // Node scheme used in node database
 	pivot  *types.Header    // Current pivot header being synced (lock needed)
 	phase  atomic.Uint32    // Current syncPhase; atomic so phase transitions are visible across goroutines
@@ -981,7 +981,7 @@ func (s *syncerV2) assignAccessListTasks(pending map[common.Hash]struct{}, refus
 		idlers.ids, idlers.caps = idlers.ids[1:], idlers.caps[1:]
 
 		// Collect hashes to fetch, capped by peer capacity and the
-		// EIP-8189 2 MiB response soft limit (~72 KiB/BAL -> 28 blocks).
+		// SIP-8189 2 MiB response soft limit (~72 KiB/BAL -> 28 blocks).
 		if cap > maxAccessListRequestCount {
 			cap = maxAccessListRequestCount
 		}

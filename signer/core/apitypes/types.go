@@ -30,6 +30,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/holiman/uint256"
 	"github.com/sila-org/sila/accounts"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/common/hexutil"
@@ -37,7 +38,6 @@ import (
 	"github.com/sila-org/sila/core/types"
 	"github.com/sila-org/sila/crypto"
 	"github.com/sila-org/sila/crypto/kzg4844"
-	"github.com/holiman/uint256"
 )
 
 var typedDataReferenceTypeRegexp = regexp.MustCompile(`^[A-Za-z](\w*)(\[\d*\])*$`)
@@ -336,7 +336,7 @@ type ValidatorData struct {
 	Message hexutil.Bytes
 }
 
-// TypedData is a type to encapsulate EIP-712 typed messages
+// TypedData is a type to encapsulate SIP-712 typed messages
 type TypedData struct {
 	Types       Types            `json:"types"`
 	PrimaryType string           `json:"primaryType"`
@@ -344,7 +344,7 @@ type TypedData struct {
 	Message     TypedDataMessage `json:"message"`
 }
 
-// Type is the inner type of an EIP-712 message
+// Type is the inner type of an SIP-712 message
 type Type struct {
 	Name string `json:"name"`
 	Type string `json:"type"`
@@ -372,7 +372,7 @@ type TypePriority struct {
 
 type TypedDataMessage = map[string]interface{}
 
-// TypedDataDomain represents the domain part of an EIP-712 message.
+// TypedDataDomain represents the domain part of an SIP-712 message.
 type TypedDataDomain struct {
 	Name              string                `json:"name"`
 	Version           string                `json:"version"`
@@ -381,10 +381,10 @@ type TypedDataDomain struct {
 	Salt              string                `json:"salt"`
 }
 
-// TypedDataAndHash is a helper function that calculates a hash for typed data conforming to EIP-712.
+// TypedDataAndHash is a helper function that calculates a hash for typed data conforming to SIP-712.
 // This hash can then be safely used to calculate a signature.
 //
-// See https://eips.sila.org/EIPS/eip-712 for the full specification.
+// See https://sips.sila.org/SIPS/eip-712 for the full specification.
 //
 // This gives context to the signed typed data and prevents signing of transactions.
 func TypedDataAndHash(typedData TypedData) ([]byte, string, error) {

@@ -24,6 +24,7 @@ import (
 	"sync/atomic"
 	"time"
 
+	"github.com/holiman/uint256"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/consensus/misc/eip1559"
 	"github.com/sila-org/sila/consensus/misc/eip4844"
@@ -38,7 +39,6 @@ import (
 	"github.com/sila-org/sila/internal/telemetry"
 	"github.com/sila-org/sila/log"
 	"github.com/sila-org/sila/params"
-	"github.com/holiman/uint256"
 )
 
 var (
@@ -286,7 +286,7 @@ func (miner *Miner) prepareWork(ctx context.Context, genParams *generateParams, 
 	if genParams.random != (common.Hash{}) {
 		header.MixDigest = genParams.random
 	}
-	// Set baseFee and GasLimit if we are on an EIP-1559 chain
+	// Set baseFee and GasLimit if we are on an SIP-1559 chain
 	if miner.chainConfig.IsLondon(header.Number) {
 		header.BaseFee = eip1559.CalcBaseFee(miner.chainConfig, parent)
 		if !miner.chainConfig.IsLondon(parent.Number) {
@@ -300,7 +300,7 @@ func (miner *Miner) prepareWork(ctx context.Context, genParams *generateParams, 
 		log.Error("Failed to prepare header for sealing", "err", err)
 		return nil, err
 	}
-	// Apply EIP-4844, EIP-4788.
+	// Apply SIP-4844, SIP-4788.
 	if miner.chainConfig.IsCancun(header.Number, header.Time) {
 		var excessBlobGas uint64
 		if miner.chainConfig.IsCancun(parent.Number, parent.Time) {
@@ -310,7 +310,7 @@ func (miner *Miner) prepareWork(ctx context.Context, genParams *generateParams, 
 		header.ExcessBlobGas = &excessBlobGas
 		header.ParentBeaconRoot = genParams.beaconRoot
 	}
-	// Apply EIP-7843.
+	// Apply SIP-7843.
 	if miner.chainConfig.IsAmsterdam(header.Number, header.Time) {
 		if genParams.slotNum == nil {
 			return nil, errors.New("no slot number set post-amsterdam")

@@ -22,13 +22,13 @@ import (
 	"fmt"
 	"math/big"
 
+	"github.com/holiman/uint256"
 	"github.com/sila-org/sila/core"
 	"github.com/sila-org/sila/core/state"
 	"github.com/sila-org/sila/core/types"
 	"github.com/sila-org/sila/core/vm"
 	"github.com/sila-org/sila/log"
 	"github.com/sila-org/sila/params"
-	"github.com/holiman/uint256"
 )
 
 // Options are the contextual parameters to execute the requested call.
@@ -62,7 +62,7 @@ func Estimate(ctx context.Context, call *core.Message, opts *Options, gasCap uin
 		hi = call.GasLimit
 	}
 
-	// Cap the maximum gas allowance according to EIP-7825 if the estimation targets Osaka
+	// Cap the maximum gas allowance according to SIP-7825 if the estimation targets Osaka
 	isOsaka := opts.Config.IsOsaka(opts.Header.Number, opts.Header.Time)
 	isAmsterdam := opts.Config.IsAmsterdam(opts.Header.Number, opts.Header.Time)
 	if hi > params.MaxTxGas && isOsaka && !isAmsterdam {

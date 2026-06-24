@@ -33,7 +33,7 @@ Section "Sila" GSILA_IDX
   SimpleFC::AdvAddRule "Sila outgoing peers (TCP:30303)" ""  6 2 1 2147483647 1 "$INSTDIR\sila.exe" "" "" "Sila" "" 30303 "" ""
   SimpleFC::AdvAddRule "Sila UDP discovery (UDP:30303)" "" 17 2 1 2147483647 1 "$INSTDIR\sila.exe" "" "" "Sila" "" 30303 "" ""
 
-  # Set default IPC endpoint (https://github.com/sila-org/EIPs/issues/147)
+  # Set default IPC endpoint (https://github.com/sila-org/SIPs/issues/147)
   ${EnvVarUpdate} $0 "SILA_SOCKET" "R" "HKLM" "\\.\pipe\sila.ipc"
   ${EnvVarUpdate} $0 "SILA_SOCKET" "A" "HKLM" "\\.\pipe\sila.ipc"
 

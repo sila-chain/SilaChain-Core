@@ -51,7 +51,7 @@ func (gp *GasPool) CheckGasLegacy(amount uint64) error {
 	return nil
 }
 
-// CheckGasAmsterdam performs the EIP-8037 per-tx 2D block-inclusion check:
+// CheckGasAmsterdam performs the SIP-8037 per-tx 2D block-inclusion check:
 // the worst-case regular contribution must fit in the regular dimension and
 // the worst-case state contribution must fit in the state dimension
 func (gp *GasPool) CheckGasAmsterdam(regularReservation, stateReservation uint64) error {

@@ -71,13 +71,13 @@ const schema string = `
         transaction: Transaction!
     }
 
-    # EIP-2718
+    # SIP-2718
     type AccessTuple {
         address: Address!
         storageKeys : [Bytes32!]!
     }
 
-    # EIP-4895
+    # SIP-4895
     type Withdrawal {
         # Index is a monotonically increasing identifier issued by consensus layer.
         index: Long!
@@ -137,10 +137,10 @@ const schema string = `
         # will be null.
         cumulativeGasUsed: Long
         # EffectiveGasPrice is actual value per gas deducted from the sender's
-        # account. Before EIP-1559, this is equal to the transaction's gas price.
-        # After EIP-1559, it is baseFeePerGas + min(maxFeePerGas - baseFeePerGas,
-        # maxPriorityFeePerGas). Legacy transactions and EIP-2930 transactions are
-        # coerced into the EIP-1559 format by setting both maxFeePerGas and
+        # account. Before SIP-1559, this is equal to the transaction's gas price.
+        # After SIP-1559, it is baseFeePerGas + min(maxFeePerGas - baseFeePerGas,
+        # maxPriorityFeePerGas). Legacy transactions and SIP-2930 transactions are
+        # coerced into the SIP-1559 format by setting both maxFeePerGas and
         # maxPriorityFeePerGas as the transaction's gas price.
         effectiveGasPrice: BigInt
         # BlobGasUsed is the amount of blob gas used by this transaction.
@@ -163,9 +163,9 @@ const schema string = `
         accessList: [AccessTuple!]
         # Raw is the canonical encoding of the transaction.
         # For legacy transactions, it returns the RLP encoding.
-        # For EIP-2718 typed transactions, it returns the type and payload.
+        # For SIP-2718 typed transactions, it returns the type and payload.
         raw: Bytes!
-        # RawReceipt is the canonical encoding of the receipt. For post EIP-2718 typed transactions
+        # RawReceipt is the canonical encoding of the receipt. For post SIP-2718 typed transactions
         # this is equivalent to TxType || ReceiptEncoding.
         rawReceipt: Bytes!
         # BlobVersionedHashes is a set of hash outputs from the blobs in the transaction.

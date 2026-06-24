@@ -65,7 +65,7 @@ var (
 		BPO1Time:                newUint64(1765290071),
 		BPO2Time:                newUint64(1767747671),
 		DepositContractAddress:  common.HexToAddress("0x00000000219ab540356cbb839cbe05303d7705fa"),
-		Silaash:                  new(SilaashConfig),
+		Silaash:                 new(SilaashConfig),
 		BlobScheduleConfig: &BlobScheduleConfig{
 			Cancun: DefaultCancunBlobConfig,
 			Prague: DefaultPragueBlobConfig,
@@ -101,7 +101,7 @@ var (
 		BPO1Time:                newUint64(1759800000),
 		BPO2Time:                newUint64(1760389824),
 		DepositContractAddress:  common.HexToAddress("0x4242424242424242424242424242424242424242"),
-		Silaash:                  new(SilaashConfig),
+		Silaash:                 new(SilaashConfig),
 		BlobScheduleConfig: &BlobScheduleConfig{
 			Cancun: DefaultCancunBlobConfig,
 			Prague: DefaultPragueBlobConfig,
@@ -137,7 +137,7 @@ var (
 		BPO1Time:                newUint64(1761017184),
 		BPO2Time:                newUint64(1761607008),
 		DepositContractAddress:  common.HexToAddress("0x7f02c3e3c98b133055b8b348b2ac625669ed295d"),
-		Silaash:                  new(SilaashConfig),
+		Silaash:                 new(SilaashConfig),
 		BlobScheduleConfig: &BlobScheduleConfig{
 			Cancun: DefaultCancunBlobConfig,
 			Prague: DefaultPragueBlobConfig,
@@ -173,7 +173,7 @@ var (
 		BPO1Time:                newUint64(1762365720),
 		BPO2Time:                newUint64(1762955544),
 		DepositContractAddress:  common.HexToAddress("0x00000000219ab540356cBB839Cbe05303d7705Fa"),
-		Silaash:                  new(SilaashConfig),
+		Silaash:                 new(SilaashConfig),
 		BlobScheduleConfig: &BlobScheduleConfig{
 			Cancun: DefaultCancunBlobConfig,
 			Prague: DefaultPragueBlobConfig,
@@ -182,7 +182,7 @@ var (
 			BPO2:   DefaultBPO2BlobConfig,
 		},
 	}
-	// AllSilaashProtocolChanges contains every protocol change (EIPs) introduced
+	// AllSilaashProtocolChanges contains every protocol change (SIPs) introduced
 	// and accepted by the Sila core developers into the Silaash consensus.
 	AllSilaashProtocolChanges = &ChainConfig{
 		ChainID:                 big.NewInt(1337),
@@ -208,7 +208,7 @@ var (
 		PragueTime:              nil,
 		OsakaTime:               nil,
 		UBTTime:                 nil,
-		Silaash:                  new(SilaashConfig),
+		Silaash:                 new(SilaashConfig),
 		Clique:                  nil,
 	}
 
@@ -239,7 +239,7 @@ var (
 		},
 	}
 
-	// AllCliqueProtocolChanges contains every protocol change (EIPs) introduced
+	// AllCliqueProtocolChanges contains every protocol change (SIPs) introduced
 	// and accepted by the Sila core developers into the Clique consensus.
 	AllCliqueProtocolChanges = &ChainConfig{
 		ChainID:                 big.NewInt(1337),
@@ -265,11 +265,11 @@ var (
 		OsakaTime:               nil,
 		UBTTime:                 nil,
 		TerminalTotalDifficulty: big.NewInt(math.MaxInt64),
-		Silaash:                  nil,
+		Silaash:                 nil,
 		Clique:                  &CliqueConfig{Period: 0, Epoch: 30000},
 	}
 
-	// TestChainConfig contains every protocol change (EIPs) introduced
+	// TestChainConfig contains every protocol change (SIPs) introduced
 	// and accepted by the Sila core developers for testing purposes.
 	TestChainConfig = &ChainConfig{
 		ChainID:                 big.NewInt(1),
@@ -295,11 +295,11 @@ var (
 		OsakaTime:               nil,
 		UBTTime:                 nil,
 		TerminalTotalDifficulty: big.NewInt(math.MaxInt64),
-		Silaash:                  new(SilaashConfig),
+		Silaash:                 new(SilaashConfig),
 		Clique:                  nil,
 	}
 
-	// MergedTestChainConfig contains every protocol change (EIPs) introduced
+	// MergedTestChainConfig contains every protocol change (SIPs) introduced
 	// and accepted by the Sila core developers for testing purposes.
 	MergedTestChainConfig = &ChainConfig{
 		ChainID:                 big.NewInt(1),
@@ -325,7 +325,7 @@ var (
 		OsakaTime:               newUint64(0),
 		UBTTime:                 nil,
 		TerminalTotalDifficulty: big.NewInt(0),
-		Silaash:                  new(SilaashConfig),
+		Silaash:                 new(SilaashConfig),
 		Clique:                  nil,
 		BlobScheduleConfig: &BlobScheduleConfig{
 			Cancun: DefaultCancunBlobConfig,
@@ -335,7 +335,7 @@ var (
 	}
 
 	// NonActivatedConfig defines the chain configuration without activating
-	// any protocol change (EIPs).
+	// any protocol change (SIPs).
 	NonActivatedConfig = &ChainConfig{
 		ChainID:                 big.NewInt(1),
 		HomesteadBlock:          nil,
@@ -360,7 +360,7 @@ var (
 		OsakaTime:               nil,
 		UBTTime:                 nil,
 		TerminalTotalDifficulty: big.NewInt(math.MaxInt64),
-		Silaash:                  new(SilaashConfig),
+		Silaash:                 new(SilaashConfig),
 		Clique:                  nil,
 	}
 	TestRules = TestChainConfig.Rules(new(big.Int), false, 0)
@@ -438,7 +438,7 @@ type ChainConfig struct {
 	DAOForkBlock   *big.Int `json:"daoForkBlock,omitempty"`   // TheDAO hard-fork switch block (nil = no fork)
 	DAOForkSupport bool     `json:"daoForkSupport,omitempty"` // Whether the nodes supports or opposes the DAO hard-fork
 
-	// EIP150 implements the Gas price changes (https://github.com/sila-org/EIPs/issues/150)
+	// EIP150 implements the Gas price changes (https://github.com/sila-org/SIPs/issues/150)
 	EIP150Block *big.Int `json:"eip150Block,omitempty"` // EIP150 HF block (nil = no fork)
 	EIP155Block *big.Int `json:"eip155Block,omitempty"` // EIP155 HF block
 	EIP158Block *big.Int `json:"eip158Block,omitempty"` // EIP158 HF block
@@ -488,7 +488,7 @@ type ChainConfig struct {
 	EnableUBTAtGenesis bool `json:"enableUBTAtGenesis,omitempty"`
 
 	// Various consensus engines
-	Silaash             *SilaashConfig       `json:"silaash,omitempty"`
+	Silaash            *SilaashConfig      `json:"silaash,omitempty"`
 	Clique             *CliqueConfig       `json:"clique,omitempty"`
 	BlobScheduleConfig *BlobScheduleConfig `json:"blobSchedule,omitempty"`
 }
@@ -630,9 +630,9 @@ func (c *ChainConfig) Description() string {
 	if c.DAOForkBlock != nil {
 		banner += fmt.Sprintf(" - DAO Fork:                    #%-8v\n", c.DAOForkBlock)
 	}
-	banner += fmt.Sprintf(" - Tangerine Whistle (EIP 150): #%-8v\n", c.EIP150Block)
-	banner += fmt.Sprintf(" - Spurious Dragon/1 (EIP 155): #%-8v\n", c.EIP155Block)
-	banner += fmt.Sprintf(" - Spurious Dragon/2 (EIP 158): #%-8v\n", c.EIP158Block)
+	banner += fmt.Sprintf(" - Tangerine Whistle (SIP 150): #%-8v\n", c.EIP150Block)
+	banner += fmt.Sprintf(" - Spurious Dragon/1 (SIP 155): #%-8v\n", c.EIP155Block)
+	banner += fmt.Sprintf(" - Spurious Dragon/2 (SIP 158): #%-8v\n", c.EIP158Block)
 	banner += fmt.Sprintf(" - Byzantium:                   #%-8v\n", c.ByzantiumBlock)
 	banner += fmt.Sprintf(" - Constantinople:              #%-8v\n", c.ConstantinopleBlock)
 	banner += fmt.Sprintf(" - Petersburg:                  #%-8v\n", c.PetersburgBlock)
@@ -761,7 +761,7 @@ func (c *ChainConfig) IsConstantinople(num *big.Int) bool {
 	return isBlockForked(c.ConstantinopleBlock, num)
 }
 
-// IsMuirGlacier returns whether num is either equal to the Muir Glacier (EIP-2384) fork block or greater.
+// IsMuirGlacier returns whether num is either equal to the Muir Glacier (SIP-2384) fork block or greater.
 func (c *ChainConfig) IsMuirGlacier(num *big.Int) bool {
 	return isBlockForked(c.MuirGlacierBlock, num)
 }
@@ -788,12 +788,12 @@ func (c *ChainConfig) IsLondon(num *big.Int) bool {
 	return isBlockForked(c.LondonBlock, num)
 }
 
-// IsArrowGlacier returns whether num is either equal to the Arrow Glacier (EIP-4345) fork block or greater.
+// IsArrowGlacier returns whether num is either equal to the Arrow Glacier (SIP-4345) fork block or greater.
 func (c *ChainConfig) IsArrowGlacier(num *big.Int) bool {
 	return isBlockForked(c.ArrowGlacierBlock, num)
 }
 
-// IsGrayGlacier returns whether num is either equal to the Gray Glacier (EIP-5133) fork block or greater.
+// IsGrayGlacier returns whether num is either equal to the Gray Glacier (SIP-5133) fork block or greater.
 func (c *ChainConfig) IsGrayGlacier(num *big.Int) bool {
 	return isBlockForked(c.GrayGlacierBlock, num)
 }
@@ -1133,7 +1133,7 @@ func (c *ChainConfig) BaseFeeChangeDenominator() uint64 {
 	return DefaultBaseFeeChangeDenominator
 }
 
-// ElasticityMultiplier bounds the maximum gas limit an EIP-1559 block may have.
+// ElasticityMultiplier bounds the maximum gas limit an SIP-1559 block may have.
 func (c *ChainConfig) ElasticityMultiplier() uint64 {
 	return DefaultElasticityMultiplier
 }

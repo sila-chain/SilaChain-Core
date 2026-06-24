@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with the sila library. If not, see <http://www.gnu.org/licenses/>.
 
-// Package forkid implements EIP-2124 (https://eips.sila.org/EIPS/eip-2124).
+// Package forkid implements SIP-2124 (https://sips.sila.org/SIPS/eip-2124).
 package forkid
 
 import (
@@ -62,7 +62,7 @@ type Blockchain interface {
 	CurrentHeader() *types.Header
 }
 
-// ID is a fork identifier as defined by EIP-2124.
+// ID is a fork identifier as defined by SIP-2124.
 type ID struct {
 	Hash [4]byte // CRC32 checksum of the genesis block and passed fork block numbers
 	Next uint64  // Block number of the next upcoming fork, or 0 if no forks are known

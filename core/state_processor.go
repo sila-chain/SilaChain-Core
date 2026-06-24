@@ -21,6 +21,7 @@ import (
 	"fmt"
 	"math/big"
 
+	"github.com/holiman/uint256"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/consensus"
 	"github.com/sila-org/sila/consensus/misc"
@@ -33,7 +34,6 @@ import (
 	"github.com/sila-org/sila/internal/telemetry"
 	"github.com/sila-org/sila/params"
 	"github.com/sila-org/sila/trie"
-	"github.com/holiman/uint256"
 )
 
 // StateProcessor is a basic Processor, which takes care of transitioning
@@ -146,11 +146,11 @@ func PreExecution(ctx context.Context, beaconRoot *common.Hash, parent common.Ha
 	if config.IsAmsterdam(number, time) {
 		blockAccessList = bal.NewConstructionBlockAccessList()
 	}
-	// EIP-4788
+	// SIP-4788
 	if beaconRoot != nil {
 		ProcessBeaconBlockRoot(*beaconRoot, evm, blockAccessList)
 	}
-	// EIP-2935
+	// SIP-2935
 	if config.IsPrague(number, time) || config.IsUBT(number, time) {
 		ProcessParentBlockHash(parent, evm, blockAccessList)
 	}
@@ -172,15 +172,15 @@ func PostExecution(ctx context.Context, config *params.ChainConfig, number *big.
 		rules := config.Rules(number, true, time) // IsMerge is always true
 
 		requests = [][]byte{}
-		// EIP-6110
+		// SIP-6110
 		if err := ParseDepositLogs(&requests, allLogs, config); err != nil {
 			return nil, nil, fmt.Errorf("failed to parse deposit logs: %w", err)
 		}
-		// EIP-7002
+		// SIP-7002
 		if err := ProcessWithdrawalQueue(&requests, rules, evm, blockAccessIndex, blockAccessList); err != nil {
 			return nil, nil, fmt.Errorf("failed to process withdrawal queue: %w", err)
 		}
-		// EIP-7251
+		// SIP-7251
 		if err := ProcessConsolidationQueue(&requests, rules, evm, blockAccessIndex, blockAccessList); err != nil {
 			return nil, nil, fmt.Errorf("failed to process consolidation queue: %w", err)
 		}
@@ -286,7 +286,7 @@ func systemCallGasBudget(evm *vm.EVM) (gasLimit uint64, gasBudget vm.GasBudget) 
 	return gasLimit, gasBudget
 }
 
-// ProcessBeaconBlockRoot applies the EIP-4788 system call to the beacon block root
+// ProcessBeaconBlockRoot applies the SIP-4788 system call to the beacon block root
 // contract. This method is exported to be used in tests.
 func ProcessBeaconBlockRoot(beaconRoot common.Hash, evm *vm.EVM, blockAccessList *bal.ConstructionBlockAccessList) {
 	if tracer := evm.Config.Tracer; tracer != nil {
@@ -317,7 +317,7 @@ func ProcessBeaconBlockRoot(beaconRoot common.Hash, evm *vm.EVM, blockAccessList
 }
 
 // ProcessParentBlockHash stores the parent block hash in the history storage contract
-// as per EIP-2935/7709.
+// as per SIP-2935/7709.
 func ProcessParentBlockHash(prevHash common.Hash, evm *vm.EVM, blockAccessList *bal.ConstructionBlockAccessList) {
 	if tracer := evm.Config.Tracer; tracer != nil {
 		onSystemCallStart(tracer, evm.GetVMContext())
@@ -349,13 +349,13 @@ func ProcessParentBlockHash(prevHash common.Hash, evm *vm.EVM, blockAccessList *
 	blockAccessList.Merge(evm.StateDB.Finalise(true))
 }
 
-// ProcessWithdrawalQueue calls the EIP-7002 withdrawal queue contract.
+// ProcessWithdrawalQueue calls the SIP-7002 withdrawal queue contract.
 // It returns the opaque request data returned by the contract.
 func ProcessWithdrawalQueue(requests *[][]byte, rules params.Rules, evm *vm.EVM, blockAccessIndex uint32, blockAccessList *bal.ConstructionBlockAccessList) error {
 	return processRequestsSystemCall(requests, rules, evm, 0x01, params.WithdrawalQueueAddress, blockAccessIndex, blockAccessList)
 }
 
-// ProcessConsolidationQueue calls the EIP-7251 consolidation queue contract.
+// ProcessConsolidationQueue calls the SIP-7251 consolidation queue contract.
 // It returns the opaque request data returned by the contract.
 func ProcessConsolidationQueue(requests *[][]byte, rules params.Rules, evm *vm.EVM, blockAccessIndex uint32, blockAccessList *bal.ConstructionBlockAccessList) error {
 	return processRequestsSystemCall(requests, rules, evm, 0x02, params.ConsolidationQueueAddress, blockAccessIndex, blockAccessList)
@@ -404,7 +404,7 @@ func processRequestsSystemCall(requests *[][]byte, rules params.Rules, evm *vm.E
 
 var depositTopic = common.HexToHash("0x649bbc62d0e31342afea4e5cd82d4049e7e1ee912fc0889aa790803be39038c5")
 
-// ParseDepositLogs extracts the EIP-6110 deposit values from logs emitted by
+// ParseDepositLogs extracts the SIP-6110 deposit values from logs emitted by
 // BeaconDepositContract.
 func ParseDepositLogs(requests *[][]byte, logs []*types.Log, config *params.ChainConfig) error {
 	deposits := make([]byte, 1) // note: first byte is 0x00 (== deposit request type)

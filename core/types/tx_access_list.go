@@ -26,7 +26,7 @@ import (
 
 //go:generate go run github.com/fjl/gencodec -type AccessTuple -out gen_access_tuple.go
 
-// AccessList is an EIP-2930 access list.
+// AccessList is an SIP-2930 access list.
 type AccessList []AccessTuple
 
 // AccessTuple is the element type of an access list.
@@ -44,7 +44,7 @@ func (al AccessList) StorageKeys() int {
 	return sum
 }
 
-// AccessListTx is the data of EIP-2930 access list transactions.
+// AccessListTx is the data of SIP-2930 access list transactions.
 type AccessListTx struct {
 	ChainID    *big.Int        // destination chain ID
 	Nonce      uint64          // nonce of sender account
@@ -53,7 +53,7 @@ type AccessListTx struct {
 	To         *common.Address `rlp:"nil"` // nil means contract creation
 	Value      *big.Int        // wei amount
 	Data       []byte          // contract invocation input data
-	AccessList AccessList      // EIP-2930 access list
+	AccessList AccessList      // SIP-2930 access list
 	V, R, S    *big.Int        // signature values
 }
 

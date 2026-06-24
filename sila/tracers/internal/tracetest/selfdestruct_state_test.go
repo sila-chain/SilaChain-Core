@@ -281,7 +281,7 @@ func TestSelfdestructStateTracer(t *testing.T) {
 	}{
 		{
 			name:           "pre_6780_existing",
-			description:    "Pre-EIP-6780: Existing contract selfdestructs to recipient. Contract should be destroyed and balance transferred.",
+			description:    "Pre-SIP-6780: Existing contract selfdestructs to recipient. Contract should be destroyed and balance transferred.",
 			targetContract: contract,
 			genesis: &core.Genesis{
 				Config: params.AllSilaashProtocolChanges,
@@ -311,7 +311,7 @@ func TestSelfdestructStateTracer(t *testing.T) {
 		},
 		{
 			name:           "post_6780_existing",
-			description:    "Post-EIP-6780: Existing contract selfdestructs to recipient. Balance transferred but contract NOT destroyed (code/storage remain).",
+			description:    "Post-SIP-6780: Existing contract selfdestructs to recipient. Balance transferred but contract NOT destroyed (code/storage remain).",
 			targetContract: contract,
 			genesis: &core.Genesis{
 				Config: params.AllDevChainProtocolChanges,
@@ -341,7 +341,7 @@ func TestSelfdestructStateTracer(t *testing.T) {
 		},
 		{
 			name:           "pre_6780_create_destroy",
-			description:    "Pre-EIP-6780: Factory creates contract with 100 wei, contract selfdestructs back to factory. Contract destroyed, factory gets refund.",
+			description:    "Pre-SIP-6780: Factory creates contract with 100 wei, contract selfdestructs back to factory. Contract destroyed, factory gets refund.",
 			targetContract: factory,
 			genesis: &core.Genesis{
 				Config: params.AllSilaashProtocolChanges,
@@ -371,7 +371,7 @@ func TestSelfdestructStateTracer(t *testing.T) {
 		},
 		{
 			name:           "post_6780_create_destroy",
-			description:    "Post-EIP-6780: Factory creates contract with 100 wei, contract selfdestructs back to factory. Contract destroyed (EIP-6780 exception for same-tx creation).",
+			description:    "Post-SIP-6780: Factory creates contract with 100 wei, contract selfdestructs back to factory. Contract destroyed (SIP-6780 exception for same-tx creation).",
 			targetContract: factory,
 			genesis: &core.Genesis{
 				Config: params.AllDevChainProtocolChanges,
@@ -401,7 +401,7 @@ func TestSelfdestructStateTracer(t *testing.T) {
 		},
 		{
 			name:           "pre_6780_sendback",
-			description:    "Pre-EIP-6780: Contract A selfdestructs sending funds to B, then B sends funds back to A's address. Funds sent to destroyed address are burnt.",
+			description:    "Pre-SIP-6780: Contract A selfdestructs sending funds to B, then B sends funds back to A's address. Funds sent to destroyed address are burnt.",
 			targetContract: coordinator,
 			genesis: &core.Genesis{
 				Config: params.AllSilaashProtocolChanges,
@@ -439,7 +439,7 @@ func TestSelfdestructStateTracer(t *testing.T) {
 		},
 		{
 			name:           "post_6780_existing_sendback",
-			description:    "Post-EIP-6780: Existing contract A selfdestructs to B, then B sends funds back to A. Funds are NOT burnt (A still exists post-6780).",
+			description:    "Post-SIP-6780: Existing contract A selfdestructs to B, then B sends funds back to A. Funds are NOT burnt (A still exists post-6780).",
 			targetContract: coordinator,
 			genesis: &core.Genesis{
 				Config: params.AllDevChainProtocolChanges,
@@ -476,7 +476,7 @@ func TestSelfdestructStateTracer(t *testing.T) {
 		},
 		{
 			name:           "post_6780_create_destroy_sendback",
-			description:    "Post-EIP-6780: Factory creates A, A selfdestructs to B, B sends funds back to A. Funds are burnt (A was destroyed via EIP-6780 exception).",
+			description:    "Post-SIP-6780: Factory creates A, A selfdestructs to B, B sends funds back to A. Funds are burnt (A was destroyed via SIP-6780 exception).",
 			targetContract: factoryRefund,
 			genesis: &core.Genesis{
 				Config: params.AllDevChainProtocolChanges,
@@ -511,7 +511,7 @@ func TestSelfdestructStateTracer(t *testing.T) {
 		},
 		{
 			name:           "post_6780_existing_to_self",
-			description:    "Post-EIP-6780: Pre-existing contract selfdestructs to itself. Balance NOT burnt (selfdestruct-to-self is no-op for existing contracts).",
+			description:    "Post-SIP-6780: Pre-existing contract selfdestructs to itself. Balance NOT burnt (selfdestruct-to-self is no-op for existing contracts).",
 			targetContract: coordinatorSendAfter,
 			genesis: &core.Genesis{
 				Config: params.AllDevChainProtocolChanges,
@@ -551,7 +551,7 @@ func TestSelfdestructStateTracer(t *testing.T) {
 		},
 		{
 			name:           "post_6780_create_destroy_to_self",
-			description:    "Post-EIP-6780: Factory creates contract, contract selfdestructs to itself. Balance IS burnt and contract destroyed (EIP-6780 exception for same-tx creation).",
+			description:    "Post-SIP-6780: Factory creates contract, contract selfdestructs to itself. Balance IS burnt and contract destroyed (SIP-6780 exception for same-tx creation).",
 			targetContract: factorySelfDestructBalanceCheck,
 			genesis: &core.Genesis{
 				Config: params.AllDevChainProtocolChanges,

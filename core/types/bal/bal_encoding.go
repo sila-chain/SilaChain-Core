@@ -26,12 +26,12 @@ import (
 	"slices"
 	"strings"
 
+	"github.com/holiman/uint256"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/common/hexutil"
 	"github.com/sila-org/sila/crypto"
 	"github.com/sila-org/sila/params"
 	"github.com/sila-org/sila/rlp"
-	"github.com/holiman/uint256"
 )
 
 //go:generate go run github.com/sila-org/sila/rlp/rlpgen -out bal_encoding_rlp_generated.go -type AccountAccess -decoder
@@ -93,7 +93,7 @@ func (e *BlockAccessList) Validate(blockGasLimit uint64, blockTxCount int) error
 	return e.ValidateSize(blockGasLimit)
 }
 
-// itemCount returns the number of items in the BAL for EIP-7928 size-constraint
+// itemCount returns the number of items in the BAL for SIP-7928 size-constraint
 // purposes: the count of distinct addresses plus every storage key (writes +
 // reads) carried by those accounts. A storage slot is counted once regardless
 // of how many transactions wrote to it.
@@ -105,7 +105,7 @@ func (e *BlockAccessList) itemCount() uint64 {
 	return count
 }
 
-// ValidateSize returns an error if the BAL violates the EIP-7928 size
+// ValidateSize returns an error if the BAL violates the SIP-7928 size
 // constraint for the given block gas limit:
 //
 //	itemCount() <= blockGasLimit / params.BALItemCost
@@ -131,7 +131,7 @@ func (e *BlockAccessList) Hash() common.Hash {
 	return crypto.Keccak256Hash(enc.Bytes())
 }
 
-// EIP-7928 encoding types. Field names and JSON keys mirror the
+// SIP-7928 encoding types. Field names and JSON keys mirror the
 // execution-spec-tests Pydantic models in
 // `src/sila_test_types/block_access_list/account_changes.py`. Hex
 // formatting on JSON output is supplied via the gencodec overrides
