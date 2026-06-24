@@ -34,15 +34,15 @@ import (
 	"github.com/sila-org/sila/core/txpool/legacypool"
 	"github.com/sila-org/sila/core/types"
 	"github.com/sila-org/sila/crypto"
-	"github.com/sila-org/sila/siladb"
 	"github.com/sila-org/sila/params"
+	"github.com/sila-org/sila/siladb"
 )
 
 var (
 	// Test chain configurations
-	testTxPoolConfig  legacypool.Config
+	testTxPoolConfig   legacypool.Config
 	silaashChainConfig *params.ChainConfig
-	cliqueChainConfig *params.ChainConfig
+	cliqueChainConfig  *params.ChainConfig
 
 	// Test accounts
 	testBankKey, _  = crypto.GenerateKey()

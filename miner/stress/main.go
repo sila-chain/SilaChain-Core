@@ -31,13 +31,13 @@ import (
 	"github.com/sila-org/sila/core/txpool/legacypool"
 	"github.com/sila-org/sila/core/types"
 	"github.com/sila-org/sila/crypto"
+	"github.com/sila-org/sila/log"
+	"github.com/sila-org/sila/node"
+	"github.com/sila-org/sila/params"
 	"github.com/sila-org/sila/sila"
 	"github.com/sila-org/sila/sila/catalyst"
 	"github.com/sila-org/sila/sila/downloader"
 	"github.com/sila-org/sila/sila/silaconfig"
-	"github.com/sila-org/sila/log"
-	"github.com/sila-org/sila/node"
-	"github.com/sila-org/sila/params"
 )
 
 var refundContract = common.HexToAddress("0x1000000000000000000000000000000000000001")

@@ -40,13 +40,13 @@ import (
 // Check silaEngine-api specification for more details.
 // https://github.com/sila-org/execution-apis/blob/main/src/silaEngine/cancun.md#payloadattributesv3
 type BuildPayloadArgs struct {
-	Parent       common.Hash           // The parent block to build payload on top
-	Timestamp    uint64                // The provided timestamp of generated payload
-	FeeRecipient common.Address        // The provided recipient address for collecting transaction fee
-	Random       common.Hash           // The provided randomness value
-	Withdrawals  types.Withdrawals     // The provided withdrawals
-	BeaconRoot   *common.Hash          // The provided beaconRoot (Cancun)
-	SlotNum      *uint64               // The provided slotNumber
+	Parent       common.Hash               // The parent block to build payload on top
+	Timestamp    uint64                    // The provided timestamp of generated payload
+	FeeRecipient common.Address            // The provided recipient address for collecting transaction fee
+	Random       common.Hash               // The provided randomness value
+	Withdrawals  types.Withdrawals         // The provided withdrawals
+	BeaconRoot   *common.Hash              // The provided beaconRoot (Cancun)
+	SlotNum      *uint64                   // The provided slotNumber
 	Version      silaEngine.PayloadVersion // Versioning byte for payload id calculation.
 }
 
@@ -125,7 +125,7 @@ func (payload *Payload) update(r *newPayloadResult, elapsed time.Duration) (resu
 		payload.requests = r.requests
 		payload.fullWitness = r.witness
 
-		feesInEther := new(big.Float).Quo(new(big.Float).SetInt(r.fees), big.NewFloat(params.Ether))
+		feesInSila := new(big.Float).Quo(new(big.Float).SetInt(r.fees), big.NewFloat(params.Sila))
 		log.Info("Updated payload",
 			"id", payload.id,
 			"number", r.block.NumberU64(),
@@ -133,7 +133,7 @@ func (payload *Payload) update(r *newPayloadResult, elapsed time.Duration) (resu
 			"txs", len(r.block.Transactions()),
 			"withdrawals", len(r.block.Withdrawals()),
 			"gas", r.block.GasUsed(),
-			"fees", feesInEther,
+			"fees", feesInSila,
 			"root", r.block.Root(),
 			"elapsed", common.PrettyDuration(elapsed),
 		)

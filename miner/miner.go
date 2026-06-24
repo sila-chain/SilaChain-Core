@@ -43,7 +43,7 @@ type Backend interface {
 
 // Config is the configuration parameters of mining.
 type Config struct {
-	Etherbase           common.Address `toml:"-"`          // Deprecated
+	SilaBase            common.Address `toml:"-"`          // Deprecated
 	PendingFeeRecipient common.Address `toml:"-"`          // Address for pending block rewards.
 	ExtraData           hexutil.Bytes  `toml:",omitempty"` // Block extra data set by the miner
 	GasCeil             uint64         // Target gas ceiling for mined blocks.
