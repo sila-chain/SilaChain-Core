@@ -23,8 +23,8 @@ import (
 	"os"
 	"time"
 
-	"github.com/sila-org/sila/log"
 	"github.com/fsnotify/fsnotify"
+	"github.com/sila-org/sila/log"
 )
 
 type watcher struct {

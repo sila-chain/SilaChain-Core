@@ -30,11 +30,11 @@ import (
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/core/types"
 	"github.com/sila-org/sila/crypto"
+	"github.com/sila-org/sila/node"
+	"github.com/sila-org/sila/params"
 	"github.com/sila-org/sila/sila/silaconfig"
 	"github.com/sila-org/sila/silaclient"
 	"github.com/sila-org/sila/silaclient/simulated"
-	"github.com/sila-org/sila/node"
-	"github.com/sila-org/sila/params"
 )
 
 var testKey, _ = crypto.HexToECDSA("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")

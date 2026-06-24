@@ -27,12 +27,12 @@ import (
 	"github.com/sila-org/sila/core"
 	"github.com/sila-org/sila/core/types"
 	"github.com/sila-org/sila/crypto"
-	"github.com/sila-org/sila/sila"
-	"github.com/sila-org/sila/sila/silaconfig"
 	"github.com/sila-org/sila/miner"
 	"github.com/sila-org/sila/node"
 	"github.com/sila-org/sila/p2p"
 	"github.com/sila-org/sila/params"
+	"github.com/sila-org/sila/sila"
+	"github.com/sila-org/sila/sila/silaconfig"
 )
 
 func startSimulatedBeaconEthService(t *testing.T, genesis *core.Genesis, period uint64) (*node.Node, *sila.Sila, *SimulatedBeacon) {
@@ -104,7 +104,7 @@ func TestSimulatedBeaconSendWithdrawals(t *testing.T) {
 	}
 
 	// generate a bunch of transactions
-	signer := types.NewEIP155Signer(silaService.BlockChain().Config().ChainID)
+	signer := types.NewSIP155Signer(silaService.BlockChain().Config().ChainID)
 	for i := 0; i < 20; i++ {
 		tx, err := types.SignTx(types.NewTransaction(uint64(i), common.Address{}, big.NewInt(1000), params.TxGas, big.NewInt(params.InitialBaseFee), nil), signer, testKey)
 		if err != nil {
@@ -149,18 +149,18 @@ func TestOnDemandSpam(t *testing.T) {
 	// This test typically fails on 32-bit windows appveyor.
 	t.Skip("flaky test")
 	var (
-		withdrawals     []types.Withdrawal
-		txCount                = 20000
-		wxCount                = 20
-		testKey, _             = crypto.HexToECDSA("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
-		testAddr               = crypto.PubkeyToAddress(testKey.PublicKey)
-		gasLimit        uint64 = 10_000_000
-		genesis                = core.DeveloperGenesisBlock(gasLimit, &testAddr)
+		withdrawals      []types.Withdrawal
+		txCount                 = 20000
+		wxCount                 = 20
+		testKey, _              = crypto.HexToECDSA("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
+		testAddr                = crypto.PubkeyToAddress(testKey.PublicKey)
+		gasLimit         uint64 = 10_000_000
+		genesis                 = core.DeveloperGenesisBlock(gasLimit, &testAddr)
 		node, sila, mock        = startSimulatedBeaconEthService(t, genesis, 0)
-		_                      = newSimulatedBeaconAPI(mock)
-		signer                 = types.LatestSigner(sila.BlockChain().Config())
-		chainHeadCh            = make(chan core.ChainHeadEvent, 100)
-		sub                    = sila.BlockChain().SubscribeChainHeadEvent(chainHeadCh)
+		_                       = newSimulatedBeaconAPI(mock)
+		signer                  = types.LatestSigner(sila.BlockChain().Config())
+		chainHeadCh             = make(chan core.ChainHeadEvent, 100)
+		sub                     = sila.BlockChain().SubscribeChainHeadEvent(chainHeadCh)
 	)
 	defer node.Close()
 	defer sub.Unsubscribe()

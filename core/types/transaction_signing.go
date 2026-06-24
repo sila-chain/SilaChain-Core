@@ -50,7 +50,7 @@ func MakeSigner(config *params.ChainConfig, blockNumber *big.Int, blockTime uint
 	case config.IsBerlin(blockNumber):
 		signer = NewEIP2930Signer(config.ChainID)
 	case config.IsEIP155(blockNumber):
-		signer = NewEIP155Signer(config.ChainID)
+		signer = NewSIP155Signer(config.ChainID)
 	case config.IsHomestead(blockNumber):
 		signer = HomesteadSigner{}
 	default:
@@ -79,7 +79,7 @@ func LatestSigner(config *params.ChainConfig) Signer {
 		case config.BerlinBlock != nil:
 			signer = NewEIP2930Signer(config.ChainID)
 		case config.SIP155Block != nil:
-			signer = NewEIP155Signer(config.ChainID)
+			signer = NewSIP155Signer(config.ChainID)
 		default:
 			signer = HomesteadSigner{}
 		}
@@ -211,7 +211,7 @@ func newModernSigner(chainID *big.Int, fork forks.Fork) Signer {
 	// configure legacy signer
 	switch {
 	case fork >= forks.SpuriousDragon:
-		s.legacy = NewEIP155Signer(chainID)
+		s.legacy = NewSIP155Signer(chainID)
 	case fork >= forks.Homestead:
 		s.legacy = HomesteadSigner{}
 	default:
@@ -333,7 +333,7 @@ type SIP155Signer struct {
 	chainId *big.Int
 }
 
-func NewEIP155Signer(chainId *big.Int) SIP155Signer {
+func NewSIP155Signer(chainId *big.Int) SIP155Signer {
 	if chainId == nil {
 		chainId = new(big.Int)
 	}

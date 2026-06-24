@@ -23,10 +23,10 @@ import (
 	"sync/atomic"
 	"time"
 
+	"github.com/sila-chain/hid"
 	"github.com/sila-org/sila/accounts"
 	"github.com/sila-org/sila/event"
 	"github.com/sila-org/sila/log"
-	"github.com/ethereum/hid"
 )
 
 // LedgerScheme is the protocol scheme prefixing account and wallet URLs.

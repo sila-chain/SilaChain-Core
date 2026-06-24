@@ -32,6 +32,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/holiman/uint256"
 	"github.com/sila-org/sila/beacon/silaEngine"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/common/hexutil"
@@ -41,8 +42,6 @@ import (
 	"github.com/sila-org/sila/core/types"
 	"github.com/sila-org/sila/crypto"
 	"github.com/sila-org/sila/crypto/kzg4844"
-	"github.com/sila-org/sila/sila"
-	"github.com/sila-org/sila/sila/silaconfig"
 	"github.com/sila-org/sila/internal/testrand"
 	"github.com/sila-org/sila/internal/version"
 	"github.com/sila-org/sila/miner"
@@ -50,8 +49,9 @@ import (
 	"github.com/sila-org/sila/p2p"
 	"github.com/sila-org/sila/params"
 	"github.com/sila-org/sila/rpc"
+	"github.com/sila-org/sila/sila"
+	"github.com/sila-org/sila/sila/silaconfig"
 	"github.com/sila-org/sila/trie"
-	"github.com/holiman/uint256"
 )
 
 var (
@@ -118,7 +118,7 @@ func TestSilaAssembleBlock(t *testing.T) {
 	defer n.Close()
 
 	api := newConsensusAPIWithoutHeartbeat(ethservice)
-	signer := types.NewEIP155Signer(ethservice.BlockChain().Config().ChainID)
+	signer := types.NewSIP155Signer(ethservice.BlockChain().Config().ChainID)
 	tx, err := types.SignTx(types.NewTransaction(uint64(10), blocks[9].Coinbase(), big.NewInt(1000), params.TxGas, big.NewInt(params.InitialBaseFee), nil), signer, testKey)
 	if err != nil {
 		t.Fatalf("error signing transaction, err=%v", err)

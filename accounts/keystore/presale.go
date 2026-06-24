@@ -25,9 +25,9 @@ import (
 	"errors"
 	"fmt"
 
+	"github.com/google/uuid"
 	"github.com/sila-org/sila/accounts"
 	"github.com/sila-org/sila/crypto"
-	"github.com/google/uuid"
 	"golang.org/x/crypto/pbkdf2"
 )
 
@@ -54,10 +54,10 @@ func importPreSaleKey(keyStore keyStore, keyJSON []byte, password string) (accou
 
 func decryptPreSaleKey(fileContent []byte, password string) (key *Key, err error) {
 	preSaleKeyStruct := struct {
-		EncSeed string
+		EncSeed  string
 		SilaAddr string
-		Email   string
-		BtcAddr string
+		Email    string
+		BtcAddr  string
 	}{}
 	err = json.Unmarshal(fileContent, &preSaleKeyStruct)
 	if err != nil {

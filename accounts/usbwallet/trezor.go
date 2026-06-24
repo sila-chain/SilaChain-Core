@@ -265,7 +265,7 @@ func (w *trezorDriver) trezorSign(derivationPath []uint32, tx *types.Transaction
 		signer = new(types.HomesteadSigner)
 	} else {
 		// Trezor backend does not support typed transactions yet.
-		signer = types.NewEIP155Signer(chainID)
+		signer = types.NewSIP155Signer(chainID)
 		// if chainId is above (MaxUint32 - 36) / 2 then the final v values is returned
 		// directly. Otherwise, the returned value is 35 + chainid * 2.
 		if signature[64] > 1 && int(chainID.Int64()) <= (math.MaxUint32-36)/2 {

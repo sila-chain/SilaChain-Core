@@ -27,8 +27,8 @@ import (
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/core/types"
 	"github.com/sila-org/sila/crypto"
-	"github.com/sila-org/sila/silaclient/simulated"
 	"github.com/sila-org/sila/params"
+	"github.com/sila-org/sila/silaclient/simulated"
 )
 
 var waitDeployedTests = map[string]struct {

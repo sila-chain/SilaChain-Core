@@ -26,8 +26,8 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/sila-org/sila/crypto"
 	pcsc "github.com/gballet/go-libpcsclite"
+	"github.com/sila-org/sila/crypto"
 	"golang.org/x/crypto/pbkdf2"
 	"golang.org/x/text/unicode/norm"
 )

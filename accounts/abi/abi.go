@@ -257,7 +257,7 @@ var panicSelector = crypto.Keccak256([]byte("Panic(uint256)"))[:4]
 // see this linkage for the details
 // https://docs.soliditylang.org/en/v0.8.21/control-structures.html#panic-via-assert-and-error-via-require
 // the reason string list is copied from upstream ABI implementation
-// https://github.com/ethers-io/ethers.js/blob/fa3a883ff7c88611ce766f58bdd4b8ac90814470/src.ts/abi/interface.ts#L207-L218
+// Sila ABI selector handling reference.
 var panicReasons = map[uint64]string{
 	0x00: "generic panic",
 	0x01: "assert(false)",
