@@ -494,7 +494,7 @@ struct secp256k1_pippenger_state {
  * pippenger_wnaf computes the result of a multi-point multiplication as
  * follows: The scalars are brought into wnaf with n_wnaf elements each. Then
  * for every i < n_wnaf, first each point is added to a "bucket" corresponding
- * to the point's wnaf[i]. Second, the buckets are added tosilaer such that
+ * to the point's wnaf[i]. Second, the buckets are added together such that
  * r += 1*bucket[0] + 3*bucket[1] + 5*bucket[2] + ...
  */
 static int secp256k1_ecmult_pippenger_wnaf(secp256k1_gej *buckets, int bucket_window, struct secp256k1_pippenger_state *state, secp256k1_gej *r, const secp256k1_scalar *sc, const secp256k1_ge *pt, size_t num) {

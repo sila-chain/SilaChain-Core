@@ -238,7 +238,7 @@ static void secp256k1_ecmult_const(secp256k1_gej *r, const secp256k1_ge *a, cons
      *
      * Now note that ECMULT_CONST_TABLE_GET_GE(&t, pre_a, bits1) loads into t a point equal
      * to C_{ECMULT_CONST_GROUP_SIZE}(bits1, A), and analogously for pre_lam_a / bits2.
-     * This means that all we need to do is add these looked up values tosilaer, multiplied
+     * This means that all we need to do is add these looked up values together, multiplied
      * by 2^(ECMULT_GROUP_SIZE * group).
      */
     for (group = ECMULT_CONST_GROUPS - 1; group >= 0; --group) {

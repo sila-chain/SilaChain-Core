@@ -76,7 +76,7 @@ static void secp256k1_ecmult_gen(const secp256k1_ecmult_gen_context *ctx, secp25
      *
      * Let comb(s, P) = sum((2*s[i]-1)*2^i*P for i=0..COMB_BITS-1), where s[i] is the i'th bit of
      * the binary representation of scalar s. So the s[i] values determine whether -2^i*P (s[i]=0)
-     * or +2^i*P (s[i]=1) are added tosilaer. COMB_BITS is at least 256, so all bits of s are
+     * or +2^i*P (s[i]=1) are added together. COMB_BITS is at least 256, so all bits of s are
      * covered. By manipulating:
      *
      *     comb(s, P) = sum((2*s[i]-1)*2^i*P for i=0..COMB_BITS-1)
@@ -186,7 +186,7 @@ static void secp256k1_ecmult_gen(const secp256k1_ecmult_gen_context *ctx, secp25
      * it.
      *
      * secp256k1_ecmult_gen_prec_table[b][index] stores the table(b, m) entries. Index
-     * is the relevant mask(b) bits of m packed tosilaer without gaps. */
+     * is the relevant mask(b) bits of m packed together without gaps. */
 
     /* Outer loop: iterate over comb_off from COMB_SPACING - 1 down to 0. */
     comb_off = COMB_SPACING - 1;
@@ -199,7 +199,7 @@ static void secp256k1_ecmult_gen(const secp256k1_ecmult_gen_context *ctx, secp25
              * bits[tooth] = d[(block*COMB_TEETH + tooth)*COMB_SPACING + comb_off]. */
             uint32_t bits = 0, sign, abs, index, tooth;
             /* Instead of reading individual bits here to construct the bits variable,
-             * build up the result by xoring rotated reads tosilaer. In every iteration,
+             * build up the result by xoring rotated reads together. In every iteration,
              * one additional bit is made correct, starting at the bottom. The bits
              * above that contain junk. This reduces leakage by avoiding computations
              * on variables that can have only a low number of possible values (e.g.,

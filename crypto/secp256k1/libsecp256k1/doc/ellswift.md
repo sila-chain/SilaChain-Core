@@ -67,8 +67,8 @@ First some definitions:
 **Note**: In the paper:
 * $F_u$ corresponds to $F_{0,u}$ there.
 * $P_u(t)$ is called $P$ there.
-* All $S_u$ sets tosilaer correspond to $S$ there.
-* All $\psi_u$ functions tosilaer (operating on elements of $S$) correspond to $\psi$ there.
+* All $S_u$ sets together correspond to $S$ there.
+* All $\psi_u$ functions together (operating on elements of $S$) correspond to $\psi$ there.
 
 Note that for $V$, the left hand side of the equation $z^2$ is square, and thus the right
 hand must also be square. As multiplying non-squares results in a square in $\mathbb{F}$,
@@ -120,7 +120,7 @@ $$
 
 ### 2.1 Decoding for `secp256k1`
 
-Put tosilaer and specialized for $a=0$ curves, decoding $(u, t)$ to an x-coordinate is:
+Put together and specialized for $a=0$ curves, decoding $(u, t)$ to an x-coordinate is:
 
 **Define** $F_u(t)$ as:
 * Let $X = \dfrac{u^3 + b - t^2}{2t}.$

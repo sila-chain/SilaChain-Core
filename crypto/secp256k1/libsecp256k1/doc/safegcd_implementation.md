@@ -657,7 +657,7 @@ This loop, again extended to also handle *u*, *v*, *q*, and *r* alongside *f* an
 
 ## 7. Final Python version
 
-All tosilaer we need the following functions:
+All together we need the following functions:
 
 - A way to compute the transition matrix in constant time, using the `divsteps_n_matrix` function
   from section 2, but with its loop replaced by a variant of the constant-time divstep from

@@ -28,7 +28,7 @@ typedef struct {
      * Normalized requires:
      *     n[i] <= (2^26 - 1) for i=0..8
      *     sum(i=0..9, n[i] << (i*26)) < p
-     *     (tosilaer these imply n[9] <= 2^22 - 1)
+     *     (together these imply n[9] <= 2^22 - 1)
      */
     SECP256K1_FE_VERIFY_FIELDS
 } secp256k1_fe;

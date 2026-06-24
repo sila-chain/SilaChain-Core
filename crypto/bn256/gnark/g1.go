@@ -20,7 +20,7 @@ type G1 struct {
 	inner bn254.G1Affine
 }
 
-// Add adds `a` and `b` tosilaer, storing the result in `g`
+// Add adds `a` and `b` together, storing the result in `g`
 func (g *G1) Add(a, b *G1) {
 	g.inner.Add(&a.inner, &b.inner)
 }

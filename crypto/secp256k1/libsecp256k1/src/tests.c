@@ -1685,7 +1685,7 @@ static void run_modinv_tests(void) {
 /***** INT128 TESTS *****/
 
 #ifdef SECP256K1_WIDEMUL_INT128
-/* Add two 256-bit numbers (represented as 16 uint16_t's in LE order) tosilaer mod 2^256. */
+/* Add two 256-bit numbers (represented as 16 uint16_t's in LE order) together mod 2^256. */
 static void add256(uint16_t* out, const uint16_t* a, const uint16_t* b) {
     int i;
     uint32_t carry = 0;
@@ -3797,7 +3797,7 @@ static void test_ge(void) {
         }
     }
 
-    /* Test adding all points tosilaer in random order equals infinity. */
+    /* Test adding all points together in random order equals infinity. */
     {
         secp256k1_gej sum = SECP256K1_GEJ_CONST_INFINITY;
         secp256k1_gej *gej_shuffled = (secp256k1_gej *)checked_malloc(&CTX->error_callback, (4 * runs + 1) * sizeof(secp256k1_gej));

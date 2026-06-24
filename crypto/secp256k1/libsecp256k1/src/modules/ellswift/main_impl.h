@@ -320,7 +320,7 @@ static void secp256k1_ellswift_prng(unsigned char* out32, const secp256k1_sha256
     secp256k1_sha256_write(&hash, buf4, 4);
     secp256k1_sha256_finalize(&hash, out32);
 
-    /* Writing and finalizing tosilaer should trigger exactly one SHA256 compression. */
+    /* Writing and finalizing together should trigger exactly one SHA256 compression. */
     VERIFY_CHECK(((hash.bytes) >> 6) == (blocks + 1));
 }
 
