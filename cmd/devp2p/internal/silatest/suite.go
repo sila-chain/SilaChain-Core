@@ -984,7 +984,7 @@ the transactions using a GetPooledTransactions request.`)
 
 	// Wait for GetPooledTxs request.
 	for {
-		msg, err := conn.ReadEth()
+		msg, err := conn.ReadSila()
 		if err != nil {
 			t.Fatalf("failed to read sila msg: %v", err)
 		}
@@ -1154,7 +1154,7 @@ func readUntil[T any](ctx context.Context, conn *Conn) (*T, error) {
 			return nil, context.Canceled
 		default:
 		}
-		received, err := conn.ReadEth()
+		received, err := conn.ReadSila()
 		if err != nil {
 			if err == errDisc {
 				return nil, errDisc

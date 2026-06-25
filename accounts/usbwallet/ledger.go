@@ -60,7 +60,7 @@ const (
 	ledgerP1ContTransactionData     ledgerParam1 = 0x80 // Subsequent transaction data block for signing
 	ledgerP2DiscardAddressChainCode ledgerParam2 = 0x00 // Do not return the chain code along with the address
 
-	ledgerEip155Size int = 3 // Size of the SIP-155 chain_id,r,s in unsigned transactions
+	ledgerSip155Size int = 3 // Size of the SIP-155 chain_id,r,s in unsigned transactions
 )
 
 // errLedgerReplyInvalidHeader is the error message returned by a Ledger data exchange
@@ -405,7 +405,7 @@ func (w *ledgerDriver) ledgerSign(derivationPath []uint32, tx *types.Transaction
 	// https://github.com/LedgerHQ/app-sila/issues/409
 	chunk := 255
 	if tx.Type() == types.LegacyTxType {
-		for ; len(payload)%chunk <= ledgerEip155Size; chunk-- {
+		for ; len(payload)%chunk <= ledgerSip155Size; chunk-- {
 		}
 	}
 

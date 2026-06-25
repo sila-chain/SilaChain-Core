@@ -107,10 +107,10 @@ type silastatsConfig struct {
 }
 
 type silaConfig struct {
-	Sila     silaconfig.Config
-	Node     node.Config
-	Ethstats silastatsConfig
-	Metrics  metrics.Config
+	Sila      silaconfig.Config
+	Node      node.Config
+	SilaStats silastatsConfig
+	Metrics   metrics.Config
 }
 
 func loadConfig(file string, cfg *silaConfig) error {
@@ -175,7 +175,7 @@ func makeConfigNode(ctx *cli.Context) (*node.Node, silaConfig) {
 
 	utils.SetSilaConfig(ctx, stack, &cfg.Sila)
 	if ctx.IsSet(utils.SilaStatsURLFlag.Name) {
-		cfg.Ethstats.URL = ctx.String(utils.SilaStatsURLFlag.Name)
+		cfg.SilaStats.URL = ctx.String(utils.SilaStatsURLFlag.Name)
 	}
 	applyMetricConfig(ctx, &cfg)
 
@@ -274,8 +274,8 @@ func makeFullNode(ctx *cli.Context) *node.Node {
 		utils.RegisterGraphQLService(stack, backend, filterSystem, &cfg.Node)
 	}
 	// Add the Sila Stats daemon if requested.
-	if cfg.Ethstats.URL != "" {
-		utils.RegisterSilaStatsService(stack, backend, cfg.Ethstats.URL)
+	if cfg.SilaStats.URL != "" {
+		utils.RegisterSilaStatsService(stack, backend, cfg.SilaStats.URL)
 	}
 
 	// Configure synchronization override service

@@ -55,16 +55,16 @@ contract TestLogs {
 }
 */
 
-// TestEthTransferLogs tests SIP-7708 SILA transfer log output by simulating a
+// TestSilaTransferLogs tests SIP-7708 SILA transfer log output by simulating a
 // scenario including transaction, CALL and SELFDESTRUCT value transfers, and
 // also "ordinary" logs emitted. The same scenario is also tested with no value
 // transferred.
-func TestEthTransferLogs(t *testing.T) {
-	testEthTransferLogs(t, 1_000_000_000)
-	testEthTransferLogs(t, 0)
+func TestSilaTransferLogs(t *testing.T) {
+	testSilaTransferLogs(t, 1_000_000_000)
+	testSilaTransferLogs(t, 0)
 }
 
-func testEthTransferLogs(t *testing.T, value uint64) {
+func testSilaTransferLogs(t *testing.T, value uint64) {
 	var (
 		key1, _    = crypto.HexToECDSA("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
 		addr1      = crypto.PubkeyToAddress(key1.PublicKey)

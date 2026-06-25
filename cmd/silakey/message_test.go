@@ -29,7 +29,7 @@ func TestMessageSignVerify(t *testing.T) {
 	message := "test message"
 
 	// Create the key.
-	generate := runEthkey(t, "generate", "--lightkdf", keyfile)
+	generate := runSilakey(t, "generate", "--lightkdf", keyfile)
 	generate.Expect(`
 !! Unsupported terminal, password will be echoed.
 Password: {{.InputLine "foobar"}}
@@ -40,7 +40,7 @@ Repeat password: {{.InputLine "foobar"}}
 	generate.ExpectExit()
 
 	// Sign a message.
-	sign := runEthkey(t, "signmessage", keyfile, message)
+	sign := runSilakey(t, "signmessage", keyfile, message)
 	sign.Expect(`
 !! Unsupported terminal, password will be echoed.
 Password: {{.InputLine "foobar"}}
@@ -50,7 +50,7 @@ Password: {{.InputLine "foobar"}}
 	sign.ExpectExit()
 
 	// Verify the message.
-	verify := runEthkey(t, "verifymessage", address, signature, message)
+	verify := runSilakey(t, "verifymessage", address, signature, message)
 	_, matches = verify.ExpectRegexp(`
 Signature verification successful!
 Recovered public key: [0-9a-f]+

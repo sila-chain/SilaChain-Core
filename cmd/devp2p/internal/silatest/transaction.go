@@ -64,7 +64,7 @@ func (s *Suite) sendTxs(t *utesting.T, txs []*types.Transaction) error {
 
 	// Wait for the transaction announcements, make sure all txs ar propagated.
 	for time.Now().Before(end) {
-		msg, err := recvConn.ReadEth()
+		msg, err := recvConn.ReadSila()
 		if err != nil {
 			return fmt.Errorf("failed to read from connection: %w", err)
 		}
@@ -145,7 +145,7 @@ func (s *Suite) sendInvalidTxs(t *utesting.T, txs []*types.Transaction) error {
 	// Get responses.
 	recvConn.SetReadDeadline(time.Now().Add(timeout))
 	for {
-		msg, err := recvConn.ReadEth()
+		msg, err := recvConn.ReadSila()
 		if errors.Is(err, os.ErrDeadlineExceeded) {
 			// Successful if no invalid txs are propagated before timeout.
 			return nil

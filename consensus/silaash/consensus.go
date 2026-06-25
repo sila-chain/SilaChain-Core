@@ -45,25 +45,25 @@ var (
 	maxUncles                     = 2                     // Maximum number of uncles allowed in a single block
 	allowedFutureBlockTimeSeconds = int64(15)             // Max seconds from current time allowed for blocks, before they're considered future blocks
 
-	// calcDifficultyEip5133 is the difficulty adjustment algorithm as specified by SIP 5133.
+	// calcDifficultySip5133 is the difficulty adjustment algorithm as specified by SIP 5133.
 	// It offsets the bomb a total of 11.4M blocks.
 	// Specification SIP-5133: https://sips.sila.org/SIPS/sip-5133
-	calcDifficultyEip5133 = makeDifficultyCalculator(big.NewInt(11_400_000))
+	calcDifficultySip5133 = makeDifficultyCalculator(big.NewInt(11_400_000))
 
-	// calcDifficultyEip4345 is the difficulty adjustment algorithm as specified by SIP 4345.
+	// calcDifficultySip4345 is the difficulty adjustment algorithm as specified by SIP 4345.
 	// It offsets the bomb a total of 10.7M blocks.
 	// Specification SIP-4345: https://sips.sila.org/SIPS/sip-4345
-	calcDifficultyEip4345 = makeDifficultyCalculator(big.NewInt(10_700_000))
+	calcDifficultySip4345 = makeDifficultyCalculator(big.NewInt(10_700_000))
 
-	// calcDifficultyEip3554 is the difficulty adjustment algorithm as specified by SIP 3554.
+	// calcDifficultySip3554 is the difficulty adjustment algorithm as specified by SIP 3554.
 	// It offsets the bomb a total of 9.7M blocks.
 	// Specification SIP-3554: https://sips.sila.org/SIPS/sip-3554
-	calcDifficultyEip3554 = makeDifficultyCalculator(big.NewInt(9700000))
+	calcDifficultySip3554 = makeDifficultyCalculator(big.NewInt(9700000))
 
-	// calcDifficultyEip2384 is the difficulty adjustment algorithm as specified by SIP 2384.
+	// calcDifficultySip2384 is the difficulty adjustment algorithm as specified by SIP 2384.
 	// It offsets the bomb 4M blocks from Constantinople, so in total 9M blocks.
 	// Specification SIP-2384: https://sips.sila.org/SIPS/sip-2384
-	calcDifficultyEip2384 = makeDifficultyCalculator(big.NewInt(9000000))
+	calcDifficultySip2384 = makeDifficultyCalculator(big.NewInt(9000000))
 
 	// calcDifficultyConstantinople is the difficulty adjustment algorithm for Constantinople.
 	// It returns the difficulty that a new block should have when created at time given the
@@ -313,13 +313,13 @@ func CalcDifficulty(config *params.ChainConfig, time uint64, parent *types.Heade
 	next := new(big.Int).Add(parent.Number, big1)
 	switch {
 	case config.IsGrayGlacier(next):
-		return calcDifficultyEip5133(time, parent)
+		return calcDifficultySip5133(time, parent)
 	case config.IsArrowGlacier(next):
-		return calcDifficultyEip4345(time, parent)
+		return calcDifficultySip4345(time, parent)
 	case config.IsLondon(next):
-		return calcDifficultyEip3554(time, parent)
+		return calcDifficultySip3554(time, parent)
 	case config.IsMuirGlacier(next):
-		return calcDifficultyEip2384(time, parent)
+		return calcDifficultySip2384(time, parent)
 	case config.IsConstantinople(next):
 		return calcDifficultyConstantinople(time, parent)
 	case config.IsByzantium(next):
