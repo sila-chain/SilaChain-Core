@@ -116,7 +116,7 @@ func generateTraceTests(clictx *cli.Context) error {
 			exit(err)
 		}
 		config, configName := randomTraceOption()
-		result, err := client.Sila.TraceBlock(ctx, header.Hash(), config)
+		result, err := client.SilaTrace.TraceBlock(ctx, header.Hash(), config)
 		if err != nil {
 			failed += 1
 			continue

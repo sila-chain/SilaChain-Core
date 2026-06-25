@@ -30,15 +30,15 @@ import (
 	"github.com/sila-org/sila/core"
 	"github.com/sila-org/sila/core/types"
 	"github.com/sila-org/sila/crypto"
-	"github.com/sila-org/sila/sila"
-	"github.com/sila-org/sila/sila/silaconfig"
-	"github.com/sila-org/sila/sila/filters"
-	"github.com/sila-org/sila/sila/tracers"
-	_ "github.com/sila-org/sila/sila/tracers/native"
-	"github.com/sila-org/sila/silaclient"
 	"github.com/sila-org/sila/node"
 	"github.com/sila-org/sila/params"
 	"github.com/sila-org/sila/rpc"
+	silanode "github.com/sila-org/sila/sila"
+	"github.com/sila-org/sila/sila/filters"
+	"github.com/sila-org/sila/sila/silaconfig"
+	"github.com/sila-org/sila/sila/tracers"
+	_ "github.com/sila-org/sila/sila/tracers/native"
+	"github.com/sila-org/sila/silaclient"
 )
 
 var (
@@ -63,7 +63,7 @@ func newTestBackend(t *testing.T) (*node.Node, []*types.Block, []common.Hash) {
 	}
 	// Create Sila Service
 	config := &silaconfig.Config{Genesis: genesis, RPCGasCap: 1000000}
-	ethservice, err := sila.New(n, config)
+	ethservice, err := silanode.New(n, config)
 	if err != nil {
 		t.Fatalf("can't create new sila service: %v", err)
 	}

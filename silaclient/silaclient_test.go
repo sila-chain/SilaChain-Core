@@ -34,12 +34,12 @@ import (
 	"github.com/sila-org/sila/core"
 	"github.com/sila-org/sila/core/types"
 	"github.com/sila-org/sila/crypto"
-	"github.com/sila-org/sila/sila"
-	"github.com/sila-org/sila/sila/silaconfig"
-	"github.com/sila-org/sila/silaclient"
 	"github.com/sila-org/sila/node"
 	"github.com/sila-org/sila/params"
 	"github.com/sila-org/sila/rpc"
+	silanode "github.com/sila-org/sila/sila"
+	"github.com/sila-org/sila/sila/silaconfig"
+	"github.com/sila-org/sila/silaclient"
 )
 
 // Verify that Client implements the sila interfaces.
@@ -106,7 +106,7 @@ func newTestBackend(config *node.Config) (*node.Node, []*types.Block, error) {
 	}
 	// Create Sila Service
 	ecfg := &silaconfig.Config{Genesis: genesis, RPCGasCap: 1000000}
-	ethservice, err := sila.New(n, ecfg)
+	ethservice, err := silanode.New(n, ecfg)
 	if err != nil {
 		return nil, nil, fmt.Errorf("can't create new sila service: %v", err)
 	}

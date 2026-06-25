@@ -93,22 +93,22 @@ func TestCreation(t *testing.T) {
 			params.SilaPublicTestnetChainConfig,
 			core.DefaultSilaPublicTestnetGenesisBlock().ToBlock(),
 			[]testcase{
-				{0, 0, ID{Hash: checksumToBytes(0xfe3366e7), Next: 1735371}},                   // Unsynced, last Frontier, Homestead, Tangerine, Spurious, Byzantium, Constantinople, Petersburg, Istanbul, Berlin and first London block
-				{1735370, 0, ID{Hash: checksumToBytes(0xfe3366e7), Next: 1735371}},             // Last London block
-				{1735371, 0, ID{Hash: checksumToBytes(0xb96cbd13), Next: 1677557088}},          // First MergeNetsplit block
-				{1735372, 1677557087, ID{Hash: checksumToBytes(0xb96cbd13), Next: 1677557088}}, // Last MergeNetsplit block
-				{1735372, 1677557088, ID{Hash: checksumToBytes(0xf7f9bc08), Next: 1706655072}}, // First Shanghai block
-				{1735372, 1706655071, ID{Hash: checksumToBytes(0xf7f9bc08), Next: 1706655072}}, // Last Shanghai block
-				{1735372, 1706655072, ID{Hash: checksumToBytes(0x88cf81d9), Next: 1741159776}}, // First Cancun block
-				{1735372, 1741159775, ID{Hash: checksumToBytes(0x88cf81d9), Next: 1741159776}}, // Last Cancun block
-				{1735372, 1741159776, ID{Hash: checksumToBytes(0xed88b5fd), Next: 1760427360}}, // First Prague block
-				{1735372, 1760427359, ID{Hash: checksumToBytes(0xed88b5fd), Next: 1760427360}}, // Last Prague block
-				{1735372, 1760427360, ID{Hash: checksumToBytes(0xe2ae4999), Next: 1761017184}}, // First Osaka block
-				{1735372, 1761017183, ID{Hash: checksumToBytes(0xe2ae4999), Next: 1761017184}}, // Last Osaka block
-				{1735372, 1761017184, ID{Hash: checksumToBytes(0x56078a1e), Next: 1761607008}}, // First BPO1 block
-				{1735372, 1761607007, ID{Hash: checksumToBytes(0x56078a1e), Next: 1761607008}}, // Last BPO1 block
-				{1735372, 1761607008, ID{Hash: checksumToBytes(0x268956b6), Next: 0}},          // First BPO2 block
-				{1735372, 2000000000, ID{Hash: checksumToBytes(0x268956b6), Next: 0}},          // Future BPO2 block
+				{0, 0, ID{Hash: checksumToBytes(0xed304f97), Next: 1735371}},                   // Unsynced, last Frontier, Homestead, Tangerine, Spurious, Byzantium, Constantinople, Petersburg, Istanbul, Berlin and first London block
+				{1735370, 0, ID{Hash: checksumToBytes(0xed304f97), Next: 1735371}},             // Last London block
+				{1735371, 0, ID{Hash: checksumToBytes(0xeecdcf30), Next: 1677557088}},          // First MergeNetsplit block
+				{1735372, 1677557087, ID{Hash: checksumToBytes(0xeecdcf30), Next: 1677557088}}, // Last MergeNetsplit block
+				{1735372, 1677557088, ID{Hash: checksumToBytes(0xa384c92f), Next: 1706655072}}, // First Shanghai block
+				{1735372, 1706655071, ID{Hash: checksumToBytes(0xa384c92f), Next: 1706655072}}, // Last Shanghai block
+				{1735372, 1706655072, ID{Hash: checksumToBytes(0xbf03620e), Next: 1741159776}}, // First Cancun block
+				{1735372, 1741159775, ID{Hash: checksumToBytes(0xbf03620e), Next: 1741159776}}, // Last Cancun block
+				{1735372, 1741159776, ID{Hash: checksumToBytes(0xa633cc2b), Next: 1760427360}}, // First Prague block
+				{1735372, 1760427359, ID{Hash: checksumToBytes(0xa633cc2b), Next: 1760427360}}, // Last Prague block
+				{1735372, 1760427360, ID{Hash: checksumToBytes(0x04022914), Next: 1761017184}}, // First Osaka block
+				{1735372, 1761017183, ID{Hash: checksumToBytes(0x04022914), Next: 1761017184}}, // Last Osaka block
+				{1735372, 1761017184, ID{Hash: checksumToBytes(0xdcc5b51a), Next: 1761607008}}, // First BPO1 block
+				{1735372, 1761607007, ID{Hash: checksumToBytes(0xdcc5b51a), Next: 1761607008}}, // Last BPO1 block
+				{1735372, 1761607008, ID{Hash: checksumToBytes(0x5b9e9a7b), Next: 0}},          // First BPO2 block
+				{1735372, 2000000000, ID{Hash: checksumToBytes(0x5b9e9a7b), Next: 0}},          // Future BPO2 block
 			},
 		},
 		// SilaStagingTestnet test cases
