@@ -225,7 +225,7 @@ compile_fuzzer github.com/sila-org/sila/tests/fuzzers/secp256k1 \
   $repo/tests/fuzzers/secp256k1/secp_test.go
 
 compile_fuzzer github.com/sila-org/sila/sila/protocols/sila \
-  FuzzEthProtocolHandlers fuzz_sila_protocol_handlers \
+  FuzzSilaProtocolHandlers fuzz_sila_protocol_handlers \
   $repo/sila/protocols/sila/handler_test.go,$repo/sila/protocols/sila/peer_test.go
 
 
