@@ -74,7 +74,7 @@ var Defaults = Config{
 	RPCGasCap:               50000000,
 	RPCEVMTimeout:           5 * time.Second,
 	GPO:                     FullNodeGPO,
-	RPCTxFeeCap:             1, // 1 ether
+	RPCTxFeeCap:             1, // 1 sila
 	TxSyncDefaultTimeout:    20 * time.Second,
 	TxSyncMaxTimeout:        1 * time.Minute,
 	SlowBlockThreshold:      -1, // Disabled by default; set via --debug.logslowblock flag
@@ -200,7 +200,7 @@ type Config struct {
 	RPCEVMTimeout time.Duration
 
 	// RPCTxFeeCap is the global transaction fee (price * gas limit) cap for
-	// send-transaction variants. The unit is ether.
+	// send-transaction variants. The unit is sila.
 	RPCTxFeeCap float64
 
 	// OverrideOsaka (TODO: remove after the fork)

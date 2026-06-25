@@ -136,7 +136,7 @@ func MakeProtocols(backend Backend, network uint64, disc enode.Iterator) []p2p.P
 // NodeInfo represents a short summary of the `sila` sub-protocol metadata
 // known about the host peer.
 type NodeInfo struct {
-	Network uint64              `json:"network"` // Sila network ID (1=Mainnet, Holesky=17000)
+	Network uint64              `json:"network"` // Sila network ID (1=Mainnet, SilaStagingTestnet=17000)
 	Genesis common.Hash         `json:"genesis"` // SHA3 hash of the host's genesis block
 	Config  *params.ChainConfig `json:"config"`  // Chain configuration for the fork rules
 	Head    common.Hash         `json:"head"`    // Hex hash of the host's best owned block
@@ -172,7 +172,7 @@ type Decoder interface {
 	Decode(val interface{}) error
 }
 
-var eth69 = map[uint64]msgHandler{
+var sila69 = map[uint64]msgHandler{
 	TransactionsMsg:               handleTransactions,
 	NewPooledTransactionHashesMsg: handleNewPooledTransactionHashes,
 	GetBlockHeadersMsg:            handleGetBlockHeaders,
@@ -186,7 +186,7 @@ var eth69 = map[uint64]msgHandler{
 	BlockRangeUpdateMsg:           handleBlockRangeUpdate,
 }
 
-var eth70 = map[uint64]msgHandler{
+var sila70 = map[uint64]msgHandler{
 	TransactionsMsg:               handleTransactions,
 	NewPooledTransactionHashesMsg: handleNewPooledTransactionHashes,
 	GetBlockHeadersMsg:            handleGetBlockHeaders,
@@ -200,7 +200,7 @@ var eth70 = map[uint64]msgHandler{
 	BlockRangeUpdateMsg:           handleBlockRangeUpdate,
 }
 
-var eth71 = map[uint64]msgHandler{
+var sila71 = map[uint64]msgHandler{
 	TransactionsMsg:               handleTransactions,
 	NewPooledTransactionHashesMsg: handleNewPooledTransactionHashes,
 	GetBlockHeadersMsg:            handleGetBlockHeaders,
@@ -232,11 +232,11 @@ func handleMessage(backend Backend, peer *Peer) error {
 	var handlers map[uint64]msgHandler
 	switch peer.version {
 	case SILA69:
-		handlers = eth69
+		handlers = sila69
 	case SILA70:
-		handlers = eth70
+		handlers = sila70
 	case SILA71:
-		handlers = eth71
+		handlers = sila71
 	default:
 		return fmt.Errorf("unknown sila protocol version: %v", peer.version)
 	}
