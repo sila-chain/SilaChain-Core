@@ -20,6 +20,7 @@ import (
 	"fmt"
 	"math"
 	"sort"
+	"strconv"
 
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/core/tracing"
@@ -593,4 +594,13 @@ func enable8037(jt *JumpTable) {
 	jt[CALL].dynamicGas = gasCallSIP8037
 	jt[SELFDESTRUCT].dynamicGas = gasSelfdestruct8037
 	jt[SSTORE].dynamicGas = gasSStore8037
+}
+
+// ActivateableSips returns the list of SIP numbers that can be enabled explicitly.
+func ActivateableSips() []string {
+	sips := make([]string, 0, len(activators))
+	for sip := range activators {
+		sips = append(sips, strconv.Itoa(sip))
+	}
+	return sips
 }
