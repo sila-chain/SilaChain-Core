@@ -28,9 +28,9 @@ import (
 	"github.com/sila-org/sila/core/rawdb"
 	"github.com/sila-org/sila/core/types"
 	"github.com/sila-org/sila/crypto"
-	"github.com/sila-org/sila/siladb"
 	"github.com/sila-org/sila/log"
 	"github.com/sila-org/sila/metrics"
+	"github.com/sila-org/sila/siladb"
 )
 
 // ErrNotRequested is returned by the trie sync when it's requested to process a
@@ -260,7 +260,7 @@ func (batch *syncMemBatch) delNode(owner common.Hash, path []byte) {
 // and reconstructs the trie step by step until all is done.
 type Sync struct {
 	scheme   string                       // Node scheme descriptor used in database.
-	database siladb.KeyValueReader         // Persistent database to check for existing entries
+	database siladb.KeyValueReader        // Persistent database to check for existing entries
 	membatch *syncMemBatch                // Memory buffer to avoid frequent database writes
 	nodeReqs map[string]*nodeRequest      // Pending requests pertaining to a trie node path
 	codeReqs map[common.Hash]*codeRequest // Pending requests pertaining to a code hash
@@ -305,7 +305,7 @@ func (s *Sync) AddSubTrie(root common.Hash, path []byte, parent common.Hash, par
 		path:     path,
 		callback: callback,
 	}
-	// If this sub-trie has a designated parent, link them tosilaer
+	// If this sub-trie has a designated parent, link them together
 	if parent != (common.Hash{}) {
 		ancestor := s.nodeReqs[string(parentPath)]
 		if ancestor == nil {
@@ -341,7 +341,7 @@ func (s *Sync) AddCodeEntry(hash common.Hash, path []byte, parent common.Hash, p
 		path: path,
 		hash: hash,
 	}
-	// If this sub-trie has a designated parent, link them tosilaer
+	// If this sub-trie has a designated parent, link them together
 	if parent != (common.Hash{}) {
 		ancestor := s.nodeReqs[string(parentPath)] // the parent of codereq can ONLY be nodereq
 		if ancestor == nil {

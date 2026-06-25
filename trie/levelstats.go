@@ -125,7 +125,7 @@ func (s *stat) load() (uint64, uint64, uint64, uint64) {
 	return s.short.Load(), s.full.Load(), s.value.Load(), s.size.Load()
 }
 
-// add is a helper that adds two level's stats tosilaer.
+// add is a helper that adds two level's stats together.
 func (s *stat) add(other *stat) *stat {
 	s.short.Add(other.short.Load())
 	s.full.Add(other.full.Load())

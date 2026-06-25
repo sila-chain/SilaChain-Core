@@ -436,7 +436,7 @@ func stemsDivergingAt(divergeBit int) (left, right []byte) {
 }
 
 // bitFlipStem returns a 32-byte stem whose first `divergeBit` bits are zero,
-// bit `divergeBit` is 1, and all subsequent bits are zero. Used tosilaer
+// bit `divergeBit` is 1, and all subsequent bits are zero. Used together
 // with the all-zero stem to force divergence at a specific bit.
 func bitFlipStem(divergeBit int) []byte {
 	out := make([]byte, HashSize)

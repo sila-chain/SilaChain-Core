@@ -31,16 +31,16 @@ import (
 	"testing/quick"
 
 	"github.com/davecgh/go-spew/spew"
+	"github.com/holiman/uint256"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/core/rawdb"
 	"github.com/sila-org/sila/core/types"
 	"github.com/sila-org/sila/crypto"
 	"github.com/sila-org/sila/crypto/keccak"
-	"github.com/sila-org/sila/siladb"
 	"github.com/sila-org/sila/internal/testrand"
 	"github.com/sila-org/sila/rlp"
+	"github.com/sila-org/sila/siladb"
 	"github.com/sila-org/sila/trie/trienode"
-	"github.com/holiman/uint256"
 )
 
 func init() {
@@ -222,11 +222,11 @@ func TestDelete(t *testing.T) {
 	trie := NewEmpty(db)
 	vals := []struct{ k, v string }{
 		{"do", "verb"},
-		{"ether", "wookiedoo"},
+		{"sila", "wookiedoo"},
 		{"horse", "stallion"},
 		{"shaman", "horse"},
 		{"doge", "coin"},
-		{"ether", ""},
+		{"sila", ""},
 		{"dog", "puppy"},
 		{"shaman", ""},
 	}
@@ -250,11 +250,11 @@ func TestEmptyValues(t *testing.T) {
 
 	vals := []struct{ k, v string }{
 		{"do", "verb"},
-		{"ether", "wookiedoo"},
+		{"sila", "wookiedoo"},
 		{"horse", "stallion"},
 		{"shaman", "horse"},
 		{"doge", "coin"},
-		{"ether", ""},
+		{"sila", ""},
 		{"dog", "puppy"},
 		{"shaman", ""},
 	}
@@ -274,7 +274,7 @@ func TestReplication(t *testing.T) {
 	trie := NewEmpty(db)
 	vals := []struct{ k, v string }{
 		{"do", "verb"},
-		{"ether", "wookiedoo"},
+		{"sila", "wookiedoo"},
 		{"horse", "stallion"},
 		{"shaman", "horse"},
 		{"doge", "coin"},
@@ -313,11 +313,11 @@ func TestReplication(t *testing.T) {
 	// perform some insertions on the new trie.
 	vals2 := []struct{ k, v string }{
 		{"do", "verb"},
-		{"ether", "wookiedoo"},
+		{"sila", "wookiedoo"},
 		{"horse", "stallion"},
 		// {"shaman", "horse"},
 		// {"doge", "coin"},
-		// {"ether", ""},
+		// {"sila", ""},
 		// {"dog", "puppy"},
 		// {"somethingveryoddindeedthis is", "myothernodedata"},
 		// {"shaman", ""},
@@ -826,8 +826,8 @@ func (s *spongeDb) Has(key []byte) (bool, error)             { panic("implement 
 func (s *spongeDb) Get(key []byte) ([]byte, error)           { return nil, errors.New("no such elem") }
 func (s *spongeDb) Delete(key []byte) error                  { panic("implement me") }
 func (s *spongeDb) DeleteRange(start, end []byte) error      { panic("implement me") }
-func (s *spongeDb) NewBatch() siladb.Batch                    { return &spongeBatch{s} }
-func (s *spongeDb) NewBatchWithSize(size int) siladb.Batch    { return &spongeBatch{s} }
+func (s *spongeDb) NewBatch() siladb.Batch                   { return &spongeBatch{s} }
+func (s *spongeDb) NewBatchWithSize(size int) siladb.Batch   { return &spongeBatch{s} }
 func (s *spongeDb) Stat() (string, error)                    { panic("implement me") }
 func (s *spongeDb) Compact(start []byte, limit []byte) error { panic("implement me") }
 func (s *spongeDb) SyncKeyValue() error                      { return nil }
@@ -874,13 +874,13 @@ func (b *spongeBatch) Put(key, value []byte) error {
 	b.db.Put(key, value)
 	return nil
 }
-func (b *spongeBatch) Delete(key []byte) error             { panic("implement me") }
-func (b *spongeBatch) DeleteRange(start, end []byte) error { panic("implement me") }
-func (b *spongeBatch) ValueSize() int                      { return 100 }
-func (b *spongeBatch) Write() error                        { return nil }
-func (b *spongeBatch) Reset()                              {}
+func (b *spongeBatch) Delete(key []byte) error              { panic("implement me") }
+func (b *spongeBatch) DeleteRange(start, end []byte) error  { panic("implement me") }
+func (b *spongeBatch) ValueSize() int                       { return 100 }
+func (b *spongeBatch) Write() error                         { return nil }
+func (b *spongeBatch) Reset()                               {}
 func (b *spongeBatch) Replay(w siladb.KeyValueWriter) error { return nil }
-func (b *spongeBatch) Close()                              {}
+func (b *spongeBatch) Close()                               {}
 
 // TestCommitSequence tests that the trie.Commit operation writes the elements
 // of the trie in the expected order.
@@ -1336,7 +1336,7 @@ func printSet(set *trienode.NodeSet) string {
 func TestTrieCopy(t *testing.T) {
 	testTrieCopy(t, []kv{
 		{k: []byte("do"), v: []byte("verb")},
-		{k: []byte("ether"), v: []byte("wookiedoo")},
+		{k: []byte("sila"), v: []byte("wookiedoo")},
 		{k: []byte("horse"), v: []byte("stallion")},
 		{k: []byte("shaman"), v: []byte("horse")},
 		{k: []byte("doge"), v: []byte("coin")},
@@ -1404,7 +1404,7 @@ func testTrieCopy(t *testing.T, entries []kv) {
 func TestTrieCopyOldTrie(t *testing.T) {
 	testTrieCopyOldTrie(t, []kv{
 		{k: []byte("do"), v: []byte("verb")},
-		{k: []byte("ether"), v: []byte("wookiedoo")},
+		{k: []byte("sila"), v: []byte("wookiedoo")},
 		{k: []byte("horse"), v: []byte("stallion")},
 		{k: []byte("shaman"), v: []byte("horse")},
 		{k: []byte("doge"), v: []byte("coin")},
@@ -1455,7 +1455,7 @@ func testTrieCopyOldTrie(t *testing.T, entries []kv) {
 func TestTrieCopyNewTrie(t *testing.T) {
 	testTrieCopyNewTrie(t, []kv{
 		{k: []byte("do"), v: []byte("verb")},
-		{k: []byte("ether"), v: []byte("wookiedoo")},
+		{k: []byte("sila"), v: []byte("wookiedoo")},
 		{k: []byte("horse"), v: []byte("stallion")},
 		{k: []byte("shaman"), v: []byte("horse")},
 		{k: []byte("doge"), v: []byte("coin")},
