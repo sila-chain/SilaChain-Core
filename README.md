@@ -88,32 +88,32 @@ This command will:
    This tool is optional and if you leave it out you can always attach it to an already running
    `sila` instance with `sila attach`.
 
-### A Full node on the Holesky test network
+### A full node on the Sila staging testnet
 
 Transitioning towards developers, if you'd like to play around with creating Sila
 contracts, you almost certainly would like to do that without any real money involved until
 you get the hang of the entire system. In other words, instead of attaching to the main
 network, you want to join the **test** network with your node, which is fully equivalent to
-the main network, but with play-Ether only.
+the main network, but with play Sila only.
 
 ```shell
-$ sila --holesky console
+$ sila --sila-staging-testnet console
 ```
 
 The `console` subcommand has the same meaning as above and is equally
 useful on the testnet too.
 
-Specifying the `--holesky` flag, however, will reconfigure your `sila` instance a bit:
+Specifying the `--sila-staging-testnet` flag, however, will reconfigure your `sila` instance a bit:
 
- * Instead of connecting to the main Sila network, the client will connect to the Holesky 
+ * Instead of connecting to the main Sila network, the client will connect to the Sila staging testnet 
    test network, which uses different P2P bootnodes, different network IDs and genesis
    states.
  * Instead of using the default data directory (`~/.sila` on Linux for example), `sila`
-   will nest itself one level deeper into a `holesky` subfolder (`~/.sila/holesky` on
+   will nest itself one level deeper into a `sila-staging-testnet` subfolder (`~/.sila/sila-staging-testnet` on
    Linux). Note, on OSX and Linux this also means that attaching to a running testnet node
    requires the use of a custom endpoint since `sila attach` will try to attach to a
    production node endpoint by default, e.g.,
-   `sila attach <datadir>/holesky/sila.ipc`. Windows users are not affected by
+   `sila attach <datadir>/sila-staging-testnet/sila.ipc`. Windows users are not affected by
    this.
 
 *Note: Although some internal protective measures prevent transactions from
