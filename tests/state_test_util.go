@@ -175,7 +175,7 @@ func GetChainConfig(forkString string) (baseConfig *params.ChainConfig, eips []i
 		if eipNum, err := strconv.Atoi(eip); err != nil {
 			return nil, nil, fmt.Errorf("syntax error, invalid eip number %v", eip)
 		} else {
-			if !vm.ValidEip(eipNum) {
+			if !vm.ValidSIP(eipNum) {
 				return nil, nil, fmt.Errorf("syntax error, invalid eip number %v", eipNum)
 			}
 			eips = append(eips, eipNum)
@@ -504,7 +504,7 @@ func vmTestBlockHash(n uint64) common.Hash {
 	return common.BytesToHash(crypto.Keccak256([]byte(big.NewInt(int64(n)).String())))
 }
 
-// StateTestState groups all the state database objects tosilaer for use in tests.
+// StateTestState groups all the state database objects together for use in tests.
 type StateTestState struct {
 	StateDB   *state.StateDB
 	TrieDB    *triedb.Database

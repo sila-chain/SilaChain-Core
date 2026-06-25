@@ -379,7 +379,7 @@ var Forks = map[string]*params.ChainConfig{
 		ShanghaiTime:            u64(0),
 		CancunTime:              u64(0),
 		PragueTime:              u64(0),
-		DepositContractAddress:  params.MainnetChainConfig.DepositContractAddress,
+		DepositContractAddress:  params.SilaMainnetChainConfig.DepositContractAddress,
 		BlobScheduleConfig: &params.BlobScheduleConfig{
 			Cancun: params.DefaultCancunBlobConfig,
 			Prague: params.DefaultPragueBlobConfig,
@@ -404,7 +404,7 @@ var Forks = map[string]*params.ChainConfig{
 		ShanghaiTime:            u64(0),
 		CancunTime:              u64(0),
 		PragueTime:              u64(15_000),
-		DepositContractAddress:  params.MainnetChainConfig.DepositContractAddress,
+		DepositContractAddress:  params.SilaMainnetChainConfig.DepositContractAddress,
 		BlobScheduleConfig: &params.BlobScheduleConfig{
 			Cancun: params.DefaultCancunBlobConfig,
 			Prague: params.DefaultPragueBlobConfig,
@@ -430,7 +430,7 @@ var Forks = map[string]*params.ChainConfig{
 		CancunTime:              u64(0),
 		PragueTime:              u64(0),
 		OsakaTime:               u64(0),
-		DepositContractAddress:  params.MainnetChainConfig.DepositContractAddress,
+		DepositContractAddress:  params.SilaMainnetChainConfig.DepositContractAddress,
 		BlobScheduleConfig: &params.BlobScheduleConfig{
 			Cancun: params.DefaultCancunBlobConfig,
 			Prague: params.DefaultPragueBlobConfig,
@@ -457,7 +457,7 @@ var Forks = map[string]*params.ChainConfig{
 		CancunTime:              u64(0),
 		PragueTime:              u64(0),
 		OsakaTime:               u64(15_000),
-		DepositContractAddress:  params.MainnetChainConfig.DepositContractAddress,
+		DepositContractAddress:  params.SilaMainnetChainConfig.DepositContractAddress,
 		BlobScheduleConfig: &params.BlobScheduleConfig{
 			Cancun: params.DefaultCancunBlobConfig,
 			Prague: params.DefaultPragueBlobConfig,
@@ -485,7 +485,7 @@ var Forks = map[string]*params.ChainConfig{
 		PragueTime:              u64(0),
 		OsakaTime:               u64(0),
 		BPO1Time:                u64(0),
-		DepositContractAddress:  params.MainnetChainConfig.DepositContractAddress,
+		DepositContractAddress:  params.SilaMainnetChainConfig.DepositContractAddress,
 		BlobScheduleConfig: &params.BlobScheduleConfig{
 			Cancun: params.DefaultCancunBlobConfig,
 			Prague: params.DefaultPragueBlobConfig,
@@ -514,7 +514,7 @@ var Forks = map[string]*params.ChainConfig{
 		PragueTime:              u64(0),
 		OsakaTime:               u64(0),
 		BPO1Time:                u64(15_000),
-		DepositContractAddress:  params.MainnetChainConfig.DepositContractAddress,
+		DepositContractAddress:  params.SilaMainnetChainConfig.DepositContractAddress,
 		BlobScheduleConfig: &params.BlobScheduleConfig{
 			Cancun: params.DefaultCancunBlobConfig,
 			Prague: params.DefaultPragueBlobConfig,
@@ -544,7 +544,7 @@ var Forks = map[string]*params.ChainConfig{
 		OsakaTime:               u64(0),
 		BPO1Time:                u64(0),
 		BPO2Time:                u64(0),
-		DepositContractAddress:  params.MainnetChainConfig.DepositContractAddress,
+		DepositContractAddress:  params.SilaMainnetChainConfig.DepositContractAddress,
 		BlobScheduleConfig: &params.BlobScheduleConfig{
 			Cancun: params.DefaultCancunBlobConfig,
 			Prague: params.DefaultPragueBlobConfig,
@@ -575,7 +575,7 @@ var Forks = map[string]*params.ChainConfig{
 		OsakaTime:               u64(0),
 		BPO1Time:                u64(0),
 		BPO2Time:                u64(15_000),
-		DepositContractAddress:  params.MainnetChainConfig.DepositContractAddress,
+		DepositContractAddress:  params.SilaMainnetChainConfig.DepositContractAddress,
 		BlobScheduleConfig: &params.BlobScheduleConfig{
 			Cancun: params.DefaultCancunBlobConfig,
 			Prague: params.DefaultPragueBlobConfig,
@@ -607,7 +607,7 @@ var Forks = map[string]*params.ChainConfig{
 		BPO1Time:                u64(0),
 		BPO2Time:                u64(0),
 		BPO3Time:                u64(0),
-		DepositContractAddress:  params.MainnetChainConfig.DepositContractAddress,
+		DepositContractAddress:  params.SilaMainnetChainConfig.DepositContractAddress,
 		BlobScheduleConfig: &params.BlobScheduleConfig{
 			Cancun: params.DefaultCancunBlobConfig,
 			Prague: params.DefaultPragueBlobConfig,
@@ -640,7 +640,7 @@ var Forks = map[string]*params.ChainConfig{
 		BPO1Time:                u64(0),
 		BPO2Time:                u64(0),
 		BPO3Time:                u64(15_000),
-		DepositContractAddress:  params.MainnetChainConfig.DepositContractAddress,
+		DepositContractAddress:  params.SilaMainnetChainConfig.DepositContractAddress,
 		BlobScheduleConfig: &params.BlobScheduleConfig{
 			Cancun: params.DefaultCancunBlobConfig,
 			Prague: params.DefaultPragueBlobConfig,
@@ -674,7 +674,7 @@ var Forks = map[string]*params.ChainConfig{
 		BPO2Time:                u64(0),
 		BPO3Time:                u64(0),
 		BPO4Time:                u64(0),
-		DepositContractAddress:  params.MainnetChainConfig.DepositContractAddress,
+		DepositContractAddress:  params.SilaMainnetChainConfig.DepositContractAddress,
 		BlobScheduleConfig: &params.BlobScheduleConfig{
 			Cancun: params.DefaultCancunBlobConfig,
 			Prague: params.DefaultPragueBlobConfig,
@@ -709,7 +709,7 @@ var Forks = map[string]*params.ChainConfig{
 		BPO2Time:                u64(0),
 		BPO3Time:                u64(0),
 		BPO4Time:                u64(15_000),
-		DepositContractAddress:  params.MainnetChainConfig.DepositContractAddress,
+		DepositContractAddress:  params.SilaMainnetChainConfig.DepositContractAddress,
 		BlobScheduleConfig: &params.BlobScheduleConfig{
 			Cancun: params.DefaultCancunBlobConfig,
 			Prague: params.DefaultPragueBlobConfig,
@@ -745,7 +745,7 @@ var Forks = map[string]*params.ChainConfig{
 		BPO3Time:                u64(0),
 		BPO4Time:                u64(0),
 		AmsterdamTime:           u64(0),
-		DepositContractAddress:  params.MainnetChainConfig.DepositContractAddress,
+		DepositContractAddress:  params.SilaMainnetChainConfig.DepositContractAddress,
 		BlobScheduleConfig: &params.BlobScheduleConfig{
 			Cancun:    params.DefaultCancunBlobConfig,
 			Prague:    params.DefaultPragueBlobConfig,
@@ -797,7 +797,7 @@ var Forks = map[string]*params.ChainConfig{
 		PragueTime:              u64(0),
 		OsakaTime:               u64(0),
 		UBTTime:                 u64(0),
-		DepositContractAddress:  params.MainnetChainConfig.DepositContractAddress,
+		DepositContractAddress:  params.SilaMainnetChainConfig.DepositContractAddress,
 		BlobScheduleConfig: &params.BlobScheduleConfig{
 			Cancun: params.DefaultCancunBlobConfig,
 			Prague: params.DefaultPragueBlobConfig,
