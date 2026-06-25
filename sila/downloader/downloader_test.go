@@ -695,7 +695,7 @@ func testBeaconSync(t *testing.T, protocol uint, mode SyncMode) {
 // TestBeaconSyncRepairFork verifies the end-to-end repair of non-canonical block
 // data. The local node sits on fork A, but fork B's blocks below the local head
 // are also present by hash (no canonical mapping), as if imported optimistically
-// via the silaSilaEngine API. When the beacon chain switches to fork B, sync must not
+// via the silaEngine API. When the beacon chain switches to fork B, sync must not
 // anchor on the non-canonical fork-B data; it has to descend to the real common
 // ancestor and re-deliver everything, ending with the full fork-B chain present
 // and canonical at every height - for both snap and full sync.

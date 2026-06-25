@@ -64,11 +64,11 @@ func (ec *silaEngineClient) updateLoop(headCh <-chan types.ChainHeadEvent) {
 	for {
 		select {
 		case <-ec.rootCtx.Done():
-			log.Debug("Stopping silaSilaEngine API update loop")
+			log.Debug("Stopping silaEngine API update loop")
 			return
 
 		case event := <-headCh:
-			if ec.rpc == nil { // dry run, no silaSilaEngine API specified
+			if ec.rpc == nil { // dry run, no silaEngine API specified
 				log.Info("New execution block retrieved", "number", event.Block.NumberU64(), "hash", event.Block.Hash(), "finalized", event.Finalized)
 				continue
 			}

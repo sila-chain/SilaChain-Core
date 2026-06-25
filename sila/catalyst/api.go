@@ -47,7 +47,7 @@ import (
 	"github.com/sila-org/sila/sila/silaconfig"
 )
 
-// Register adds the silaSilaEngine API and related APIs to the full node.
+// Register adds the silaEngine API and related APIs to the full node.
 func Register(stack *node.Node, backend *sila.Sila) error {
 	stack.RegisterAPIs([]rpc.API{
 		newTestingAPI(backend),

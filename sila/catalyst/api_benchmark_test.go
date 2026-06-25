@@ -634,7 +634,7 @@ func BenchmarkGetPayloadV5RPCServerOnly(b *testing.B) {
 	env := newBenchmarkBlobEnv(b, blobCount, 1, forkOsaka)
 	defer env.Close()
 
-	// Register the silaSilaEngine API on the running node's in-process RPC server.
+	// Register the silaEngine API on the running node's in-process RPC server.
 	rpcServer, err := env.node.RPCHandler()
 	if err != nil {
 		b.Fatalf("RPCHandler failed: %v", err)
@@ -700,7 +700,7 @@ func BenchmarkGetBlobsV3RPCServerOnly(b *testing.B) {
 	env := newBenchmarkBlobEnv(b, blobCount, 1, forkOsaka)
 	defer env.Close()
 
-	// Register the silaSilaEngine API on the running node's in-process RPC server.
+	// Register the silaEngine API on the running node's in-process RPC server.
 	rpcServer, err := env.node.RPCHandler()
 	if err != nil {
 		b.Fatalf("RPCHandler failed: %v", err)
