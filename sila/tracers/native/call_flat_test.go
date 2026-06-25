@@ -25,13 +25,13 @@ import (
 	"github.com/sila-org/sila/core/tracing"
 	"github.com/sila-org/sila/core/types"
 	"github.com/sila-org/sila/core/vm"
-	"github.com/sila-org/sila/sila/tracers"
 	"github.com/sila-org/sila/params"
+	"github.com/sila-org/sila/sila/tracers"
 	"github.com/stretchr/testify/require"
 )
 
 func TestCallFlatStop(t *testing.T) {
-	tracer, err := tracers.DefaultDirectory.New("flatCallTracer", &tracers.Context{}, nil, params.MainnetChainConfig)
+	tracer, err := tracers.DefaultDirectory.New("flatCallTracer", &tracers.Context{}, nil, params.SilaMainnetChainConfig)
 	require.NoError(t, err)
 
 	// this error should be returned by GetResult

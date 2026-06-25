@@ -24,8 +24,8 @@ import (
 
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/core/vm"
-	"github.com/sila-org/sila/sila/tracers"
 	"github.com/sila-org/sila/params"
+	"github.com/sila-org/sila/sila/tracers"
 	"github.com/stretchr/testify/require"
 )
 
@@ -54,7 +54,7 @@ func TestTracerStopRace(t *testing.T) {
 	}
 	for _, s := range cases {
 		t.Run(s.name, func(t *testing.T) {
-			tr, err := tracers.DefaultDirectory.New(s.name, &tracers.Context{}, nil, params.MainnetChainConfig)
+			tr, err := tracers.DefaultDirectory.New(s.name, &tracers.Context{}, nil, params.SilaMainnetChainConfig)
 			require.NoError(t, err)
 
 			if s.needsFrame && tr.OnEnter != nil {

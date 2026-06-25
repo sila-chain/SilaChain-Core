@@ -25,12 +25,12 @@ import (
 	"sync"
 
 	"github.com/dop251/goja"
+	"github.com/holiman/uint256"
 	"github.com/sila-org/sila/core/tracing"
 	"github.com/sila-org/sila/core/types"
+	"github.com/sila-org/sila/params"
 	"github.com/sila-org/sila/sila/tracers"
 	"github.com/sila-org/sila/sila/tracers/internal"
-	"github.com/sila-org/sila/params"
-	"github.com/holiman/uint256"
 
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/common/hexutil"
@@ -148,7 +148,7 @@ type jsTracer struct {
 //
 // The methods `result` and `fault` are required to be present.
 // The methods `step`, `enter`, and `exit` are optional, but note that
-// `enter` and `exit` always go tosilaer.
+// `enter` and `exit` always go together.
 func newJsTracer(code string, ctx *tracers.Context, cfg json.RawMessage, chainConfig *params.ChainConfig) (*tracers.Tracer, error) {
 	vm := goja.New()
 	// By default field names are exported to JS as is, i.e. capitalized.

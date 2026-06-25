@@ -98,22 +98,22 @@ func TestSupplyGenesisAlloc(t *testing.T) {
 		key2, _ = crypto.HexToECDSA("8a1f9a8f95be41cd7ccb6168179afb4504aefe388d1e14474d32c45c72ce7b7a")
 		addr1   = crypto.PubkeyToAddress(key1.PublicKey)
 		addr2   = crypto.PubkeyToAddress(key2.PublicKey)
-		eth1    = new(big.Int).Mul(common.Big1, big.NewInt(params.Ether))
+		sila1   = new(big.Int).Mul(common.Big1, big.NewInt(params.SilaBaseUnit))
 
 		config = *params.AllSilaashProtocolChanges
 
 		gspec = &core.Genesis{
 			Config: &config,
 			Alloc: types.GenesisAlloc{
-				addr1: {Balance: eth1},
-				addr2: {Balance: eth1},
+				addr1: {Balance: sila1},
+				addr2: {Balance: sila1},
 			},
 		}
 	)
 
 	expected := supplyInfo{
 		Issuance: &supplyInfoIssuance{
-			GenesisAlloc: (*hexutil.Big)(new(big.Int).Mul(common.Big2, big.NewInt(params.Ether))),
+			GenesisAlloc: (*hexutil.Big)(new(big.Int).Mul(common.Big2, big.NewInt(params.SilaBaseUnit))),
 		},
 		Number:     0,
 		Hash:       common.HexToHash("0xbcc9466e9fc6a8b56f4b29ca353a421ff8b51a0c1a58ca4743b427605b08f2ca"),
@@ -141,7 +141,7 @@ func TestSupplyRewards(t *testing.T) {
 
 	expected := supplyInfo{
 		Issuance: &supplyInfoIssuance{
-			Reward: (*hexutil.Big)(new(big.Int).Mul(common.Big2, big.NewInt(params.Ether))),
+			Reward: (*hexutil.Big)(new(big.Int).Mul(common.Big2, big.NewInt(params.SilaBaseUnit))),
 		},
 		Number:     1,
 		Hash:       common.HexToHash("0xcbb08370505be503dafedc4e96d139ea27aba3cbc580148568b8a307b3f51052"),
@@ -206,22 +206,22 @@ func TestSupplyRewardsWithUncle(t *testing.T) {
 	compareAsJSON(t, expected, actual)
 }
 
-func TestSupplyEip1559Burn(t *testing.T) {
+func TestSupplySip1559Burn(t *testing.T) {
 	var (
 		config = *params.AllSilaashProtocolChanges
 
 		aa = common.HexToAddress("0x000000000000000000000000000000000000aaaa")
-		// A sender who makes transactions, has some eth1
+		// A sender who makes transactions, has some sila1
 		key1, _ = crypto.HexToECDSA("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
 		addr1   = crypto.PubkeyToAddress(key1.PublicKey)
 		gwei5   = new(big.Int).Mul(big.NewInt(5), big.NewInt(params.GWei))
-		eth1    = new(big.Int).Mul(common.Big1, big.NewInt(params.Ether))
+		sila1   = new(big.Int).Mul(common.Big1, big.NewInt(params.SilaBaseUnit))
 
 		gspec = &core.Genesis{
 			Config:  &config,
 			BaseFee: big.NewInt(params.InitialBaseFee),
 			Alloc: types.GenesisAlloc{
-				addr1: {Balance: eth1},
+				addr1: {Balance: sila1},
 			},
 		}
 	)
@@ -249,7 +249,7 @@ func TestSupplyEip1559Burn(t *testing.T) {
 	}
 	var (
 		head     = chain.CurrentBlock()
-		reward   = new(big.Int).Mul(common.Big2, big.NewInt(params.Ether))
+		reward   = new(big.Int).Mul(common.Big2, big.NewInt(params.SilaBaseUnit))
 		burn     = new(big.Int).Mul(big.NewInt(21000), head.BaseFee)
 		expected = supplyInfo{
 			Issuance: &supplyInfoIssuance{
@@ -308,10 +308,10 @@ func TestSupplyWithdrawals(t *testing.T) {
 }
 
 // Tests fund retrieval after contract's selfdestruct.
-// Contract A calls contract B which selfdestructs, but B receives eth1
+// Contract A calls contract B which selfdestructs, but B receives sila1
 // after the selfdestruct opcode executes from Contract A.
 // Because Contract B is removed only at the end of the transaction
-// the ether sent in between is burnt before Cancun hard fork.
+// the sila sent in between is burnt before Cancun hard fork.
 func TestSupplySelfdestruct(t *testing.T) {
 	var (
 		config = *params.TestChainConfig
@@ -322,13 +322,13 @@ func TestSupplySelfdestruct(t *testing.T) {
 		key1, _ = crypto.HexToECDSA("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
 		addr1   = crypto.PubkeyToAddress(key1.PublicKey)
 		gwei5   = new(big.Int).Mul(big.NewInt(5), big.NewInt(params.GWei))
-		eth1    = new(big.Int).Mul(common.Big1, big.NewInt(params.Ether))
+		sila1   = new(big.Int).Mul(common.Big1, big.NewInt(params.SilaBaseUnit))
 
 		gspec = &core.Genesis{
 			Config:  &config,
 			BaseFee: big.NewInt(params.InitialBaseFee),
 			Alloc: types.GenesisAlloc{
-				addr1: {Balance: eth1},
+				addr1: {Balance: sila1},
 				aa: {
 					Code: common.FromHex("0x61face60f01b6000527322222222222222222222222222222222222222226000806002600080855af160008103603457600080fd5b60008060008034865af1905060008103604c57600080fd5b5050"),
 					// Nonce:   0,
@@ -337,7 +337,7 @@ func TestSupplySelfdestruct(t *testing.T) {
 				bb: {
 					Code:    common.FromHex("0x6000357fface000000000000000000000000000000000000000000000000000000000000808203602f57610dad80ff5b5050"),
 					Nonce:   0,
-					Balance: eth1,
+					Balance: sila1,
 				},
 			},
 		}
@@ -372,11 +372,11 @@ func TestSupplySelfdestruct(t *testing.T) {
 	}
 
 	// Check balance at state:
-	// 1. 0x0000...000dad has 1 ether
-	// 2. A has 0 ether
-	// 3. B has 0 ether
+	// 1. 0x0000...000dad has 1 sila
+	// 2. A has 0 sila
+	// 3. B has 0 sila
 	statedb, _ := preCancunChain.State()
-	if got, exp := statedb.GetBalance(dad), eth1; got.CmpBig(exp) != 0 {
+	if got, exp := statedb.GetBalance(dad), sila1; got.CmpBig(exp) != 0 {
 		t.Fatalf("Pre-cancun address \"%v\" balance, got %v exp %v\n", dad, got, exp)
 	}
 	if got, exp := statedb.GetBalance(aa), big.NewInt(0); got.CmpBig(exp) != 0 {
@@ -414,11 +414,11 @@ func TestSupplySelfdestruct(t *testing.T) {
 	}
 
 	// Check balance at state:
-	// 1. 0x0000...000dad has 1 ether
-	// 3. A has 0 ether
+	// 1. 0x0000...000dad has 1 sila
+	// 3. A has 0 sila
 	// 3. B has 5 gwei
 	statedb, _ = postCancunChain.State()
-	if got, exp := statedb.GetBalance(dad), eth1; got.CmpBig(exp) != 0 {
+	if got, exp := statedb.GetBalance(dad), sila1; got.CmpBig(exp) != 0 {
 		t.Fatalf("Post-shanghai address \"%v\" balance, got %v exp %v\n", dad, got, exp)
 	}
 	if got, exp := statedb.GetBalance(aa), big.NewInt(0); got.CmpBig(exp) != 0 {
@@ -447,8 +447,8 @@ func TestSupplySelfdestruct(t *testing.T) {
 // Tests selfdestructing contract to send its balance to itself (burn).
 // It tests both cases of selfdestructing succeeding and being reverted.
 //   - Contract A calls B and D.
-//   - Contract B selfdestructs and sends the eth1 to itself (Burn amount to be counted).
-//   - Contract C selfdestructs and sends the eth1 to itself.
+//   - Contract B selfdestructs and sends the sila1 to itself (Burn amount to be counted).
+//   - Contract C selfdestructs and sends the sila1 to itself.
 //   - Contract D calls C and reverts (Burn amount of C
 //     has to be reverted as well).
 func TestSupplySelfdestructItselfAndRevert(t *testing.T) {
@@ -462,15 +462,15 @@ func TestSupplySelfdestructItselfAndRevert(t *testing.T) {
 		key1, _ = crypto.HexToECDSA("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
 		addr1   = crypto.PubkeyToAddress(key1.PublicKey)
 		gwei5   = new(big.Int).Mul(big.NewInt(5), big.NewInt(params.GWei))
-		eth1    = new(big.Int).Mul(common.Big1, big.NewInt(params.Ether))
-		sila    = new(big.Int).Mul(common.Big2, big.NewInt(params.Ether))
-		eth5    = new(big.Int).Mul(big.NewInt(5), big.NewInt(params.Ether))
+		sila1   = new(big.Int).Mul(common.Big1, big.NewInt(params.SilaBaseUnit))
+		sila    = new(big.Int).Mul(common.Big2, big.NewInt(params.SilaBaseUnit))
+		sila5   = new(big.Int).Mul(big.NewInt(5), big.NewInt(params.SilaBaseUnit))
 
 		gspec = &core.Genesis{
 			Config: &config,
 			// BaseFee: big.NewInt(params.InitialBaseFee),
 			Alloc: types.GenesisAlloc{
-				addr1: {Balance: eth1},
+				addr1: {Balance: sila1},
 				aa: {
 					// Contract code in YUL:
 					//
@@ -499,11 +499,11 @@ func TestSupplySelfdestructItselfAndRevert(t *testing.T) {
 					// 	}
 					// }
 					Code:    common.FromHex("0x3080ff50"),
-					Balance: eth5,
+					Balance: sila5,
 				},
 				cc: {
 					Code:    common.FromHex("0x3080ff50"),
-					Balance: eth1,
+					Balance: sila1,
 				},
 				dd: {
 					// Contract code in YUL:
@@ -554,10 +554,10 @@ func TestSupplySelfdestructItselfAndRevert(t *testing.T) {
 	}
 
 	// Check balance at state:
-	// 1. A has 0 ether
-	// 2. B has 0 ether, burned
-	// 3. C has 2 ether, selfdestructed but parent D reverted
-	// 4. D has 1 ether, reverted
+	// 1. A has 0 sila
+	// 2. B has 0 sila, burned
+	// 3. C has 2 sila, selfdestructed but parent D reverted
+	// 4. D has 1 sila, reverted
 	statedb, _ := chain.State()
 	if got, exp := statedb.GetBalance(aa), common.Big0; got.CmpBig(exp) != 0 {
 		t.Fatalf("address \"%v\" balance, got %v exp %v\n", aa, got, exp)
@@ -565,7 +565,7 @@ func TestSupplySelfdestructItselfAndRevert(t *testing.T) {
 	if got, exp := statedb.GetBalance(bb), common.Big0; got.CmpBig(exp) != 0 {
 		t.Fatalf("address \"%v\" balance, got %v exp %v\n", bb, got, exp)
 	}
-	if got, exp := statedb.GetBalance(cc), eth1; got.CmpBig(exp) != 0 {
+	if got, exp := statedb.GetBalance(cc), sila1; got.CmpBig(exp) != 0 {
 		t.Fatalf("address \"%v\" balance, got %v exp %v\n", bb, got, exp)
 	}
 	if got, exp := statedb.GetBalance(dd), sila; got.CmpBig(exp) != 0 {
@@ -578,7 +578,7 @@ func TestSupplySelfdestructItselfAndRevert(t *testing.T) {
 	expected := supplyInfo{
 		Burn: &supplyInfoBurn{
 			SIP1559: (*hexutil.Big)(new(big.Int).Mul(block.BaseFee(), big.NewInt(int64(block.GasUsed())))),
-			Misc:    (*hexutil.Big)(eth5), // 5ETH burned from contract B
+			Misc:    (*hexutil.Big)(sila5), // 5 sila burned from contract B
 		},
 		Number:     1,
 		Hash:       block.Hash(),

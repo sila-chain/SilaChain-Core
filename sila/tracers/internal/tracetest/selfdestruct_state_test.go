@@ -286,7 +286,7 @@ func TestSelfdestructStateTracer(t *testing.T) {
 			genesis: &core.Genesis{
 				Config: params.AllSilaashProtocolChanges,
 				Alloc: types.GenesisAlloc{
-					caller: {Balance: big.NewInt(params.Ether)},
+					caller: {Balance: big.NewInt(params.SilaBaseUnit)},
 					contract: {
 						Balance: wei(testBalanceInitial),
 						Code:    selfdestructCode,
@@ -316,7 +316,7 @@ func TestSelfdestructStateTracer(t *testing.T) {
 			genesis: &core.Genesis{
 				Config: params.AllDevChainProtocolChanges,
 				Alloc: types.GenesisAlloc{
-					caller: {Balance: big.NewInt(params.Ether)},
+					caller: {Balance: big.NewInt(params.SilaBaseUnit)},
 					contract: {
 						Balance: wei(testBalanceInitial),
 						Code:    selfdestructCode,
@@ -346,7 +346,7 @@ func TestSelfdestructStateTracer(t *testing.T) {
 			genesis: &core.Genesis{
 				Config: params.AllSilaashProtocolChanges,
 				Alloc: types.GenesisAlloc{
-					caller: {Balance: big.NewInt(params.Ether)},
+					caller: {Balance: big.NewInt(params.SilaBaseUnit)},
 					factory: {
 						Balance: wei(testBalanceFactory),
 						Code:    factoryCode,
@@ -376,7 +376,7 @@ func TestSelfdestructStateTracer(t *testing.T) {
 			genesis: &core.Genesis{
 				Config: params.AllDevChainProtocolChanges,
 				Alloc: types.GenesisAlloc{
-					caller: {Balance: big.NewInt(params.Ether)},
+					caller: {Balance: big.NewInt(params.SilaBaseUnit)},
 					factory: {
 						Balance: wei(testBalanceFactory),
 						Code:    factoryCode,
@@ -406,7 +406,7 @@ func TestSelfdestructStateTracer(t *testing.T) {
 			genesis: &core.Genesis{
 				Config: params.AllSilaashProtocolChanges,
 				Alloc: types.GenesisAlloc{
-					caller: {Balance: big.NewInt(params.Ether)},
+					caller: {Balance: big.NewInt(params.SilaBaseUnit)},
 					contractA: {
 						Balance: wei(testBalanceInitial),
 						Code:    contractACode,
@@ -444,7 +444,7 @@ func TestSelfdestructStateTracer(t *testing.T) {
 			genesis: &core.Genesis{
 				Config: params.AllDevChainProtocolChanges,
 				Alloc: types.GenesisAlloc{
-					caller: {Balance: big.NewInt(params.Ether)},
+					caller: {Balance: big.NewInt(params.SilaBaseUnit)},
 					contractA: {
 						Balance: wei(testBalanceInitial),
 						Code:    contractACode,
@@ -481,7 +481,7 @@ func TestSelfdestructStateTracer(t *testing.T) {
 			genesis: &core.Genesis{
 				Config: params.AllDevChainProtocolChanges,
 				Alloc: types.GenesisAlloc{
-					caller: {Balance: big.NewInt(params.Ether)},
+					caller: {Balance: big.NewInt(params.SilaBaseUnit)},
 					contractB: {
 						Balance: wei(0),
 						Code:    contractBCode,
@@ -516,7 +516,7 @@ func TestSelfdestructStateTracer(t *testing.T) {
 			genesis: &core.Genesis{
 				Config: params.AllDevChainProtocolChanges,
 				Alloc: types.GenesisAlloc{
-					caller: {Balance: big.NewInt(params.Ether)},
+					caller: {Balance: big.NewInt(params.SilaBaseUnit)},
 					contractSelfDestruct: {
 						Balance: wei(testBalanceInitial),
 						Code:    contractSelfDestructCode,
@@ -556,7 +556,7 @@ func TestSelfdestructStateTracer(t *testing.T) {
 			genesis: &core.Genesis{
 				Config: params.AllDevChainProtocolChanges,
 				Alloc: types.GenesisAlloc{
-					caller: {Balance: big.NewInt(params.Ether)},
+					caller: {Balance: big.NewInt(params.SilaBaseUnit)},
 					factorySelfDestructBalanceCheck: {
 						Balance: wei(testBalanceFactory),
 						Code:    factorySelfDestructBalanceCheckCode,

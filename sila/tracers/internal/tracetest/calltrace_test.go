@@ -33,8 +33,8 @@ import (
 	"github.com/sila-org/sila/core/types"
 	"github.com/sila-org/sila/core/vm"
 	"github.com/sila-org/sila/crypto"
-	"github.com/sila-org/sila/sila/tracers"
 	"github.com/sila-org/sila/params"
+	"github.com/sila-org/sila/sila/tracers"
 	"github.com/sila-org/sila/tests"
 )
 
@@ -240,7 +240,7 @@ func benchTracer(tracerName string, test *callTracerTest, b *testing.B) {
 
 func TestInternals(t *testing.T) {
 	var (
-		config    = params.MainnetChainConfig
+		config    = params.SilaMainnetChainConfig
 		to        = common.HexToAddress("0x00000000000000000000000000000000deadbeef")
 		originHex = "0x71562b71999873db5b286df957af199ec94617f7"
 		origin    = common.HexToAddress(originHex)
