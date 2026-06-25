@@ -30,7 +30,7 @@ import (
 )
 
 type payloadType interface {
-	*capella.ExecutionPayload | *deneb.ExecutionPayload
+	*capella.SilaExecutionPayload | *deneb.SilaExecutionPayload
 }
 
 // convertPayload converts a beacon chain execution payload to types.Block.
@@ -43,7 +43,7 @@ func convertPayload[T payloadType](payload T, parentRoot *zrntcommon.Root, reque
 		err          error
 	)
 	switch p := any(payload).(type) {
-	case *capella.ExecutionPayload:
+	case *capella.SilaExecutionPayload:
 		convertCapellaHeader(p, &header)
 		transactions, err = convertTransactions(p.Transactions, &header)
 		if err != nil {
@@ -51,7 +51,7 @@ func convertPayload[T payloadType](payload T, parentRoot *zrntcommon.Root, reque
 		}
 		withdrawals = convertWithdrawals(p.Withdrawals, &header)
 		expectedHash = p.BlockHash
-	case *deneb.ExecutionPayload:
+	case *deneb.SilaExecutionPayload:
 		convertDenebHeader(p, common.Hash(*parentRoot), &header)
 		transactions, err = convertTransactions(p.Transactions, &header)
 		if err != nil {
@@ -73,7 +73,7 @@ func convertPayload[T payloadType](payload T, parentRoot *zrntcommon.Root, reque
 	return block, nil
 }
 
-func convertCapellaHeader(payload *capella.ExecutionPayload, h *types.Header) {
+func convertCapellaHeader(payload *capella.SilaExecutionPayload, h *types.Header) {
 	// note: h.TxHash is set in convertTransactions
 	h.ParentHash = common.Hash(payload.ParentHash)
 	h.UncleHash = types.EmptyUncleHash
@@ -92,7 +92,7 @@ func convertCapellaHeader(payload *capella.ExecutionPayload, h *types.Header) {
 	h.BaseFee = (*uint256.Int)(&payload.BaseFeePerGas).ToBig()
 }
 
-func convertDenebHeader(payload *deneb.ExecutionPayload, parentRoot common.Hash, h *types.Header) {
+func convertDenebHeader(payload *deneb.SilaExecutionPayload, parentRoot common.Hash, h *types.Header) {
 	// note: h.TxHash is set in convertTransactions
 	h.ParentHash = common.Hash(payload.ParentHash)
 	h.UncleHash = types.EmptyUncleHash

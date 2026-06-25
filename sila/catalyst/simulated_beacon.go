@@ -31,7 +31,6 @@ import (
 	"github.com/sila-org/sila/core/txpool"
 	"github.com/sila-org/sila/core/types"
 	"github.com/sila-org/sila/crypto/kzg4844"
-	"github.com/sila-org/sila/sila"
 	"github.com/sila-org/sila/event"
 	"github.com/sila-org/sila/internal/telemetry"
 	"github.com/sila-org/sila/log"
@@ -39,6 +38,7 @@ import (
 	"github.com/sila-org/sila/params"
 	"github.com/sila-org/sila/params/forks"
 	"github.com/sila-org/sila/rpc"
+	"github.com/sila-org/sila/sila"
 	"go.opentelemetry.io/otel"
 )
 
@@ -89,7 +89,7 @@ func (w *withdrawalQueue) subscribe(ch chan<- newWithdrawalsEvent) event.Subscri
 // (seconds) or on every transaction via Commit, Fork and AdjustTime.
 type SimulatedBeacon struct {
 	shutdownCh  chan struct{}
-	sila         *sila.Sila
+	sila        *sila.Sila
 	period      uint64
 	withdrawals withdrawalQueue
 
@@ -135,7 +135,7 @@ func NewSimulatedBeacon(period uint64, feeRecipient common.Address, sila *sila.S
 	// overflowing the time.Duration (int64) that it will occupy
 	const maxPeriod = uint64(math.MaxInt64 / time.Second)
 	return &SimulatedBeacon{
-		sila:                sila,
+		sila:               sila,
 		period:             min(period, maxPeriod),
 		shutdownCh:         make(chan struct{}),
 		engineAPI:          engineAPI,
@@ -201,7 +201,7 @@ func (c *SimulatedBeacon) sealBlock(withdrawals []*types.Withdrawal, timestamp u
 	var random [32]byte
 	rand.Read(random[:])
 
-	attribute := &silaEngine.PayloadAttributes{
+	attribute := &silaEngine.SilaPayloadAttributes{
 		Timestamp:             timestamp,
 		SuggestedFeeRecipient: feeRecipient,
 		Withdrawals:           withdrawals,
@@ -214,7 +214,7 @@ func (c *SimulatedBeacon) sealBlock(withdrawals []*types.Withdrawal, timestamp u
 	}
 
 	// Create a server span for forkchoiceUpdated with payload attributes,
-	// simulating an incoming silaEngine API request from a real consensus client.
+	// simulating an incoming silaSilaEngine API request from a real consensus client.
 	fcCtx, fcSpanEnd := telemetry.StartCallServerSpan(context.Background(), tracer, telemetry.RPCInfo{
 		System:  "jsonrpc",
 		Service: "silaEngine",
@@ -247,7 +247,7 @@ func (c *SimulatedBeacon) sealBlock(withdrawals []*types.Withdrawal, timestamp u
 	if err != nil {
 		return err
 	}
-	payload := envelope.ExecutionPayload
+	payload := envelope.SilaExecutionPayload
 
 	var finalizedHash common.Hash
 	if payload.Number%devEpochLength == 0 {

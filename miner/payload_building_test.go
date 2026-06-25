@@ -161,8 +161,8 @@ func TestBuildPayload(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Failed to build payload %v", err)
 	}
-	verify := func(outer *silaEngine.ExecutionPayloadEnvelope, txs int) {
-		payload := outer.ExecutionPayload
+	verify := func(outer *silaEngine.SilaExecutionPayloadEnvelope, txs int) {
+		payload := outer.SilaExecutionPayload
 		if payload.ParentHash != b.chain.CurrentBlock().Hash() {
 			t.Fatal("Unexpected parent hash")
 		}

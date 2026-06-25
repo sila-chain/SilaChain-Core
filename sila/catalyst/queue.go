@@ -73,7 +73,7 @@ func (q *payloadQueue) put(id silaEngine.PayloadID, payload *miner.Payload) {
 }
 
 // get retrieves a previously stored payload item or nil if it does not exist.
-func (q *payloadQueue) get(id silaEngine.PayloadID, full bool) *silaEngine.ExecutionPayloadEnvelope {
+func (q *payloadQueue) get(id silaEngine.PayloadID, full bool) *silaEngine.SilaExecutionPayloadEnvelope {
 	q.lock.RLock()
 	defer q.lock.RUnlock()
 

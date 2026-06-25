@@ -22,8 +22,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/sila-org/sila/beacon/silaEngine"
 	"github.com/sila-org/sila/beacon/params"
+	"github.com/sila-org/sila/beacon/silaEngine"
 	"github.com/sila-org/sila/beacon/types"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/common/hexutil"
@@ -64,11 +64,11 @@ func (ec *silaEngineClient) updateLoop(headCh <-chan types.ChainHeadEvent) {
 	for {
 		select {
 		case <-ec.rootCtx.Done():
-			log.Debug("Stopping silaEngine API update loop")
+			log.Debug("Stopping silaSilaEngine API update loop")
 			return
 
 		case event := <-headCh:
-			if ec.rpc == nil { // dry run, no silaEngine API specified
+			if ec.rpc == nil { // dry run, no silaSilaEngine API specified
 				log.Info("New execution block retrieved", "number", event.Block.NumberU64(), "hash", event.Block.Hash(), "finalized", event.Finalized)
 				continue
 			}
@@ -76,29 +76,29 @@ func (ec *silaEngineClient) updateLoop(headCh <-chan types.ChainHeadEvent) {
 			fork := ec.config.ForkAtEpoch(event.BeaconHead.Epoch())
 			forkName := strings.ToLower(fork.Name)
 
-			log.Debug("Calling NewPayload", "number", event.Block.NumberU64(), "hash", event.Block.Hash())
-			if status, err := ec.callNewPayload(forkName, event); err == nil {
-				log.Info("Successful NewPayload", "number", event.Block.NumberU64(), "hash", event.Block.Hash(), "status", status)
+			log.Debug("Calling SilaNewPayload", "number", event.Block.NumberU64(), "hash", event.Block.Hash())
+			if status, err := ec.callSilaNewPayload(forkName, event); err == nil {
+				log.Info("Successful SilaNewPayload", "number", event.Block.NumberU64(), "hash", event.Block.Hash(), "status", status)
 			} else {
-				log.Error("Failed NewPayload", "number", event.Block.NumberU64(), "hash", event.Block.Hash(), "error", err)
+				log.Error("Failed SilaNewPayload", "number", event.Block.NumberU64(), "hash", event.Block.Hash(), "error", err)
 			}
 
-			log.Debug("Calling ForkchoiceUpdated", "head", event.Block.Hash())
-			if status, err := ec.callForkchoiceUpdated(forkName, event); err == nil {
-				log.Info("Successful ForkchoiceUpdated", "head", event.Block.Hash(), "status", status)
+			log.Debug("Calling SilaForkchoiceUpdated", "head", event.Block.Hash())
+			if status, err := ec.callSilaForkchoiceUpdated(forkName, event); err == nil {
+				log.Info("Successful SilaForkchoiceUpdated", "head", event.Block.Hash(), "status", status)
 			} else {
 				if err.Error() == "beacon syncer reorging" {
-					log.Debug("Failed ForkchoiceUpdated", "head", event.Block.Hash(), "error", err)
+					log.Debug("Failed SilaForkchoiceUpdated", "head", event.Block.Hash(), "error", err)
 					continue // ignore beacon syncer reorging errors, this error can occur if the blsync is skipping a block
 				}
-				log.Error("Failed ForkchoiceUpdated", "head", event.Block.Hash(), "error", err)
+				log.Error("Failed SilaForkchoiceUpdated", "head", event.Block.Hash(), "error", err)
 			}
 		}
 	}
 }
 
-func (ec *silaEngineClient) callNewPayload(fork string, event types.ChainHeadEvent) (string, error) {
-	execData := silaEngine.BlockToExecutableData(event.Block, nil, nil, nil).ExecutionPayload
+func (ec *silaEngineClient) callSilaNewPayload(fork string, event types.ChainHeadEvent) (string, error) {
+	execData := silaEngine.BlockToExecutableData(event.Block, nil, nil, nil).SilaExecutionPayload
 
 	var (
 		method string
@@ -140,7 +140,7 @@ func collectBlobHashes(b *ctypes.Block) []common.Hash {
 	return list
 }
 
-func (ec *silaEngineClient) callForkchoiceUpdated(fork string, event types.ChainHeadEvent) (string, error) {
+func (ec *silaEngineClient) callSilaForkchoiceUpdated(fork string, event types.ChainHeadEvent) (string, error) {
 	update := silaEngine.ForkchoiceStateV1{
 		HeadBlockHash:      event.Block.Hash(),
 		SafeBlockHash:      event.Finalized,

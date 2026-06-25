@@ -83,7 +83,7 @@ func TestBlockFromJSON(t *testing.T) {
 			if beaconBlock.Slot() != test.wantSlot {
 				t.Errorf("wrong slot number %d", beaconBlock.Slot())
 			}
-			execBlock, err := beaconBlock.ExecutionPayload()
+			execBlock, err := beaconBlock.SilaExecutionPayload()
 			if err != nil {
 				t.Fatalf("payload extraction failed: %v", err)
 			}

@@ -14,8 +14,8 @@ import (
 var _ = (*payloadAttributesMarshaling)(nil)
 
 // MarshalJSON marshals as JSON.
-func (p PayloadAttributes) MarshalJSON() ([]byte, error) {
-	type PayloadAttributes struct {
+func (p SilaPayloadAttributes) MarshalJSON() ([]byte, error) {
+	type SilaPayloadAttributes struct {
 		Timestamp             hexutil.Uint64      `json:"timestamp"             gencodec:"required"`
 		Random                common.Hash         `json:"prevRandao"            gencodec:"required"`
 		SuggestedFeeRecipient common.Address      `json:"suggestedFeeRecipient" gencodec:"required"`
@@ -23,7 +23,7 @@ func (p PayloadAttributes) MarshalJSON() ([]byte, error) {
 		BeaconRoot            *common.Hash        `json:"parentBeaconBlockRoot"`
 		SlotNumber            *hexutil.Uint64     `json:"slotNumber"`
 	}
-	var enc PayloadAttributes
+	var enc SilaPayloadAttributes
 	enc.Timestamp = hexutil.Uint64(p.Timestamp)
 	enc.Random = p.Random
 	enc.SuggestedFeeRecipient = p.SuggestedFeeRecipient
@@ -34,8 +34,8 @@ func (p PayloadAttributes) MarshalJSON() ([]byte, error) {
 }
 
 // UnmarshalJSON unmarshals from JSON.
-func (p *PayloadAttributes) UnmarshalJSON(input []byte) error {
-	type PayloadAttributes struct {
+func (p *SilaPayloadAttributes) UnmarshalJSON(input []byte) error {
+	type SilaPayloadAttributes struct {
 		Timestamp             *hexutil.Uint64     `json:"timestamp"             gencodec:"required"`
 		Random                *common.Hash        `json:"prevRandao"            gencodec:"required"`
 		SuggestedFeeRecipient *common.Address     `json:"suggestedFeeRecipient" gencodec:"required"`
@@ -43,20 +43,20 @@ func (p *PayloadAttributes) UnmarshalJSON(input []byte) error {
 		BeaconRoot            *common.Hash        `json:"parentBeaconBlockRoot"`
 		SlotNumber            *hexutil.Uint64     `json:"slotNumber"`
 	}
-	var dec PayloadAttributes
+	var dec SilaPayloadAttributes
 	if err := json.Unmarshal(input, &dec); err != nil {
 		return err
 	}
 	if dec.Timestamp == nil {
-		return errors.New("missing required field 'timestamp' for PayloadAttributes")
+		return errors.New("missing required field 'timestamp' for SilaPayloadAttributes")
 	}
 	p.Timestamp = uint64(*dec.Timestamp)
 	if dec.Random == nil {
-		return errors.New("missing required field 'prevRandao' for PayloadAttributes")
+		return errors.New("missing required field 'prevRandao' for SilaPayloadAttributes")
 	}
 	p.Random = *dec.Random
 	if dec.SuggestedFeeRecipient == nil {
-		return errors.New("missing required field 'suggestedFeeRecipient' for PayloadAttributes")
+		return errors.New("missing required field 'suggestedFeeRecipient' for SilaPayloadAttributes")
 	}
 	p.SuggestedFeeRecipient = *dec.SuggestedFeeRecipient
 	if dec.Withdrawals != nil {

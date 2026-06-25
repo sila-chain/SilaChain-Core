@@ -150,7 +150,7 @@ func (s *beaconBlockSync) updateEventFeed() {
 	s.lastHeadInfo = headInfo
 
 	// new head block and finality info available; extract executable data and send event to feed
-	execBlock, err := headBlock.ExecutionPayload()
+	execBlock, err := headBlock.SilaExecutionPayload()
 	if err != nil {
 		log.Error("Error extracting execution block from validated beacon block", "error", err)
 		return

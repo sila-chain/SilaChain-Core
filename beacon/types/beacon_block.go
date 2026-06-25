@@ -91,16 +91,16 @@ func (b *BeaconBlock) Slot() uint64 {
 	}
 }
 
-// ExecutionPayload parses and returns the execution payload of the block.
-func (b *BeaconBlock) ExecutionPayload() (*types.Block, error) {
+// SilaExecutionPayload parses and returns the execution payload of the block.
+func (b *BeaconBlock) SilaExecutionPayload() (*types.Block, error) {
 	switch obj := b.blockObj.(type) {
 	case *capella.BeaconBlock:
-		return convertPayload(&obj.Body.ExecutionPayload, &obj.ParentRoot, nil)
+		return convertPayload(&obj.Body.SilaExecutionPayload, &obj.ParentRoot, nil)
 	case *deneb.BeaconBlock:
-		return convertPayload(&obj.Body.ExecutionPayload, &obj.ParentRoot, nil)
+		return convertPayload(&obj.Body.SilaExecutionPayload, &obj.ParentRoot, nil)
 	case *electra.BeaconBlock:
 		requests := b.ExecutionRequestsList()
-		return convertPayload(&obj.Body.ExecutionPayload, &obj.ParentRoot, requests)
+		return convertPayload(&obj.Body.SilaExecutionPayload, &obj.ParentRoot, requests)
 	default:
 		panic(fmt.Errorf("unsupported block type %T", b.blockObj))
 	}

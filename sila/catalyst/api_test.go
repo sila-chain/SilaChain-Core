@@ -124,7 +124,7 @@ func TestSilaAssembleBlock(t *testing.T) {
 		t.Fatalf("error signing transaction, err=%v", err)
 	}
 	ethservice.TxPool().Add([]*types.Transaction{tx}, true)
-	blockParams := silaEngine.PayloadAttributes{
+	blockParams := silaEngine.SilaPayloadAttributes{
 		Timestamp: blocks[9].Time() + 5,
 	}
 	// The miner needs to pick up on the txs in the pool, so a few retries might be
@@ -136,7 +136,7 @@ func TestSilaAssembleBlock(t *testing.T) {
 
 // assembleWithTransactions tries to assemble a block, retrying until it has 'want',
 // number of transactions in it, or it has retried three times.
-func assembleWithTransactions(api *ConsensusAPI, parentHash common.Hash, params *silaEngine.PayloadAttributes, want int) (execData *silaEngine.ExecutableData, err error) {
+func assembleWithTransactions(api *ConsensusAPI, parentHash common.Hash, params *silaEngine.SilaPayloadAttributes, want int) (execData *silaEngine.ExecutableData, err error) {
 	for retries := 3; retries > 0; retries-- {
 		execData, err = assembleBlock(api, parentHash, params)
 		if err != nil {
@@ -161,7 +161,7 @@ func TestSilaAssembleBlockWithAnotherBlocksTxs(t *testing.T) {
 	// Put the 10th block's tx in the pool and produce a new block
 	txs := blocks[9].Transactions()
 	api.sila.TxPool().Add(txs, true)
-	blockParams := silaEngine.PayloadAttributes{
+	blockParams := silaEngine.SilaPayloadAttributes{
 		Timestamp: blocks[8].Time() + 5,
 	}
 	// The miner needs to pick up on the txs in the pool, so a few retries might be
@@ -183,7 +183,7 @@ func TestSilaPrepareAndGetPayload(t *testing.T) {
 	// Put the 10th block's tx in the pool and produce a new block
 	txs := blocks[9].Transactions()
 	ethservice.TxPool().Add(txs, true)
-	blockParams := silaEngine.PayloadAttributes{
+	blockParams := silaEngine.SilaPayloadAttributes{
 		Timestamp: blocks[8].Time() + 5,
 	}
 	fcState := silaEngine.ForkchoiceStateV1{
@@ -191,7 +191,7 @@ func TestSilaPrepareAndGetPayload(t *testing.T) {
 		SafeBlockHash:      common.Hash{},
 		FinalizedBlockHash: common.Hash{},
 	}
-	_, err := api.ForkchoiceUpdatedV1(context.Background(), fcState, &blockParams)
+	_, err := api.SilaForkchoiceUpdatedV1(context.Background(), fcState, &blockParams)
 	if err != nil {
 		t.Fatalf("error preparing payload, err=%v", err)
 	}
@@ -208,8 +208,8 @@ func TestSilaPrepareAndGetPayload(t *testing.T) {
 	if err != nil {
 		t.Fatalf("error getting payload, err=%v", err)
 	}
-	if len(execData.ExecutionPayload.Transactions) != blocks[9].Transactions().Len() {
-		t.Fatalf("invalid number of transactions %d != 1", len(execData.ExecutionPayload.Transactions))
+	if len(execData.SilaExecutionPayload.Transactions) != blocks[9].Transactions().Len() {
+		t.Fatalf("invalid number of transactions %d != 1", len(execData.SilaExecutionPayload.Transactions))
 	}
 	// Test invalid payloadID
 	var invPayload silaEngine.PayloadID
@@ -261,7 +261,7 @@ func TestInvalidPayloadTimestamp(t *testing.T) {
 
 	for i, test := range tests {
 		t.Run(fmt.Sprintf("Timestamp test: %v", i), func(t *testing.T) {
-			params := silaEngine.PayloadAttributes{
+			params := silaEngine.SilaPayloadAttributes{
 				Timestamp:             test.time,
 				Random:                crypto.Keccak256Hash([]byte{byte(123)}),
 				SuggestedFeeRecipient: parent.Coinbase,
@@ -271,7 +271,7 @@ func TestInvalidPayloadTimestamp(t *testing.T) {
 				SafeBlockHash:      common.Hash{},
 				FinalizedBlockHash: common.Hash{},
 			}
-			_, err := api.ForkchoiceUpdatedV1(context.Background(), fcState, &params)
+			_, err := api.SilaForkchoiceUpdatedV1(context.Background(), fcState, &params)
 			if test.shouldErr && err == nil {
 				t.Fatalf("expected error preparing payload with invalid timestamp, err=%v", err)
 			} else if !test.shouldErr && err != nil {
@@ -305,7 +305,7 @@ func TestSilaNewBlock(t *testing.T) {
 		tx, _ := types.SignTx(types.NewContractCreation(nonce, new(big.Int), 1000000, big.NewInt(2*params.InitialBaseFee), logCode), types.LatestSigner(ethservice.BlockChain().Config()), testKey)
 		ethservice.TxPool().Add([]*types.Transaction{tx}, true)
 
-		execData, err := assembleWithTransactions(api, parent.Hash(), &silaEngine.PayloadAttributes{
+		execData, err := assembleWithTransactions(api, parent.Hash(), &silaEngine.SilaPayloadAttributes{
 			Timestamp: parent.Time() + 5,
 		}, 1)
 		if err != nil {
@@ -315,7 +315,7 @@ func TestSilaNewBlock(t *testing.T) {
 		if err != nil {
 			t.Fatalf("Failed to convert executable data to block %v", err)
 		}
-		newResp, err := api.NewPayloadV1(context.Background(), *execData)
+		newResp, err := api.SilaNewPayloadV1(context.Background(), *execData)
 		switch {
 		case err != nil:
 			t.Fatalf("Failed to insert block: %v", err)
@@ -330,7 +330,7 @@ func TestSilaNewBlock(t *testing.T) {
 			SafeBlockHash:      block.Hash(),
 			FinalizedBlockHash: block.Hash(),
 		}
-		if _, err := api.ForkchoiceUpdatedV1(context.Background(), fcState, nil); err != nil {
+		if _, err := api.SilaForkchoiceUpdatedV1(context.Background(), fcState, nil); err != nil {
 			t.Fatalf("Failed to insert block: %v", err)
 		}
 		if have, want := ethservice.BlockChain().CurrentBlock().Number.Uint64(), block.NumberU64(); have != want {
@@ -347,7 +347,7 @@ func TestSilaNewBlock(t *testing.T) {
 	)
 	parent = preMergeBlocks[len(preMergeBlocks)-1]
 	for i := 0; i < 10; i++ {
-		execData, err := assembleBlock(api, parent.Hash(), &silaEngine.PayloadAttributes{
+		execData, err := assembleBlock(api, parent.Hash(), &silaEngine.SilaPayloadAttributes{
 			Timestamp: parent.Time() + 6,
 		})
 		if err != nil {
@@ -357,7 +357,7 @@ func TestSilaNewBlock(t *testing.T) {
 		if err != nil {
 			t.Fatalf("Failed to convert executable data to block %v", err)
 		}
-		newResp, err := api.NewPayloadV1(context.Background(), *execData)
+		newResp, err := api.SilaNewPayloadV1(context.Background(), *execData)
 		if err != nil || newResp.Status != "VALID" {
 			t.Fatalf("Failed to insert block: %v", err)
 		}
@@ -370,7 +370,7 @@ func TestSilaNewBlock(t *testing.T) {
 			SafeBlockHash:      block.Hash(),
 			FinalizedBlockHash: block.Hash(),
 		}
-		if _, err := api.ForkchoiceUpdatedV1(context.Background(), fcState, nil); err != nil {
+		if _, err := api.SilaForkchoiceUpdatedV1(context.Background(), fcState, nil); err != nil {
 			t.Fatalf("Failed to insert block: %v", err)
 		}
 		if ethservice.BlockChain().CurrentBlock().Number.Uint64() != block.NumberU64() {
@@ -503,20 +503,20 @@ func setupBlocks(t *testing.T, ethservice *sila.Sila, n int, parent *types.Heade
 		}
 
 		envelope := getNewEnvelope(t, api, parent, w, h)
-		execResp, err := api.newPayload(context.Background(), *envelope.ExecutionPayload, []common.Hash{}, h, envelope.Requests, false)
+		execResp, err := api.newPayload(context.Background(), *envelope.SilaExecutionPayload, []common.Hash{}, h, envelope.Requests, false)
 		if err != nil {
 			t.Fatalf("can't execute payload: %v", err)
 		}
 		if execResp.Status != silaEngine.VALID {
 			t.Fatalf("invalid status: %v %s", execResp.Status, *execResp.ValidationError)
 		}
-		payload := envelope.ExecutionPayload
+		payload := envelope.SilaExecutionPayload
 		fcState := silaEngine.ForkchoiceStateV1{
 			HeadBlockHash:      payload.BlockHash,
 			SafeBlockHash:      payload.ParentHash,
 			FinalizedBlockHash: payload.ParentHash,
 		}
-		if _, err := api.ForkchoiceUpdatedV1(context.Background(), fcState, nil); err != nil {
+		if _, err := api.SilaForkchoiceUpdatedV1(context.Background(), fcState, nil); err != nil {
 			t.Fatalf("Failed to insert block: %v", err)
 		}
 		if ethservice.BlockChain().CurrentBlock().Number.Uint64() != payload.Number {
@@ -576,7 +576,7 @@ func TestExchangeTransitionConfig(t *testing.T) {
 }
 
 /*
-TestNewPayloadOnInvalidChain sets up a valid chain and tries to feed blocks
+TestSilaNewPayloadOnInvalidChain sets up a valid chain and tries to feed blocks
 from an invalid chain to test if latestValidHash (LVH) works correctly.
 
 We set up the following chain where P1 ... Pn and P1” are valid while
@@ -592,7 +592,7 @@ We expect
 	                │
 	                └── P1''
 */
-func TestNewPayloadOnInvalidChain(t *testing.T) {
+func TestSilaNewPayloadOnInvalidChain(t *testing.T) {
 	genesis, preMergeBlocks := generateMergeChain(10, false)
 	n, ethservice := startEthService(t, genesis, preMergeBlocks)
 	defer n.Close()
@@ -615,7 +615,7 @@ func TestNewPayloadOnInvalidChain(t *testing.T) {
 		})
 		ethservice.TxPool().Add([]*types.Transaction{tx}, true)
 		var (
-			params = silaEngine.PayloadAttributes{
+			params = silaEngine.SilaPayloadAttributes{
 				Timestamp:             parent.Time + 1,
 				Random:                crypto.Keccak256Hash([]byte{byte(i)}),
 				SuggestedFeeRecipient: parent.Coinbase,
@@ -625,12 +625,12 @@ func TestNewPayloadOnInvalidChain(t *testing.T) {
 				SafeBlockHash:      common.Hash{},
 				FinalizedBlockHash: common.Hash{},
 			}
-			payload *silaEngine.ExecutionPayloadEnvelope
+			payload *silaEngine.SilaExecutionPayloadEnvelope
 			resp    silaEngine.ForkChoiceResponse
 			err     error
 		)
 		for i := 0; ; i++ {
-			if resp, err = api.ForkchoiceUpdatedV1(context.Background(), fcState, &params); err != nil {
+			if resp, err = api.SilaForkchoiceUpdatedV1(context.Background(), fcState, &params); err != nil {
 				t.Fatalf("error preparing payload, err=%v", err)
 			}
 			if resp.PayloadStatus.Status != silaEngine.VALID {
@@ -640,7 +640,7 @@ func TestNewPayloadOnInvalidChain(t *testing.T) {
 			if payload, err = api.getPayload(*resp.PayloadID, true, nil, nil); err != nil {
 				t.Fatalf("can't get payload: %v", err)
 			}
-			if len(payload.ExecutionPayload.Transactions) > 0 {
+			if len(payload.SilaExecutionPayload.Transactions) > 0 {
 				break
 			}
 			// No luck this time we need to update the params and try again.
@@ -649,7 +649,7 @@ func TestNewPayloadOnInvalidChain(t *testing.T) {
 				t.Fatalf("payload should not be empty")
 			}
 		}
-		execResp, err := api.NewPayloadV1(context.Background(), *payload.ExecutionPayload)
+		execResp, err := api.SilaNewPayloadV1(context.Background(), *payload.SilaExecutionPayload)
 		if err != nil {
 			t.Fatalf("can't execute payload: %v", err)
 		}
@@ -657,21 +657,21 @@ func TestNewPayloadOnInvalidChain(t *testing.T) {
 			t.Fatalf("invalid status: %v", execResp.Status)
 		}
 		fcState = silaEngine.ForkchoiceStateV1{
-			HeadBlockHash:      payload.ExecutionPayload.BlockHash,
-			SafeBlockHash:      payload.ExecutionPayload.ParentHash,
-			FinalizedBlockHash: payload.ExecutionPayload.ParentHash,
+			HeadBlockHash:      payload.SilaExecutionPayload.BlockHash,
+			SafeBlockHash:      payload.SilaExecutionPayload.ParentHash,
+			FinalizedBlockHash: payload.SilaExecutionPayload.ParentHash,
 		}
-		if _, err := api.ForkchoiceUpdatedV1(context.Background(), fcState, nil); err != nil {
+		if _, err := api.SilaForkchoiceUpdatedV1(context.Background(), fcState, nil); err != nil {
 			t.Fatalf("Failed to insert block: %v", err)
 		}
-		if ethservice.BlockChain().CurrentBlock().Number.Uint64() != payload.ExecutionPayload.Number {
+		if ethservice.BlockChain().CurrentBlock().Number.Uint64() != payload.SilaExecutionPayload.Number {
 			t.Fatalf("Chain head should be updated")
 		}
 		parent = ethservice.BlockChain().CurrentBlock()
 	}
 }
 
-func assembleEnvelope(api *ConsensusAPI, parentHash common.Hash, params *silaEngine.PayloadAttributes) (*silaEngine.ExecutionPayloadEnvelope, error) {
+func assembleEnvelope(api *ConsensusAPI, parentHash common.Hash, params *silaEngine.SilaPayloadAttributes) (*silaEngine.SilaExecutionPayloadEnvelope, error) {
 	args := &miner.BuildPayloadArgs{
 		Parent:       parentHash,
 		Timestamp:    params.Timestamp,
@@ -687,12 +687,12 @@ func assembleEnvelope(api *ConsensusAPI, parentHash common.Hash, params *silaEng
 	return payload.ResolveFull(), nil
 }
 
-func assembleBlock(api *ConsensusAPI, parentHash common.Hash, params *silaEngine.PayloadAttributes) (*silaEngine.ExecutableData, error) {
+func assembleBlock(api *ConsensusAPI, parentHash common.Hash, params *silaEngine.SilaPayloadAttributes) (*silaEngine.ExecutableData, error) {
 	envelope, err := assembleEnvelope(api, parentHash, params)
 	if err != nil {
 		return nil, err
 	}
-	return envelope.ExecutionPayload, nil
+	return envelope.SilaExecutionPayload, nil
 }
 
 func TestEmptyBlocks(t *testing.T) {
@@ -707,9 +707,9 @@ func TestEmptyBlocks(t *testing.T) {
 	setupBlocks(t, ethservice, 10, commonAncestor, func(parent *types.Header) {}, nil, nil)
 
 	// (1) check LatestValidHash by sending a normal payload (P1'')
-	payload := getNewPayload(t, api, commonAncestor, nil, nil)
+	payload := getSilaNewPayload(t, api, commonAncestor, nil, nil)
 
-	status, err := api.NewPayloadV1(context.Background(), *payload)
+	status, err := api.SilaNewPayloadV1(context.Background(), *payload)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -721,11 +721,11 @@ func TestEmptyBlocks(t *testing.T) {
 	}
 
 	// (2) Now send P1' which is invalid
-	payload = getNewPayload(t, api, commonAncestor, nil, nil)
+	payload = getSilaNewPayload(t, api, commonAncestor, nil, nil)
 	payload.GasUsed += 1
 	payload = setBlockhash(payload)
 	// Now latestValidHash should be the common ancestor
-	status, err = api.NewPayloadV1(context.Background(), *payload)
+	status, err = api.SilaNewPayloadV1(context.Background(), *payload)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -739,11 +739,11 @@ func TestEmptyBlocks(t *testing.T) {
 	}
 
 	// (3) Now send a payload with unknown parent
-	payload = getNewPayload(t, api, commonAncestor, nil, nil)
+	payload = getSilaNewPayload(t, api, commonAncestor, nil, nil)
 	payload.ParentHash = common.Hash{1}
 	payload = setBlockhash(payload)
 	// Now latestValidHash should be the common ancestor
-	status, err = api.NewPayloadV1(context.Background(), *payload)
+	status, err = api.SilaNewPayloadV1(context.Background(), *payload)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -755,8 +755,8 @@ func TestEmptyBlocks(t *testing.T) {
 	}
 }
 
-func getNewEnvelope(t *testing.T, api *ConsensusAPI, parent *types.Header, withdrawals []*types.Withdrawal, beaconRoot *common.Hash) *silaEngine.ExecutionPayloadEnvelope {
-	params := silaEngine.PayloadAttributes{
+func getNewEnvelope(t *testing.T, api *ConsensusAPI, parent *types.Header, withdrawals []*types.Withdrawal, beaconRoot *common.Hash) *silaEngine.SilaExecutionPayloadEnvelope {
+	params := silaEngine.SilaPayloadAttributes{
 		Timestamp:             parent.Time + 1,
 		Random:                crypto.Keccak256Hash([]byte{byte(1)}),
 		SuggestedFeeRecipient: parent.Coinbase,
@@ -771,8 +771,8 @@ func getNewEnvelope(t *testing.T, api *ConsensusAPI, parent *types.Header, withd
 	return envelope
 }
 
-func getNewPayload(t *testing.T, api *ConsensusAPI, parent *types.Header, withdrawals []*types.Withdrawal, beaconRoot *common.Hash) *silaEngine.ExecutableData {
-	return getNewEnvelope(t, api, parent, withdrawals, beaconRoot).ExecutionPayload
+func getSilaNewPayload(t *testing.T, api *ConsensusAPI, parent *types.Header, withdrawals []*types.Withdrawal, beaconRoot *common.Hash) *silaEngine.ExecutableData {
+	return getNewEnvelope(t, api, parent, withdrawals, beaconRoot).SilaExecutionPayload
 }
 
 // setBlockhash sets the blockhash of a modified ExecutableData.
@@ -838,11 +838,11 @@ func TestTrickRemoteBlockCache(t *testing.T) {
 
 	var invalidChain []*silaEngine.ExecutableData
 	// create a valid payload (P1)
-	//payload1 := getNewPayload(t, apiA, commonAncestor)
+	//payload1 := getSilaNewPayload(t, apiA, commonAncestor)
 	//invalidChain = append(invalidChain, payload1)
 
 	// create an invalid payload2 (P2)
-	payload2 := getNewPayload(t, apiA, commonAncestor, nil, nil)
+	payload2 := getSilaNewPayload(t, apiA, commonAncestor, nil, nil)
 	//payload2.ParentHash = payload1.BlockHash
 	payload2.GasUsed += 1
 	payload2 = setBlockhash(payload2)
@@ -851,7 +851,7 @@ func TestTrickRemoteBlockCache(t *testing.T) {
 	head := payload2
 	// create some valid payloads on top
 	for i := 0; i < 10; i++ {
-		payload := getNewPayload(t, apiA, commonAncestor, nil, nil)
+		payload := getSilaNewPayload(t, apiA, commonAncestor, nil, nil)
 		payload.ParentHash = head.BlockHash
 		payload = setBlockhash(payload)
 		invalidChain = append(invalidChain, payload)
@@ -860,7 +860,7 @@ func TestTrickRemoteBlockCache(t *testing.T) {
 
 	// feed the payloads to node B
 	for _, payload := range invalidChain {
-		status, err := apiB.NewPayloadV1(context.Background(), *payload)
+		status, err := apiB.SilaNewPayloadV1(context.Background(), *payload)
 		if err != nil {
 			panic(err)
 		}
@@ -868,7 +868,7 @@ func TestTrickRemoteBlockCache(t *testing.T) {
 			t.Error("invalid status: VALID on an invalid chain")
 		}
 		// Now reorg to the head of the invalid chain
-		resp, err := apiB.ForkchoiceUpdatedV1(context.Background(), silaEngine.ForkchoiceStateV1{HeadBlockHash: payload.BlockHash, SafeBlockHash: payload.BlockHash, FinalizedBlockHash: payload.ParentHash}, nil)
+		resp, err := apiB.SilaForkchoiceUpdatedV1(context.Background(), silaEngine.ForkchoiceStateV1{HeadBlockHash: payload.BlockHash, SafeBlockHash: payload.BlockHash, FinalizedBlockHash: payload.ParentHash}, nil)
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -891,9 +891,9 @@ func TestInvalidBloom(t *testing.T) {
 	setupBlocks(t, ethservice, 10, commonAncestor, func(parent *types.Header) {}, nil, nil)
 
 	// (1) check LatestValidHash by sending a normal payload (P1'')
-	payload := getNewPayload(t, api, commonAncestor, nil, nil)
+	payload := getSilaNewPayload(t, api, commonAncestor, nil, nil)
 	payload.LogsBloom = append(payload.LogsBloom, byte(1))
-	status, err := api.NewPayloadV1(context.Background(), *payload)
+	status, err := api.SilaNewPayloadV1(context.Background(), *payload)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -915,7 +915,7 @@ func TestSimultaneousNewBlock(t *testing.T) {
 		parent = preMergeBlocks[len(preMergeBlocks)-1]
 	)
 	for i := 0; i < 10; i++ {
-		execData, err := assembleBlock(api, parent.Hash(), &silaEngine.PayloadAttributes{
+		execData, err := assembleBlock(api, parent.Hash(), &silaEngine.SilaPayloadAttributes{
 			Timestamp: parent.Time() + 5,
 		})
 		if err != nil {
@@ -932,7 +932,7 @@ func TestSimultaneousNewBlock(t *testing.T) {
 			for ii := 0; ii < 10; ii++ {
 				go func() {
 					defer wg.Done()
-					if newResp, err := api.NewPayloadV1(context.Background(), *execData); err != nil {
+					if newResp, err := api.SilaNewPayloadV1(context.Background(), *execData); err != nil {
 						errMu.Lock()
 						testErr = fmt.Errorf("failed to insert block: %w", err)
 						errMu.Unlock()
@@ -971,7 +971,7 @@ func TestSimultaneousNewBlock(t *testing.T) {
 			for ii := 0; ii < 10; ii++ {
 				go func() {
 					defer wg.Done()
-					if _, err := api.ForkchoiceUpdatedV1(context.Background(), fcState, nil); err != nil {
+					if _, err := api.SilaForkchoiceUpdatedV1(context.Background(), fcState, nil); err != nil {
 						errMu.Lock()
 						testErr = fmt.Errorf("failed to insert block: %w", err)
 						errMu.Unlock()
@@ -1005,14 +1005,14 @@ func TestWithdrawals(t *testing.T) {
 
 	// 10: Build Shanghai block with no withdrawals.
 	parent := ethservice.BlockChain().CurrentHeader()
-	blockParams := silaEngine.PayloadAttributes{
+	blockParams := silaEngine.SilaPayloadAttributes{
 		Timestamp:   parent.Time + 5,
 		Withdrawals: make([]*types.Withdrawal, 0),
 	}
 	fcState := silaEngine.ForkchoiceStateV1{
 		HeadBlockHash: parent.Hash(),
 	}
-	resp, err := api.ForkchoiceUpdatedV2(context.Background(), fcState, &blockParams)
+	resp, err := api.SilaForkchoiceUpdatedV2(context.Background(), fcState, &blockParams)
 	if err != nil {
 		t.Fatalf("error preparing payload, err=%v", err)
 	}
@@ -1034,12 +1034,12 @@ func TestWithdrawals(t *testing.T) {
 	if err != nil {
 		t.Fatalf("error getting payload, err=%v", err)
 	}
-	if execData.ExecutionPayload.StateRoot != parent.Root {
-		t.Fatalf("mismatch state roots (got: %s, want: %s)", execData.ExecutionPayload.StateRoot, blocks[8].Root())
+	if execData.SilaExecutionPayload.StateRoot != parent.Root {
+		t.Fatalf("mismatch state roots (got: %s, want: %s)", execData.SilaExecutionPayload.StateRoot, blocks[8].Root())
 	}
 
 	// 10: verify locally built block
-	if status, err := api.NewPayloadV2(context.Background(), *execData.ExecutionPayload); err != nil {
+	if status, err := api.SilaNewPayloadV2(context.Background(), *execData.SilaExecutionPayload); err != nil {
 		t.Fatalf("error validating payload: %v", err)
 	} else if status.Status != silaEngine.VALID {
 		t.Fatalf("invalid payload")
@@ -1048,8 +1048,8 @@ func TestWithdrawals(t *testing.T) {
 	// 11: build shanghai block with withdrawal
 	aa := common.Address{0xaa}
 	bb := common.Address{0xbb}
-	blockParams = silaEngine.PayloadAttributes{
-		Timestamp: execData.ExecutionPayload.Timestamp + 5,
+	blockParams = silaEngine.SilaPayloadAttributes{
+		Timestamp: execData.SilaExecutionPayload.Timestamp + 5,
 		Withdrawals: []*types.Withdrawal{
 			{
 				Index:   0,
@@ -1063,8 +1063,8 @@ func TestWithdrawals(t *testing.T) {
 			},
 		},
 	}
-	fcState.HeadBlockHash = execData.ExecutionPayload.BlockHash
-	_, err = api.ForkchoiceUpdatedV2(context.Background(), fcState, &blockParams)
+	fcState.HeadBlockHash = execData.SilaExecutionPayload.BlockHash
+	_, err = api.SilaForkchoiceUpdatedV2(context.Background(), fcState, &blockParams)
 	if err != nil {
 		t.Fatalf("error preparing payload, err=%v", err)
 	}
@@ -1083,21 +1083,21 @@ func TestWithdrawals(t *testing.T) {
 	if err != nil {
 		t.Fatalf("error getting payload, err=%v", err)
 	}
-	if status, err := api.NewPayloadV2(context.Background(), *execData.ExecutionPayload); err != nil {
+	if status, err := api.SilaNewPayloadV2(context.Background(), *execData.SilaExecutionPayload); err != nil {
 		t.Fatalf("error validating payload: %v", err)
 	} else if status.Status != silaEngine.VALID {
 		t.Fatalf("invalid payload")
 	}
 
 	// 11: set block as head.
-	fcState.HeadBlockHash = execData.ExecutionPayload.BlockHash
-	_, err = api.ForkchoiceUpdatedV2(context.Background(), fcState, nil)
+	fcState.HeadBlockHash = execData.SilaExecutionPayload.BlockHash
+	_, err = api.SilaForkchoiceUpdatedV2(context.Background(), fcState, nil)
 	if err != nil {
 		t.Fatalf("error preparing payload, err=%v", err)
 	}
 
 	// 11: verify withdrawals were processed.
-	db, _, err := ethservice.APIBackend.StateAndHeaderByNumber(context.Background(), rpc.BlockNumber(execData.ExecutionPayload.Number))
+	db, _, err := ethservice.APIBackend.StateAndHeaderByNumber(context.Background(), rpc.BlockNumber(execData.SilaExecutionPayload.Number))
 	if err != nil {
 		t.Fatalf("unable to load db: %v", err)
 	}
@@ -1123,27 +1123,27 @@ func TestNilWithdrawals(t *testing.T) {
 	aa := common.Address{0xaa}
 
 	type test struct {
-		blockParams silaEngine.PayloadAttributes
+		blockParams silaEngine.SilaPayloadAttributes
 		wantErr     bool
 	}
 	tests := []test{
 		// Before Shanghai
 		{
-			blockParams: silaEngine.PayloadAttributes{
+			blockParams: silaEngine.SilaPayloadAttributes{
 				Timestamp:   parent.Time + 2,
 				Withdrawals: nil,
 			},
 			wantErr: false,
 		},
 		{
-			blockParams: silaEngine.PayloadAttributes{
+			blockParams: silaEngine.SilaPayloadAttributes{
 				Timestamp:   parent.Time + 2,
 				Withdrawals: make([]*types.Withdrawal, 0),
 			},
 			wantErr: true,
 		},
 		{
-			blockParams: silaEngine.PayloadAttributes{
+			blockParams: silaEngine.SilaPayloadAttributes{
 				Timestamp: parent.Time + 2,
 				Withdrawals: []*types.Withdrawal{
 					{
@@ -1157,21 +1157,21 @@ func TestNilWithdrawals(t *testing.T) {
 		},
 		// After Shanghai
 		{
-			blockParams: silaEngine.PayloadAttributes{
+			blockParams: silaEngine.SilaPayloadAttributes{
 				Timestamp:   parent.Time + 5,
 				Withdrawals: nil,
 			},
 			wantErr: true,
 		},
 		{
-			blockParams: silaEngine.PayloadAttributes{
+			blockParams: silaEngine.SilaPayloadAttributes{
 				Timestamp:   parent.Time + 5,
 				Withdrawals: make([]*types.Withdrawal, 0),
 			},
 			wantErr: false,
 		},
 		{
-			blockParams: silaEngine.PayloadAttributes{
+			blockParams: silaEngine.SilaPayloadAttributes{
 				Timestamp: parent.Time + 5,
 				Withdrawals: []*types.Withdrawal{
 					{
@@ -1197,10 +1197,10 @@ func TestNilWithdrawals(t *testing.T) {
 		)
 		if !shanghai {
 			payloadVersion = silaEngine.PayloadV1
-			_, err = api.ForkchoiceUpdatedV1(context.Background(), fcState, &test.blockParams)
+			_, err = api.SilaForkchoiceUpdatedV1(context.Background(), fcState, &test.blockParams)
 		} else {
 			payloadVersion = silaEngine.PayloadV2
-			_, err = api.ForkchoiceUpdatedV2(context.Background(), fcState, &test.blockParams)
+			_, err = api.SilaForkchoiceUpdatedV2(context.Background(), fcState, &test.blockParams)
 		}
 		if test.wantErr {
 			if err == nil {
@@ -1231,9 +1231,9 @@ func TestNilWithdrawals(t *testing.T) {
 		}
 		var status silaEngine.PayloadStatusV1
 		if !shanghai {
-			status, err = api.NewPayloadV1(context.Background(), *execData.ExecutionPayload)
+			status, err = api.SilaNewPayloadV1(context.Background(), *execData.SilaExecutionPayload)
 		} else {
-			status, err = api.NewPayloadV2(context.Background(), *execData.ExecutionPayload)
+			status, err = api.SilaNewPayloadV2(context.Background(), *execData.SilaExecutionPayload)
 		}
 		if err != nil {
 			t.Fatalf("error validating payload: %v", err.(*silaEngine.SilaEngineAPIError).ErrorData())
@@ -1499,7 +1499,7 @@ func TestGetBlockBodiesByRangeInvalidParams(t *testing.T) {
 	}
 }
 
-func checkEqualBody(a *types.Body, b *silaEngine.ExecutionPayloadBody) error {
+func checkEqualBody(a *types.Body, b *silaEngine.SilaExecutionPayloadBody) error {
 	if a == nil && b == nil {
 		return nil
 	} else if a == nil || b == nil {
@@ -1547,13 +1547,13 @@ func TestBlockToPayloadWithBlobs(t *testing.T) {
 	if got := len(envelope.BlobsBundle.Blobs); got != want {
 		t.Fatalf("invalid number of blobs: got %v, want %v", got, want)
 	}
-	_, err := silaEngine.ExecutableDataToBlock(*envelope.ExecutionPayload, make([]common.Hash, 1), nil, nil)
+	_, err := silaEngine.ExecutableDataToBlock(*envelope.SilaExecutionPayload, make([]common.Hash, 1), nil, nil)
 	if err != nil {
 		t.Error(err)
 	}
 }
 
-// This checks that beaconRoot is applied to the state from the silaEngine API.
+// This checks that beaconRoot is applied to the state from the silaSilaEngine API.
 func TestParentBeaconBlockRoot(t *testing.T) {
 	//log.SetDefault(log.NewLogger(log.NewTerminalHandlerWithLevel(colorable.NewColorableStderr(), log.LevelTrace, true)))
 
@@ -1572,7 +1572,7 @@ func TestParentBeaconBlockRoot(t *testing.T) {
 
 	// 11: Build Shanghai block with no withdrawals.
 	parent := ethservice.BlockChain().CurrentHeader()
-	blockParams := silaEngine.PayloadAttributes{
+	blockParams := silaEngine.SilaPayloadAttributes{
 		Timestamp:   parent.Time + 5,
 		Withdrawals: make([]*types.Withdrawal, 0),
 		BeaconRoot:  &common.Hash{42},
@@ -1580,7 +1580,7 @@ func TestParentBeaconBlockRoot(t *testing.T) {
 	fcState := silaEngine.ForkchoiceStateV1{
 		HeadBlockHash: parent.Hash(),
 	}
-	resp, err := api.ForkchoiceUpdatedV3(context.Background(), fcState, &blockParams)
+	resp, err := api.SilaForkchoiceUpdatedV3(context.Background(), fcState, &blockParams)
 	if err != nil {
 		t.Fatalf("error preparing payload, err=%v", err.(*silaEngine.SilaEngineAPIError).ErrorData())
 	}
@@ -1604,14 +1604,14 @@ func TestParentBeaconBlockRoot(t *testing.T) {
 	}
 
 	// 11: verify locally built block
-	if status, err := api.NewPayloadV3(context.Background(), *execData.ExecutionPayload, []common.Hash{}, &common.Hash{42}); err != nil {
+	if status, err := api.SilaNewPayloadV3(context.Background(), *execData.SilaExecutionPayload, []common.Hash{}, &common.Hash{42}); err != nil {
 		t.Fatalf("error validating payload: %v", err)
 	} else if status.Status != silaEngine.VALID {
 		t.Fatalf("invalid payload")
 	}
 
-	fcState.HeadBlockHash = execData.ExecutionPayload.BlockHash
-	resp, err = api.ForkchoiceUpdatedV3(context.Background(), fcState, nil)
+	fcState.HeadBlockHash = execData.SilaExecutionPayload.BlockHash
+	resp, err = api.SilaForkchoiceUpdatedV3(context.Background(), fcState, nil)
 	if err != nil {
 		t.Fatalf("error preparing payload, err=%v", err.(*silaEngine.SilaEngineAPIError).ErrorData())
 	}
@@ -1620,13 +1620,13 @@ func TestParentBeaconBlockRoot(t *testing.T) {
 	}
 
 	// 11: verify beacon root was processed.
-	db, _, err := ethservice.APIBackend.StateAndHeaderByNumber(context.Background(), rpc.BlockNumber(execData.ExecutionPayload.Number))
+	db, _, err := ethservice.APIBackend.StateAndHeaderByNumber(context.Background(), rpc.BlockNumber(execData.SilaExecutionPayload.Number))
 	if err != nil {
 		t.Fatalf("unable to load db: %v", err)
 	}
 	var (
-		timeIdx = common.BigToHash(big.NewInt(int64(execData.ExecutionPayload.Timestamp % 98304)))
-		rootIdx = common.BigToHash(big.NewInt(int64((execData.ExecutionPayload.Timestamp % 98304) + 98304)))
+		timeIdx = common.BigToHash(big.NewInt(int64(execData.SilaExecutionPayload.Timestamp % 98304)))
+		rootIdx = common.BigToHash(big.NewInt(int64((execData.SilaExecutionPayload.Timestamp % 98304) + 98304)))
 	)
 
 	if num := db.GetState(params.BeaconRootsAddress, timeIdx); num != timeIdx {
@@ -1657,7 +1657,7 @@ func TestWitnessCreationAndConsumption(t *testing.T) {
 	txs := blocks[9].Transactions()
 
 	ethservice.TxPool().Add(txs, true)
-	blockParams := silaEngine.PayloadAttributes{
+	blockParams := silaEngine.SilaPayloadAttributes{
 		Timestamp:   blocks[8].Time() + 5,
 		Withdrawals: make([]*types.Withdrawal, 0),
 		BeaconRoot:  &common.Hash{42},
@@ -1667,7 +1667,7 @@ func TestWitnessCreationAndConsumption(t *testing.T) {
 		SafeBlockHash:      common.Hash{},
 		FinalizedBlockHash: common.Hash{},
 	}
-	_, err := api.ForkchoiceUpdatedWithWitnessV3(context.Background(), fcState, &blockParams)
+	_, err := api.SilaForkchoiceUpdatedWithWitnessV3(context.Background(), fcState, &blockParams)
 	if err != nil {
 		t.Fatalf("error preparing payload, err=%v", err)
 	}
@@ -1684,20 +1684,20 @@ func TestWitnessCreationAndConsumption(t *testing.T) {
 	if err != nil {
 		t.Fatalf("error getting payload, err=%v", err)
 	}
-	if len(envelope.ExecutionPayload.Transactions) != blocks[9].Transactions().Len() {
-		t.Fatalf("invalid number of transactions %d != %d", len(envelope.ExecutionPayload.Transactions), blocks[9].Transactions().Len())
+	if len(envelope.SilaExecutionPayload.Transactions) != blocks[9].Transactions().Len() {
+		t.Fatalf("invalid number of transactions %d != %d", len(envelope.SilaExecutionPayload.Transactions), blocks[9].Transactions().Len())
 	}
 	if envelope.Witness == nil {
 		t.Fatalf("witness missing from payload")
 	}
 	// Test stateless execution of the created witness
-	wantStateRoot := envelope.ExecutionPayload.StateRoot
-	wantReceiptRoot := envelope.ExecutionPayload.ReceiptsRoot
+	wantStateRoot := envelope.SilaExecutionPayload.StateRoot
+	wantReceiptRoot := envelope.SilaExecutionPayload.ReceiptsRoot
 
-	envelope.ExecutionPayload.StateRoot = common.Hash{}
-	envelope.ExecutionPayload.ReceiptsRoot = common.Hash{}
+	envelope.SilaExecutionPayload.StateRoot = common.Hash{}
+	envelope.SilaExecutionPayload.ReceiptsRoot = common.Hash{}
 
-	res, err := api.ExecuteStatelessPayloadV3(*envelope.ExecutionPayload, []common.Hash{}, &common.Hash{42}, *envelope.Witness)
+	res, err := api.ExecuteStatelessPayloadV3(*envelope.SilaExecutionPayload, []common.Hash{}, &common.Hash{42}, *envelope.Witness)
 	if err != nil {
 		t.Fatalf("error executing stateless payload witness: %v", err)
 	}
@@ -1708,10 +1708,10 @@ func TestWitnessCreationAndConsumption(t *testing.T) {
 		t.Fatalf("stateless receipt root mismatch: have %v, want %v", res.ReceiptsRoot, wantReceiptRoot)
 	}
 	// Test block insertion with witness creation
-	envelope.ExecutionPayload.StateRoot = wantStateRoot
-	envelope.ExecutionPayload.ReceiptsRoot = wantReceiptRoot
+	envelope.SilaExecutionPayload.StateRoot = wantStateRoot
+	envelope.SilaExecutionPayload.ReceiptsRoot = wantReceiptRoot
 
-	res2, err := api.NewPayloadWithWitnessV3(context.Background(), *envelope.ExecutionPayload, []common.Hash{}, &common.Hash{42})
+	res2, err := api.SilaNewPayloadWithWitnessV3(context.Background(), *envelope.SilaExecutionPayload, []common.Hash{}, &common.Hash{42})
 	if err != nil {
 		t.Fatalf("error executing stateless payload witness: %v", err)
 	}
@@ -1719,13 +1719,13 @@ func TestWitnessCreationAndConsumption(t *testing.T) {
 		t.Fatalf("witness missing from payload")
 	}
 	// Test stateless execution of the created witness
-	wantStateRoot = envelope.ExecutionPayload.StateRoot
-	wantReceiptRoot = envelope.ExecutionPayload.ReceiptsRoot
+	wantStateRoot = envelope.SilaExecutionPayload.StateRoot
+	wantReceiptRoot = envelope.SilaExecutionPayload.ReceiptsRoot
 
-	envelope.ExecutionPayload.StateRoot = common.Hash{}
-	envelope.ExecutionPayload.ReceiptsRoot = common.Hash{}
+	envelope.SilaExecutionPayload.StateRoot = common.Hash{}
+	envelope.SilaExecutionPayload.ReceiptsRoot = common.Hash{}
 
-	res, err = api.ExecuteStatelessPayloadV3(*envelope.ExecutionPayload, []common.Hash{}, &common.Hash{42}, *res2.Witness)
+	res, err = api.ExecuteStatelessPayloadV3(*envelope.SilaExecutionPayload, []common.Hash{}, &common.Hash{42}, *res2.Witness)
 	if err != nil {
 		t.Fatalf("error executing stateless payload witness: %v", err)
 	}

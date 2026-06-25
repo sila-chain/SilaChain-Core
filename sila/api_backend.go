@@ -330,9 +330,9 @@ func (b *SilaAPIBackend) SubscribeChainHeadEvent(ch chan<- core.ChainHeadEvent) 
 	return b.sila.BlockChain().SubscribeChainHeadEvent(ch)
 }
 
-// SubscribeNewPayloadEvent registers a subscription for NewPayloadEvent.
-func (b *SilaAPIBackend) SubscribeNewPayloadEvent(ch chan<- core.NewPayloadEvent) event.Subscription {
-	return b.sila.BlockChain().SubscribeNewPayloadEvent(ch)
+// SubscribeSilaNewPayloadEvent registers a subscription for SilaNewPayloadEvent.
+func (b *SilaAPIBackend) SubscribeSilaNewPayloadEvent(ch chan<- core.SilaNewPayloadEvent) event.Subscription {
+	return b.sila.BlockChain().SubscribeSilaNewPayloadEvent(ch)
 }
 
 func (b *SilaAPIBackend) SubscribeLogsEvent(ch chan<- []*types.Log) event.Subscription {

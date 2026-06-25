@@ -48,9 +48,9 @@ func makeTestPayload() *ExecutableData {
 
 func TestMarshalJSONRoundtrip(t *testing.T) {
 	witness := hexutil.Bytes{0xde, 0xad}
-	original := ExecutionPayloadEnvelope{
-		ExecutionPayload: makeTestPayload(),
-		BlockValue:       big.NewInt(12345),
+	original := SilaExecutionPayloadEnvelope{
+		SilaExecutionPayload: makeTestPayload(),
+		BlockValue:           big.NewInt(12345),
 		BlobsBundle: &BlobsBundle{
 			Commitments: []hexutil.Bytes{{0x01, 0x02}},
 			Proofs:      []hexutil.Bytes{{0x03, 0x04}},
@@ -66,13 +66,13 @@ func TestMarshalJSONRoundtrip(t *testing.T) {
 		t.Fatalf("MarshalJSON error: %v", err)
 	}
 
-	var decoded ExecutionPayloadEnvelope
+	var decoded SilaExecutionPayloadEnvelope
 	if err := json.Unmarshal(data, &decoded); err != nil {
 		t.Fatalf("UnmarshalJSON error: %v", err)
 	}
 
-	if decoded.ExecutionPayload.Number != original.ExecutionPayload.Number {
-		t.Error("ExecutionPayload.Number mismatch")
+	if decoded.SilaExecutionPayload.Number != original.SilaExecutionPayload.Number {
+		t.Error("SilaExecutionPayload.Number mismatch")
 	}
 	if decoded.BlockValue.Cmp(original.BlockValue) != 0 {
 		t.Errorf("BlockValue mismatch: got %v, want %v", decoded.BlockValue, original.BlockValue)
@@ -92,31 +92,31 @@ func TestMarshalJSONRoundtrip(t *testing.T) {
 }
 
 func TestMarshalJSONNilPayload(t *testing.T) {
-	env := ExecutionPayloadEnvelope{
-		ExecutionPayload: nil,
-		BlockValue:       big.NewInt(1),
+	env := SilaExecutionPayloadEnvelope{
+		SilaExecutionPayload: nil,
+		BlockValue:           big.NewInt(1),
 	}
 	_, err := env.MarshalJSON()
 	if err == nil {
-		t.Fatal("expected error for nil ExecutionPayload")
+		t.Fatal("expected error for nil SilaExecutionPayload")
 	}
 }
 
-// TestExecutionPayloadEnvelopeFieldCoverage guards against structural drift.
-// If a field is added to or removed from ExecutionPayloadEnvelope, this test
+// TestSilaExecutionPayloadEnvelopeFieldCoverage guards against structural drift.
+// If a field is added to or removed from SilaExecutionPayloadEnvelope, this test
 // fails, reminding the developer to update MarshalJSON in marshal_epe.go.
-func TestExecutionPayloadEnvelopeFieldCoverage(t *testing.T) {
+func TestSilaExecutionPayloadEnvelopeFieldCoverage(t *testing.T) {
 	expected := []string{
-		"ExecutionPayload",
+		"SilaExecutionPayload",
 		"BlockValue",
 		"BlobsBundle",
 		"Requests",
 		"Override",
 		"Witness",
 	}
-	typ := reflect.TypeOf(ExecutionPayloadEnvelope{})
+	typ := reflect.TypeOf(SilaExecutionPayloadEnvelope{})
 	if typ.NumField() != len(expected) {
-		t.Fatalf("ExecutionPayloadEnvelope has %d fields, expected %d — update MarshalJSON in marshal_epe.go",
+		t.Fatalf("SilaExecutionPayloadEnvelope has %d fields, expected %d — update MarshalJSON in marshal_epe.go",
 			typ.NumField(), len(expected))
 	}
 	for i, name := range expected {

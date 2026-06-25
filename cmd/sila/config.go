@@ -312,7 +312,7 @@ func makeFullNode(ctx *cli.Context) *node.Node {
 		blsyncer.SetEngineRPC(rpc.DialInProc(srv))
 		stack.RegisterLifecycle(blsyncer)
 	} else {
-		// Launch the silaEngine API for interacting with external consensus client.
+		// Launch the silaSilaEngine API for interacting with external consensus client.
 		err := catalyst.Register(stack, sila)
 		if err != nil {
 			utils.Fatalf("failed to register catalyst service: %v", err)

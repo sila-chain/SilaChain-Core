@@ -555,12 +555,12 @@ func (bc *BlockChain) SubscribeBlockProcessingEvent(ch chan<- bool) event.Subscr
 	return bc.scope.Track(bc.blockProcFeed.Subscribe(ch))
 }
 
-// SubscribeNewPayloadEvent registers a subscription for NewPayloadEvent.
-func (bc *BlockChain) SubscribeNewPayloadEvent(ch chan<- NewPayloadEvent) event.Subscription {
+// SubscribeSilaNewPayloadEvent registers a subscription for SilaNewPayloadEvent.
+func (bc *BlockChain) SubscribeSilaNewPayloadEvent(ch chan<- SilaNewPayloadEvent) event.Subscription {
 	return bc.scope.Track(bc.newPayloadFeed.Subscribe(ch))
 }
 
-// SendNewPayloadEvent sends a NewPayloadEvent to subscribers.
-func (bc *BlockChain) SendNewPayloadEvent(ev NewPayloadEvent) {
+// SendSilaNewPayloadEvent sends a SilaNewPayloadEvent to subscribers.
+func (bc *BlockChain) SendSilaNewPayloadEvent(ev SilaNewPayloadEvent) {
 	bc.newPayloadFeed.Send(ev)
 }

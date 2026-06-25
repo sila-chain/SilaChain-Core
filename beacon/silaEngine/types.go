@@ -29,42 +29,42 @@ import (
 	"github.com/sila-org/sila/trie"
 )
 
-// PayloadVersion denotes the version of PayloadAttributes used to request the
+// PayloadVersion denotes the version of SilaPayloadAttributes used to request the
 // building of the payload to commence.
 type PayloadVersion byte
 
 var (
-	// PayloadV1 is the identifier of ExecutionPayloadV1 introduced in paris fork.
+	// PayloadV1 is the identifier of SilaExecutionPayloadV1 introduced in paris fork.
 	// https://github.com/sila-org/execution-apis/blob/main/src/silaEngine/paris.md#executionpayloadv1
 	PayloadV1 PayloadVersion = 0x1
 
-	// PayloadV2 is the identifier of ExecutionPayloadV2 introduced in shanghai fork.
+	// PayloadV2 is the identifier of SilaExecutionPayloadV2 introduced in shanghai fork.
 	//
 	// https://github.com/sila-org/execution-apis/blob/main/src/silaEngine/shanghai.md#executionpayloadv2
-	// ExecutionPayloadV2 has the syntax of ExecutionPayloadV1 and appends a
+	// SilaExecutionPayloadV2 has the syntax of SilaExecutionPayloadV1 and appends a
 	// single field: withdrawals.
 	PayloadV2 PayloadVersion = 0x2
 
-	// PayloadV3 is the identifier of ExecutionPayloadV3 introduced in cancun fork.
+	// PayloadV3 is the identifier of SilaExecutionPayloadV3 introduced in cancun fork.
 	//
 	// https://github.com/sila-org/execution-apis/blob/main/src/silaEngine/cancun.md#executionpayloadv3
-	// ExecutionPayloadV3 has the syntax of ExecutionPayloadV2 and appends the new
+	// SilaExecutionPayloadV3 has the syntax of SilaExecutionPayloadV2 and appends the new
 	// fields: blobGasUsed and excessBlobGas.
 	PayloadV3 PayloadVersion = 0x3
 
-	// PayloadV4 is the identifier of ExecutionPayloadV4 introduced in amsterdam fork.
+	// PayloadV4 is the identifier of SilaExecutionPayloadV4 introduced in amsterdam fork.
 	//
 	// https://github.com/sila-org/execution-apis/blob/main/src/silaEngine/amsterdam.md#executionpayloadv4
-	// ExecutionPayloadV4 has the syntax of ExecutionPayloadV3 and appends the new
+	// SilaExecutionPayloadV4 has the syntax of SilaExecutionPayloadV3 and appends the new
 	// field slotNumber.
 	PayloadV4 PayloadVersion = 0x4
 )
 
-//go:generate go run github.com/fjl/gencodec -type PayloadAttributes -field-override payloadAttributesMarshaling -out pa_codec.go
+//go:generate go run github.com/fjl/gencodec -type SilaPayloadAttributes -field-override payloadAttributesMarshaling -out pa_codec.go
 
-// PayloadAttributes describes the environment context in which a block should
+// SilaPayloadAttributes describes the environment context in which a block should
 // be built.
-type PayloadAttributes struct {
+type SilaPayloadAttributes struct {
 	Timestamp             uint64              `json:"timestamp"             gencodec:"required"`
 	Random                common.Hash         `json:"prevRandao"            gencodec:"required"`
 	SuggestedFeeRecipient common.Address      `json:"suggestedFeeRecipient" gencodec:"required"`
@@ -73,7 +73,7 @@ type PayloadAttributes struct {
 	SlotNumber            *uint64             `json:"slotNumber"`
 }
 
-// JSON type overrides for PayloadAttributes.
+// JSON type overrides for SilaPayloadAttributes.
 type payloadAttributesMarshaling struct {
 	Timestamp  hexutil.Uint64
 	SlotNumber *hexutil.Uint64
@@ -127,18 +127,18 @@ type StatelessPayloadStatusV1 struct {
 	ValidationError *string     `json:"validationError"`
 }
 
-//go:generate go run github.com/fjl/gencodec -enc=false -type ExecutionPayloadEnvelope -field-override executionPayloadEnvelopeMarshaling -out epe_decode.go
+//go:generate go run github.com/fjl/gencodec -enc=false -type SilaExecutionPayloadEnvelope -field-override executionPayloadEnvelopeMarshaling -out epe_decode.go
 
-type ExecutionPayloadEnvelope struct {
-	ExecutionPayload *ExecutableData `json:"executionPayload"  gencodec:"required"`
-	BlockValue       *big.Int        `json:"blockValue"  gencodec:"required"`
-	BlobsBundle      *BlobsBundle    `json:"blobsBundle"`
-	Requests         [][]byte        `json:"executionRequests"`
-	Override         bool            `json:"shouldOverrideBuilder"`
-	Witness          *hexutil.Bytes  `json:"witness,omitempty"`
+type SilaExecutionPayloadEnvelope struct {
+	SilaExecutionPayload *ExecutableData `json:"executionPayload"  gencodec:"required"`
+	BlockValue           *big.Int        `json:"blockValue"  gencodec:"required"`
+	BlobsBundle          *BlobsBundle    `json:"blobsBundle"`
+	Requests             [][]byte        `json:"executionRequests"`
+	Override             bool            `json:"shouldOverrideBuilder"`
+	Witness              *hexutil.Bytes  `json:"witness,omitempty"`
 }
 
-// JSON type overrides for ExecutionPayloadEnvelope.
+// JSON type overrides for SilaExecutionPayloadEnvelope.
 type executionPayloadEnvelopeMarshaling struct {
 	BlockValue *hexutil.Big
 	Requests   []hexutil.Bytes
@@ -352,7 +352,7 @@ func ExecutableDataToBlockNoHash(data ExecutableData, versionedHashes []common.H
 
 // BlockToExecutableData constructs the ExecutableData structure by filling the
 // fields from the given block. It assumes the given block is post-merge block.
-func BlockToExecutableData(block *types.Block, fees *big.Int, sidecars []*types.BlobTxSidecar, requests [][]byte) *ExecutionPayloadEnvelope {
+func BlockToExecutableData(block *types.Block, fees *big.Int, sidecars []*types.BlobTxSidecar, requests [][]byte) *SilaExecutionPayloadEnvelope {
 	data := &ExecutableData{
 		BlockHash:       block.Hash(),
 		ParentHash:      block.ParentHash(),
@@ -400,17 +400,17 @@ func BlockToExecutableData(block *types.Block, fees *big.Int, sidecars []*types.
 		}
 	}
 
-	return &ExecutionPayloadEnvelope{
-		ExecutionPayload: data,
-		BlockValue:       fees,
-		BlobsBundle:      &bundle,
-		Requests:         requests,
-		Override:         false,
+	return &SilaExecutionPayloadEnvelope{
+		SilaExecutionPayload: data,
+		BlockValue:           fees,
+		BlobsBundle:          &bundle,
+		Requests:             requests,
+		Override:             false,
 	}
 }
 
-// ExecutionPayloadBody is used in the response to GetPayloadBodiesByHash and GetPayloadBodiesByRange
-type ExecutionPayloadBody struct {
+// SilaExecutionPayloadBody is used in the response to GetPayloadBodiesByHash and GetPayloadBodiesByRange
+type SilaExecutionPayloadBody struct {
 	TransactionData []hexutil.Bytes     `json:"transactions"`
 	Withdrawals     []*types.Withdrawal `json:"withdrawals"`
 }

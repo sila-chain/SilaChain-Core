@@ -33,9 +33,9 @@ import (
 	"github.com/sila-org/sila/rlp"
 )
 
-// ForkchoiceUpdatedWithWitnessV1 is analogous to ForkchoiceUpdatedV1, only it
+// SilaForkchoiceUpdatedWithWitnessV1 is analogous to SilaForkchoiceUpdatedV1, only it
 // generates an execution witness too if block building was requested.
-func (api *ConsensusAPI) ForkchoiceUpdatedWithWitnessV1(ctx context.Context, update silaEngine.ForkchoiceStateV1, payloadAttributes *silaEngine.PayloadAttributes) (silaEngine.ForkChoiceResponse, error) {
+func (api *ConsensusAPI) SilaForkchoiceUpdatedWithWitnessV1(ctx context.Context, update silaEngine.ForkchoiceStateV1, payloadAttributes *silaEngine.SilaPayloadAttributes) (silaEngine.ForkChoiceResponse, error) {
 	if payloadAttributes != nil {
 		switch {
 		case payloadAttributes.Withdrawals != nil || payloadAttributes.BeaconRoot != nil:
@@ -47,9 +47,9 @@ func (api *ConsensusAPI) ForkchoiceUpdatedWithWitnessV1(ctx context.Context, upd
 	return api.forkchoiceUpdated(ctx, update, payloadAttributes, silaEngine.PayloadV1, true)
 }
 
-// ForkchoiceUpdatedWithWitnessV2 is analogous to ForkchoiceUpdatedV2, only it
+// SilaForkchoiceUpdatedWithWitnessV2 is analogous to SilaForkchoiceUpdatedV2, only it
 // generates an execution witness too if block building was requested.
-func (api *ConsensusAPI) ForkchoiceUpdatedWithWitnessV2(ctx context.Context, update silaEngine.ForkchoiceStateV1, params *silaEngine.PayloadAttributes) (silaEngine.ForkChoiceResponse, error) {
+func (api *ConsensusAPI) SilaForkchoiceUpdatedWithWitnessV2(ctx context.Context, update silaEngine.ForkchoiceStateV1, params *silaEngine.SilaPayloadAttributes) (silaEngine.ForkChoiceResponse, error) {
 	if params != nil {
 		switch {
 		case params.BeaconRoot != nil:
@@ -65,9 +65,9 @@ func (api *ConsensusAPI) ForkchoiceUpdatedWithWitnessV2(ctx context.Context, upd
 	return api.forkchoiceUpdated(ctx, update, params, silaEngine.PayloadV2, true)
 }
 
-// ForkchoiceUpdatedWithWitnessV3 is analogous to ForkchoiceUpdatedV3, only it
+// SilaForkchoiceUpdatedWithWitnessV3 is analogous to SilaForkchoiceUpdatedV3, only it
 // generates an execution witness too if block building was requested.
-func (api *ConsensusAPI) ForkchoiceUpdatedWithWitnessV3(ctx context.Context, update silaEngine.ForkchoiceStateV1, params *silaEngine.PayloadAttributes) (silaEngine.ForkChoiceResponse, error) {
+func (api *ConsensusAPI) SilaForkchoiceUpdatedWithWitnessV3(ctx context.Context, update silaEngine.ForkchoiceStateV1, params *silaEngine.SilaPayloadAttributes) (silaEngine.ForkChoiceResponse, error) {
 	if params != nil {
 		switch {
 		case params.Withdrawals == nil:
@@ -85,18 +85,18 @@ func (api *ConsensusAPI) ForkchoiceUpdatedWithWitnessV3(ctx context.Context, upd
 	return api.forkchoiceUpdated(ctx, update, params, silaEngine.PayloadV3, true)
 }
 
-// NewPayloadWithWitnessV1 is analogous to NewPayloadV1, only it also generates
+// SilaNewPayloadWithWitnessV1 is analogous to SilaNewPayloadV1, only it also generates
 // and returns a stateless witness after running the payload.
-func (api *ConsensusAPI) NewPayloadWithWitnessV1(ctx context.Context, params silaEngine.ExecutableData) (silaEngine.PayloadStatusV1, error) {
+func (api *ConsensusAPI) SilaNewPayloadWithWitnessV1(ctx context.Context, params silaEngine.ExecutableData) (silaEngine.PayloadStatusV1, error) {
 	if params.Withdrawals != nil {
 		return silaEngine.PayloadStatusV1{Status: silaEngine.INVALID}, silaEngine.InvalidParams.With(errors.New("withdrawals not supported in V1"))
 	}
 	return api.newPayload(ctx, params, nil, nil, nil, true)
 }
 
-// NewPayloadWithWitnessV2 is analogous to NewPayloadV2, only it also generates
+// SilaNewPayloadWithWitnessV2 is analogous to SilaNewPayloadV2, only it also generates
 // and returns a stateless witness after running the payload.
-func (api *ConsensusAPI) NewPayloadWithWitnessV2(ctx context.Context, params silaEngine.ExecutableData) (silaEngine.PayloadStatusV1, error) {
+func (api *ConsensusAPI) SilaNewPayloadWithWitnessV2(ctx context.Context, params silaEngine.ExecutableData) (silaEngine.PayloadStatusV1, error) {
 	var (
 		cancun   = api.config().IsCancun(api.config().LondonBlock, params.Timestamp)
 		shanghai = api.config().IsShanghai(api.config().LondonBlock, params.Timestamp)
@@ -116,9 +116,9 @@ func (api *ConsensusAPI) NewPayloadWithWitnessV2(ctx context.Context, params sil
 	return api.newPayload(ctx, params, nil, nil, nil, true)
 }
 
-// NewPayloadWithWitnessV3 is analogous to NewPayloadV3, only it also generates
+// SilaNewPayloadWithWitnessV3 is analogous to SilaNewPayloadV3, only it also generates
 // and returns a stateless witness after running the payload.
-func (api *ConsensusAPI) NewPayloadWithWitnessV3(ctx context.Context, params silaEngine.ExecutableData, versionedHashes []common.Hash, beaconRoot *common.Hash) (silaEngine.PayloadStatusV1, error) {
+func (api *ConsensusAPI) SilaNewPayloadWithWitnessV3(ctx context.Context, params silaEngine.ExecutableData, versionedHashes []common.Hash, beaconRoot *common.Hash) (silaEngine.PayloadStatusV1, error) {
 	switch {
 	case params.Withdrawals == nil:
 		return invalidStatus, paramsErr("nil withdrawals post-shanghai")
@@ -136,9 +136,9 @@ func (api *ConsensusAPI) NewPayloadWithWitnessV3(ctx context.Context, params sil
 	return api.newPayload(ctx, params, versionedHashes, beaconRoot, nil, true)
 }
 
-// NewPayloadWithWitnessV4 is analogous to NewPayloadV4, only it also generates
+// SilaNewPayloadWithWitnessV4 is analogous to SilaNewPayloadV4, only it also generates
 // and returns a stateless witness after running the payload.
-func (api *ConsensusAPI) NewPayloadWithWitnessV4(ctx context.Context, params silaEngine.ExecutableData, versionedHashes []common.Hash, beaconRoot *common.Hash, executionRequests []hexutil.Bytes) (silaEngine.PayloadStatusV1, error) {
+func (api *ConsensusAPI) SilaNewPayloadWithWitnessV4(ctx context.Context, params silaEngine.ExecutableData, versionedHashes []common.Hash, beaconRoot *common.Hash, executionRequests []hexutil.Bytes) (silaEngine.PayloadStatusV1, error) {
 	switch {
 	case params.Withdrawals == nil:
 		return invalidStatus, paramsErr("nil withdrawals post-shanghai")
@@ -162,9 +162,9 @@ func (api *ConsensusAPI) NewPayloadWithWitnessV4(ctx context.Context, params sil
 	return api.newPayload(ctx, params, versionedHashes, beaconRoot, requests, true)
 }
 
-// NewPayloadWithWitnessV5 is analogous to NewPayloadV5, only it also generates
+// SilaNewPayloadWithWitnessV5 is analogous to SilaNewPayloadV5, only it also generates
 // and returns a stateless witness after running the payload.
-func (api *ConsensusAPI) NewPayloadWithWitnessV5(ctx context.Context, params silaEngine.ExecutableData, versionedHashes []common.Hash, beaconRoot *common.Hash, executionRequests []hexutil.Bytes) (silaEngine.PayloadStatusV1, error) {
+func (api *ConsensusAPI) SilaNewPayloadWithWitnessV5(ctx context.Context, params silaEngine.ExecutableData, versionedHashes []common.Hash, beaconRoot *common.Hash, executionRequests []hexutil.Bytes) (silaEngine.PayloadStatusV1, error) {
 	switch {
 	case params.Withdrawals == nil:
 		return invalidStatus, paramsErr("nil withdrawals post-shanghai")
@@ -192,7 +192,7 @@ func (api *ConsensusAPI) NewPayloadWithWitnessV5(ctx context.Context, params sil
 	return api.newPayload(ctx, params, versionedHashes, beaconRoot, requests, true)
 }
 
-// ExecuteStatelessPayloadV1 is analogous to NewPayloadV1, only it operates in
+// ExecuteStatelessPayloadV1 is analogous to SilaNewPayloadV1, only it operates in
 // a stateless mode on top of a provided witness instead of the local database.
 func (api *ConsensusAPI) ExecuteStatelessPayloadV1(params silaEngine.ExecutableData, opaqueWitness hexutil.Bytes) (silaEngine.StatelessPayloadStatusV1, error) {
 	if params.Withdrawals != nil {
@@ -201,7 +201,7 @@ func (api *ConsensusAPI) ExecuteStatelessPayloadV1(params silaEngine.ExecutableD
 	return api.executeStatelessPayload(params, nil, nil, nil, opaqueWitness)
 }
 
-// ExecuteStatelessPayloadV2 is analogous to NewPayloadV2, only it operates in
+// ExecuteStatelessPayloadV2 is analogous to SilaNewPayloadV2, only it operates in
 // a stateless mode on top of a provided witness instead of the local database.
 func (api *ConsensusAPI) ExecuteStatelessPayloadV2(params silaEngine.ExecutableData, opaqueWitness hexutil.Bytes) (silaEngine.StatelessPayloadStatusV1, error) {
 	var (
@@ -223,7 +223,7 @@ func (api *ConsensusAPI) ExecuteStatelessPayloadV2(params silaEngine.ExecutableD
 	return api.executeStatelessPayload(params, nil, nil, nil, opaqueWitness)
 }
 
-// ExecuteStatelessPayloadV3 is analogous to NewPayloadV3, only it operates in
+// ExecuteStatelessPayloadV3 is analogous to SilaNewPayloadV3, only it operates in
 // a stateless mode on top of a provided witness instead of the local database.
 func (api *ConsensusAPI) ExecuteStatelessPayloadV3(params silaEngine.ExecutableData, versionedHashes []common.Hash, beaconRoot *common.Hash, opaqueWitness hexutil.Bytes) (silaEngine.StatelessPayloadStatusV1, error) {
 	switch {
@@ -243,7 +243,7 @@ func (api *ConsensusAPI) ExecuteStatelessPayloadV3(params silaEngine.ExecutableD
 	return api.executeStatelessPayload(params, versionedHashes, beaconRoot, nil, opaqueWitness)
 }
 
-// ExecuteStatelessPayloadV4 is analogous to NewPayloadV4, only it operates in
+// ExecuteStatelessPayloadV4 is analogous to SilaNewPayloadV4, only it operates in
 // a stateless mode on top of a provided witness instead of the local database.
 func (api *ConsensusAPI) ExecuteStatelessPayloadV4(params silaEngine.ExecutableData, versionedHashes []common.Hash, beaconRoot *common.Hash, executionRequests []hexutil.Bytes, opaqueWitness hexutil.Bytes) (silaEngine.StatelessPayloadStatusV1, error) {
 	switch {
@@ -311,7 +311,7 @@ func (api *ConsensusAPI) executeStatelessPayload(params silaEngine.ExecutableDat
 		return silaEngine.StatelessPayloadStatusV1{Status: silaEngine.INVALID, ValidationError: &errorMsg}, nil
 	}
 	// Stash away the last update to warn the user if the beacon client goes offline
-	api.lastNewPayloadUpdate.Store(time.Now().Unix())
+	api.lastSilaNewPayloadUpdate.Store(time.Now().Unix())
 
 	log.Trace("Executing block statelessly", "number", block.Number(), "hash", params.BlockHash)
 	stateRoot, receiptRoot, err := core.ExecuteStateless(context.Background(), api.config(), vm.Config{}, block, witness)

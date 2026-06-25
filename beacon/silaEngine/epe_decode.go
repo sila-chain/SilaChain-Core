@@ -13,25 +13,25 @@ import (
 var _ = (*executionPayloadEnvelopeMarshaling)(nil)
 
 // UnmarshalJSON unmarshals from JSON.
-func (e *ExecutionPayloadEnvelope) UnmarshalJSON(input []byte) error {
-	type ExecutionPayloadEnvelope struct {
-		ExecutionPayload *ExecutableData `json:"executionPayload"  gencodec:"required"`
-		BlockValue       *hexutil.Big    `json:"blockValue"  gencodec:"required"`
-		BlobsBundle      *BlobsBundle    `json:"blobsBundle"`
-		Requests         []hexutil.Bytes `json:"executionRequests"`
-		Override         *bool           `json:"shouldOverrideBuilder"`
-		Witness          *hexutil.Bytes  `json:"witness,omitempty"`
+func (e *SilaExecutionPayloadEnvelope) UnmarshalJSON(input []byte) error {
+	type SilaExecutionPayloadEnvelope struct {
+		SilaExecutionPayload *ExecutableData `json:"executionPayload"  gencodec:"required"`
+		BlockValue           *hexutil.Big    `json:"blockValue"  gencodec:"required"`
+		BlobsBundle          *BlobsBundle    `json:"blobsBundle"`
+		Requests             []hexutil.Bytes `json:"executionRequests"`
+		Override             *bool           `json:"shouldOverrideBuilder"`
+		Witness              *hexutil.Bytes  `json:"witness,omitempty"`
 	}
-	var dec ExecutionPayloadEnvelope
+	var dec SilaExecutionPayloadEnvelope
 	if err := json.Unmarshal(input, &dec); err != nil {
 		return err
 	}
-	if dec.ExecutionPayload == nil {
-		return errors.New("missing required field 'executionPayload' for ExecutionPayloadEnvelope")
+	if dec.SilaExecutionPayload == nil {
+		return errors.New("missing required field 'executionPayload' for SilaExecutionPayloadEnvelope")
 	}
-	e.ExecutionPayload = dec.ExecutionPayload
+	e.SilaExecutionPayload = dec.SilaExecutionPayload
 	if dec.BlockValue == nil {
-		return errors.New("missing required field 'blockValue' for ExecutionPayloadEnvelope")
+		return errors.New("missing required field 'blockValue' for SilaExecutionPayloadEnvelope")
 	}
 	e.BlockValue = (*big.Int)(dec.BlockValue)
 	if dec.BlobsBundle != nil {

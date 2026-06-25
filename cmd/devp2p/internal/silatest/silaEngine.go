@@ -52,8 +52,8 @@ func (ec *SilaEngineClient) token() string {
 	return token
 }
 
-// sendForkchoiceUpdated sends an fcu for the head of the generated chain.
-func (ec *SilaEngineClient) sendForkchoiceUpdated() error {
+// sendSilaForkchoiceUpdated sends an fcu for the head of the generated chain.
+func (ec *SilaEngineClient) sendSilaForkchoiceUpdated() error {
 	var (
 		req, _ = http.NewRequest(http.MethodPost, ec.url, io.NopCloser(bytes.NewReader(ec.headfcu)))
 		header = make(http.Header)

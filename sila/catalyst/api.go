@@ -47,7 +47,7 @@ import (
 	"github.com/sila-org/sila/sila/silaconfig"
 )
 
-// Register adds the silaEngine API and related APIs to the full node.
+// Register adds the silaSilaEngine API and related APIs to the full node.
 func Register(stack *node.Node, backend *sila.Sila) error {
 	stack.RegisterAPIs([]rpc.API{
 		newTestingAPI(backend),
@@ -119,12 +119,12 @@ type ConsensusAPI struct {
 	// Sila can appear to be stuck or do strange things if the beacon client is
 	// offline or is sending us strange data. Stash some update stats away so
 	// that we can warn the user and not have them open issues on our tracker.
-	lastTransitionUpdate atomic.Int64
-	lastForkchoiceUpdate atomic.Int64
-	lastNewPayloadUpdate atomic.Int64
+	lastTransitionUpdate     atomic.Int64
+	lastForkchoiceUpdate     atomic.Int64
+	lastSilaNewPayloadUpdate atomic.Int64
 
 	forkchoiceLock sync.Mutex // Lock for the forkChoiceUpdated method
-	newPayloadLock sync.Mutex // Lock for the NewPayload method
+	newPayloadLock sync.Mutex // Lock for the SilaNewPayload method
 }
 
 // NewConsensusAPI creates a new consensus api for the given backend.
@@ -154,7 +154,7 @@ func newConsensusAPIWithoutHeartbeat(sila *sila.Sila) *ConsensusAPI {
 	return api
 }
 
-// ForkchoiceUpdatedV1 has several responsibilities:
+// SilaForkchoiceUpdatedV1 has several responsibilities:
 //
 // We try to set our blockchain to the headBlock.
 //
@@ -165,7 +165,7 @@ func newConsensusAPIWithoutHeartbeat(sila *sila.Sila) *ConsensusAPI {
 //
 // If there are payloadAttributes: we try to assemble a block with the payloadAttributes
 // and return its payloadID.
-func (api *ConsensusAPI) ForkchoiceUpdatedV1(ctx context.Context, update silaEngine.ForkchoiceStateV1, payloadAttributes *silaEngine.PayloadAttributes) (silaEngine.ForkChoiceResponse, error) {
+func (api *ConsensusAPI) SilaForkchoiceUpdatedV1(ctx context.Context, update silaEngine.ForkchoiceStateV1, payloadAttributes *silaEngine.SilaPayloadAttributes) (silaEngine.ForkChoiceResponse, error) {
 	if payloadAttributes != nil {
 		switch {
 		case payloadAttributes.Withdrawals != nil || payloadAttributes.BeaconRoot != nil:
@@ -177,9 +177,9 @@ func (api *ConsensusAPI) ForkchoiceUpdatedV1(ctx context.Context, update silaEng
 	return api.forkchoiceUpdated(ctx, update, payloadAttributes, silaEngine.PayloadV1, false)
 }
 
-// ForkchoiceUpdatedV2 is equivalent to V1 with the addition of withdrawals in the payload
-// attributes. It supports both PayloadAttributesV1 and PayloadAttributesV2.
-func (api *ConsensusAPI) ForkchoiceUpdatedV2(ctx context.Context, update silaEngine.ForkchoiceStateV1, params *silaEngine.PayloadAttributes) (silaEngine.ForkChoiceResponse, error) {
+// SilaForkchoiceUpdatedV2 is equivalent to V1 with the addition of withdrawals in the payload
+// attributes. It supports both SilaPayloadAttributesV1 and SilaPayloadAttributesV2.
+func (api *ConsensusAPI) SilaForkchoiceUpdatedV2(ctx context.Context, update silaEngine.ForkchoiceStateV1, params *silaEngine.SilaPayloadAttributes) (silaEngine.ForkChoiceResponse, error) {
 	if params != nil {
 		switch {
 		case params.BeaconRoot != nil:
@@ -195,9 +195,9 @@ func (api *ConsensusAPI) ForkchoiceUpdatedV2(ctx context.Context, update silaEng
 	return api.forkchoiceUpdated(ctx, update, params, silaEngine.PayloadV2, false)
 }
 
-// ForkchoiceUpdatedV3 is equivalent to V2 with the addition of parent beacon block root
-// in the payload attributes. It supports only PayloadAttributesV3.
-func (api *ConsensusAPI) ForkchoiceUpdatedV3(ctx context.Context, update silaEngine.ForkchoiceStateV1, params *silaEngine.PayloadAttributes) (silaEngine.ForkChoiceResponse, error) {
+// SilaForkchoiceUpdatedV3 is equivalent to V2 with the addition of parent beacon block root
+// in the payload attributes. It supports only SilaPayloadAttributesV3.
+func (api *ConsensusAPI) SilaForkchoiceUpdatedV3(ctx context.Context, update silaEngine.ForkchoiceStateV1, params *silaEngine.SilaPayloadAttributes) (silaEngine.ForkChoiceResponse, error) {
 	if params != nil {
 		switch {
 		case params.Withdrawals == nil:
@@ -215,9 +215,9 @@ func (api *ConsensusAPI) ForkchoiceUpdatedV3(ctx context.Context, update silaEng
 	return api.forkchoiceUpdated(ctx, update, params, silaEngine.PayloadV3, false)
 }
 
-// ForkchoiceUpdatedV4 is equivalent to V3 with the addition of slot number
-// in the payload attributes. It supports only PayloadAttributesV4.
-func (api *ConsensusAPI) ForkchoiceUpdatedV4(ctx context.Context, update silaEngine.ForkchoiceStateV1, params *silaEngine.PayloadAttributes) (silaEngine.ForkChoiceResponse, error) {
+// SilaForkchoiceUpdatedV4 is equivalent to V3 with the addition of slot number
+// in the payload attributes. It supports only SilaPayloadAttributesV4.
+func (api *ConsensusAPI) SilaForkchoiceUpdatedV4(ctx context.Context, update silaEngine.ForkchoiceStateV1, params *silaEngine.SilaPayloadAttributes) (silaEngine.ForkChoiceResponse, error) {
 	if params != nil {
 		switch {
 		case params.Withdrawals == nil:
@@ -237,14 +237,14 @@ func (api *ConsensusAPI) ForkchoiceUpdatedV4(ctx context.Context, update silaEng
 	return api.forkchoiceUpdated(ctx, update, params, silaEngine.PayloadV4, false)
 }
 
-func (api *ConsensusAPI) forkchoiceUpdated(ctx context.Context, update silaEngine.ForkchoiceStateV1, payloadAttributes *silaEngine.PayloadAttributes, payloadVersion silaEngine.PayloadVersion, payloadWitness bool) (result silaEngine.ForkChoiceResponse, err error) {
+func (api *ConsensusAPI) forkchoiceUpdated(ctx context.Context, update silaEngine.ForkchoiceStateV1, payloadAttributes *silaEngine.SilaPayloadAttributes, payloadVersion silaEngine.PayloadVersion, payloadWitness bool) (result silaEngine.ForkChoiceResponse, err error) {
 	ctx, _, spanEnd := telemetry.StartSpan(ctx, "silaEngine.forkchoiceUpdated")
 	defer spanEnd(&err)
 
 	api.forkchoiceLock.Lock()
 	defer api.forkchoiceLock.Unlock()
 
-	log.Trace("SilaEngine API request received", "method", "ForkchoiceUpdated", "head", update.HeadBlockHash, "finalized", update.FinalizedBlockHash, "safe", update.SafeBlockHash)
+	log.Trace("SilaEngine API request received", "method", "SilaForkchoiceUpdated", "head", update.HeadBlockHash, "finalized", update.FinalizedBlockHash, "safe", update.SafeBlockHash)
 	if update.HeadBlockHash == (common.Hash{}) {
 		log.Warn("Forkchoice requested update to zero hash")
 		return silaEngine.STATUS_INVALID, nil // TODO(karalabe): Why does someone send us this?
@@ -397,7 +397,7 @@ func (api *ConsensusAPI) forkchoiceUpdated(ctx context.Context, update silaEngin
 		payload, err := api.sila.Miner().BuildPayload(ctx, args, payloadWitness)
 		if err != nil {
 			log.Error("Failed to build payload", "err", err)
-			return valid(nil), silaEngine.InvalidPayloadAttributes.With(err)
+			return valid(nil), silaEngine.InvalidSilaPayloadAttributes.With(err)
 		}
 		api.localBlocks.put(id, payload)
 		return valid(&id), nil
@@ -444,11 +444,11 @@ func (api *ConsensusAPI) GetPayloadV1(payloadID silaEngine.PayloadID) (*silaEngi
 	if err != nil {
 		return nil, err
 	}
-	return data.ExecutionPayload, nil
+	return data.SilaExecutionPayload, nil
 }
 
 // GetPayloadV2 returns a cached payload by id.
-func (api *ConsensusAPI) GetPayloadV2(payloadID silaEngine.PayloadID) (*silaEngine.ExecutionPayloadEnvelope, error) {
+func (api *ConsensusAPI) GetPayloadV2(payloadID silaEngine.PayloadID) (*silaEngine.SilaExecutionPayloadEnvelope, error) {
 	return api.getPayload(
 		payloadID,
 		false,
@@ -459,7 +459,7 @@ func (api *ConsensusAPI) GetPayloadV2(payloadID silaEngine.PayloadID) (*silaEngi
 
 // GetPayloadV3 returns a cached payload by id. This endpoint should only
 // be used for the Cancun fork.
-func (api *ConsensusAPI) GetPayloadV3(payloadID silaEngine.PayloadID) (*silaEngine.ExecutionPayloadEnvelope, error) {
+func (api *ConsensusAPI) GetPayloadV3(payloadID silaEngine.PayloadID) (*silaEngine.SilaExecutionPayloadEnvelope, error) {
 	return api.getPayload(
 		payloadID,
 		false,
@@ -470,7 +470,7 @@ func (api *ConsensusAPI) GetPayloadV3(payloadID silaEngine.PayloadID) (*silaEngi
 
 // GetPayloadV4 returns a cached payload by id. This endpoint should only
 // be used for the Prague fork.
-func (api *ConsensusAPI) GetPayloadV4(payloadID silaEngine.PayloadID) (*silaEngine.ExecutionPayloadEnvelope, error) {
+func (api *ConsensusAPI) GetPayloadV4(payloadID silaEngine.PayloadID) (*silaEngine.SilaExecutionPayloadEnvelope, error) {
 	return api.getPayload(
 		payloadID,
 		false,
@@ -484,7 +484,7 @@ func (api *ConsensusAPI) GetPayloadV4(payloadID silaEngine.PayloadID) (*silaEngi
 //
 // This method follows the same specification as silaEngine_getPayloadV4 with
 // changes of returning BlobsBundleV2 with BlobSidecar version 1.
-func (api *ConsensusAPI) GetPayloadV5(payloadID silaEngine.PayloadID) (*silaEngine.ExecutionPayloadEnvelope, error) {
+func (api *ConsensusAPI) GetPayloadV5(payloadID silaEngine.PayloadID) (*silaEngine.SilaExecutionPayloadEnvelope, error) {
 	return api.getPayload(
 		payloadID,
 		false,
@@ -501,7 +501,7 @@ func (api *ConsensusAPI) GetPayloadV5(payloadID silaEngine.PayloadID) (*silaEngi
 
 // GetPayloadV6 returns a cached payload by id. This endpoint should only
 // be used after the Amsterdam fork.
-func (api *ConsensusAPI) GetPayloadV6(payloadID silaEngine.PayloadID) (*silaEngine.ExecutionPayloadEnvelope, error) {
+func (api *ConsensusAPI) GetPayloadV6(payloadID silaEngine.PayloadID) (*silaEngine.SilaExecutionPayloadEnvelope, error) {
 	return api.getPayload(
 		payloadID,
 		false,
@@ -515,7 +515,7 @@ func (api *ConsensusAPI) GetPayloadV6(payloadID silaEngine.PayloadID) (*silaEngi
 // endpoint's allowed payload versions and forks.
 //
 // Note passing nil `forks`, `versions` disables the respective check.
-func (api *ConsensusAPI) getPayload(payloadID silaEngine.PayloadID, full bool, versions []silaEngine.PayloadVersion, forks []forks.Fork) (*silaEngine.ExecutionPayloadEnvelope, error) {
+func (api *ConsensusAPI) getPayload(payloadID silaEngine.PayloadID, full bool, versions []silaEngine.PayloadVersion, forks []forks.Fork) (*silaEngine.SilaExecutionPayloadEnvelope, error) {
 	log.Trace("SilaEngine API request received", "method", "GetPayload", "id", payloadID)
 	if versions != nil && !payloadID.Is(versions...) {
 		return nil, silaEngine.UnsupportedFork
@@ -524,7 +524,7 @@ func (api *ConsensusAPI) getPayload(payloadID silaEngine.PayloadID, full bool, v
 	if data == nil {
 		return nil, silaEngine.UnknownPayload
 	}
-	if forks != nil && !api.checkFork(data.ExecutionPayload.Timestamp, forks...) {
+	if forks != nil && !api.checkFork(data.SilaExecutionPayload.Timestamp, forks...) {
 		return nil, silaEngine.UnsupportedFork
 	}
 
@@ -713,19 +713,19 @@ func (api *ConsensusAPI) HasBlobs(hashes []common.Hash) []bool {
 	return api.sila.BlobCache().HasBlobs(context.Background(), hashes)
 }
 
-// Helper for NewPayload* methods.
+// Helper for SilaNewPayload* methods.
 var invalidStatus = silaEngine.PayloadStatusV1{Status: silaEngine.INVALID}
 
-// NewPayloadV1 creates an Eth1 block, inserts it in the chain, and returns the status of the chain.
-func (api *ConsensusAPI) NewPayloadV1(ctx context.Context, params silaEngine.ExecutableData) (silaEngine.PayloadStatusV1, error) {
+// SilaNewPayloadV1 creates an Eth1 block, inserts it in the chain, and returns the status of the chain.
+func (api *ConsensusAPI) SilaNewPayloadV1(ctx context.Context, params silaEngine.ExecutableData) (silaEngine.PayloadStatusV1, error) {
 	if params.Withdrawals != nil {
 		return invalidStatus, paramsErr("withdrawals not supported in V1")
 	}
 	return api.newPayload(ctx, params, nil, nil, nil, false)
 }
 
-// NewPayloadV2 creates an Eth1 block, inserts it in the chain, and returns the status of the chain.
-func (api *ConsensusAPI) NewPayloadV2(ctx context.Context, params silaEngine.ExecutableData) (silaEngine.PayloadStatusV1, error) {
+// SilaNewPayloadV2 creates an Eth1 block, inserts it in the chain, and returns the status of the chain.
+func (api *ConsensusAPI) SilaNewPayloadV2(ctx context.Context, params silaEngine.ExecutableData) (silaEngine.PayloadStatusV1, error) {
 	var (
 		cancun   = api.config().IsCancun(api.config().LondonBlock, params.Timestamp)
 		shanghai = api.config().IsShanghai(api.config().LondonBlock, params.Timestamp)
@@ -745,8 +745,8 @@ func (api *ConsensusAPI) NewPayloadV2(ctx context.Context, params silaEngine.Exe
 	return api.newPayload(ctx, params, nil, nil, nil, false)
 }
 
-// NewPayloadV3 creates an Eth1 block, inserts it in the chain, and returns the status of the chain.
-func (api *ConsensusAPI) NewPayloadV3(ctx context.Context, params silaEngine.ExecutableData, versionedHashes []common.Hash, beaconRoot *common.Hash) (silaEngine.PayloadStatusV1, error) {
+// SilaNewPayloadV3 creates an Eth1 block, inserts it in the chain, and returns the status of the chain.
+func (api *ConsensusAPI) SilaNewPayloadV3(ctx context.Context, params silaEngine.ExecutableData, versionedHashes []common.Hash, beaconRoot *common.Hash) (silaEngine.PayloadStatusV1, error) {
 	switch {
 	case params.Withdrawals == nil:
 		return invalidStatus, paramsErr("nil withdrawals post-shanghai")
@@ -764,8 +764,8 @@ func (api *ConsensusAPI) NewPayloadV3(ctx context.Context, params silaEngine.Exe
 	return api.newPayload(ctx, params, versionedHashes, beaconRoot, nil, false)
 }
 
-// NewPayloadV4 creates an Eth1 block, inserts it in the chain, and returns the status of the chain.
-func (api *ConsensusAPI) NewPayloadV4(ctx context.Context, params silaEngine.ExecutableData, versionedHashes []common.Hash, beaconRoot *common.Hash, executionRequests []hexutil.Bytes) (silaEngine.PayloadStatusV1, error) {
+// SilaNewPayloadV4 creates an Eth1 block, inserts it in the chain, and returns the status of the chain.
+func (api *ConsensusAPI) SilaNewPayloadV4(ctx context.Context, params silaEngine.ExecutableData, versionedHashes []common.Hash, beaconRoot *common.Hash, executionRequests []hexutil.Bytes) (silaEngine.PayloadStatusV1, error) {
 	switch {
 	case params.Withdrawals == nil:
 		return invalidStatus, paramsErr("nil withdrawals post-shanghai")
@@ -789,8 +789,8 @@ func (api *ConsensusAPI) NewPayloadV4(ctx context.Context, params silaEngine.Exe
 	return api.newPayload(ctx, params, versionedHashes, beaconRoot, requests, false)
 }
 
-// NewPayloadV5 creates an Eth1 block, inserts it in the chain, and returns the status of the chain.
-func (api *ConsensusAPI) NewPayloadV5(ctx context.Context, params silaEngine.ExecutableData, versionedHashes []common.Hash, beaconRoot *common.Hash, executionRequests []hexutil.Bytes) (silaEngine.PayloadStatusV1, error) {
+// SilaNewPayloadV5 creates an Eth1 block, inserts it in the chain, and returns the status of the chain.
+func (api *ConsensusAPI) SilaNewPayloadV5(ctx context.Context, params silaEngine.ExecutableData, versionedHashes []common.Hash, beaconRoot *common.Hash, executionRequests []hexutil.Bytes) (silaEngine.PayloadStatusV1, error) {
 	switch {
 	case params.Withdrawals == nil:
 		return invalidStatus, paramsErr("nil withdrawals post-shanghai")
@@ -819,10 +819,10 @@ func (api *ConsensusAPI) NewPayloadV5(ctx context.Context, params silaEngine.Exe
 func (api *ConsensusAPI) newPayload(ctx context.Context, params silaEngine.ExecutableData, versionedHashes []common.Hash, beaconRoot *common.Hash, requests [][]byte, witness bool) (result silaEngine.PayloadStatusV1, err error) {
 	// The locking here is, strictly, not required. Without these locks, this can happen:
 	//
-	// 1. NewPayload( execdata-N ) is invoked from the CL. It goes all the way down to
+	// 1. SilaNewPayload( execdata-N ) is invoked from the CL. It goes all the way down to
 	//      api.sila.BlockChain().InsertBlockWithoutSetHead, where it is blocked on
 	//      e.g database compaction.
-	// 2. The call times out on the CL layer, which issues another NewPayload (execdata-N) call.
+	// 2. The call times out on the CL layer, which issues another SilaNewPayload (execdata-N) call.
 	//    Similarly, this also get stuck on the same place. Importantly, since the
 	//    first call has not gone through, the early checks for "do we already have this block"
 	//    will all return false.
@@ -840,7 +840,7 @@ func (api *ConsensusAPI) newPayload(ctx context.Context, params silaEngine.Execu
 	api.newPayloadLock.Lock()
 	defer api.newPayloadLock.Unlock()
 
-	log.Trace("SilaEngine API request received", "method", "NewPayload", "number", params.Number, "hash", params.BlockHash)
+	log.Trace("SilaEngine API request received", "method", "SilaNewPayload", "number", params.Number, "hash", params.BlockHash)
 	block, err := silaEngine.ExecutableDataToBlock(params, versionedHashes, beaconRoot, requests)
 	if err != nil {
 		bgu := "nil"
@@ -855,7 +855,7 @@ func (api *ConsensusAPI) newPayload(ctx context.Context, params silaEngine.Execu
 		if params.SlotNumber != nil {
 			slotNum = strconv.Itoa(int(*params.SlotNumber))
 		}
-		log.Warn("Invalid NewPayload params",
+		log.Warn("Invalid SilaNewPayload params",
 			"params.Number", params.Number,
 			"params.ParentHash", params.ParentHash,
 			"params.BlockHash", params.BlockHash,
@@ -879,7 +879,7 @@ func (api *ConsensusAPI) newPayload(ctx context.Context, params silaEngine.Execu
 		return api.invalid(err, nil), nil
 	}
 	// Stash away the last update to warn the user if the beacon client goes offline
-	api.lastNewPayloadUpdate.Store(time.Now().Unix())
+	api.lastSilaNewPayloadUpdate.Store(time.Now().Unix())
 
 	// If we already have the block locally, ignore the entire execution and just
 	// return a fake success.
@@ -927,7 +927,7 @@ func (api *ConsensusAPI) newPayload(ctx context.Context, params silaEngine.Execu
 	proofs, err := api.sila.BlockChain().InsertBlockWithoutSetHead(ctx, block, witness)
 	processingTime := time.Since(start)
 	if err != nil {
-		log.Warn("NewPayload: inserting block failed", "error", err)
+		log.Warn("SilaNewPayload: inserting block failed", "error", err)
 
 		api.invalidLock.Lock()
 		api.invalidBlocksHits[block.Hash()] = 1
@@ -938,8 +938,8 @@ func (api *ConsensusAPI) newPayload(ctx context.Context, params silaEngine.Execu
 	}
 	hash := block.Hash()
 
-	// Emit NewPayloadEvent for silastats reporting
-	api.sila.BlockChain().SendNewPayloadEvent(core.NewPayloadEvent{
+	// Emit SilaNewPayloadEvent for silastats reporting
+	api.sila.BlockChain().SendSilaNewPayloadEvent(core.SilaNewPayloadEvent{
 		Hash:           hash,
 		Number:         block.NumberU64(),
 		ProcessingTime: processingTime,
@@ -1093,16 +1093,16 @@ func (api *ConsensusAPI) heartbeat() {
 
 		lastTransitionUpdate := time.Unix(api.lastTransitionUpdate.Load(), 0)
 		lastForkchoiceUpdate := time.Unix(api.lastForkchoiceUpdate.Load(), 0)
-		lastNewPayloadUpdate := time.Unix(api.lastNewPayloadUpdate.Load(), 0)
+		lastSilaNewPayloadUpdate := time.Unix(api.lastSilaNewPayloadUpdate.Load(), 0)
 
 		// If there have been no updates for the past while, warn the user
 		// that the beacon client is probably offline
-		if time.Since(lastForkchoiceUpdate) <= beaconUpdateConsensusTimeout || time.Since(lastNewPayloadUpdate) <= beaconUpdateConsensusTimeout {
+		if time.Since(lastForkchoiceUpdate) <= beaconUpdateConsensusTimeout || time.Since(lastSilaNewPayloadUpdate) <= beaconUpdateConsensusTimeout {
 			offlineLogged = time.Time{}
 			continue
 		}
 		if time.Since(offlineLogged) > beaconUpdateWarnFrequency {
-			if lastForkchoiceUpdate.IsZero() && lastNewPayloadUpdate.IsZero() {
+			if lastForkchoiceUpdate.IsZero() && lastSilaNewPayloadUpdate.IsZero() {
 				if lastTransitionUpdate.IsZero() {
 					log.Warn("Post-merge network, but no beacon client seen. Please launch one to follow the chain!")
 				} else {
@@ -1167,8 +1167,8 @@ func (api *ConsensusAPI) GetClientVersionV1(info silaEngine.ClientVersionV1) []s
 
 // GetPayloadBodiesByHashV1 implements silaEngine_getPayloadBodiesByHashV1 which allows for retrieval of a list
 // of block bodies by the silaEngine api.
-func (api *ConsensusAPI) GetPayloadBodiesByHashV1(hashes []common.Hash) []*silaEngine.ExecutionPayloadBody {
-	bodies := make([]*silaEngine.ExecutionPayloadBody, len(hashes))
+func (api *ConsensusAPI) GetPayloadBodiesByHashV1(hashes []common.Hash) []*silaEngine.SilaExecutionPayloadBody {
+	bodies := make([]*silaEngine.SilaExecutionPayloadBody, len(hashes))
 	for i, hash := range hashes {
 		block := api.sila.BlockChain().GetBlockByHash(hash)
 		bodies[i] = getBody(block)
@@ -1178,8 +1178,8 @@ func (api *ConsensusAPI) GetPayloadBodiesByHashV1(hashes []common.Hash) []*silaE
 
 // GetPayloadBodiesByHashV2 implements silaEngine_getPayloadBodiesByHashV1 which allows for retrieval of a list
 // of block bodies by the silaEngine api.
-func (api *ConsensusAPI) GetPayloadBodiesByHashV2(hashes []common.Hash) []*silaEngine.ExecutionPayloadBody {
-	bodies := make([]*silaEngine.ExecutionPayloadBody, len(hashes))
+func (api *ConsensusAPI) GetPayloadBodiesByHashV2(hashes []common.Hash) []*silaEngine.SilaExecutionPayloadBody {
+	bodies := make([]*silaEngine.SilaExecutionPayloadBody, len(hashes))
 	for i, hash := range hashes {
 		block := api.sila.BlockChain().GetBlockByHash(hash)
 		bodies[i] = getBody(block)
@@ -1189,17 +1189,17 @@ func (api *ConsensusAPI) GetPayloadBodiesByHashV2(hashes []common.Hash) []*silaE
 
 // GetPayloadBodiesByRangeV1 implements silaEngine_getPayloadBodiesByRangeV1 which allows for retrieval of a range
 // of block bodies by the silaEngine api.
-func (api *ConsensusAPI) GetPayloadBodiesByRangeV1(start, count hexutil.Uint64) ([]*silaEngine.ExecutionPayloadBody, error) {
+func (api *ConsensusAPI) GetPayloadBodiesByRangeV1(start, count hexutil.Uint64) ([]*silaEngine.SilaExecutionPayloadBody, error) {
 	return api.getBodiesByRange(start, count)
 }
 
 // GetPayloadBodiesByRangeV2 implements silaEngine_getPayloadBodiesByRangeV1 which allows for retrieval of a range
 // of block bodies by the silaEngine api.
-func (api *ConsensusAPI) GetPayloadBodiesByRangeV2(start, count hexutil.Uint64) ([]*silaEngine.ExecutionPayloadBody, error) {
+func (api *ConsensusAPI) GetPayloadBodiesByRangeV2(start, count hexutil.Uint64) ([]*silaEngine.SilaExecutionPayloadBody, error) {
 	return api.getBodiesByRange(start, count)
 }
 
-func (api *ConsensusAPI) getBodiesByRange(start, count hexutil.Uint64) ([]*silaEngine.ExecutionPayloadBody, error) {
+func (api *ConsensusAPI) getBodiesByRange(start, count hexutil.Uint64) ([]*silaEngine.SilaExecutionPayloadBody, error) {
 	if start == 0 || count == 0 {
 		return nil, silaEngine.InvalidParams.With(fmt.Errorf("invalid start or count, start: %v count: %v", start, count))
 	}
@@ -1212,7 +1212,7 @@ func (api *ConsensusAPI) getBodiesByRange(start, count hexutil.Uint64) ([]*silaE
 	if last > current {
 		last = current
 	}
-	bodies := make([]*silaEngine.ExecutionPayloadBody, 0, uint64(count))
+	bodies := make([]*silaEngine.SilaExecutionPayloadBody, 0, uint64(count))
 	for i := uint64(start); i <= last; i++ {
 		block := api.sila.BlockChain().GetBlockByNumber(i)
 		bodies = append(bodies, getBody(block))
@@ -1220,12 +1220,12 @@ func (api *ConsensusAPI) getBodiesByRange(start, count hexutil.Uint64) ([]*silaE
 	return bodies, nil
 }
 
-func getBody(block *types.Block) *silaEngine.ExecutionPayloadBody {
+func getBody(block *types.Block) *silaEngine.SilaExecutionPayloadBody {
 	if block == nil {
 		return nil
 	}
 
-	var result silaEngine.ExecutionPayloadBody
+	var result silaEngine.SilaExecutionPayloadBody
 
 	result.TransactionData = make([]hexutil.Bytes, len(block.Transactions()))
 	for j, tx := range block.Transactions() {
@@ -1269,16 +1269,16 @@ func validateRequests(requests [][]byte) error {
 	return nil
 }
 
-// paramsErr is a helper function for creating an InvalidPayloadAttributes
+// paramsErr is a helper function for creating an InvalidSilaPayloadAttributes
 // SilaEngine API error.
 func paramsErr(msg string) error {
 	return silaEngine.InvalidParams.With(errors.New(msg))
 }
 
-// attributesErr is a helper function for creating an InvalidPayloadAttributes
+// attributesErr is a helper function for creating an InvalidSilaPayloadAttributes
 // SilaEngine API error.
 func attributesErr(msg string) error {
-	return silaEngine.InvalidPayloadAttributes.With(errors.New(msg))
+	return silaEngine.InvalidSilaPayloadAttributes.With(errors.New(msg))
 }
 
 // unsupportedForkErr is a helper function for creating an UnsupportedFork

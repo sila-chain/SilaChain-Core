@@ -34,7 +34,7 @@ var (
 	testBlock1 = types.NewBeaconBlock(&deneb.BeaconBlock{
 		Slot: 127,
 		Body: deneb.BeaconBlockBody{
-			ExecutionPayload: deneb.ExecutionPayload{
+			SilaExecutionPayload: deneb.SilaExecutionPayload{
 				BlockNumber: 456,
 				BlockHash:   zrntcommon.Hash32(common.HexToHash("905ac721c4058d9ed40b27b6b9c1bdd10d4333e4f3d9769100bf9dfb80e5d1f6")),
 			},
@@ -43,17 +43,17 @@ var (
 	testBlock2 = types.NewBeaconBlock(&deneb.BeaconBlock{
 		Slot: 128,
 		Body: deneb.BeaconBlockBody{
-			ExecutionPayload: deneb.ExecutionPayload{
+			SilaExecutionPayload: deneb.SilaExecutionPayload{
 				BlockNumber: 457,
 				BlockHash:   zrntcommon.Hash32(common.HexToHash("011703f39c664efc1c6cf5f49ca09b595581eec572d4dfddd3d6179a9e63e655")),
 			},
 		},
 	})
-	testFinal1 = types.NewExecutionHeader(&deneb.ExecutionPayloadHeader{
+	testFinal1 = types.NewExecutionHeader(&deneb.SilaExecutionPayloadHeader{
 		BlockNumber: 395,
 		BlockHash:   zrntcommon.Hash32(common.HexToHash("abbe7625624bf8ddd84723709e2758956289465dd23475f02387e0854942666")),
 	})
-	testFinal2 = types.NewExecutionHeader(&deneb.ExecutionPayloadHeader{
+	testFinal2 = types.NewExecutionHeader(&deneb.SilaExecutionPayloadHeader{
 		BlockNumber: 420,
 		BlockHash:   zrntcommon.Hash32(common.HexToHash("9182a6ef8723654de174283750932ccc092378549836bf4873657eeec474598")),
 	})
@@ -79,9 +79,9 @@ func TestBlockSync(t *testing.T) {
 		var expNumber, headNumber uint64
 		var expFinalHash, finalHash common.Hash
 		if expHead != nil {
-			p, err := expHead.ExecutionPayload()
+			p, err := expHead.SilaExecutionPayload()
 			if err != nil {
-				t.Fatalf("expHead.ExecutionPayload() failed: %v", err)
+				t.Fatalf("expHead.SilaExecutionPayload() failed: %v", err)
 			}
 			expNumber = p.NumberU64()
 		}

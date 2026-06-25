@@ -30,19 +30,19 @@ import (
 	"sync"
 	"time"
 
+	"github.com/gorilla/websocket"
 	"github.com/sila-org/sila"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/common/mclock"
 	"github.com/sila-org/sila/consensus"
 	"github.com/sila-org/sila/core"
 	"github.com/sila-org/sila/core/types"
-	ethproto "github.com/sila-org/sila/sila/protocols/sila"
 	"github.com/sila-org/sila/event"
 	"github.com/sila-org/sila/log"
 	"github.com/sila-org/sila/node"
 	"github.com/sila-org/sila/p2p"
 	"github.com/sila-org/sila/rpc"
-	"github.com/gorilla/websocket"
+	ethproto "github.com/sila-org/sila/sila/protocols/sila"
 )
 
 const (
@@ -63,7 +63,7 @@ const (
 type backend interface {
 	SubscribeChainHeadEvent(ch chan<- core.ChainHeadEvent) event.Subscription
 	SubscribeNewTxsEvent(ch chan<- core.NewTxsEvent) event.Subscription
-	SubscribeNewPayloadEvent(ch chan<- core.NewPayloadEvent) event.Subscription
+	SubscribeSilaNewPayloadEvent(ch chan<- core.SilaNewPayloadEvent) event.Subscription
 	CurrentHeader() *types.Header
 	HeaderByNumber(ctx context.Context, number rpc.BlockNumber) (*types.Header, error)
 	Stats() (pending int, queued int)
@@ -82,9 +82,9 @@ type fullNodeBackend interface {
 // Service implements an Sila netstats reporting daemon that pushes local
 // chain statistics up to a monitoring server.
 type Service struct {
-	server  *p2p.Server // Peer-to-peer server to retrieve networking infos
-	backend backend
-	silaEngine  consensus.SilaEngine // Consensus silaEngine to retrieve variadic block fields
+	server     *p2p.Server // Peer-to-peer server to retrieve networking infos
+	backend    backend
+	silaEngine consensus.SilaEngine // Consensus silaEngine to retrieve variadic block fields
 
 	node string // Name of the node to display on the monitoring page
 	pass string // Password to authorize access to the monitoring page
@@ -179,14 +179,14 @@ func New(node *node.Node, backend backend, silaEngine consensus.SilaEngine, url 
 		return err
 	}
 	silastats := &Service{
-		backend: backend,
-		silaEngine:  silaEngine,
-		server:  node.Server(),
-		node:    parts[0],
-		pass:    parts[1],
-		host:    parts[2],
-		pongCh:  make(chan struct{}),
-		histCh:  make(chan []uint64, 1),
+		backend:    backend,
+		silaEngine: silaEngine,
+		server:     node.Server(),
+		node:       parts[0],
+		pass:       parts[1],
+		host:       parts[2],
+		pongCh:     make(chan struct{}),
+		histCh:     make(chan []uint64, 1),
 	}
 
 	node.RegisterLifecycle(silastats)
@@ -200,8 +200,8 @@ func (s *Service) Start() error {
 	s.headSub = s.backend.SubscribeChainHeadEvent(chainHeadCh)
 	txEventCh := make(chan core.NewTxsEvent, txChanSize)
 	s.txSub = s.backend.SubscribeNewTxsEvent(txEventCh)
-	newPayloadCh := make(chan core.NewPayloadEvent, chainHeadChanSize)
-	s.newPayloadSub = s.backend.SubscribeNewPayloadEvent(newPayloadCh)
+	newPayloadCh := make(chan core.SilaNewPayloadEvent, chainHeadChanSize)
+	s.newPayloadSub = s.backend.SubscribeSilaNewPayloadEvent(newPayloadCh)
 	go s.loop(chainHeadCh, txEventCh, newPayloadCh)
 
 	log.Info("Stats daemon started")
@@ -219,13 +219,13 @@ func (s *Service) Stop() error {
 
 // loop keeps trying to connect to the netstats server, reporting chain events
 // until termination.
-func (s *Service) loop(chainHeadCh chan core.ChainHeadEvent, txEventCh chan core.NewTxsEvent, newPayloadCh chan core.NewPayloadEvent) {
+func (s *Service) loop(chainHeadCh chan core.ChainHeadEvent, txEventCh chan core.NewTxsEvent, newPayloadCh chan core.SilaNewPayloadEvent) {
 	// Start a goroutine that exhausts the subscriptions to avoid events piling up
 	var (
 		quitCh         = make(chan struct{})
 		headCh         = make(chan *types.Header, 1)
 		txCh           = make(chan struct{}, 1)
-		newPayloadEvCh = make(chan core.NewPayloadEvent, 1)
+		newPayloadEvCh = make(chan core.SilaNewPayloadEvent, 1)
 	)
 	go func() {
 		var lastTx mclock.AbsTime
@@ -352,7 +352,7 @@ func (s *Service) loop(chainHeadCh chan core.ChainHeadEvent, txEventCh chan core
 						log.Warn("Post-block transaction stats report failed", "err", err)
 					}
 				case ev := <-newPayloadEvCh:
-					if err = s.reportNewPayload(conn, ev); err != nil {
+					if err = s.reportSilaNewPayload(conn, ev); err != nil {
 						log.Warn("New payload stats report failed", "err", err)
 					}
 				case <-txCh:
@@ -626,8 +626,8 @@ type newPayloadStats struct {
 	ProcessingTime uint64      `json:"processingTime"` // nanoseconds
 }
 
-// reportNewPayload reports a new payload event to the stats server.
-func (s *Service) reportNewPayload(conn *connWrapper, ev core.NewPayloadEvent) error {
+// reportSilaNewPayload reports a new payload event to the stats server.
+func (s *Service) reportSilaNewPayload(conn *connWrapper, ev core.SilaNewPayloadEvent) error {
 	details := &newPayloadStats{
 		Number:         ev.Number,
 		Hash:           ev.Hash,

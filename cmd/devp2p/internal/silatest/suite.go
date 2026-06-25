@@ -748,7 +748,7 @@ func (s *Suite) TestTransaction(t *utesting.T) {
 transaction gets propagated.`)
 
 	// Nudge client out of syncing mode to accept pending txs.
-	if err := s.silaEngine.sendForkchoiceUpdated(); err != nil {
+	if err := s.silaEngine.sendSilaForkchoiceUpdated(); err != nil {
 		t.Fatalf("failed to send next block: %v", err)
 	}
 	from, nonce := s.chain.GetSender(0)
@@ -776,7 +776,7 @@ func (s *Suite) TestInvalidTxs(t *utesting.T) {
 does not propagate them.`)
 
 	// Nudge client out of syncing mode to accept pending txs.
-	if err := s.silaEngine.sendForkchoiceUpdated(); err != nil {
+	if err := s.silaEngine.sendSilaForkchoiceUpdated(); err != nil {
 		t.Fatalf("failed to send next block: %v", err)
 	}
 
@@ -859,7 +859,7 @@ func (s *Suite) TestLargeTxRequest(t *utesting.T) {
 on another peer connection using GetPooledTransactions.`)
 
 	// Nudge client out of syncing mode to accept pending txs.
-	if err := s.silaEngine.sendForkchoiceUpdated(); err != nil {
+	if err := s.silaEngine.sendSilaForkchoiceUpdated(); err != nil {
 		t.Fatalf("failed to send next block: %v", err)
 	}
 
@@ -936,7 +936,7 @@ func (s *Suite) TestNewPooledTxs(t *utesting.T) {
 the transactions using a GetPooledTransactions request.`)
 
 	// Nudge client out of syncing mode to accept pending txs.
-	if err := s.silaEngine.sendForkchoiceUpdated(); err != nil {
+	if err := s.silaEngine.sendSilaForkchoiceUpdated(); err != nil {
 		t.Fatalf("failed to send next block: %v", err)
 	}
 
@@ -1051,7 +1051,7 @@ func (s *Suite) makeBlobTxs(count, blobs int, discriminator byte) (txs types.Tra
 func (s *Suite) TestBlobViolations(t *utesting.T) {
 	t.Log(`This test sends some invalid blob tx announcements and expects the node to disconnect.`)
 
-	if err := s.silaEngine.sendForkchoiceUpdated(); err != nil {
+	if err := s.silaEngine.sendSilaForkchoiceUpdated(); err != nil {
 		t.Fatalf("send fcu failed: %v", err)
 	}
 	// Create blob txs for each tests with unique tx hashes.
@@ -1300,7 +1300,7 @@ func (s *Suite) testBadBlobTx(t *utesting.T, tx *types.Transaction, badTx *types
 		close(errc)
 	}
 
-	if err := s.silaEngine.sendForkchoiceUpdated(); err != nil {
+	if err := s.silaEngine.sendSilaForkchoiceUpdated(); err != nil {
 		t.Fatalf("send fcu failed: %v", err)
 	}
 

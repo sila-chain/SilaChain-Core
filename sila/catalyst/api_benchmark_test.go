@@ -27,18 +27,18 @@ import (
 	"testing"
 	"time"
 
+	"github.com/holiman/uint256"
 	"github.com/sila-org/sila/beacon/silaEngine"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/core"
 	"github.com/sila-org/sila/core/types"
 	"github.com/sila-org/sila/crypto"
 	"github.com/sila-org/sila/crypto/kzg4844"
-	"github.com/sila-org/sila/sila"
 	"github.com/sila-org/sila/node"
 	"github.com/sila-org/sila/params"
 	"github.com/sila-org/sila/rlp"
 	"github.com/sila-org/sila/rpc"
-	"github.com/holiman/uint256"
+	"github.com/sila-org/sila/sila"
 )
 
 // encodingType specifies which encoding to use in benchmarks
@@ -142,7 +142,7 @@ const (
 // benchmarkBlobEnv holds the environment for blob benchmarks
 type benchmarkBlobEnv struct {
 	node      *node.Node
-	sila       *sila.Sila
+	sila      *sila.Sila
 	api       *ConsensusAPI
 	config    *params.ChainConfig
 	keys      []*ecdsa.PrivateKey
@@ -242,7 +242,7 @@ func newBenchmarkBlobEnv(b *testing.B, blobCount int, version byte, fork benchFo
 	// Fill initial blob txs into the pool
 	env := &benchmarkBlobEnv{
 		node:      n,
-		sila:       silaServ,
+		sila:      silaServ,
 		api:       newConsensusAPIWithoutHeartbeat(silaServ),
 		config:    &config,
 		keys:      keys,
@@ -373,7 +373,7 @@ func BenchmarkGetBlobsV3(b *testing.B) {
 }
 
 // BenchmarkGetPayloadV5WithBlobs benchmarks GetPayloadV5 (Osaka fork) with blobs.
-// Note: Measures single iteration performance due to NewPayload complexity at Osaka.
+// Note: Measures single iteration performance due to SilaNewPayload complexity at Osaka.
 func BenchmarkGetPayloadV5WithBlobs(b *testing.B) {
 	for _, blobCount := range benchmarkBlobCounts {
 		for _, enc := range encodingTypes {
@@ -387,7 +387,7 @@ func BenchmarkGetPayloadV5WithBlobs(b *testing.B) {
 				b.ResetTimer()
 				for i := 0; i < b.N; i++ {
 					// Note: We don't call addBlobTxs here because we can't advance the chain
-					// (NewPayloadV5 requires execution requests). The same transactions are
+					// (SilaNewPayloadV5 requires execution requests). The same transactions are
 					// reused for each iteration, which still benchmarks the GetPayload performance.
 					timestamp := parent.Time + 12
 					fcState := silaEngine.ForkchoiceStateV1{
@@ -395,19 +395,19 @@ func BenchmarkGetPayloadV5WithBlobs(b *testing.B) {
 						SafeBlockHash:      parent.Hash(),
 						FinalizedBlockHash: parent.Hash(),
 					}
-					payloadAttr := &silaEngine.PayloadAttributes{
+					payloadAttr := &silaEngine.SilaPayloadAttributes{
 						Timestamp:             timestamp,
 						Random:                common.Hash{byte(i)},
 						SuggestedFeeRecipient: testAddr,
 						Withdrawals:           []*types.Withdrawal{},
 						BeaconRoot:            &beaconRoot,
 					}
-					resp, err := env.api.ForkchoiceUpdatedV3(context.Background(), fcState, payloadAttr)
+					resp, err := env.api.SilaForkchoiceUpdatedV3(context.Background(), fcState, payloadAttr)
 					if err != nil {
-						b.Fatalf("ForkchoiceUpdatedV3 failed: %v", err)
+						b.Fatalf("SilaForkchoiceUpdatedV3 failed: %v", err)
 					}
 					if resp.PayloadID == nil {
-						b.Fatalf("ForkchoiceUpdatedV3 returned nil PayloadID")
+						b.Fatalf("SilaForkchoiceUpdatedV3 returned nil PayloadID")
 					}
 					// Wait for the payload to be built with transactions
 					time.Sleep(100 * time.Millisecond)
@@ -431,9 +431,9 @@ func BenchmarkGetPayloadV5WithBlobs(b *testing.B) {
 	}
 }
 
-// BenchmarkNewPayloadV3WithBlobs benchmarks the NewPayloadV3 method with various blob counts.
+// BenchmarkSilaNewPayloadV3WithBlobs benchmarks the SilaNewPayloadV3 method with various blob counts.
 // Each iteration processes a payload with the full blob count.
-func BenchmarkNewPayloadV3WithBlobs(b *testing.B) {
+func BenchmarkSilaNewPayloadV3WithBlobs(b *testing.B) {
 	for _, blobCount := range benchmarkBlobCounts {
 		for _, enc := range encodingTypes {
 			b.Run(fmt.Sprintf("blobs=%d/enc=%s", blobCount, enc), func(b *testing.B) {
@@ -450,19 +450,19 @@ func BenchmarkNewPayloadV3WithBlobs(b *testing.B) {
 					SafeBlockHash:      parent.Hash(),
 					FinalizedBlockHash: parent.Hash(),
 				}
-				payloadAttr := &silaEngine.PayloadAttributes{
+				payloadAttr := &silaEngine.SilaPayloadAttributes{
 					Timestamp:             timestamp,
 					Random:                common.Hash{0x01},
 					SuggestedFeeRecipient: testAddr,
 					Withdrawals:           []*types.Withdrawal{},
 					BeaconRoot:            &beaconRoot,
 				}
-				resp, err := env.api.ForkchoiceUpdatedV3(context.Background(), fcState, payloadAttr)
+				resp, err := env.api.SilaForkchoiceUpdatedV3(context.Background(), fcState, payloadAttr)
 				if err != nil {
-					b.Fatalf("ForkchoiceUpdatedV3 failed: %v", err)
+					b.Fatalf("SilaForkchoiceUpdatedV3 failed: %v", err)
 				}
 				if resp.PayloadID == nil {
-					b.Fatalf("ForkchoiceUpdatedV3 returned nil PayloadID")
+					b.Fatalf("SilaForkchoiceUpdatedV3 returned nil PayloadID")
 				}
 				// Wait for the payload to be built with transactions
 				time.Sleep(100 * time.Millisecond)
@@ -477,7 +477,7 @@ func BenchmarkNewPayloadV3WithBlobs(b *testing.B) {
 					b.Fatalf("expected %d blobs in setup, got %d", blobCount, len(envelope.BlobsBundle.Blobs))
 				}
 
-				execData := envelope.ExecutionPayload
+				execData := envelope.SilaExecutionPayload
 				// Collect versioned hashes from blobs bundle
 				vhashes := make([]common.Hash, len(envelope.BlobsBundle.Commitments))
 				for j, commitment := range envelope.BlobsBundle.Commitments {
@@ -488,11 +488,11 @@ func BenchmarkNewPayloadV3WithBlobs(b *testing.B) {
 
 				b.ResetTimer()
 				for i := 0; i < b.N; i++ {
-					// NewPayload is idempotent, calling it multiple times with the same data
+					// SilaNewPayload is idempotent, calling it multiple times with the same data
 					// should return the same result. The payload contains blobCount blobs.
-					result, err := env.api.NewPayloadV3(context.Background(), *execData, vhashes, &beaconRoot)
+					result, err := env.api.SilaNewPayloadV3(context.Background(), *execData, vhashes, &beaconRoot)
 					if err != nil {
-						b.Fatalf("NewPayloadV3 failed: %v", err)
+						b.Fatalf("SilaNewPayloadV3 failed: %v", err)
 					}
 					benchEncode(b, enc, result)
 				}
@@ -502,10 +502,10 @@ func BenchmarkNewPayloadV3WithBlobs(b *testing.B) {
 	}
 }
 
-// BenchmarkForkchoiceUpdatedWithBlobPayload benchmarks forkchoice updates that trigger
+// BenchmarkSilaForkchoiceUpdatedWithBlobPayload benchmarks forkchoice updates that trigger
 // payload building with blob transactions.
-// Note: Measures ForkchoiceUpdated performance with blob transactions in the pool.
-func BenchmarkForkchoiceUpdatedWithBlobPayload(b *testing.B) {
+// Note: Measures SilaForkchoiceUpdated performance with blob transactions in the pool.
+func BenchmarkSilaForkchoiceUpdatedWithBlobPayload(b *testing.B) {
 	for _, blobCount := range benchmarkBlobCounts {
 		for _, enc := range encodingTypes {
 			b.Run(fmt.Sprintf("blobs=%d/enc=%s", blobCount, enc), func(b *testing.B) {
@@ -519,7 +519,7 @@ func BenchmarkForkchoiceUpdatedWithBlobPayload(b *testing.B) {
 				for i := 0; i < b.N; i++ {
 					// Note: We don't call addBlobTxs here because the blob pool has
 					// a per-account limit of 16 transactions. The same transactions are
-					// reused for each iteration, which still benchmarks the ForkchoiceUpdated
+					// reused for each iteration, which still benchmarks the SilaForkchoiceUpdated
 					// performance with blob transactions in the pool.
 					timestamp := parent.Time + 12
 					fcState := silaEngine.ForkchoiceStateV1{
@@ -527,19 +527,19 @@ func BenchmarkForkchoiceUpdatedWithBlobPayload(b *testing.B) {
 						SafeBlockHash:      parent.Hash(),
 						FinalizedBlockHash: parent.Hash(),
 					}
-					payloadAttr := &silaEngine.PayloadAttributes{
+					payloadAttr := &silaEngine.SilaPayloadAttributes{
 						Timestamp:             timestamp,
 						Random:                common.Hash{byte(i)},
 						SuggestedFeeRecipient: testAddr,
 						Withdrawals:           []*types.Withdrawal{},
 						BeaconRoot:            &beaconRoot,
 					}
-					resp, err := env.api.ForkchoiceUpdatedV3(context.Background(), fcState, payloadAttr)
+					resp, err := env.api.SilaForkchoiceUpdatedV3(context.Background(), fcState, payloadAttr)
 					if err != nil {
-						b.Fatalf("ForkchoiceUpdatedV3 failed: %v", err)
+						b.Fatalf("SilaForkchoiceUpdatedV3 failed: %v", err)
 					}
 					if resp.PayloadID == nil {
-						b.Fatalf("ForkchoiceUpdatedV3 returned nil PayloadID")
+						b.Fatalf("SilaForkchoiceUpdatedV3 returned nil PayloadID")
 					}
 					benchEncode(b, enc, resp)
 				}
@@ -550,8 +550,8 @@ func BenchmarkForkchoiceUpdatedWithBlobPayload(b *testing.B) {
 }
 
 // BenchmarkFullBlobWorkflowOsaka benchmarks the complete blob workflow at Osaka:
-// ForkchoiceUpdated -> GetPayload
-// Note: Measures single iteration performance due to NewPayload complexity at Osaka.
+// SilaForkchoiceUpdated -> GetPayload
+// Note: Measures single iteration performance due to SilaNewPayload complexity at Osaka.
 func BenchmarkFullBlobWorkflowOsaka(b *testing.B) {
 	for _, blobCount := range benchmarkBlobCounts {
 		for _, enc := range encodingTypes {
@@ -565,31 +565,31 @@ func BenchmarkFullBlobWorkflowOsaka(b *testing.B) {
 				b.ResetTimer()
 				for i := 0; i < b.N; i++ {
 					// Note: We don't call addBlobTxs here because we can't advance the chain
-					// (NewPayloadV5 requires execution requests). The same transactions are
+					// (SilaNewPayloadV5 requires execution requests). The same transactions are
 					// reused for each iteration, which still benchmarks the workflow performance.
 
-					// 1. ForkchoiceUpdated to build payload
+					// 1. SilaForkchoiceUpdated to build payload
 					timestamp := parent.Time + 12
 					fcState := silaEngine.ForkchoiceStateV1{
 						HeadBlockHash:      parent.Hash(),
 						SafeBlockHash:      parent.Hash(),
 						FinalizedBlockHash: parent.Hash(),
 					}
-					payloadAttr := &silaEngine.PayloadAttributes{
+					payloadAttr := &silaEngine.SilaPayloadAttributes{
 						Timestamp:             timestamp,
 						Random:                common.Hash{byte(i)},
 						SuggestedFeeRecipient: testAddr,
 						Withdrawals:           []*types.Withdrawal{},
 						BeaconRoot:            &beaconRoot,
 					}
-					resp, err := env.api.ForkchoiceUpdatedV3(context.Background(), fcState, payloadAttr)
+					resp, err := env.api.SilaForkchoiceUpdatedV3(context.Background(), fcState, payloadAttr)
 					if err != nil {
-						b.Fatalf("ForkchoiceUpdatedV3 failed: %v", err)
+						b.Fatalf("SilaForkchoiceUpdatedV3 failed: %v", err)
 					}
 					if resp.PayloadID == nil {
-						b.Fatalf("ForkchoiceUpdatedV3 returned nil PayloadID")
+						b.Fatalf("SilaForkchoiceUpdatedV3 returned nil PayloadID")
 					}
-					// Encode ForkchoiceUpdated response
+					// Encode SilaForkchoiceUpdated response
 					benchEncode(b, enc, resp)
 
 					// Wait for the payload to be built with transactions
@@ -634,7 +634,7 @@ func BenchmarkGetPayloadV5RPCServerOnly(b *testing.B) {
 	env := newBenchmarkBlobEnv(b, blobCount, 1, forkOsaka)
 	defer env.Close()
 
-	// Register the silaEngine API on the running node's in-process RPC server.
+	// Register the silaSilaEngine API on the running node's in-process RPC server.
 	rpcServer, err := env.node.RPCHandler()
 	if err != nil {
 		b.Fatalf("RPCHandler failed: %v", err)
@@ -650,19 +650,19 @@ func BenchmarkGetPayloadV5RPCServerOnly(b *testing.B) {
 		SafeBlockHash:      parent.Hash(),
 		FinalizedBlockHash: parent.Hash(),
 	}
-	payloadAttr := &silaEngine.PayloadAttributes{
+	payloadAttr := &silaEngine.SilaPayloadAttributes{
 		Timestamp:             parent.Time + 12,
 		Random:                common.Hash{0x01},
 		SuggestedFeeRecipient: testAddr,
 		Withdrawals:           []*types.Withdrawal{},
 		BeaconRoot:            &beaconRoot,
 	}
-	resp, err := env.api.ForkchoiceUpdatedV3(context.Background(), fcState, payloadAttr)
+	resp, err := env.api.SilaForkchoiceUpdatedV3(context.Background(), fcState, payloadAttr)
 	if err != nil {
-		b.Fatalf("ForkchoiceUpdatedV3 failed: %v", err)
+		b.Fatalf("SilaForkchoiceUpdatedV3 failed: %v", err)
 	}
 	if resp.PayloadID == nil {
-		b.Fatalf("ForkchoiceUpdatedV3 returned nil PayloadID")
+		b.Fatalf("SilaForkchoiceUpdatedV3 returned nil PayloadID")
 	}
 	time.Sleep(100 * time.Millisecond)
 
@@ -674,7 +674,7 @@ func BenchmarkGetPayloadV5RPCServerOnly(b *testing.B) {
 	if len(envelope.BlobsBundle.Blobs) != blobCount {
 		b.Fatalf("expected %d blobs, got %d", blobCount, len(envelope.BlobsBundle.Blobs))
 	}
-	b.Logf("payload size: %d blobs, %d txs", len(envelope.BlobsBundle.Blobs), len(envelope.ExecutionPayload.Transactions))
+	b.Logf("payload size: %d blobs, %d txs", len(envelope.BlobsBundle.Blobs), len(envelope.SilaExecutionPayload.Transactions))
 
 	// Build the JSON-RPC request bytes once.
 	reqJSON := fmt.Sprintf(`{"jsonrpc":"2.0","id":1,"method":"silaEngine_getPayloadV5","params":["%s"]}`, resp.PayloadID.String())
@@ -700,7 +700,7 @@ func BenchmarkGetBlobsV3RPCServerOnly(b *testing.B) {
 	env := newBenchmarkBlobEnv(b, blobCount, 1, forkOsaka)
 	defer env.Close()
 
-	// Register the silaEngine API on the running node's in-process RPC server.
+	// Register the silaSilaEngine API on the running node's in-process RPC server.
 	rpcServer, err := env.node.RPCHandler()
 	if err != nil {
 		b.Fatalf("RPCHandler failed: %v", err)

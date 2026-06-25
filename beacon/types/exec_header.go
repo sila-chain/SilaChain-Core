@@ -44,9 +44,9 @@ func ExecutionHeaderFromJSON(forkName string, data []byte) (*ExecutionHeader, er
 	var obj headerObject
 	switch forkName {
 	case "capella":
-		obj = new(capella.ExecutionPayloadHeader)
+		obj = new(capella.SilaExecutionPayloadHeader)
 	case "deneb", "electra", "fulu": // note: the payload type was not changed in electra/fulu
-		obj = new(deneb.ExecutionPayloadHeader)
+		obj = new(deneb.SilaExecutionPayloadHeader)
 	default:
 		return nil, fmt.Errorf("unsupported fork: %s", forkName)
 	}
@@ -58,10 +58,10 @@ func ExecutionHeaderFromJSON(forkName string, data []byte) (*ExecutionHeader, er
 
 func NewExecutionHeader(obj headerObject) *ExecutionHeader {
 	switch obj.(type) {
-	case *capella.ExecutionPayloadHeader:
-	case *deneb.ExecutionPayloadHeader:
+	case *capella.SilaExecutionPayloadHeader:
+	case *deneb.SilaExecutionPayloadHeader:
 	default:
-		panic(fmt.Errorf("unsupported ExecutionPayloadHeader type %T", obj))
+		panic(fmt.Errorf("unsupported SilaExecutionPayloadHeader type %T", obj))
 	}
 	return &ExecutionHeader{obj: obj}
 }
@@ -72,11 +72,11 @@ func (eh *ExecutionHeader) PayloadRoot() merkle.Value {
 
 func (eh *ExecutionHeader) BlockHash() common.Hash {
 	switch obj := eh.obj.(type) {
-	case *capella.ExecutionPayloadHeader:
+	case *capella.SilaExecutionPayloadHeader:
 		return common.Hash(obj.BlockHash)
-	case *deneb.ExecutionPayloadHeader:
+	case *deneb.SilaExecutionPayloadHeader:
 		return common.Hash(obj.BlockHash)
 	default:
-		panic(fmt.Errorf("unsupported ExecutionPayloadHeader type %T", obj))
+		panic(fmt.Errorf("unsupported SilaExecutionPayloadHeader type %T", obj))
 	}
 }

@@ -145,7 +145,7 @@ func (payload *Payload) update(r *newPayloadResult, elapsed time.Duration) (resu
 
 // Resolve returns the latest built payload and also terminates the background
 // thread for updating payload. It's safe to be called multiple times.
-func (payload *Payload) Resolve() *silaEngine.ExecutionPayloadEnvelope {
+func (payload *Payload) Resolve() *silaEngine.SilaExecutionPayloadEnvelope {
 	payload.lock.Lock()
 	defer payload.lock.Unlock()
 
@@ -172,7 +172,7 @@ func (payload *Payload) Resolve() *silaEngine.ExecutionPayloadEnvelope {
 
 // ResolveEmpty is basically identical to Resolve, but it expects empty block only.
 // It's only used in tests.
-func (payload *Payload) ResolveEmpty() *silaEngine.ExecutionPayloadEnvelope {
+func (payload *Payload) ResolveEmpty() *silaEngine.SilaExecutionPayloadEnvelope {
 	payload.lock.Lock()
 	defer payload.lock.Unlock()
 
@@ -186,7 +186,7 @@ func (payload *Payload) ResolveEmpty() *silaEngine.ExecutionPayloadEnvelope {
 
 // ResolveFull is basically identical to Resolve, but it expects full block only.
 // Don't call Resolve until ResolveFull returns, otherwise it might block forever.
-func (payload *Payload) ResolveFull() *silaEngine.ExecutionPayloadEnvelope {
+func (payload *Payload) ResolveFull() *silaEngine.SilaExecutionPayloadEnvelope {
 	payload.lock.Lock()
 	defer payload.lock.Unlock()
 
@@ -341,7 +341,7 @@ func (payload *Payload) updateSpanForDelivery(bSpan trace.Span) {
 
 // BuildTestingPayload is for testing_buildBlockV*. It creates a block with the exact content given
 // by the parameters instead of using the locally available transactions.
-func (miner *Miner) BuildTestingPayload(args *BuildPayloadArgs, transactions []*types.Transaction, empty bool, extraData []byte) (*types.Block, *silaEngine.ExecutionPayloadEnvelope, error) {
+func (miner *Miner) BuildTestingPayload(args *BuildPayloadArgs, transactions []*types.Transaction, empty bool, extraData []byte) (*types.Block, *silaEngine.SilaExecutionPayloadEnvelope, error) {
 	fullParams := &generateParams{
 		timestamp:         args.Timestamp,
 		forceTime:         true,

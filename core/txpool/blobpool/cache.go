@@ -58,14 +58,14 @@ type cachedBlob struct {
 	version    byte
 }
 
-// Cache holds the blobs that are likely to be requested by the GetBlobs silaEngine API.
+// Cache holds the blobs that are likely to be requested by the GetBlobs silaSilaEngine API.
 //
 // Every `topKTimeout`, the cache selects the blobs of the top K most profitable
 // transactions, and preloads them into the cache.
 //
 // For HasBlobs requests, it also causes the blobs requested by the CL to be loaded.
 // (Note: the cache is not guaranteed to always hold such blobs, since the blobpool might
-// drop the transaction in the window between the silaEngine API response and the cache
+// drop the transaction in the window between the silaSilaEngine API response and the cache
 // update.)
 type Cache struct {
 	blobpool *BlobPool
@@ -170,7 +170,7 @@ func (c *Cache) HasBlobs(ctx context.Context, vhashes []common.Hash) []bool {
 // C_versioned_hash] and blobpool has data for blobs A and C, but doesn't have
 // data for B, the response MUST be [A, null, C].
 //
-// This is a utility method for the silaEngine API, enabling consensus clients to
+// This is a utility method for the silaSilaEngine API, enabling consensus clients to
 // retrieve blobs from the pools directly instead of the network.
 //
 // The version argument specifies the type of proofs to return, either the

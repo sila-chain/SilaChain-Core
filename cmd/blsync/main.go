@@ -84,7 +84,7 @@ func sync(ctx *cli.Context) error {
 
 func makeRPCClient(ctx *cli.Context) *rpc.Client {
 	if !ctx.IsSet(utils.BlsyncApiFlag.Name) {
-		log.Warn("No silaEngine API target specified, performing a dry run")
+		log.Warn("No silaSilaEngine API target specified, performing a dry run")
 		return nil
 	}
 	if !ctx.IsSet(utils.BlsyncJWTSecretFlag.Name) {

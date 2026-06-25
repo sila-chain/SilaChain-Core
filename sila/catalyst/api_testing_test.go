@@ -35,7 +35,7 @@ func TestBuildBlockV1(t *testing.T) {
 	defer n.Close()
 
 	parent := ethservice.BlockChain().CurrentBlock()
-	attrs := silaEngine.PayloadAttributes{
+	attrs := silaEngine.SilaPayloadAttributes{
 		Timestamp:             parent.Time + 1,
 		Random:                crypto.Keccak256Hash([]byte("test")),
 		SuggestedFeeRecipient: parent.Coinbase,
@@ -53,10 +53,10 @@ func TestBuildBlockV1(t *testing.T) {
 		if err != nil {
 			t.Fatalf("BuildBlockV1 failed: %v", err)
 		}
-		if envelope == nil || envelope.ExecutionPayload == nil {
+		if envelope == nil || envelope.SilaExecutionPayload == nil {
 			t.Fatal("expected non-nil envelope and payload")
 		}
-		payload := envelope.ExecutionPayload
+		payload := envelope.SilaExecutionPayload
 		if payload.ParentHash != parent.Hash() {
 			t.Errorf("parent hash mismatch: got %x want %x", payload.ParentHash, parent.Hash())
 		}
@@ -88,11 +88,11 @@ func TestBuildBlockV1(t *testing.T) {
 		if err != nil {
 			t.Fatalf("BuildBlockV1 with empty txs failed: %v", err)
 		}
-		if envelope == nil || envelope.ExecutionPayload == nil {
+		if envelope == nil || envelope.SilaExecutionPayload == nil {
 			t.Fatal("expected non-nil envelope and payload")
 		}
-		if len(envelope.ExecutionPayload.Transactions) != 0 {
-			t.Errorf("expected empty block, got %d transactions", len(envelope.ExecutionPayload.Transactions))
+		if len(envelope.SilaExecutionPayload.Transactions) != 0 {
+			t.Errorf("expected empty block, got %d transactions", len(envelope.SilaExecutionPayload.Transactions))
 		}
 	})
 
@@ -103,8 +103,8 @@ func TestBuildBlockV1(t *testing.T) {
 		if err != nil {
 			t.Fatalf("BuildBlockV1 with transaction failed: %v", err)
 		}
-		if len(envelope.ExecutionPayload.Transactions) != 1 {
-			t.Errorf("expected 1 transaction, got %d", len(envelope.ExecutionPayload.Transactions))
+		if len(envelope.SilaExecutionPayload.Transactions) != 1 {
+			t.Errorf("expected 1 transaction, got %d", len(envelope.SilaExecutionPayload.Transactions))
 		}
 	})
 
@@ -114,8 +114,8 @@ func TestBuildBlockV1(t *testing.T) {
 		if err != nil {
 			t.Fatalf("BuildBlockV1 with transaction failed: %v", err)
 		}
-		if len(envelope.ExecutionPayload.Transactions) != 1 {
-			t.Errorf("expected 1 transaction, got %d", len(envelope.ExecutionPayload.Transactions))
+		if len(envelope.SilaExecutionPayload.Transactions) != 1 {
+			t.Errorf("expected 1 transaction, got %d", len(envelope.SilaExecutionPayload.Transactions))
 		}
 	})
 }
@@ -128,9 +128,9 @@ func TestCommitBlockV1(t *testing.T) {
 	api := &testingAPI{sila: ethservice}
 	ctx := context.Background()
 
-	nextAttrs := func() silaEngine.PayloadAttributes {
+	nextAttrs := func() silaEngine.SilaPayloadAttributes {
 		head := ethservice.BlockChain().CurrentBlock()
-		return silaEngine.PayloadAttributes{
+		return silaEngine.SilaPayloadAttributes{
 			Timestamp:             head.Time + 1,
 			Random:                crypto.Keccak256Hash([]byte("commit-test")),
 			SuggestedFeeRecipient: head.Coinbase,

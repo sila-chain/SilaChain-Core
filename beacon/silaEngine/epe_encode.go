@@ -40,13 +40,13 @@ func marshalBlobsBundle(b *jsonw.Buffer, bundle *BlobsBundle) {
 }
 
 // MarshalJSON implements json.Marshaler.
-func (e ExecutionPayloadEnvelope) MarshalJSON() ([]byte, error) {
-	if e.ExecutionPayload == nil {
-		return nil, errors.New("missing required field 'executionPayload' for ExecutionPayloadEnvelope")
+func (e SilaExecutionPayloadEnvelope) MarshalJSON() ([]byte, error) {
+	if e.SilaExecutionPayload == nil {
+		return nil, errors.New("missing required field 'executionPayload' for SilaExecutionPayloadEnvelope")
 	}
 
 	// Pre-marshal the execution payload using its gencodec MarshalJSON.
-	payload, err := e.ExecutionPayload.MarshalJSON()
+	payload, err := e.SilaExecutionPayload.MarshalJSON()
 	if err != nil {
 		return nil, err
 	}

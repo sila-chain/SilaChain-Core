@@ -24,9 +24,9 @@ import (
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/common/hexutil"
 	"github.com/sila-org/sila/core/types"
-	"github.com/sila-org/sila/sila"
 	"github.com/sila-org/sila/miner"
 	"github.com/sila-org/sila/rpc"
+	"github.com/sila-org/sila/sila"
 )
 
 // testingAPI implements the testing_ namespace.
@@ -44,7 +44,7 @@ func newTestingAPI(backend *sila.Sila) rpc.API {
 	}
 }
 
-func (api *testingAPI) BuildBlockV1(parentHash common.Hash, payloadAttributes silaEngine.PayloadAttributes, transactions *[]hexutil.Bytes, extraData *hexutil.Bytes) (*silaEngine.ExecutionPayloadEnvelope, error) {
+func (api *testingAPI) BuildBlockV1(parentHash common.Hash, payloadAttributes silaEngine.SilaPayloadAttributes, transactions *[]hexutil.Bytes, extraData *hexutil.Bytes) (*silaEngine.SilaExecutionPayloadEnvelope, error) {
 	if api.sila.BlockChain().CurrentBlock().Hash() != parentHash {
 		return nil, errors.New("parentHash is not current head")
 	}
@@ -57,7 +57,7 @@ func (api *testingAPI) BuildBlockV1(parentHash common.Hash, payloadAttributes si
 // BuildBlockV1 followed by silaEngine_newPayload + silaEngine_forkchoiceUpdated, but skips the
 // serialize/deserialize round-trip through ExecutableData. The block is built on top of
 // the current head.
-func (api *testingAPI) CommitBlockV1(ctx context.Context, payloadAttributes silaEngine.PayloadAttributes, transactions *[]hexutil.Bytes, extraData *hexutil.Bytes) (common.Hash, error) {
+func (api *testingAPI) CommitBlockV1(ctx context.Context, payloadAttributes silaEngine.SilaPayloadAttributes, transactions *[]hexutil.Bytes, extraData *hexutil.Bytes) (common.Hash, error) {
 	block, _, err := api.buildTestingBlock(payloadAttributes, transactions, extraData)
 	if err != nil {
 		return common.Hash{}, err
@@ -71,7 +71,7 @@ func (api *testingAPI) CommitBlockV1(ctx context.Context, payloadAttributes sila
 	return block.Hash(), nil
 }
 
-func (api *testingAPI) buildTestingBlock(payloadAttributes silaEngine.PayloadAttributes, transactions *[]hexutil.Bytes, extraData *hexutil.Bytes) (*types.Block, *silaEngine.ExecutionPayloadEnvelope, error) {
+func (api *testingAPI) buildTestingBlock(payloadAttributes silaEngine.SilaPayloadAttributes, transactions *[]hexutil.Bytes, extraData *hexutil.Bytes) (*types.Block, *silaEngine.SilaExecutionPayloadEnvelope, error) {
 	parentHash := api.sila.BlockChain().CurrentBlock().Hash()
 	// If transactions is empty but not nil, build an empty block
 	// If the transactions is nil, build a block with the current transactions from the txpool

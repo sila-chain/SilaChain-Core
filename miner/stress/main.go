@@ -52,7 +52,7 @@ func main() {
 		faucets[i], _ = crypto.GenerateKey()
 	}
 	// Create a post-merge network where blocks are built/inserted through
-	// silaEngine API calls driven by a simulated beacon client.
+	// silaSilaEngine API calls driven by a simulated beacon client.
 	genesis := makeGenesis(faucets)
 
 	// Handle interrupts.
@@ -118,7 +118,7 @@ func main() {
 		}
 		sent++
 
-		// Create and import blocks through the silaEngine API path.
+		// Create and import blocks through the silaSilaEngine API path.
 		if sent%256 == 0 {
 			beacon.Commit()
 		}

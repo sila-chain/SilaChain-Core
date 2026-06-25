@@ -55,33 +55,33 @@ var (
 )
 
 var (
-	// VALID is returned by the silaEngine API in the following calls:
+	// VALID is returned by the silaSilaEngine API in the following calls:
 	//   - newPayloadV1:       if the payload was already known or was just validated and executed
 	//   - forkchoiceUpdateV1: if the chain accepted the reorg (might ignore if it's stale)
 	VALID = "VALID"
 
-	// INVALID is returned by the silaEngine API in the following calls:
+	// INVALID is returned by the silaSilaEngine API in the following calls:
 	//   - newPayloadV1:       if the payload failed to execute on top of the local chain
 	//   - forkchoiceUpdateV1: if the new head is unknown, pre-merge, or reorg to it fails
 	INVALID = "INVALID"
 
-	// SYNCING is returned by the silaEngine API in the following calls:
+	// SYNCING is returned by the silaSilaEngine API in the following calls:
 	//   - newPayloadV1:       if the payload was accepted on top of an active sync
 	//   - forkchoiceUpdateV1: if the new head was seen before, but not part of the chain
 	SYNCING = "SYNCING"
 
-	// ACCEPTED is returned by the silaEngine API in the following calls:
+	// ACCEPTED is returned by the silaSilaEngine API in the following calls:
 	//   - newPayloadV1: if the payload was accepted, but not processed (side chain)
 	ACCEPTED = "ACCEPTED"
 
-	GenericServerError       = &SilaEngineAPIError{code: -32000, msg: "Server error"}
-	UnknownPayload           = &SilaEngineAPIError{code: -38001, msg: "Unknown payload"}
-	InvalidForkChoiceState   = &SilaEngineAPIError{code: -38002, msg: "Invalid forkchoice state"}
-	InvalidPayloadAttributes = &SilaEngineAPIError{code: -38003, msg: "Invalid payload attributes"}
-	TooLargeRequest          = &SilaEngineAPIError{code: -38004, msg: "Too large request"}
-	InvalidParams            = &SilaEngineAPIError{code: -32602, msg: "Invalid parameters"}
-	UnsupportedFork          = &SilaEngineAPIError{code: -38005, msg: "Unsupported fork"}
-	TooDeepReorg             = &SilaEngineAPIError{code: -38006, msg: "Too deep reorg"}
+	GenericServerError           = &SilaEngineAPIError{code: -32000, msg: "Server error"}
+	UnknownPayload               = &SilaEngineAPIError{code: -38001, msg: "Unknown payload"}
+	InvalidForkChoiceState       = &SilaEngineAPIError{code: -38002, msg: "Invalid forkchoice state"}
+	InvalidSilaPayloadAttributes = &SilaEngineAPIError{code: -38003, msg: "Invalid payload attributes"}
+	TooLargeRequest              = &SilaEngineAPIError{code: -38004, msg: "Too large request"}
+	InvalidParams                = &SilaEngineAPIError{code: -32602, msg: "Invalid parameters"}
+	UnsupportedFork              = &SilaEngineAPIError{code: -38005, msg: "Unsupported fork"}
+	TooDeepReorg                 = &SilaEngineAPIError{code: -38006, msg: "Too deep reorg"}
 
 	STATUS_INVALID         = ForkChoiceResponse{PayloadStatus: PayloadStatusV1{Status: INVALID}, PayloadID: nil}
 	STATUS_SYNCING         = ForkChoiceResponse{PayloadStatus: PayloadStatusV1{Status: SYNCING}, PayloadID: nil}

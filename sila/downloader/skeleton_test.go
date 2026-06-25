@@ -29,9 +29,9 @@ import (
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/core/rawdb"
 	"github.com/sila-org/sila/core/types"
+	"github.com/sila-org/sila/log"
 	"github.com/sila-org/sila/sila/protocols/sila"
 	"github.com/sila-org/sila/siladb"
-	"github.com/sila-org/sila/log"
 )
 
 // hookedBackfiller is a tester backfiller with all interface methods mocked and
@@ -947,7 +947,7 @@ func TestSkeletonSyncRetrievals(t *testing.T) {
 // TestSkeletonLinkSkipsNonCanonical verifies that the skeleton only links to a
 // local block that is canonical, and descends past block data that is present by
 // hash but lacks a canonical number->hash mapping (e.g. blocks imported
-// optimistically via the silaEngine API, or orphans left by an unclean shutdown).
+// optimistically via the silaSilaEngine API, or orphans left by an unclean shutdown).
 // Anchoring on such a block would leave it in place forever without its canonical
 // mapping being rewritten, wedging the freezer later on.
 func TestSkeletonLinkSkipsNonCanonical(t *testing.T) {
