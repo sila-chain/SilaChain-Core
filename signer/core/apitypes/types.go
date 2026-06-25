@@ -384,7 +384,7 @@ type TypedDataDomain struct {
 // TypedDataAndHash is a helper function that calculates a hash for typed data conforming to SIP-712.
 // This hash can then be safely used to calculate a signature.
 //
-// See https://sips.sila.org/SIPS/eip-712 for the full specification.
+// See https://sips.sila.org/SIPS/sip-712 for the full specification.
 //
 // This gives context to the signed typed data and prevents signing of transactions.
 func TypedDataAndHash(typedData TypedData) ([]byte, string, error) {

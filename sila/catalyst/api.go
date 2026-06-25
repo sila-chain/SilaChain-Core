@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with the sila library. If not, see <http://www.gnu.org/licenses/>.
 
-// Package catalyst implements the temporary eth1/sila RPC integration.
+// Package catalyst implements the temporary execution/Sila RPC integration.
 package catalyst
 
 import (
@@ -34,8 +34,6 @@ import (
 	"github.com/sila-org/sila/core"
 	"github.com/sila-org/sila/core/rawdb"
 	"github.com/sila-org/sila/core/types"
-	"github.com/sila-org/sila/sila"
-	"github.com/sila-org/sila/sila/silaconfig"
 	"github.com/sila-org/sila/internal/telemetry"
 	"github.com/sila-org/sila/internal/version"
 	"github.com/sila-org/sila/log"
@@ -45,6 +43,8 @@ import (
 	"github.com/sila-org/sila/params/forks"
 	"github.com/sila-org/sila/rlp"
 	"github.com/sila-org/sila/rpc"
+	"github.com/sila-org/sila/sila"
+	"github.com/sila-org/sila/sila/silaconfig"
 )
 
 // Register adds the silaEngine API and related APIs to the full node.
@@ -144,7 +144,7 @@ func newConsensusAPIWithoutHeartbeat(sila *sila.Sila) *ConsensusAPI {
 		log.Warn("SilaEngine API started but chain not configured for merge yet")
 	}
 	api := &ConsensusAPI{
-		sila:               sila,
+		sila:              sila,
 		remoteBlocks:      newHeaderQueue(),
 		localBlocks:       newPayloadQueue(),
 		invalidBlocksHits: make(map[common.Hash]int),

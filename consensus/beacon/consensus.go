@@ -50,30 +50,30 @@ var (
 	errInvalidTimestamp = errors.New("invalid timestamp")
 )
 
-// Beacon is a consensus silaEngine that combines the eth1 consensus and proof-of-stake
+// Beacon is a consensus silaEngine that combines the pre-merge execution consensus and proof-of-stake
 // algorithm. There is a special flag inside to decide whether to use legacy consensus
-// rules or new rules. The transition rule is described in the eth1/2 merge spec.
-// https://github.com/sila-org/SIPs/blob/master/SIPS/eip-3675.md
+// rules or new rules. The transition rule is described in the Sila merge specification.
+// https://github.com/sila-org/SIPs/blob/master/SIPS/sip-3675.md
 //
 // The beacon here is a half-functional consensus silaEngine with partial functions which
 // is only used for necessary consensus checks. The legacy consensus silaEngine can be any
 // silaEngine implements the consensus interface (except the beacon itself).
 type Beacon struct {
-	ethone consensus.SilaEngine // Original consensus silaEngine used in eth1, e.g. silaash or clique
+	legacyEngine consensus.SilaEngine // Original consensus silaEngine used before the merge, e.g. silaash or clique
 }
 
-// New creates a consensus silaEngine with the given embedded eth1 silaEngine.
-func New(ethone consensus.SilaEngine) *Beacon {
-	if _, ok := ethone.(*Beacon); ok {
+// New creates a consensus silaEngine with the given embedded pre-merge Sila engine.
+func New(legacyEngine consensus.SilaEngine) *Beacon {
+	if _, ok := legacyEngine.(*Beacon); ok {
 		panic("nested consensus silaEngine")
 	}
-	return &Beacon{ethone: ethone}
+	return &Beacon{legacyEngine: legacyEngine}
 }
 
 // Author implements consensus.SilaEngine, returning the verified author of the block.
 func (beacon *Beacon) Author(header *types.Header) (common.Address, error) {
 	if !beacon.IsPoSHeader(header) {
-		return beacon.ethone.Author(header)
+		return beacon.legacyEngine.Author(header)
 	}
 	return header.Coinbase, nil
 }
@@ -108,7 +108,7 @@ func (beacon *Beacon) VerifyHeader(chain consensus.ChainHeaderReader, header *ty
 	}
 	// Check >0 TDs with pre-merge, --0 TDs with post-merge rules
 	if header.Difficulty.Sign() > 0 {
-		return beacon.ethone.VerifyHeader(chain, header)
+		return beacon.legacyEngine.VerifyHeader(chain, header)
 	}
 	return beacon.verifyHeader(chain, header, parent)
 }
@@ -139,7 +139,7 @@ func (beacon *Beacon) splitHeaders(headers []*types.Header) ([]*types.Header, []
 func (beacon *Beacon) VerifyHeaders(chain consensus.ChainHeaderReader, headers []*types.Header) (chan<- struct{}, <-chan error) {
 	preHeaders, postHeaders := beacon.splitHeaders(headers)
 	if len(postHeaders) == 0 {
-		return beacon.ethone.VerifyHeaders(chain, headers)
+		return beacon.legacyEngine.VerifyHeaders(chain, headers)
 	}
 	if len(preHeaders) == 0 {
 		return beacon.verifyHeaders(chain, headers, nil)
@@ -155,7 +155,7 @@ func (beacon *Beacon) VerifyHeaders(chain consensus.ChainHeaderReader, headers [
 			old, new, out      = 0, len(preHeaders), 0
 			errors             = make([]error, len(headers))
 			done               = make([]bool, len(headers))
-			oldDone, oldResult = beacon.ethone.VerifyHeaders(chain, preHeaders)
+			oldDone, oldResult = beacon.legacyEngine.VerifyHeaders(chain, preHeaders)
 			newDone, newResult = beacon.verifyHeaders(chain, postHeaders, preHeaders[len(preHeaders)-1])
 		)
 		// Collect the results
@@ -189,7 +189,7 @@ func (beacon *Beacon) VerifyHeaders(chain consensus.ChainHeaderReader, headers [
 // rules of the Sila consensus silaEngine.
 func (beacon *Beacon) VerifyUncles(chain consensus.ChainReader, block *types.Block) error {
 	if !beacon.IsPoSHeader(block.Header()) {
-		return beacon.ethone.VerifyUncles(chain, block)
+		return beacon.legacyEngine.VerifyUncles(chain, block)
 	}
 	// Verify that there is no uncle block. It's explicitly disabled in the beacon
 	if len(block.Uncles()) > 0 {
@@ -336,7 +336,7 @@ func (beacon *Beacon) verifyHeaders(chain consensus.ChainHeaderReader, headers [
 // header to conform to the beacon protocol. The changes are done inline.
 func (beacon *Beacon) Prepare(chain consensus.ChainHeaderReader, header *types.Header) error {
 	if !chain.Config().IsPostMerge(header.Number.Uint64(), header.Time) {
-		return beacon.ethone.Prepare(chain, header)
+		return beacon.legacyEngine.Prepare(chain, header)
 	}
 	header.Difficulty = beaconDifficulty
 	return nil
@@ -345,7 +345,7 @@ func (beacon *Beacon) Prepare(chain consensus.ChainHeaderReader, header *types.H
 // Finalize implements consensus.SilaEngine and processes withdrawals on top.
 func (beacon *Beacon) Finalize(chain consensus.ChainHeaderReader, header *types.Header, state vm.StateDB, body *types.Body, blockAccessIndex uint32, bal *bal.ConstructionBlockAccessList) {
 	if !beacon.IsPoSHeader(header) {
-		beacon.ethone.Finalize(chain, header, state, body, blockAccessIndex, bal)
+		beacon.legacyEngine.Finalize(chain, header, state, body, blockAccessIndex, bal)
 		return
 	}
 	// Withdrawals processing.
@@ -378,7 +378,7 @@ func (beacon *Beacon) Finalize(chain consensus.ChainHeaderReader, header *types.
 // than one result may also be returned depending on the consensus algorithm.
 func (beacon *Beacon) Seal(chain consensus.ChainHeaderReader, block *types.Block, results chan<- *types.Block, stop <-chan struct{}) error {
 	if !beacon.IsPoSHeader(block.Header()) {
-		return beacon.ethone.Seal(chain, block, results, stop)
+		return beacon.legacyEngine.Seal(chain, block, results, stop)
 	}
 	// The seal verification is done by the external consensus silaEngine,
 	// return directly without pushing any block back. In another word
@@ -389,7 +389,7 @@ func (beacon *Beacon) Seal(chain consensus.ChainHeaderReader, block *types.Block
 
 // SealHash returns the hash of a block prior to it being sealed.
 func (beacon *Beacon) SealHash(header *types.Header) common.Hash {
-	return beacon.ethone.SealHash(header)
+	return beacon.legacyEngine.SealHash(header)
 }
 
 // CalcDifficulty is the difficulty adjustment algorithm. It returns
@@ -397,14 +397,14 @@ func (beacon *Beacon) SealHash(header *types.Header) common.Hash {
 // given the parent block's time and difficulty.
 func (beacon *Beacon) CalcDifficulty(chain consensus.ChainHeaderReader, time uint64, parent *types.Header) *big.Int {
 	if !chain.Config().IsPostMerge(parent.Number.Uint64()+1, time) {
-		return beacon.ethone.CalcDifficulty(chain, time, parent)
+		return beacon.legacyEngine.CalcDifficulty(chain, time, parent)
 	}
 	return beaconDifficulty
 }
 
 // Close shutdowns the consensus silaEngine
 func (beacon *Beacon) Close() error {
-	return beacon.ethone.Close()
+	return beacon.legacyEngine.Close()
 }
 
 // IsPoSHeader reports the header belongs to the PoS-stage with some special fields.
@@ -417,18 +417,18 @@ func (beacon *Beacon) IsPoSHeader(header *types.Header) bool {
 	return header.Difficulty.Cmp(beaconDifficulty) == 0
 }
 
-// InnerEngine returns the embedded eth1 consensus silaEngine.
+// InnerEngine returns the embedded pre-merge consensus engine.
 func (beacon *Beacon) InnerSilaEngine() consensus.SilaEngine {
-	return beacon.ethone
+	return beacon.legacyEngine
 }
 
 // SetThreads updates the mining threads. Delegate the call
-// to the eth1 silaEngine if it's threaded.
+// to the pre-merge Sila engine if it's threaded.
 func (beacon *Beacon) SetThreads(threads int) {
 	type threaded interface {
 		SetThreads(threads int)
 	}
-	if th, ok := beacon.ethone.(threaded); ok {
+	if th, ok := beacon.legacyEngine.(threaded); ok {
 		th.SetThreads(threads)
 	}
 }

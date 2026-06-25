@@ -63,7 +63,7 @@ const (
 // by examining only the chunk containing the potential JUMPDEST, making it ideal
 // for stateless execution and verkle/binary tries.
 //
-// Reference: https://sips.sila.org/SIPS/eip-7864
+// Reference: https://sips.sila.org/SIPS/sip-7864
 func ChunkifyCode(code []byte) ChunkedCode {
 	var (
 		chunkOffset = 0 // offset in the chunk
@@ -105,7 +105,7 @@ func ChunkifyCode(code []byte) ChunkedCode {
 	return chunks
 }
 
-// BinaryTrie is the implementation of https://sips.sila.org/SIPS/eip-7864.
+// BinaryTrie is the implementation of https://sips.sila.org/SIPS/sip-7864.
 type BinaryTrie struct {
 	store      *nodeStore
 	reader     *trie.Reader

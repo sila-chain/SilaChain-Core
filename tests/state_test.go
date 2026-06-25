@@ -259,14 +259,14 @@ func runBenchmark(b *testing.B, t *StateTest) {
 		b.Run(key, func(b *testing.B) {
 			vmconfig := vm.Config{}
 
-			config, eips, err := GetChainConfig(subtest.Fork)
+			config, sips, err := GetChainConfig(subtest.Fork)
 			if err != nil {
 				b.Error(err)
 				return
 			}
 			var rules = config.Rules(new(big.Int), false, 0)
 
-			vmconfig.ExtraSips = eips
+			vmconfig.ExtraSips = sips
 			block := t.genesis(config).ToBlock()
 			state := MakePreState(rawdb.NewMemoryDatabase(), t.json.Pre, false, rawdb.HashScheme)
 			defer state.Close()

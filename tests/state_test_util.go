@@ -162,26 +162,26 @@ type stAuthorizationMarshaling struct {
 // The fork definition can be
 // - a plain forkname, e.g. `Byzantium`,
 // - a fork basename, and a list of SIPs to enable; e.g. `Byzantium+1884+1283`.
-func GetChainConfig(forkString string) (baseConfig *params.ChainConfig, eips []int, err error) {
+func GetChainConfig(forkString string) (baseConfig *params.ChainConfig, sips []int, err error) {
 	var (
 		splitForks            = strings.Split(forkString, "+")
 		ok                    bool
-		baseName, eipsStrings = splitForks[0], splitForks[1:]
+		baseName, sipsStrings = splitForks[0], splitForks[1:]
 	)
 	if baseConfig, ok = Forks[baseName]; !ok {
 		return nil, nil, UnsupportedForkError{baseName}
 	}
-	for _, eip := range eipsStrings {
-		if eipNum, err := strconv.Atoi(eip); err != nil {
-			return nil, nil, fmt.Errorf("syntax error, invalid eip number %v", eip)
+	for _, sip := range sipsStrings {
+		if sipNum, err := strconv.Atoi(sip); err != nil {
+			return nil, nil, fmt.Errorf("syntax error, invalid SIP number %v", sip)
 		} else {
-			if !vm.ValidSIP(eipNum) {
-				return nil, nil, fmt.Errorf("syntax error, invalid eip number %v", eipNum)
+			if !vm.ValidSIP(sipNum) {
+				return nil, nil, fmt.Errorf("syntax error, invalid SIP number %v", sipNum)
 			}
-			eips = append(eips, eipNum)
+			sips = append(sips, sipNum)
 		}
 	}
-	return baseConfig, eips, nil
+	return baseConfig, sips, nil
 }
 
 // Subtests returns all valid subtests of the test.
@@ -266,11 +266,11 @@ func (t *StateTest) Run(subtest StateSubtest, vmconfig vm.Config, snapshotter bo
 // RunNoVerify runs a specific subtest and returns the statedb and post-state root.
 // Remember to call state.Close after verifying the test result!
 func (t *StateTest) RunNoVerify(subtest StateSubtest, vmconfig vm.Config, snapshotter bool, scheme string) (st StateTestState, root common.Hash, gasUsed uint64, err error) {
-	config, eips, err := GetChainConfig(subtest.Fork)
+	config, sips, err := GetChainConfig(subtest.Fork)
 	if err != nil {
 		return st, common.Hash{}, 0, UnsupportedForkError{subtest.Fork}
 	}
-	vmconfig.ExtraSips = eips
+	vmconfig.ExtraSips = sips
 
 	block := t.genesis(config).ToBlock()
 	st = MakePreState(rawdb.NewMemoryDatabase(), t.json.Pre, snapshotter, scheme)

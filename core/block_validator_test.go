@@ -93,7 +93,7 @@ func TestHeaderVerificationForMergingSilaash(t *testing.T) {
 	testHeaderVerificationForMerging(t, false)
 }
 
-// Tests the verification for eth1/2 merging, including pre-merge and post-merge
+// Tests the verification for Sila merge transition, including pre-merge and post-merge
 func testHeaderVerificationForMerging(t *testing.T, isClique bool) {
 	var (
 		gspec      *Genesis

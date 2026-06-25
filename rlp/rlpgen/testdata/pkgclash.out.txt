@@ -1,10 +1,10 @@
 package test
 
 import "github.com/sila-org/sila/common"
-import "github.com/sila-org/sila/sila"
 import "github.com/sila-org/sila/rlp"
+import "github.com/sila-org/sila/sila"
 import "io"
-import eth1 "github.com/sila-org/sila/sila/protocols/sila"
+import sila1 "github.com/sila-org/sila/sila/protocols/sila"
 
 func (obj *Test) EncodeRLP(_w io.Writer) error {
 	w := rlp.NewEncoderBuffer(_w)
@@ -41,7 +41,7 @@ func (obj *Test) DecodeRLP(dec *rlp.Stream) error {
 		}
 		_tmp0.A = _tmp1
 		// B:
-		var _tmp2 eth1.GetReceiptsPacket69
+		var _tmp2 sila1.GetReceiptsPacket69
 		{
 			if _, err := dec.List(); err != nil {
 				return err
