@@ -73,8 +73,8 @@ github.com/cockroachdb/crlib v0.0.0-20241112164430-1264a2edc35b h1:SHlYZ/bMx7frn
 github.com/cockroachdb/crlib v0.0.0-20241112164430-1264a2edc35b/go.mod h1:Gq51ZeKaFCXk6QwuGM0w1dnaOqc/F5zKT2zA9D6Xeac=
 github.com/cockroachdb/datadriven v1.0.3-0.20250407164829-2945557346d5 h1:UycK/E0TkisVrQbSoxvU827FwgBBcZ95nRRmpj/12QI=
 github.com/cockroachdb/datadriven v1.0.3-0.20250407164829-2945557346d5/go.mod h1:jsaKMvD3RBCATk1/jbUZM8C9idWBJME9+VRZ5+Liq1g=
-github.com/cockroachdb/errors v1.11.3 h1:5bA+k2Y6r+oz/6Z/RFlNeVCesGARKuC6YymtcDrbC/I=
-github.com/cockroachdb/errors v1.11.3/go.mod h1:m4UIW4CDjx+R5cybPsNrRbreomiFqt8o1h1wUVazSd8=
+github.com/cockroachdb/errors v1.14.0 h1:EfdVEJpN3z8rPMo43Yit59LxoiIa470fSXpZXuEs+ZI=
+github.com/cockroachdb/errors v1.14.0/go.mod h1:xRa70jZ9sNBQmISt5KmJmAD++E4dQHm89oCRiZGEdq0=
 github.com/cockroachdb/fifo v0.0.0-20240606204812-0bbfbd93a7ce h1:giXvy4KSc/6g/esnpM7Geqxka4WSqI1SZc7sMJFd3y4=
 github.com/cockroachdb/fifo v0.0.0-20240606204812-0bbfbd93a7ce/go.mod h1:9/y3cnZ5GKakj/H4y9r9GTjCvAFta7KLgSHPJJYc52M=
 github.com/cockroachdb/logtags v0.0.0-20230118201751-21c54148d20b h1:r6VH0faHjZeQy818SGhaone5OnYfxFR/+AzdY3sf5aE=
@@ -144,8 +144,8 @@ github.com/garslo/gogen v0.0.0-20170306192744-1d203ffc1f61/go.mod h1:Q0X6pkwTILD
 github.com/gballet/go-libpcsclite v0.0.0-20190607065134-2772fd86a8ff h1:tY80oXqGNY4FhTFhk+o9oFHGINQ/+vhlm8HFzi6znCI=
 github.com/gballet/go-libpcsclite v0.0.0-20190607065134-2772fd86a8ff/go.mod h1:x7DCsMOv1taUwEWCzT4cmDeAkigA5/QCwUodaVOe8Ww=
 github.com/getkin/kin-openapi v0.53.0/go.mod h1:7Yn5whZr5kJi6t+kShccXS8ae1APpYTW6yheSwk8Yi4=
-github.com/getsentry/sentry-go v0.27.0 h1:Pv98CIbtB3LkMWmXi4Joa5OOcwbmnX88sF5qbK3r3Ps=
-github.com/getsentry/sentry-go v0.27.0/go.mod h1:lc76E2QywIyW8WuBnwl8Lc4bkmQH4+w1gwTf25trprY=
+github.com/getsentry/sentry-go v0.46.0 h1:mbdDaarbUdOt9X+dx6kDdntkShLEX3/+KyOsVDTPDj0=
+github.com/getsentry/sentry-go v0.46.0/go.mod h1:evVbw2qotNUdYG8KxXbAdjOQWWvWIwKxpjdZZIvcIPw=
 github.com/ghemawat/stream v0.0.0-20171120220530-696b145b53b9 h1:r5GgOLGbza2wVHRzK7aAj6lWZjfbAwiu/RDCVOKjRyM=
 github.com/ghemawat/stream v0.0.0-20171120220530-696b145b53b9/go.mod h1:106OIgooyS7OzLDOpUGgm9fA3bQENb/cFSyyBmMoJDs=
 github.com/ghodss/yaml v1.0.0/go.mod h1:4dBDuWmgqj2HViK6kFavaiC9ZROes6MMH2rRYeMEF04=
@@ -359,8 +359,8 @@ github.com/sila-chain/go-bigmodexpfix v0.1.0-sila.1 h1:bK87KzDRt/+vgri0qdLunGnYp
 github.com/sila-chain/go-bigmodexpfix v0.1.0-sila.1/go.mod h1:aLw7e4n+2pYipuQtRD1REsnGILZ+SEEMMfbqJLOiJAk=
 github.com/sila-chain/hid v1.0.1-sila.1 h1:6eIUstZHqhRDHZdbq6w7g7mr0lW7+Lr+ljuBdBaxL70=
 github.com/sila-chain/hid v1.0.1-sila.1/go.mod h1:kD1bh+0SRr69wvPOuaq40IqgiBptCCklVVEr/Hl35BA=
-github.com/sila-chain/zrnt v0.34.1-sila.1 h1:xP66KqY0lOAnSTZ4vG+Lfse3sjaInCgsv6f30xxuHbY=
-github.com/sila-chain/zrnt v0.34.1-sila.1/go.mod h1:2mlxBN4y+fhLd2iXjbcNoCscvL37objHsG/Sk8wqw+g=
+github.com/sila-chain/zrnt v0.34.1-sila.2 h1:h7dqcgtqCl7YxrrN9lebvrs4jGVFac/fFi+PNomPzDM=
+github.com/sila-chain/zrnt v0.34.1-sila.2/go.mod h1:2mlxBN4y+fhLd2iXjbcNoCscvL37objHsG/Sk8wqw+g=
 github.com/status-im/keycard-go v0.2.0 h1:QDLFswOQu1r5jsycloeQh3bVU8n/NatHHaZobtDnDzA=
 github.com/status-im/keycard-go v0.2.0/go.mod h1:wlp8ZLbsmrF6g6WjugPAx+IzoLrkdf9+mHxBEeo3Hbg=
 github.com/stretchr/objx v0.1.0/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+wExME=
@@ -520,8 +520,8 @@ google.golang.org/genproto/googleapis/api v0.0.0-20260209200024-4cfbd4190f57 h1:
 google.golang.org/genproto/googleapis/api v0.0.0-20260209200024-4cfbd4190f57/go.mod h1:kSJwQxqmFXeo79zOmbrALdflXQeAYcUbgS7PbpMknCY=
 google.golang.org/genproto/googleapis/rpc v0.0.0-20260209200024-4cfbd4190f57 h1:mWPCjDEyshlQYzBpMNHaEof6UX1PmHcaUODUywQ0uac=
 google.golang.org/genproto/googleapis/rpc v0.0.0-20260209200024-4cfbd4190f57/go.mod h1:j9x/tPzZkyxcgEFkiKEEGxfvyumM01BEtsW8xzOahRQ=
-google.golang.org/grpc v1.79.1 h1:zGhSi45ODB9/p3VAawt9a+O/MULLl9dpizzNNpq7flY=
-google.golang.org/grpc v1.79.1/go.mod h1:KmT0Kjez+0dde/v2j9vzwoAScgEPx/Bw1CYChhHLrHQ=
+google.golang.org/grpc v1.79.3 h1:sybAEdRIEtvcD68Gx7dmnwjZKlyfuc61Dyo9pGXXkKE=
+google.golang.org/grpc v1.79.3/go.mod h1:KmT0Kjez+0dde/v2j9vzwoAScgEPx/Bw1CYChhHLrHQ=
 google.golang.org/protobuf v0.0.0-20200109180630-ec00e32a8dfd/go.mod h1:DFci5gLYBciE7Vtevhsrf46CRTquxDuWsQurQQe4oz8=
 google.golang.org/protobuf v0.0.0-20200221191635-4d8936d0db64/go.mod h1:kwYJMbMJ01Woi6D6+Kah6886xMZcty6N08ah7+eCXa0=
 google.golang.org/protobuf v0.0.0-20200228230310-ab0ca4ff8a60/go.mod h1:cfTl7dwQJ+fmap5saPgwCLgHXTUD7jkjRqWcaiX5VyM=

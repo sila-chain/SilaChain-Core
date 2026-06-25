@@ -1,6 +1,6 @@
 module github.com/sila-org/sila
 
-go 1.24.0
+go 1.25.0
 
 require (
 	github.com/Azure/azure-sdk-for-go/sdk/storage/azblob v1.2.0
@@ -99,7 +99,7 @@ require (
 	go.opentelemetry.io/proto/otlp v1.9.0 // indirect
 	google.golang.org/genproto/googleapis/api v0.0.0-20260209200024-4cfbd4190f57 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20260209200024-4cfbd4190f57 // indirect
-	google.golang.org/grpc v1.79.1 // indirect
+	google.golang.org/grpc v1.79.3 // indirect
 )
 
 require (
@@ -120,7 +120,7 @@ require (
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/bits-and-blooms/bitset v1.20.0 // indirect
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
-	github.com/cockroachdb/errors v1.11.3 // indirect
+	github.com/cockroachdb/errors v1.14.0 // indirect
 	github.com/cockroachdb/fifo v0.0.0-20240606204812-0bbfbd93a7ce // indirect
 	github.com/cockroachdb/logtags v0.0.0-20230118201751-21c54148d20b // indirect
 	github.com/cockroachdb/redact v1.1.5 // indirect
@@ -131,7 +131,7 @@ require (
 	github.com/emicklei/dot v1.6.2 // indirect
 	github.com/fjl/gencodec v0.1.2 // indirect
 	github.com/garslo/gogen v0.0.0-20170306192744-1d203ffc1f61 // indirect
-	github.com/getsentry/sentry-go v0.27.0 // indirect
+	github.com/getsentry/sentry-go v0.46.0 // indirect
 	github.com/go-ole/go-ole v1.3.0 // indirect
 	github.com/go-sourcemap/sourcemap v2.1.3+incompatible // indirect
 	github.com/goccy/go-json v0.10.4 // indirect
@@ -165,7 +165,7 @@ require (
 	github.com/rogpeppe/go-internal v1.14.1 // indirect
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
 	github.com/sila-chain/hid v1.0.1-sila.1
-	github.com/sila-chain/zrnt v0.34.1-sila.1
+	github.com/sila-chain/zrnt v0.34.1-sila.2
 	github.com/tklauser/go-sysconf v0.3.12 // indirect
 	github.com/tklauser/numcpus v0.6.1 // indirect
 	github.com/xrash/smetrics v0.0.0-20240521201337-686a1a2994c1 // indirect
