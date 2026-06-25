@@ -51,7 +51,7 @@ type HistoryIndexIterator interface {
 //   - determine whether a given target node ID or any of its descendants
 //     is marked in the extension bitmap.
 //
-// Tosilaer, these checks allow callers to efficiently filter out the irrelevant
+// Together, these checks allow callers to efficiently filter out the irrelevant
 // index entries during the lookup.
 type extFilter uint16
 

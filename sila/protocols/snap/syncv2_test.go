@@ -27,18 +27,18 @@ import (
 	"testing"
 	"time"
 
+	"github.com/holiman/uint256"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/core/rawdb"
 	"github.com/sila-org/sila/core/types"
 	"github.com/sila-org/sila/core/types/bal"
 	"github.com/sila-org/sila/crypto"
-	"github.com/sila-org/sila/siladb"
 	"github.com/sila-org/sila/log"
 	"github.com/sila-org/sila/rlp"
+	"github.com/sila-org/sila/siladb"
 	"github.com/sila-org/sila/trie"
 	"github.com/sila-org/sila/trie/trienode"
 	"github.com/sila-org/sila/triedb"
-	"github.com/holiman/uint256"
 )
 
 type (
@@ -2887,7 +2887,7 @@ func makeStateWithStorageContract(scheme string, plain []*kv, contractAddr commo
 	}
 	slices.SortFunc(accEntries, (*kv).cmp)
 
-	// Commit account + storage nodes tosilaer, then re-open for serving.
+	// Commit account + storage nodes together, then re-open for serving.
 	root, set := accTrie.Commit(true)
 	merged.Merge(set)
 	db.Update(root, types.EmptyRootHash, 0, merged, triedb.NewStateSet())

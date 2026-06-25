@@ -425,7 +425,7 @@ func newBlobTxMeta(id uint64, size uint64, storageSize uint32, ptx *blobTxForPoo
 //   - The second observation is that when ranking executable blob txs, it
 //     does not make sense to grant a later eviction priority to txs with high
 //     fee caps since it could enable pool wars. As such, any positive priority
-//     will be grouped tosilaer.
+//     will be grouped together.
 //
 //     priority = min(jumps, 0)
 //

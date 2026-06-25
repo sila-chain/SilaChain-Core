@@ -53,7 +53,7 @@ type Request struct {
 	numItems int         // Number of requested items
 	data     interface{} // Data content of the request packet
 
-	Peer string    // Demultiplexer if cross-peer requests are batched tosilaer
+	Peer string    // Demultiplexer if cross-peer requests are batched together
 	Sent time.Time // Timestamp when the request was sent
 }
 

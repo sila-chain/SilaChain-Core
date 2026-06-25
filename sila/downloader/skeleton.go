@@ -27,9 +27,9 @@ import (
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/core/rawdb"
 	"github.com/sila-org/sila/core/types"
+	"github.com/sila-org/sila/log"
 	"github.com/sila-org/sila/sila/protocols/sila"
 	"github.com/sila-org/sila/siladb"
-	"github.com/sila-org/sila/log"
 )
 
 // scratchHeaders is the number of headers to store in a scratch space to allow
@@ -103,7 +103,7 @@ func init() {
 // The subchains use the exact same database namespace and are not disjoint from
 // each other. As such, extending one to overlap the other entails reducing the
 // second one first. This combined buffer model is used to avoid having to move
-// data on disk when two subchains are joined tosilaer.
+// data on disk when two subchains are joined together.
 type subchain struct {
 	Head uint64      // Block number of the newest header in the subchain
 	Tail uint64      // Block number of the oldest header in the subchain
@@ -206,8 +206,8 @@ type backfiller interface {
 // for now.
 type skeleton struct {
 	db     siladb.Database // Database backing the skeleton
-	filler backfiller     // Chain syncer suspended/resumed by head events
-	chain  chainReader    // Underlying block chain
+	filler backfiller      // Chain syncer suspended/resumed by head events
+	chain  chainReader     // Underlying block chain
 
 	peers *peerSet                   // Set of peers we can sync from
 	idles map[string]*peerConnection // Set of idle peers in the current sync cycle
@@ -553,7 +553,7 @@ func (s *skeleton) sync(head *types.Header) (*types.Header, error) {
 			// sync and restart with the merged subchains.
 			//
 			// If we managed to link to the existing local chain or genesis block,
-			// abort sync altosilaer.
+			// abort sync altogether.
 			linked, merged := s.processResponse(res)
 			if linked {
 				log.Debug("Beacon sync linked to local chain")
@@ -593,7 +593,7 @@ func (s *skeleton) initSync(head *types.Header) {
 				Next: head.ParentHash,
 			}
 			for len(s.progress.Subchains) > 0 {
-				// If the last chain is above the new head, delete altosilaer
+				// If the last chain is above the new head, delete altogether
 				lastchain := s.progress.Subchains[0]
 				if lastchain.Tail >= headchain.Tail {
 					log.Debug("Dropping skeleton subchain", "head", lastchain.Head, "tail", lastchain.Tail)

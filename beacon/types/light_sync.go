@@ -33,7 +33,7 @@ type HeadInfo struct {
 }
 
 // BootstrapData contains a sync committee where light sync can be started,
-// tosilaer with a proof through a beacon header and corresponding state.
+// together with a proof through a beacon header and corresponding state.
 // Note: BootstrapData is fetched from a server based on a known checkpoint hash.
 type BootstrapData struct {
 	Version         string

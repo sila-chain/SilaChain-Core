@@ -1097,7 +1097,7 @@ func (bc *BlockChain) setHeadBeyondRoot(head uint64, time uint64, root common.Ha
 		// Todo(rjl493456442) txlookup, log index, etc
 	}
 	// If SetHead was only called as a chain reparation method, try to skip
-	// touching the header chain altosilaer, unless the freezer is broken
+	// touching the header chain altogether, unless the freezer is broken
 	if repair {
 		if target, force := updateFn(bc.db, bc.CurrentBlock()); force {
 			bc.hc.SetHead(target.Number.Uint64(), nil, delFn)

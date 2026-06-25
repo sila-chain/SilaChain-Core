@@ -2084,7 +2084,7 @@ func MakeBeaconLightConfig(ctx *cli.Context) bparams.ClientConfig {
 			config.ChainConfig = *bparams.MainnetLightConfig
 		}
 	}
-	// Genesis root and time should always be specified tosilaer with custom chain config
+	// Genesis root and time should always be specified together with custom chain config
 	if customConfig {
 		if !ctx.IsSet(BeaconGenesisRootFlag.Name) {
 			Fatalf("Custom beacon chain config is specified but genesis root is missing")

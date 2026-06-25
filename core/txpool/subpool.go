@@ -146,7 +146,7 @@ type SubPool interface {
 
 	// Add enqueues a batch of transactions into the pool if they are valid. Due
 	// to the large transaction churn, add may postpone fully integrating the tx
-	// to a later point to batch multiple ones tosilaer.
+	// to a later point to batch multiple ones together.
 	Add(txs []*types.Transaction, sync bool) []error
 
 	// Pending retrieves all currently processable transactions, grouped by origin

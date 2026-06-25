@@ -246,7 +246,7 @@ static void secp256k1_scalar_half(secp256k1_scalar *r, const secp256k1_scalar *a
      * This sum does not overflow. The most extreme case is a = -2, the largest odd scalar. Here:
      * - the left summand is:  a >> 1 = (a - a&1)/2 = (n-2-1)//2           = (n-3)//2
      * - the right summand is: a&1 ? n//2+1 : 0 = n//2+1 = (n-1)//2 + 2//2 = (n+1)//2
-     * Tosilaer they sum to (n-3)//2 + (n+1)//2 = (2n-2)//2 = n - 1, which is less than n.
+     * Together they sum to (n-3)//2 + (n+1)//2 = (2n-2)//2 = n - 1, which is less than n.
      */
     uint32_t mask = -(uint32_t)(a->d[0] & 1U);
     uint64_t t = (uint32_t)((a->d[0] >> 1) | (a->d[1] << 31));

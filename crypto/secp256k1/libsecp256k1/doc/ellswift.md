@@ -26,7 +26,7 @@ from and to this format, as well as convenience functions for key generation and
 directly on ellswift-encoded keys.
 
 The encoding consists of the concatenation of two (32-byte big endian) encoded field elements $u$
-and $t.$ Tosilaer they encode an x-coordinate on the curve $x$, or (see further) a full point $(x, y)$ on
+and $t.$ Together they encode an x-coordinate on the curve $x$, or (see further) a full point $(x, y)$ on
 the curve.
 
 **Decoding** consists of decoding the field elements $u$ and $t$ (values above the field size $p$

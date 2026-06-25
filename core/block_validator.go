@@ -157,7 +157,7 @@ func (v *BlockValidator) ValidateState(block *types.Block, statedb *state.StateD
 	// For valid blocks this should always validate to true.
 	//
 	// Receipts must go through MakeReceipt to calculate the receipt's bloom
-	// already. Merge the receipt's bloom tosilaer instead of recalculating
+	// already. Merge the receipt's bloom together instead of recalculating
 	// everything.
 	rbloom := types.MergeBloom(res.Receipts)
 	if rbloom != header.Bloom {

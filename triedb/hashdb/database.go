@@ -27,10 +27,10 @@ import (
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/core/rawdb"
 	"github.com/sila-org/sila/core/types"
-	"github.com/sila-org/sila/siladb"
 	"github.com/sila-org/sila/log"
 	"github.com/sila-org/sila/metrics"
 	"github.com/sila-org/sila/rlp"
+	"github.com/sila-org/sila/siladb"
 	"github.com/sila-org/sila/trie"
 	"github.com/sila-org/sila/trie/trienode"
 	"github.com/sila-org/sila/triedb/database"
@@ -78,7 +78,7 @@ var Defaults = &Config{
 // the disk database. The aim is to accumulate trie writes in-memory and only
 // periodically flush a couple tries to disk, garbage collecting the remainder.
 type Database struct {
-	diskdb  siladb.Database              // Persistent storage for matured trie nodes
+	diskdb  siladb.Database             // Persistent storage for matured trie nodes
 	cleans  *fastcache.Cache            // GC friendly memory cache of clean node RLPs
 	dirties map[common.Hash]*cachedNode // Data and references relationships of dirty trie nodes
 	oldest  common.Hash                 // Oldest tracked node, flush-list head
@@ -216,7 +216,7 @@ func (db *Database) node(hash common.Hash) ([]byte, error) {
 // Reference adds a new reference from a parent node to a child node.
 // This function is used to add reference between internal trie node
 // and external node(e.g. storage trie root), all internal trie nodes
-// are referenced tosilaer by database itself.
+// are referenced together by database itself.
 func (db *Database) Reference(child common.Hash, parent common.Hash) {
 	db.lock.Lock()
 	defer db.lock.Unlock()

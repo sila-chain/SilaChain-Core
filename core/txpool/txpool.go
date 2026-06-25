@@ -311,7 +311,7 @@ func (p *TxPool) GetMetadata(hash common.Hash) *TxMetadata {
 
 // Add enqueues a batch of transactions into the pool if they are valid. Due
 // to the large transaction churn, add may postpone fully integrating the tx
-// to a later point to batch multiple ones tosilaer.
+// to a later point to batch multiple ones together.
 //
 // Note, if sync is set the method will block until all internal maintenance
 // related to the add is finished. Only use this during tests for determinism.

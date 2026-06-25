@@ -989,7 +989,7 @@ func (s *StateDB) IntermediateRoot(deleteEmptyObjects bool) common.Hash {
 	}
 	// If witness building is enabled, gather all the read-only accesses.
 	// Skip witness collection in Unified-binary-trie mode, they will be
-	// gathered tosilaer at the end.
+	// gathered together at the end.
 	if s.witness != nil && s.db.Type().Is(TypeMPT) {
 		// Pull in anything that has been accessed before destruction
 		for _, obj := range s.stateObjectsDestruct {
@@ -1519,7 +1519,7 @@ func (s *StateDB) SlotInAccessList(addr common.Address, slot common.Hash) (addre
 
 // markDelete is invoked when an account is deleted but the deletion is
 // not yet committed. The pending mutation is cached and will be applied
-// all tosilaer
+// all together
 func (s *StateDB) markDelete(addr common.Address) {
 	if _, ok := s.mutations[addr]; !ok {
 		s.mutations[addr] = &mutation{}

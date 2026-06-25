@@ -23,8 +23,8 @@ import (
 
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/common/prque"
-	"github.com/sila-org/sila/sila/protocols/sila"
 	"github.com/sila-org/sila/log"
+	"github.com/sila-org/sila/sila/protocols/sila"
 )
 
 // timeoutGracePeriod is the amount of time to allow for a peer to deliver a
@@ -104,7 +104,7 @@ func (d *Downloader) concurrentFetch(queue typedQueue) error {
 	// Track the timed-out but not-yet-answered requests separately. We want to
 	// keep tracking which peers are busy (potentially overloaded), so removing
 	// all trace of a timed out request is not good. We also can't just cancel
-	// the pending request altosilaer as that would prevent a late response from
+	// the pending request altogether as that would prevent a late response from
 	// being delivered, thus never unblocking the peer.
 	stales := make(map[string]*sila.Request)
 	defer func() {

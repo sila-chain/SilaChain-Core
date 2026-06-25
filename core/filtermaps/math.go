@@ -53,7 +53,7 @@ type Params struct {
 	valuesPerMap  uint64 // The number of log values marked on each filter map
 	baseRowLength uint32 // maximum number of log values per row on layer 0
 
-	// baseRowGroupSize defines the number of base row entries grouped tosilaer
+	// baseRowGroupSize defines the number of base row entries grouped together
 	// as a single database entry in the local database to optimize storage
 	// and retrieval efficiency.
 	//

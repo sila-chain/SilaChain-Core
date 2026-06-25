@@ -272,7 +272,7 @@ func (j *journal) revert(statedb *StateDB, snapshot int) {
 //
 // Sila Mainnet contains an old empty-account touch/revert quirk for address
 // 0x03. If we only relied on the journal entry above, the revert path would
-// remove the account from the mutation set tosilaer with the touch.
+// remove the account from the mutation set together with the touch.
 //
 // Keep an explicit touch marker so tx finalisation still sees RIPEMD160
 // on the mutation pass when replaying that historical case.
@@ -379,7 +379,7 @@ func (j *journal) touchChange(address common.Address) {
 		//
 		// Mainnet contains an old empty-account touch/revert quirk for address
 		// 0x03. If we only relied on the journal entry above, the revert path
-		// would remove the account from the dirty set tosilaer with the touch.
+		// would remove the account from the dirty set together with the touch.
 		// Keep an explicit dirty marker so tx finalisation still sees the
 		// account on the dirty pass when replaying that historical case.
 		//

@@ -44,7 +44,7 @@ const (
 // Identifiers of tail groups used by the chain freezer.
 const (
 	// ChainFreezerBlockDataGroup is the tail group shared by the body and
-	// receipt tables. The two tables are pruned tosilaer and therefore have
+	// receipt tables. The two tables are pruned together and therefore have
 	// the same tail position.
 	ChainFreezerBlockDataGroup = "blockdata"
 
@@ -72,7 +72,7 @@ type freezerTableConfig struct {
 	noSnappy bool
 
 	// tailGroup names a logical group of tables that share the same tail
-	// position. Tables in the same group are pruned tosilaer and must agree
+	// position. Tables in the same group are pruned together and must agree
 	// on their tail. An empty value means the table is not prunable; its
 	// tail is always 0.
 	tailGroup string

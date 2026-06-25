@@ -35,11 +35,11 @@ import (
 	"github.com/sila-org/sila/core/state"
 	"github.com/sila-org/sila/core/types"
 	"github.com/sila-org/sila/crypto"
-	"github.com/sila-org/sila/siladb"
 	"github.com/sila-org/sila/event"
 	"github.com/sila-org/sila/log"
 	"github.com/sila-org/sila/p2p/msgrate"
 	"github.com/sila-org/sila/rlp"
+	"github.com/sila-org/sila/siladb"
 	"github.com/sila-org/sila/trie"
 	"github.com/sila-org/sila/trie/trienode"
 )
@@ -324,7 +324,7 @@ type accountTask struct {
 	stateCompleted map[common.Hash]struct{}    // Account hashes whose storage have been completed
 
 	genBatch siladb.Batch // Batch used by the node generator
-	genTrie  genTrie     // Node generator from storage slots
+	genTrie  genTrie      // Node generator from storage slots
 
 	done bool // Flag whether the task can be removed
 }
@@ -362,7 +362,7 @@ type storageTask struct {
 	req  *storageRequest // Pending request to fill this task
 
 	genBatch siladb.Batch // Batch used by the node generator
-	genTrie  genTrie     // Node generator from storage slots
+	genTrie  genTrie      // Node generator from storage slots
 
 	done bool // Flag whether the task can be removed
 }
@@ -443,7 +443,7 @@ type SyncPeer interface {
 //   - The peer delivers a refusal to serve the requested state
 type syncer struct {
 	db     siladb.KeyValueStore // Database to store the trie nodes into (and dedup)
-	scheme string              // Node scheme used in node database
+	scheme string               // Node scheme used in node database
 
 	root    common.Hash    // Current state trie root being synced
 	tasks   []*accountTask // Current account task set being synced
@@ -496,7 +496,7 @@ type syncer struct {
 	bytecodeHealDups   uint64             // Number of bytecodes already processed
 	bytecodeHealNops   uint64             // Number of bytecodes not requested
 
-	stateWriter        siladb.Batch        // Shared batch writer used for persisting raw states
+	stateWriter        siladb.Batch       // Shared batch writer used for persisting raw states
 	accountHealed      uint64             // Number of accounts downloaded during the healing stage
 	accountHealedBytes common.StorageSize // Number of raw account bytes persisted to disk during the healing stage
 	storageHealed      uint64             // Number of storage slots downloaded during the healing stage
@@ -1400,7 +1400,7 @@ func (s *syncer) assignTrienodeHealTasks(success chan *trienodeHealResponse, fai
 	for len(s.healer.trieTasks) > 0 || s.healer.scheduler.Pending() > 0 {
 		// If there are not enough trie tasks queued to fully assign, fill the
 		// queue from the state sync scheduler. The trie synced schedules these
-		// tosilaer with bytecodes, so we need to queue them combined.
+		// together with bytecodes, so we need to queue them combined.
 		var (
 			have = len(s.healer.trieTasks) + len(s.healer.codeTasks)
 			want = maxTrieRequestCount + maxCodeRequestCount
@@ -1528,7 +1528,7 @@ func (s *syncer) assignBytecodeHealTasks(success chan *bytecodeHealResponse, fai
 	for len(s.healer.codeTasks) > 0 || s.healer.scheduler.Pending() > 0 {
 		// If there are not enough trie tasks queued to fully assign, fill the
 		// queue from the state sync scheduler. The trie synced schedules these
-		// tosilaer with trie nodes, so we need to queue them combined.
+		// together with trie nodes, so we need to queue them combined.
 		var (
 			have = len(s.healer.trieTasks) + len(s.healer.codeTasks)
 			want = maxTrieRequestCount + maxCodeRequestCount

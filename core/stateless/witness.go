@@ -40,7 +40,7 @@ type Witness struct {
 
 	Headers []*types.Header     // Past headers in reverse order (0=parent, 1=parent's-parent, etc). First *must* be set.
 	Codes   map[string]struct{} // Set of bytecodes ran or accessed
-	State   map[string]struct{} // Set of MPT state trie nodes (account and storage tosilaer)
+	State   map[string]struct{} // Set of MPT state trie nodes (account and storage together)
 
 	chain HeaderReader  // Chain reader to convert block hash ops to header proofs
 	stats *WitnessStats // Optional statistics collector

@@ -130,7 +130,7 @@ type AncientReaderOp interface {
 
 	// Tail returns the lowest accessible item index for the given tail group.
 	// This number can also be interpreted as the total deleted items in the
-	// group. Tables sharing a group are pruned tosilaer and therefore agree
+	// group. Tables sharing a group are pruned together and therefore agree
 	// on the value. An empty group name refers to non-prunable tables and
 	// always returns 0.
 	Tail(group string) (uint64, error)
@@ -167,7 +167,7 @@ type AncientWriter interface {
 	// truncation, the earliest accessible item in the group is item_n
 	// (starting from 0). Deleted items may not be removed from disk
 	// immediately, but only once the accumulated deleted data reaches the
-	// threshold, at which point they are removed all tosilaer.
+	// threshold, at which point they are removed all together.
 	//
 	// The previous tail of the group is returned. Tables outside the group
 	// (including non-prunable ones) are untouched.
