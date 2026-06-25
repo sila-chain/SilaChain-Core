@@ -25,14 +25,14 @@ import (
 //go:embed checkpoint_mainnet.hex
 var checkpointMainnet string
 
-//go:embed checkpoint_sepolia.hex
-var checkpointSepolia string
+//go:embed checkpoint_sila-public-testnet.hex
+var checkpointSilaPublicTestnet string
 
-//go:embed checkpoint_holesky.hex
-var checkpointHolesky string
+//go:embed checkpoint_sila-staging-testnet.hex
+var checkpointSilaStagingTestnet string
 
-//go:embed checkpoint_hoodi.hex
-var checkpointHoodi string
+//go:embed checkpoint_sila-dev-testnet.hex
+var checkpointSilaDevTestnet string
 
 var (
 	MainnetLightConfig = (&ChainConfig{
@@ -48,10 +48,10 @@ var (
 		AddFork("ELECTRA", 364032, common.FromHex("0x05000000")).
 		AddFork("FULU", 411392, common.FromHex("0x06000000"))
 
-	SepoliaLightConfig = (&ChainConfig{
+	SilaPublicTestnetLightConfig = (&ChainConfig{
 		GenesisValidatorsRoot: common.HexToHash("0xd8ea171f3c94aea21ebc42a1ed61052acf3f9209c00e4efbaaddac09ed9b8078"),
 		GenesisTime:           1655733600,
-		Checkpoint:            common.HexToHash(checkpointSepolia),
+		Checkpoint:            common.HexToHash(checkpointSilaPublicTestnet),
 	}).
 		AddFork("GENESIS", 0, common.FromHex("0x90000069")).
 		AddFork("ALTAIR", 50, common.FromHex("0x90000070")).
@@ -61,10 +61,10 @@ var (
 		AddFork("ELECTRA", 222464, common.FromHex("0x90000074")).
 		AddFork("FULU", 272640, common.FromHex("0x90000075"))
 
-	HoleskyLightConfig = (&ChainConfig{
+	SilaStagingTestnetLightConfig = (&ChainConfig{
 		GenesisValidatorsRoot: common.HexToHash("0x9143aa7c615a7f7115e2b6aac319c03529df8242ae705fba9df39b79c59fa8b1"),
 		GenesisTime:           1695902400,
-		Checkpoint:            common.HexToHash(checkpointHolesky),
+		Checkpoint:            common.HexToHash(checkpointSilaStagingTestnet),
 	}).
 		AddFork("GENESIS", 0, common.FromHex("0x01017000")).
 		AddFork("ALTAIR", 0, common.FromHex("0x02017000")).
@@ -74,10 +74,10 @@ var (
 		AddFork("ELECTRA", 115968, common.FromHex("0x06017000")).
 		AddFork("FULU", 165120, common.FromHex("0x07017000"))
 
-	HoodiLightConfig = (&ChainConfig{
+	SilaDevTestnetLightConfig = (&ChainConfig{
 		GenesisValidatorsRoot: common.HexToHash("0x212f13fc4df078b6cb7db228f1c8307566dcecf900867401a92023d7ba99cb5f"),
 		GenesisTime:           1742212800,
-		Checkpoint:            common.HexToHash(checkpointHoodi),
+		Checkpoint:            common.HexToHash(checkpointSilaDevTestnet),
 	}).
 		AddFork("GENESIS", 0, common.FromHex("0x10000910")).
 		AddFork("ALTAIR", 0, common.FromHex("0x20000910")).
