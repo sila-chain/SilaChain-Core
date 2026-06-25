@@ -1436,7 +1436,7 @@ func MakeDatabaseHandles(max int) int {
 	return int(raised / 2) // Leave half for networking and other stuff
 }
 
-// setSilaBaseUnitbase retrieves the etherbase from the directly specified command line flags.
+// setSilaBaseUnitbase retrieves the configured fee recipient from the directly specified command line flags.
 func setSilaBaseUnitbase(ctx *cli.Context, cfg *silaconfig.Config) {
 	if !ctx.IsSet(MinerPendingFeeRecipientFlag.Name) {
 		return

@@ -42,16 +42,9 @@ import (
 	"github.com/sila-org/sila/core/txpool/locals"
 	"github.com/sila-org/sila/core/types"
 	"github.com/sila-org/sila/core/vm"
-	"github.com/sila-org/sila/sila/downloader"
-	"github.com/sila-org/sila/sila/silaconfig"
-	"github.com/sila-org/sila/sila/gasprice"
-	"github.com/sila-org/sila/sila/protocols/sila"
-	"github.com/sila-org/sila/sila/protocols/snap"
-	"github.com/sila-org/sila/sila/tracers"
-	"github.com/sila-org/sila/siladb"
 	"github.com/sila-org/sila/event"
-	"github.com/sila-org/sila/internal/silaapi"
 	"github.com/sila-org/sila/internal/shutdowncheck"
+	"github.com/sila-org/sila/internal/silaapi"
 	"github.com/sila-org/sila/internal/version"
 	"github.com/sila-org/sila/log"
 	"github.com/sila-org/sila/miner"
@@ -62,6 +55,13 @@ import (
 	"github.com/sila-org/sila/params"
 	"github.com/sila-org/sila/rlp"
 	"github.com/sila-org/sila/rpc"
+	"github.com/sila-org/sila/sila/downloader"
+	"github.com/sila-org/sila/sila/gasprice"
+	"github.com/sila-org/sila/sila/protocols/sila"
+	"github.com/sila-org/sila/sila/protocols/snap"
+	"github.com/sila-org/sila/sila/silaconfig"
+	"github.com/sila-org/sila/sila/tracers"
+	"github.com/sila-org/sila/siladb"
 	silaversion "github.com/sila-org/sila/version"
 )
 
@@ -106,7 +106,7 @@ type Sila struct {
 	// DB interfaces
 	chainDb siladb.Database // Block chain database
 
-	silaEngine         consensus.SilaEngine
+	silaEngine     consensus.SilaEngine
 	accountManager *accounts.Manager
 
 	filterMaps      *filtermaps.FilterMaps
@@ -129,7 +129,7 @@ type Sila struct {
 
 	p2pServer *p2p.Server
 
-	lock sync.RWMutex // Protects the variadic fields (e.g. gas price and etherbase)
+	lock sync.RWMutex // Protects the variadic fields (e.g. gas price and fee recipient)
 
 	shutdownTracker *shutdowncheck.ShutdownTracker // Tracks if and when the node has shutdown ungracefully
 }
@@ -202,7 +202,7 @@ func New(stack *node.Node, config *silaconfig.Config) (*Sila, error) {
 		config:          config,
 		chainDb:         chainDb,
 		accountManager:  stack.AccountManager(),
-		silaEngine:          silaEngine,
+		silaEngine:      silaEngine,
 		networkID:       networkID,
 		gasPrice:        config.Miner.GasPrice,
 		p2pServer:       stack.Server(),
@@ -439,8 +439,8 @@ func (s *Sila) BlockChain() *core.BlockChain       { return s.blockchain }
 func (s *Sila) TxPool() *txpool.TxPool             { return s.txPool }
 func (s *Sila) BlobTxPool() *blobpool.BlobPool     { return s.blobTxPool }
 func (s *Sila) BlobCache() *blobpool.Cache         { return s.blobCache }
-func (s *Sila) SilaEngine() consensus.SilaEngine           { return s.silaEngine }
-func (s *Sila) ChainDb() siladb.Database            { return s.chainDb }
+func (s *Sila) SilaEngine() consensus.SilaEngine   { return s.silaEngine }
+func (s *Sila) ChainDb() siladb.Database           { return s.chainDb }
 func (s *Sila) IsListening() bool                  { return true } // Always listening
 func (s *Sila) Downloader() *downloader.Downloader { return s.handler.downloader }
 func (s *Sila) Synced() bool                       { return s.handler.synced.Load() }

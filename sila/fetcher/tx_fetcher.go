@@ -272,8 +272,8 @@ func (f *TxFetcher) Notify(peer string, types []byte, sizes []uint32, hashes []c
 
 		unknownHashes = append(unknownHashes, hash)
 
-		// Transaction metadata has been available since eth68, and all
-		// legacy sila protocols (prior to eth68) have been deprecated.
+		// Transaction metadata has been available since Sila protocol version 68, and all
+		// legacy Sila protocols prior to version 68 have been deprecated.
 		// Therefore, metadata is always expected in the announcement.
 		unknownMetas = append(unknownMetas, txMetadata{kind: types[i], size: sizes[i]})
 	}

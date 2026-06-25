@@ -716,7 +716,7 @@ func (api *ConsensusAPI) HasBlobs(hashes []common.Hash) []bool {
 // Helper for SilaNewPayload* methods.
 var invalidStatus = silaEngine.PayloadStatusV1{Status: silaEngine.INVALID}
 
-// SilaNewPayloadV1 creates an Eth1 block, inserts it in the chain, and returns the status of the chain.
+// SilaNewPayloadV1 creates an execution-layer block, inserts it in the chain, and returns the status of the chain.
 func (api *ConsensusAPI) SilaNewPayloadV1(ctx context.Context, params silaEngine.ExecutableData) (silaEngine.PayloadStatusV1, error) {
 	if params.Withdrawals != nil {
 		return invalidStatus, paramsErr("withdrawals not supported in V1")
@@ -724,7 +724,7 @@ func (api *ConsensusAPI) SilaNewPayloadV1(ctx context.Context, params silaEngine
 	return api.newPayload(ctx, params, nil, nil, nil, false)
 }
 
-// SilaNewPayloadV2 creates an Eth1 block, inserts it in the chain, and returns the status of the chain.
+// SilaNewPayloadV2 creates an execution-layer block, inserts it in the chain, and returns the status of the chain.
 func (api *ConsensusAPI) SilaNewPayloadV2(ctx context.Context, params silaEngine.ExecutableData) (silaEngine.PayloadStatusV1, error) {
 	var (
 		cancun   = api.config().IsCancun(api.config().LondonBlock, params.Timestamp)
@@ -745,7 +745,7 @@ func (api *ConsensusAPI) SilaNewPayloadV2(ctx context.Context, params silaEngine
 	return api.newPayload(ctx, params, nil, nil, nil, false)
 }
 
-// SilaNewPayloadV3 creates an Eth1 block, inserts it in the chain, and returns the status of the chain.
+// SilaNewPayloadV3 creates an execution-layer block, inserts it in the chain, and returns the status of the chain.
 func (api *ConsensusAPI) SilaNewPayloadV3(ctx context.Context, params silaEngine.ExecutableData, versionedHashes []common.Hash, beaconRoot *common.Hash) (silaEngine.PayloadStatusV1, error) {
 	switch {
 	case params.Withdrawals == nil:
@@ -764,7 +764,7 @@ func (api *ConsensusAPI) SilaNewPayloadV3(ctx context.Context, params silaEngine
 	return api.newPayload(ctx, params, versionedHashes, beaconRoot, nil, false)
 }
 
-// SilaNewPayloadV4 creates an Eth1 block, inserts it in the chain, and returns the status of the chain.
+// SilaNewPayloadV4 creates an execution-layer block, inserts it in the chain, and returns the status of the chain.
 func (api *ConsensusAPI) SilaNewPayloadV4(ctx context.Context, params silaEngine.ExecutableData, versionedHashes []common.Hash, beaconRoot *common.Hash, executionRequests []hexutil.Bytes) (silaEngine.PayloadStatusV1, error) {
 	switch {
 	case params.Withdrawals == nil:
@@ -789,7 +789,7 @@ func (api *ConsensusAPI) SilaNewPayloadV4(ctx context.Context, params silaEngine
 	return api.newPayload(ctx, params, versionedHashes, beaconRoot, requests, false)
 }
 
-// SilaNewPayloadV5 creates an Eth1 block, inserts it in the chain, and returns the status of the chain.
+// SilaNewPayloadV5 creates an execution-layer block, inserts it in the chain, and returns the status of the chain.
 func (api *ConsensusAPI) SilaNewPayloadV5(ctx context.Context, params silaEngine.ExecutableData, versionedHashes []common.Hash, beaconRoot *common.Hash, executionRequests []hexutil.Bytes) (silaEngine.PayloadStatusV1, error) {
 	switch {
 	case params.Withdrawals == nil:
