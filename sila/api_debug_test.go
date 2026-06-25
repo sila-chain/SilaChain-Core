@@ -28,6 +28,7 @@ import (
 	"time"
 
 	"github.com/davecgh/go-spew/spew"
+	"github.com/holiman/uint256"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/consensus/beacon"
 	"github.com/sila-org/sila/consensus/silaash"
@@ -42,7 +43,6 @@ import (
 	"github.com/sila-org/sila/crypto"
 	"github.com/sila-org/sila/params"
 	"github.com/sila-org/sila/triedb"
-	"github.com/holiman/uint256"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -285,10 +285,10 @@ func TestGetModifiedAccounts(t *testing.T) {
 	genesis := &core.Genesis{
 		Config: params.TestChainConfig,
 		Alloc: types.GenesisAlloc{
-			accounts[0].addr: {Balance: big.NewInt(params.Ether)},
-			accounts[1].addr: {Balance: big.NewInt(params.Ether)},
-			accounts[2].addr: {Balance: big.NewInt(params.Ether)},
-			accounts[3].addr: {Balance: big.NewInt(params.Ether)},
+			accounts[0].addr: {Balance: big.NewInt(params.SilaBaseUnit)},
+			accounts[1].addr: {Balance: big.NewInt(params.SilaBaseUnit)},
+			accounts[2].addr: {Balance: big.NewInt(params.SilaBaseUnit)},
+			accounts[3].addr: {Balance: big.NewInt(params.SilaBaseUnit)},
 		},
 	}
 	genBlocks := 1

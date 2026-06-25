@@ -25,6 +25,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/holiman/uint256"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/common/mclock"
 	"github.com/sila-org/sila/core/txpool"
@@ -32,7 +33,6 @@ import (
 	"github.com/sila-org/sila/crypto"
 	"github.com/sila-org/sila/crypto/kzg4844"
 	"github.com/sila-org/sila/params"
-	"github.com/holiman/uint256"
 )
 
 var (
@@ -1762,7 +1762,7 @@ func makeInvalidBlobTx() *types.Transaction {
 	cellProof[0][0] = 0x0
 
 	blobtx := &types.BlobTx{
-		ChainID:    uint256.MustFromBig(params.MainnetChainConfig.ChainID),
+		ChainID:    uint256.MustFromBig(params.SilaMainnetChainConfig.ChainID),
 		Nonce:      0,
 		GasTipCap:  uint256.NewInt(100),
 		GasFeeCap:  uint256.NewInt(200),
@@ -1772,7 +1772,7 @@ func makeInvalidBlobTx() *types.Transaction {
 		Value:      uint256.NewInt(100),
 		Sidecar:    types.NewBlobTxSidecar(types.BlobSidecarVersion1, []kzg4844.Blob{*blob}, []kzg4844.Commitment{commitment}, cellProof),
 	}
-	return types.MustSignNewTx(key, types.LatestSigner(params.MainnetChainConfig), blobtx)
+	return types.MustSignNewTx(key, types.LatestSigner(params.SilaMainnetChainConfig), blobtx)
 }
 
 // This test ensures that the peer will be disconnected for protocol violation
