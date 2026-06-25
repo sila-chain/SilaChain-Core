@@ -5,7 +5,7 @@
   "state_root": "0xc99af23f66c2b3c964b5301f314ffae1add20b1d88b3a9d8a95c72110b06b2fd",
   "body": {
     "randao_reveal": "0x81126bf1b4491dd0906c2d82615b34b8d3f779096bcf0a5f0ddda2a6da2b6c1858d3359a0b70cf66af69fc649bf6683e0520b3b14edcde3d6bd75b394d0812c5fd232350e6e3b5e9e6b262219c788ca2e74fa15a1e02e034b091d6c694aaeccd",
-    "eth1_data": {
+    "sila_data": {
       "deposit_root": "0x8654042dec994aa6fc1a36fd0f4ebb2a49d1b27ada9460b045e2ea2a15718cc2",
       "deposit_count": "10010",
       "block_hash": "0xb358182abdc706e4a7ca709816043ebb23f3d93e943ca0becdfb9202abecd2d3"
