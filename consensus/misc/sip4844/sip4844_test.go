@@ -27,7 +27,7 @@ import (
 
 func TestCalcExcessBlobGas(t *testing.T) {
 	var (
-		config        = params.MainnetChainConfig
+		config        = params.SilaMainnetChainConfig
 		targetBlobs   = config.BlobScheduleConfig.Cancun.Target
 		targetBlobGas = uint64(targetBlobs) * params.BlobTxBlobGasPerBlob
 	)
