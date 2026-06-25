@@ -619,7 +619,7 @@ module.exports = SolidityTypeBytes;
 */
 /**
  * @file coder.js
- * @author Marek Kotewicz <marek@ethdev.com>
+ * @author Marek Kotewicz <marek@siladev.com>
  * @date 2015
  */
 
@@ -906,7 +906,7 @@ module.exports = SolidityTypeDynamicBytes;
 */
 /**
  * @file formatters.js
- * @author Marek Kotewicz <marek@ethdev.com>
+ * @author Marek Kotewicz <marek@siladev.com>
  * @date 2015
  */
 
@@ -1194,7 +1194,7 @@ module.exports = SolidityTypeInt;
 */
 /** 
  * @file param.js
- * @author Marek Kotewicz <marek@ethdev.com>
+ * @author Marek Kotewicz <marek@siladev.com>
  * @date 2015
  */
 
@@ -1740,7 +1740,7 @@ if (typeof XMLHttpRequest === 'undefined') {
 */
 /** @file config.js
  * @authors:
- *   Marek Kotewicz <marek@ethdev.com>
+ *   Marek Kotewicz <marek@siladev.com>
  * @date 2015
  */
 
@@ -1821,7 +1821,7 @@ module.exports = {
 */
 /** 
  * @file sha3.js
- * @author Marek Kotewicz <marek@ethdev.com>
+ * @author Marek Kotewicz <marek@siladev.com>
  * @date 2015
  */
 
@@ -1861,7 +1861,7 @@ module.exports = function (value, options) {
 */
 /**
  * @file utils.js
- * @author Marek Kotewicz <marek@ethdev.com>
+ * @author Marek Kotewicz <marek@siladev.com>
  * @date 2015
  */
 
@@ -2498,11 +2498,11 @@ module.exports={
 /**
  * @file silaweb3.js
  * @authors:
- *   Jeffrey Wilcke <jeff@ethdev.com>
- *   Marek Kotewicz <marek@ethdev.com>
- *   Marian Oancea <marian@ethdev.com>
- *   Fabian Vogelsteller <fabian@ethdev.com>
- *   Gav Wood <g@ethdev.com>
+ *   Jeffrey Wilcke <jeff@siladev.com>
+ *   Marek Kotewicz <marek@siladev.com>
+ *   Marian Oancea <marian@siladev.com>
+ *   Fabian Vogelsteller <fabian@siladev.com>
+ *   Gav Wood <g@siladev.com>
  * @date 2014
  */
 
@@ -2642,7 +2642,7 @@ module.exports = SilaWeb3;
 */
 /**
  * @file allevents.js
- * @author Marek Kotewicz <marek@ethdev.com>
+ * @author Marek Kotewicz <marek@siladev.com>
  * @date 2014
  */
 
@@ -2732,7 +2732,7 @@ module.exports = AllSolidityEvents;
 */
 /** 
  * @file batch.js
- * @author Marek Kotewicz <marek@ethdev.com>
+ * @author Marek Kotewicz <marek@siladev.com>
  * @date 2015
  */
 
@@ -2800,7 +2800,7 @@ module.exports = Batch;
 */
 /**
  * @file contract.js
- * @author Marek Kotewicz <marek@ethdev.com>
+ * @author Marek Kotewicz <marek@siladev.com>
  * @date 2014
  */
 
@@ -3112,7 +3112,7 @@ module.exports = ContractFactory;
 */
 /** 
  * @file errors.js
- * @author Marek Kotewicz <marek@ethdev.com>
+ * @author Marek Kotewicz <marek@siladev.com>
  * @date 2015
  */
 
@@ -3157,7 +3157,7 @@ module.exports = {
 */
 /**
  * @file event.js
- * @author Marek Kotewicz <marek@ethdev.com>
+ * @author Marek Kotewicz <marek@siladev.com>
  * @date 2014
  */
 
@@ -3417,11 +3417,11 @@ module.exports = extend;
 */
 /** @file filter.js
  * @authors:
- *   Jeffrey Wilcke <jeff@ethdev.com>
- *   Marek Kotewicz <marek@ethdev.com>
- *   Marian Oancea <marian@ethdev.com>
- *   Fabian Vogelsteller <fabian@ethdev.com>
- *   Gav Wood <g@ethdev.com>
+ *   Jeffrey Wilcke <jeff@siladev.com>
+ *   Marek Kotewicz <marek@siladev.com>
+ *   Marian Oancea <marian@siladev.com>
+ *   Fabian Vogelsteller <fabian@siladev.com>
+ *   Gav Wood <g@siladev.com>
  * @date 2014
  */
 
@@ -3664,8 +3664,8 @@ module.exports = Filter;
 */
 /**
  * @file formatters.js
- * @author Marek Kotewicz <marek@ethdev.com>
- * @author Fabian Vogelsteller <fabian@ethdev.com>
+ * @author Marek Kotewicz <marek@siladev.com>
+ * @author Fabian Vogelsteller <fabian@siladev.com>
  * @date 2015
  */
 
@@ -4007,7 +4007,7 @@ module.exports = {
 */
 /**
  * @file function.js
- * @author Marek Kotewicz <marek@ethdev.com>
+ * @author Marek Kotewicz <marek@siladev.com>
  * @date 2015
  */
 
@@ -4292,9 +4292,9 @@ module.exports = SolidityFunction;
 */
 /** @file httpprovider.js
  * @authors:
- *   Marek Kotewicz <marek@ethdev.com>
- *   Marian Oancea <marian@ethdev.com>
- *   Fabian Vogelsteller <fabian@ethdev.com>
+ *   Marek Kotewicz <marek@siladev.com>
+ *   Marian Oancea <marian@siladev.com>
+ *   Fabian Vogelsteller <fabian@siladev.com>
  * @date 2015
  */
 
@@ -4451,7 +4451,7 @@ module.exports = HttpProvider;
 */
 /** 
  * @file iban.js
- * @author Marek Kotewicz <marek@ethdev.com>
+ * @author Marek Kotewicz <marek@siladev.com>
  * @date 2015
  */
 
@@ -4680,7 +4680,7 @@ module.exports = Iban;
 */
 /** @file ipcprovider.js
  * @authors:
- *   Fabian Vogelsteller <fabian@ethdev.com>
+ *   Fabian Vogelsteller <fabian@siladev.com>
  * @date 2015
  */
 
@@ -4889,7 +4889,7 @@ module.exports = IpcProvider;
 */
 /** @file jsonrpc.js
  * @authors:
- *   Marek Kotewicz <marek@ethdev.com>
+ *   Marek Kotewicz <marek@siladev.com>
  *   Aaron Kumavis <aaron@kumavis.me>
  * @date 2015
  */
@@ -4976,7 +4976,7 @@ module.exports = Jsonrpc;
 */
 /**
  * @file method.js
- * @author Marek Kotewicz <marek@ethdev.com>
+ * @author Marek Kotewicz <marek@siladev.com>
  * @date 2015
  */
 
@@ -5142,7 +5142,7 @@ module.exports = Method;
 */
 /** @file db.js
  * @authors:
- *   Marek Kotewicz <marek@ethdev.com>
+ *   Marek Kotewicz <marek@siladev.com>
  * @date 2015
  */
 
@@ -5210,8 +5210,8 @@ module.exports = DB;
 */
 /**
  * @file sila.js
- * @author Marek Kotewicz <marek@ethdev.com>
- * @author Fabian Vogelsteller <fabian@ethdev.com>
+ * @author Marek Kotewicz <marek@siladev.com>
+ * @author Fabian Vogelsteller <fabian@siladev.com>
  * @date 2015
  */
 
@@ -5536,7 +5536,7 @@ module.exports = Sila;
 */
 /** @file sila.js
  * @authors:
- *   Marek Kotewicz <marek@ethdev.com>
+ *   Marek Kotewicz <marek@siladev.com>
  * @date 2015
  */
 
@@ -5590,8 +5590,8 @@ module.exports = Net;
 */
 /**
  * @file sila.js
- * @author Marek Kotewicz <marek@ethdev.com>
- * @author Fabian Vogelsteller <fabian@ethdev.com>
+ * @author Marek Kotewicz <marek@siladev.com>
+ * @author Fabian Vogelsteller <fabian@siladev.com>
  * @date 2015
  */
 
@@ -5707,7 +5707,7 @@ module.exports = Personal;
 */
 /** @file watches.js
  * @authors:
- *   Marek Kotewicz <marek@ethdev.com>
+ *   Marek Kotewicz <marek@siladev.com>
  * @date 2015
  */
 
@@ -5788,7 +5788,7 @@ module.exports = {
 */
 /** 
  * @file namereg.js
- * @author Marek Kotewicz <marek@ethdev.com>
+ * @author Marek Kotewicz <marek@siladev.com>
  * @date 2015
  */
 
@@ -5830,7 +5830,7 @@ module.exports = {
 /**
  * @file property.js
  * @author Fabian Vogelsteller <fabian@frozeman.de>
- * @author Marek Kotewicz <marek@ethdev.com>
+ * @author Marek Kotewicz <marek@siladev.com>
  * @date 2015
  */
 
@@ -5975,11 +5975,11 @@ module.exports = Property;
 */
 /** 
  * @file requestmanager.js
- * @author Jeffrey Wilcke <jeff@ethdev.com>
- * @author Marek Kotewicz <marek@ethdev.com>
- * @author Marian Oancea <marian@ethdev.com>
- * @author Fabian Vogelsteller <fabian@ethdev.com>
- * @author Gav Wood <g@ethdev.com>
+ * @author Jeffrey Wilcke <jeff@siladev.com>
+ * @author Marek Kotewicz <marek@siladev.com>
+ * @author Marian Oancea <marian@siladev.com>
+ * @author Fabian Vogelsteller <fabian@siladev.com>
+ * @author Gav Wood <g@siladev.com>
  * @date 2014
  */
 
@@ -6253,7 +6253,7 @@ module.exports = Settings;
 */
 /** @file syncing.js
  * @authors:
- *   Fabian Vogelsteller <fabian@ethdev.com>
+ *   Fabian Vogelsteller <fabian@siladev.com>
  * @date 2015
  */
 
@@ -6348,7 +6348,7 @@ module.exports = IsSyncing;
 */
 /** 
  * @file transfer.js
- * @author Marek Kotewicz <marek@ethdev.com>
+ * @author Marek Kotewicz <marek@siladev.com>
  * @date 2015
  */
 
