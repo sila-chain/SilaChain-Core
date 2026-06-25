@@ -31,6 +31,7 @@ import (
 	"github.com/consensys/gnark-crypto/ecc/bls12-381/fp"
 	"github.com/consensys/gnark-crypto/ecc/bls12-381/fr"
 	"github.com/holiman/uint256"
+	patched_big "github.com/sila-chain/go-bigmodexpfix/src/math/big"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/common/bitutil"
 	"github.com/sila-org/sila/core/tracing"
@@ -40,7 +41,6 @@ import (
 	"github.com/sila-org/sila/crypto/kzg4844"
 	"github.com/sila-org/sila/crypto/secp256r1"
 	"github.com/sila-org/sila/params"
-	patched_big "github.com/sila/go-bigmodexpfix/src/math/big"
 	"golang.org/x/crypto/ripemd160"
 )
 

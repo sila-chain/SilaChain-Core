@@ -655,7 +655,7 @@ func DefaultSilaPublicTestnetGenesisBlock() *Genesis {
 		GasLimit:   0x1c9c380,
 		Difficulty: big.NewInt(0x20000),
 		Timestamp:  1633267481,
-		Alloc:      decodePrealloc(sila - public - testnetAllocData),
+		Alloc:      decodePrealloc(silaPublicTestnetAllocData),
 	}
 }
 
@@ -667,7 +667,7 @@ func DefaultSilaStagingTestnetGenesisBlock() *Genesis {
 		GasLimit:   0x17d7840,
 		Difficulty: big.NewInt(0x01),
 		Timestamp:  1695902100,
-		Alloc:      decodePrealloc(sila - staging - testnetAllocData),
+		Alloc:      decodePrealloc(silaStagingTestnetAllocData),
 	}
 }
 
@@ -679,7 +679,7 @@ func DefaultSilaDevTestnetGenesisBlock() *Genesis {
 		GasLimit:   0x2255100,
 		Difficulty: big.NewInt(0x01),
 		Timestamp:  1742212800,
-		Alloc:      decodePrealloc(sila - dev - testnetAllocData),
+		Alloc:      decodePrealloc(silaDevTestnetAllocData),
 	}
 }
 

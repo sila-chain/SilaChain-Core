@@ -36,11 +36,11 @@ import (
 	"github.com/sila-org/sila/core/types"
 	"github.com/sila-org/sila/core/vm"
 	"github.com/sila-org/sila/crypto"
-	"github.com/sila-org/sila/sila"
-	"github.com/sila-org/sila/sila/silaconfig"
-	"github.com/sila-org/sila/sila/filters"
 	"github.com/sila-org/sila/node"
 	"github.com/sila-org/sila/params"
+	"github.com/sila-org/sila/sila"
+	"github.com/sila-org/sila/sila/filters"
+	"github.com/sila-org/sila/sila/silaconfig"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -317,7 +317,7 @@ func TestGraphQLConcurrentResolvers(t *testing.T) {
 			GasLimit:   11500000,
 			Difficulty: big.NewInt(1048576),
 			Alloc: types.GenesisAlloc{
-				addr: {Balance: big.NewInt(params.Ether)},
+				addr: {Balance: big.NewInt(params.SilaBaseUnit)},
 				dad: {
 					// LOG0(0, 0), LOG0(0, 0), RETURN(0, 0)
 					Code:    common.Hex2Bytes("60006000a060006000a060006000f3"),
@@ -410,7 +410,7 @@ func TestWithdrawals(t *testing.T) {
 			GasLimit:   11500000,
 			Difficulty: common.Big1,
 			Alloc: types.GenesisAlloc{
-				addr: {Balance: big.NewInt(params.Ether)},
+				addr: {Balance: big.NewInt(params.SilaBaseUnit)},
 			},
 		}
 		signer = types.LatestSigner(genesis.Config)
