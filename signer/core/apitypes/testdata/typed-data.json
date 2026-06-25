@@ -6326,7 +6326,7 @@
   {
     "name": "SIP712 example",
     "domain": {
-      "name": "Ether Mail",
+      "name": "SilaBaseUnit Mail",
       "version": "1",
       "chainId": "0x1",
       "verifyingContract": "0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC",
@@ -6389,6 +6389,6 @@
       }
     },
     "encoded": "0xa0cedeb2dc280ba39b857546d74f5549c3a1d7bdc2dd96bf881f76108e23dac2fc71e5fa27ff56c350aa531bc129ebdf613b772b6604664f5d8dbe21b85eb0c8cd54f074a4af31b4411ff6a60c9719dbd559c221c8ac3492d9d872b041d703d1b5aadf3154a261abdd9086fc627b61efca26ae5702701d05cd2305f7c52a2fc8",
-    "digest": "0x90a8bfdd5e3f2460f9250e449d3f021a2dbd00a611cf20e18210f961fcc3ab68"
+    "digest": "0xc3a0ef07be6d1c48500827efe2b14359d4db12b7a1afc285f6b22178a7fca0e9"
   }
 ]
