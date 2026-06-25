@@ -95,8 +95,6 @@ github.com/consensys/gnark-crypto v0.18.1 h1:RyLV6UhPRoYYzaFnPQA4qK3DyuDgkTgskDd
 github.com/consensys/gnark-crypto v0.18.1/go.mod h1:L3mXGFTe1ZN+RSJ+CLjUt9x7PNdx8ubaYfDROyp2Z8c=
 github.com/cpuguy83/go-md2man/v2 v2.0.5 h1:ZtcqGrnekaHpVLArFSe4HK5DoKx1T0rq2DwVB0alcyc=
 github.com/cpuguy83/go-md2man/v2 v2.0.5/go.mod h1:tgQtvFlXSQOSOSIRvRPT7W67SCa46tRHOmNcaadrF8o=
-github.com/crate-crypto/go-eth-kzg v1.5.0 h1:FYRiJMJG2iv+2Dy3fi14SVGjcPteZ5HAAUe4YWlJygc=
-github.com/crate-crypto/go-eth-kzg v1.5.0/go.mod h1:J9/u5sWfznSObptgfa92Jq8rTswn6ahQWEuiLHOjCUI=
 github.com/creack/pty v1.1.9/go.mod h1:oKZEueFk5CKHvIhNR5MUki03XCEU+Q6VDXinZuGJ33E=
 github.com/cyberdelia/templates v0.0.0-20141128023046-ca7fffd4298c/go.mod h1:GyV+0YP4qX0UQ7r2MoYZ+AvYDp12OF5yg4q8rGnyNh4=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
@@ -357,6 +355,8 @@ github.com/sila-chain/c-kzg-4844/v2 v2.1.6 h1:x4ozpmNbf60+sf+73eeCnQeMOZmqIPot5o
 github.com/sila-chain/c-kzg-4844/v2 v2.1.6/go.mod h1:8qGo35mQGtXbESqeiLdbFFsxgXzmlYDICEcyI6zYYYc=
 github.com/sila-chain/go-bigmodexpfix v0.1.0-sila.1 h1:bK87KzDRt/+vgri0qdLunGnYpTEAyyBcupnKIOaRd+s=
 github.com/sila-chain/go-bigmodexpfix v0.1.0-sila.1/go.mod h1:aLw7e4n+2pYipuQtRD1REsnGILZ+SEEMMfbqJLOiJAk=
+github.com/sila-chain/go-sila-kzg v1.5.0-sila.1 h1:tszkYlK213Q6j8rICD0WwlLLF6POMzqI3ZvFwhFYG5Q=
+github.com/sila-chain/go-sila-kzg v1.5.0-sila.1/go.mod h1:dknNEilOujDOhnGYugKBJVxzl4xSqWh1u6lymqS//ss=
 github.com/sila-chain/hid v1.0.1-sila.1 h1:6eIUstZHqhRDHZdbq6w7g7mr0lW7+Lr+ljuBdBaxL70=
 github.com/sila-chain/hid v1.0.1-sila.1/go.mod h1:kD1bh+0SRr69wvPOuaq40IqgiBptCCklVVEr/Hl35BA=
 github.com/sila-chain/zrnt v0.34.1-sila.2 h1:h7dqcgtqCl7YxrrN9lebvrs4jGVFac/fFi+PNomPzDM=

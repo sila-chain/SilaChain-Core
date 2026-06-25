@@ -20,7 +20,7 @@ import (
 	"encoding/json"
 	"sync"
 
-	gokzg4844 "github.com/crate-crypto/go-eth-kzg"
+	gokzg4844 "github.com/sila-chain/go-sila-kzg"
 )
 
 // context is the crypto primitive pre-seeded with the trusted setup parameters.
