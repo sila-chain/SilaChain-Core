@@ -359,10 +359,10 @@ github.com/sila-chain/go-sila-kzg v1.5.0-sila.1 h1:tszkYlK213Q6j8rICD0WwlLLF6POM
 github.com/sila-chain/go-sila-kzg v1.5.0-sila.1/go.mod h1:dknNEilOujDOhnGYugKBJVxzl4xSqWh1u6lymqS//ss=
 github.com/sila-chain/hid v1.0.1-sila.1 h1:6eIUstZHqhRDHZdbq6w7g7mr0lW7+Lr+ljuBdBaxL70=
 github.com/sila-chain/hid v1.0.1-sila.1/go.mod h1:kD1bh+0SRr69wvPOuaq40IqgiBptCCklVVEr/Hl35BA=
+github.com/sila-chain/keycard-go v0.2.0-sila.1 h1:N1Bci1rwM6h02tfIHgZZdDsCWWZFzJbUuApTXpOdtJ4=
+github.com/sila-chain/keycard-go v0.2.0-sila.1/go.mod h1:4zHn7gtFqmAUJhjf3E61iUcrMZ5yDPDKOx+KO4TWdCg=
 github.com/sila-chain/zrnt v0.34.1-sila.2 h1:h7dqcgtqCl7YxrrN9lebvrs4jGVFac/fFi+PNomPzDM=
 github.com/sila-chain/zrnt v0.34.1-sila.2/go.mod h1:2mlxBN4y+fhLd2iXjbcNoCscvL37objHsG/Sk8wqw+g=
-github.com/status-im/keycard-go v0.2.0 h1:QDLFswOQu1r5jsycloeQh3bVU8n/NatHHaZobtDnDzA=
-github.com/status-im/keycard-go v0.2.0/go.mod h1:wlp8ZLbsmrF6g6WjugPAx+IzoLrkdf9+mHxBEeo3Hbg=
 github.com/stretchr/objx v0.1.0/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+wExME=
 github.com/stretchr/objx v0.5.2 h1:xuMeJ0Sdp5ZMRXx/aWO6RZxdr3beISkG5/G/aIRr3pY=
 github.com/stretchr/objx v0.5.2/go.mod h1:FRsXN1f5AsAjCGJKqEizvkpNtU+EGNCLh3NxZ/8L+MA=

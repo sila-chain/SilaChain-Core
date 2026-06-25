@@ -34,13 +34,13 @@ import (
 	"time"
 
 	pcsc "github.com/gballet/go-libpcsclite"
+	"github.com/sila-chain/keycard-go/derivationpath"
 	"github.com/sila-org/sila"
 	"github.com/sila-org/sila/accounts"
 	"github.com/sila-org/sila/common"
 	"github.com/sila-org/sila/core/types"
 	"github.com/sila-org/sila/crypto"
 	"github.com/sila-org/sila/log"
-	"github.com/status-im/keycard-go/derivationpath"
 )
 
 // ErrPairingPasswordNeeded is returned if opening the smart card requires pairing with a pairing

@@ -55,7 +55,7 @@ require (
 	github.com/sila-chain/c-kzg-4844/v2 v2.1.6
 	github.com/sila-chain/go-bigmodexpfix v0.1.0-sila.1
 	github.com/sila-chain/go-sila-kzg v1.5.0-sila.1
-	github.com/status-im/keycard-go v0.2.0
+	github.com/sila-chain/keycard-go v0.2.0-sila.1
 	github.com/stretchr/testify v1.11.1
 	github.com/supranational/blst v0.3.16
 	github.com/syndtr/goleveldb v1.0.1-0.20210819022825-2ae1ddf74ef7
