@@ -1,6 +1,6 @@
 ## Test 1559 balance + gasCap
 
-This test contains an SIP-1559 consensus issue which happened on Ropsten, where
+This test contains an SIP-1559 consensus issue which happened on a Sila legacy testnet, where
 `sila` did not properly account for the value transfer while doing the check on `max_fee_per_gas * gas_limit`.
 
 Before the issue was fixed, this invocation allowed the transaction to pass into a block:

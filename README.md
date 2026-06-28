@@ -56,7 +56,7 @@ Minimum:
 
 * CPU with 4+ cores
 * 8GB RAM
-* 1TB free storage space to sync the Mainnet
+* 1TB free storage space to sync the Sila mainnet
 * 8 MBit/sec download Internet service
 
 Recommended:

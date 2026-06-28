@@ -1,7 +1,7 @@
 ## Workload Testing Tool
 
 This tool performs RPC calls against a live node. It has tests for the SilaPublicTestnet testnet and
-Mainnet. Note the tests require a fully synced node.
+Sila mainnet. Note the tests require a fully synced node.
 
 To run the tests against a SilaPublicTestnet node, use:
 
@@ -27,8 +27,8 @@ The additional flag is required to activate the trace tests.
 ### Regenerating tests
 
 There is a facility for updating the tests from the chain. This can also be used to
-generate the tests for a new network. As an example, to recreate tests for mainnet, run
-the following commands (in this directory) against a synced mainnet node:
+generate the tests for a new network. As an example, to recreate tests for Sila mainnet, run
+the following commands (in this directory) against a synced Sila mainnet node:
 
 ```shell
 > go run . filtergen --queries queries/filter_queries_mainnet.json http://host:8545
