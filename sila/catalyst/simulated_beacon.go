@@ -96,7 +96,7 @@ type SimulatedBeacon struct {
 	feeRecipient     common.Address
 	feeRecipientLock sync.Mutex // lock gates concurrent access to the feeRecipient
 
-	engineAPI          *ConsensusAPI
+	silaEngineAPI      *ConsensusAPI
 	curForkchoiceState silaEngine.ForkchoiceStateV1
 	lastBlockTime      uint64
 }
@@ -121,12 +121,12 @@ func NewSimulatedBeacon(period uint64, feeRecipient common.Address, sila *sila.S
 		SafeBlockHash:      block.Hash(),
 		FinalizedBlockHash: block.Hash(),
 	}
-	engineAPI := newConsensusAPIWithoutHeartbeat(sila)
+	silaEngineAPI := newConsensusAPIWithoutHeartbeat(sila)
 
 	// if genesis block, send forkchoiceUpdated to trigger transition to PoS
 	if block.Number.Sign() == 0 {
 		version := payloadVersion(sila.BlockChain().Config(), block.Time)
-		if _, err := engineAPI.forkchoiceUpdated(context.Background(), current, nil, version, false); err != nil {
+		if _, err := silaEngineAPI.forkchoiceUpdated(context.Background(), current, nil, version, false); err != nil {
 			return nil, err
 		}
 	}
@@ -138,7 +138,7 @@ func NewSimulatedBeacon(period uint64, feeRecipient common.Address, sila *sila.S
 		sila:               sila,
 		period:             min(period, maxPeriod),
 		shutdownCh:         make(chan struct{}),
-		engineAPI:          engineAPI,
+		silaEngineAPI:      silaEngineAPI,
 		lastBlockTime:      block.Time,
 		curForkchoiceState: current,
 		feeRecipient:       feeRecipient,
@@ -220,7 +220,7 @@ func (c *SimulatedBeacon) sealBlock(withdrawals []*types.Withdrawal, timestamp u
 		Service: "silaEngine",
 		Method:  "forkchoiceUpdatedV" + fmt.Sprintf("%d", version),
 	})
-	fcResponse, err := c.engineAPI.forkchoiceUpdated(fcCtx, c.curForkchoiceState, attribute, version, false)
+	fcResponse, err := c.silaEngineAPI.forkchoiceUpdated(fcCtx, c.curForkchoiceState, attribute, version, false)
 	fcSpanEnd(&err)
 	if err != nil {
 		return err
@@ -242,7 +242,7 @@ func (c *SimulatedBeacon) sealBlock(withdrawals []*types.Withdrawal, timestamp u
 		Service: "silaEngine",
 		Method:  "getPayloadV" + fmt.Sprintf("%d", version),
 	})
-	envelope, err := c.engineAPI.getPayload(*fcResponse.PayloadID, true, nil, nil)
+	envelope, err := c.silaEngineAPI.getPayload(*fcResponse.PayloadID, true, nil, nil)
 	gpSpanEnd(&err)
 	if err != nil {
 		return err
@@ -293,7 +293,7 @@ func (c *SimulatedBeacon) sealBlock(withdrawals []*types.Withdrawal, timestamp u
 	})
 
 	// Mark the payload as canon
-	_, err = c.engineAPI.newPayload(npCtx, *payload, blobHashes, beaconRoot, requests, false)
+	_, err = c.silaEngineAPI.newPayload(npCtx, *payload, blobHashes, beaconRoot, requests, false)
 	npSpanEnd(&err)
 	if err != nil {
 		return err
@@ -307,7 +307,7 @@ func (c *SimulatedBeacon) sealBlock(withdrawals []*types.Withdrawal, timestamp u
 		Service: "silaEngine",
 		Method:  "forkchoiceUpdatedV" + fmt.Sprintf("%d", version),
 	})
-	_, err = c.engineAPI.forkchoiceUpdated(fcuCtx, c.curForkchoiceState, nil, version, false)
+	_, err = c.silaEngineAPI.forkchoiceUpdated(fcuCtx, c.curForkchoiceState, nil, version, false)
 	fcuSpanEnd(&err)
 	if err != nil {
 		return err

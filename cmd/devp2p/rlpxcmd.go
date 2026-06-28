@@ -162,7 +162,7 @@ func rlpxPing(ctx *cli.Context) error {
 // rlpxSilaTest runs the sila protocol test suite.
 func rlpxSilaTest(ctx *cli.Context) error {
 	p := cliTestParams(ctx)
-	suite, err := ethtest.NewSuite(p.node, p.chainDir, p.engineAPI, p.jwt)
+	suite, err := ethtest.NewSuite(p.node, p.chainDir, p.silaEngineAPI, p.jwt)
 	if err != nil {
 		exit(err)
 	}
@@ -172,7 +172,7 @@ func rlpxSilaTest(ctx *cli.Context) error {
 // rlpxSnapTest runs the snap protocol test suite.
 func rlpxSnapTest(ctx *cli.Context) error {
 	p := cliTestParams(ctx)
-	suite, err := ethtest.NewSuite(p.node, p.chainDir, p.engineAPI, p.jwt)
+	suite, err := ethtest.NewSuite(p.node, p.chainDir, p.silaEngineAPI, p.jwt)
 	if err != nil {
 		exit(err)
 	}
@@ -182,7 +182,7 @@ func rlpxSnapTest(ctx *cli.Context) error {
 // rlpxSnap2Test runs the snap/2 (SIP-8189) protocol test suite.
 func rlpxSnap2Test(ctx *cli.Context) error {
 	p := cliTestParams(ctx)
-	suite, err := ethtest.NewSuite(p.node, p.chainDir, p.engineAPI, p.jwt)
+	suite, err := ethtest.NewSuite(p.node, p.chainDir, p.silaEngineAPI, p.jwt)
 	if err != nil {
 		exit(err)
 	}
@@ -190,10 +190,10 @@ func rlpxSnap2Test(ctx *cli.Context) error {
 }
 
 type testParams struct {
-	node      *enode.Node
-	engineAPI string
-	jwt       string
-	chainDir  string
+	node          *enode.Node
+	silaEngineAPI string
+	jwt           string
+	chainDir      string
 }
 
 func cliTestParams(ctx *cli.Context) *testParams {
@@ -203,10 +203,10 @@ func cliTestParams(ctx *cli.Context) *testParams {
 		exit(err)
 	}
 	p := testParams{
-		node:      node,
-		engineAPI: ctx.String(testNodeEngineFlag.Name),
-		jwt:       ctx.String(testNodeJWTFlag.Name),
-		chainDir:  ctx.String(testChainDirFlag.Name),
+		node:          node,
+		silaEngineAPI: ctx.String(testNodeEngineFlag.Name),
+		jwt:           ctx.String(testNodeJWTFlag.Name),
+		chainDir:      ctx.String(testChainDirFlag.Name),
 	}
 	return &p
 }
