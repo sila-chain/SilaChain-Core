@@ -242,7 +242,7 @@ func TestValidation(t *testing.T) {
 		// Local is mainnet Gray Glacier, far in the future. Remote announces Gopherium (non existing fork)
 		// at some future block 88888888, for itself, but past block for local. Local is incompatible.
 		//
-		// This case detects non-upgraded nodes with majority hash power (typical Ropsten mess).
+		// This case detects non-upgraded nodes with majority hash power (typical Sila legacy testnet mess).
 		{&legacyConfig, 88888888, 0, ID{Hash: checksumToBytes(0xf0afd0e3), Next: 88888888}, ErrLocalIncompatibleOrStale},
 
 		// Local is mainnet Byzantium. Remote is also in Byzantium, but announces Gopherium (non existing
@@ -302,7 +302,7 @@ func TestValidation(t *testing.T) {
 		// Local is mainnet Gray Glacier, far in the future. Remote announces Gopherium (non existing fork)
 		// at some future timestamp 8888888888, for itself, but past block for local. Local is incompatible.
 		//
-		// This case detects non-upgraded nodes with majority hash power (typical Ropsten mess).
+		// This case detects non-upgraded nodes with majority hash power (typical Sila legacy testnet mess).
 		{params.SilaMainnetChainConfig, 888888888, 1660000000, ID{Hash: checksumToBytes(0xf0afd0e3), Next: 1660000000}, ErrLocalIncompatibleOrStale},
 
 		// Local is mainnet Gray Glacier. Remote is also in Gray Glacier, but announces Gopherium (non existing
@@ -373,7 +373,7 @@ func TestValidation(t *testing.T) {
 		// Local is mainnet BPO2, far in the future. Remote announces Gopherium (non existing fork)
 		// at some future timestamp 8888888888, for itself, but past block for local. Local is incompatible.
 		//
-		// This case detects non-upgraded nodes with majority hash power (typical Ropsten mess).
+		// This case detects non-upgraded nodes with majority hash power (typical Sila legacy testnet mess).
 		{params.SilaMainnetChainConfig, 88888888, 8888888888, ID{Hash: checksumToBytes(0x07c9462e), Next: 8888888888}, ErrLocalIncompatibleOrStale},
 
 		// Local is mainnet Shanghai. Remote is also in Shanghai, but announces Gopherium (non existing

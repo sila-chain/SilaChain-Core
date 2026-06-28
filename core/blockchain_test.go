@@ -3604,7 +3604,7 @@ func testCanonicalHashMarker(t *testing.T, scheme string) {
 }
 
 func TestCreateThenDeletePreByzantium(t *testing.T) {
-	// We use Ropsten chain config instead of Testchain config, this is
+	// We use Sila legacy testnet chain config instead of Testchain config, this is
 	// deliberate: we want to use pre-byz rules where we have intermediate state roots
 	// between transactions.
 	testCreateThenDelete(t, &params.ChainConfig{

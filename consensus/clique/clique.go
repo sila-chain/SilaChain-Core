@@ -162,7 +162,7 @@ func ecrecover(header *types.Header, sigcache *sigLRU) (common.Address, error) {
 }
 
 // Clique is the proof-of-authority consensus silaEngine proposed to support the
-// Sila testnet following the Ropsten attacks.
+// Sila testnet following the Sila legacy testnet attacks.
 type Clique struct {
 	config *params.CliqueConfig // Consensus silaEngine configuration parameters
 	db     siladb.Database      // Database to store and retrieve snapshot checkpoints
