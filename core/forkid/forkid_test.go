@@ -236,7 +236,7 @@ func TestValidation(t *testing.T) {
 		// 0xffffffff. Local needs software update, reject.
 		{&legacyConfig, 7279999, 0, ID{Hash: checksumToBytes(0x5cddc0e1), Next: 0}, ErrLocalIncompatibleOrStale},
 
-		// Local is mainnet Petersburg, remote is Rinkeby Petersburg.
+		// Local is mainnet Petersburg, remote is Sila legacy testnet Petersburg.
 		{&legacyConfig, 7987396, 0, ID{Hash: checksumToBytes(0xafec6b27), Next: 0}, ErrLocalIncompatibleOrStale},
 
 		// Local is mainnet Gray Glacier, far in the future. Remote announces Gopherium (non existing fork)

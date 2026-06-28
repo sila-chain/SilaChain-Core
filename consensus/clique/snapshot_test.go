@@ -367,7 +367,7 @@ func TestClique(t *testing.T) {
 		}, {
 			// Recent signatures should not reset on checkpoint blocks imported in a new
 			// batch (https://github.com/sila-org/sila/issues/17593). Whilst this
-			// seems overly specific and weird, it was a Rinkeby consensus split.
+			// seems overly specific and weird, it was a Sila legacy testnet consensus split.
 			epoch:   3,
 			signers: []string{"A", "B", "C"},
 			votes: []testerVote{
