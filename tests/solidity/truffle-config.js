@@ -24,9 +24,9 @@
  *
  * truffleframework.com/docs/advanced/configuration
  *
- * To deploy via Infura you'll need a wallet provider (like truffle-hdwallet-provider)
- * to sign your transactions before they're sent to a remote public node. Infura API
- * keys are available for free at: infura.io/register
+ * To deploy via a Sila RPC endpoint you'll need a wallet provider (like truffle-hdwallet-provider)
+ * to sign your transactions before they're sent to a remote Sila public node.
+ * RPC credentials should come from the official Sila provider
  *
  * You'll also need a mnemonic - the twelve word phrase the wallet uses to generate
  * public/private key pairs. If you're publishing your code to GitHub make sure you load this
@@ -76,10 +76,10 @@
 //
 //     // Useful for deploying to a public network.
 //     // NB: It's important to wrap the provider as a function.
-//     // ropsten: {
-//       // provider: () => new HDWalletProvider(mnemonic, `https://ropsten.infura.io/${infuraKey}`),
-//       // network_id: 3,       // Ropsten's id
-//       // gas: 5500000,        // Ropsten has a lower block limit than mainnet
+//     // silaPublicTestnet: {
+//       // provider: () => new HDWalletProvider(mnemonic, process.env.SILA_RPC_URL),
+//       // network_id: 20263001, // Sila public testnet id
+//       // gas: 5500000,        // Sila public testnet has its own block limit
 //       // confirmations: 2,    // # of confs to wait between deployments. (default: 0)
 //       // timeoutBlocks: 200,  // # of blocks before a deployment times out  (minimum/default: 50)
 //       // skipDryRun: true     // Skip dry run before migrations? (default: false for public nets )
